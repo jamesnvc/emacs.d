@@ -99,7 +99,7 @@
 (define-key c++-mode-map (kbd "C-c C-v") 'my-flymake-show-next-error)
 
 ;; Java
-;; (define-key java-mode-map (kbd "C-c C-v") 'my-flymake-show-next-error)
+(define-key java-mode-map (kbd "C-c C-v") 'my-flymake-show-next-error)
 
 ;; Lisp
 (define-key emacs-lisp-mode-map (kbd "C-c C-c") 'comment-region)
