@@ -1,0 +1,19 @@
+@numchapentry{Introduction}{1}{Introduction}{1}
+@numsecentry{Principles of Operation}{1.1}{Principles}{1}
+@numsecentry{Conventions of Use}{1.2}{Conventions}{1}
+@numchapentry{Programming Aids}{2}{Programming Aids}{2}
+@numsecentry{Cross-Referencing (Tags)}{2.1}{Tags}{2}
+@numsecentry{Completion of Modules and Functions}{2.2}{Completion}{2}
+@numsecentry{Evaluting Erlang Code}{2.3}{Evaluation}{3}
+@numsecentry{Refactoring}{2.4}{Refactoring}{3}
+@numsecentry{Documentation}{2.5}{Documentation}{4}
+@numchapentry{Applications}{3}{Applications}{6}
+@numsecentry{Process Manager}{3.1}{Process Manager}{6}
+@numsecentry{Debugger}{3.2}{Debugger}{6}
+@numsubsecentry{Basic Commands}{3.2.1}{Basic Commands}{6}
+@numsubsecentry{Monitor Buffer}{3.2.2}{Monitor Buffer}{7}
+@numsubsecentry{Attach Buffer}{3.2.3}{Attach Buffer}{7}
+@numsubsecentry{Synchronising Breakpoints}{3.2.4}{Synchronising Breakpoints}{7}
+@numsubsecentry{Saving and Restoring Debugger State}{3.2.5}{Saving and Restoring}{8}
+@numsecentry{Interactive Sessions}{3.3}{Interactive Sessions}{8}
+@numsecentry{Profiler}{3.4}{Profiler}{9}

@@ -1,0 +1,14 @@
+;; Object vm/
+;; SEMANTICDB Tags save file
+(semanticdb-project-database-file "vm/"
+  :tables (list 
+   (semanticdb-table "vm-config.el"
+    :major-mode 'emacs-lisp-mode
+    :tags '(("vm" function (:prototype-flag t :user-visible-flag t) nil #<overlay from 1 to 56 in .vm>) ("vm-other-frame" function (:prototype-flag t :user-visible-flag t) nil #<overlay from 57 to 131 in .vm>) ("vm-visit-folder" function (:prototype-flag t :user-visible-flag t) nil #<overlay from 132 to 201 in .vm>) ("vm-visit-virtual-folder" function (:prototype-flag t :user-visible-flag t) nil #<overlay from 202 to 273 in .vm>) ("vm-mode" function (:prototype-flag t :user-visible-flag t) nil #<overlay from 274 to 332 in .vm>) ("vm-mail" function (:prototype-flag t :user-visible-flag t) nil #<overlay from 333 to 391 in .vm>) ("vm-submit-bug-report" function (:prototype-flag t :user-visible-flag t) nil #<overlay from 392 to 461 in .vm>) ("setq" code nil nil #<overlay from 464 to 528 in .vm>) ("setq" code nil nil #<overlay from 599 to 654 in .vm>) ("setq" code nil nil #<overlay from 834 to 877 in .vm>) ("setq" code nil nil #<overlay from 878 to 912 in .vm>) ("setq" code nil nil #<overlay from 913 to 959 in .vm>) ("setq" code nil nil #<overlay from 960 to 1003 in .vm>) ("setq" code nil nil #<overlay from 1037 to 1140 in .vm>) ("if" code nil nil #<overlay from 1173 to 1439 in .vm>) ("setq" code nil nil #<overlay from 1475 to 1872 in .vm>))
+    :file "vm-config.el"
+    )
+   )
+  :file "semantic.cache"
+  :semantic-tag-version "2.0pre3"
+  :semanticdb-version "2.0pre3"
+  )

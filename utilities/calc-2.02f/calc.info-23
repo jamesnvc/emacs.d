@@ -1,0 +1,1205 @@
+Info file: calc.info,    -*-Text-*-
+produced by `texinfo-format-buffer'
+from file `calc.texinfo'
+using `texinfmt.el' version 2.42 of  7 Jul 2006.
+
+This file documents Calc, the GNU Emacs calculator.
+
+Copyright (C) 1990, 1991 Free Software Foundation, Inc.
+
+Permission is granted to make and distribute verbatim copies of this
+manual provided the copyright notice and this permission notice are
+preserved on all copies.
+
+Permission is granted to copy and distribute modified versions of this
+manual under the conditions for verbatim copying, provided also that
+the section entitled "GNU General Public License" is included exactly
+as in the original, and provided that the entire resulting derived
+work is distributed under the terms of a permission notice identical
+to this one.
+
+Permission is granted to copy and distribute translations of this
+manual into another language, under the above conditions for modified
+versions, except that the section entitled "GNU General Public
+License" may be included in a translation approved by the author
+instead of in the original English.
+
+
+
+
+File: calc.info, Node: Computational Lisp Functions, Next: Vector Lisp Functions, Prev: Predicates, Up: Internals
+
+Computational Functions
+.......................
+
+The functions described here do the actual computational work of the
+Calculator.  In addition to these, note that any function described in
+the main body of this manual may be called from Lisp; for example, if
+the documentation refers to the `calc-sqrt' [`sqrt'] command, this
+means `calc-sqrt' is an interactive stack-based square-root command
+and `sqrt' (which `defmath' expands to `calcFunc-sqrt') is the actual
+Lisp function for taking square roots.
+
+The functions `math-add', `math-sub', `math-mul', `math-div',
+`math-mod', and `math-neg' are not included in this list, since
+`defmath' allows you to write native Lisp `+', `-', `*', `/', `%', and
+unary `-', respectively, instead.
+
+ -- Function: normalize VAL
+     (Full form: `math-normalize'.)  Reduce the value VAL to standard
+     form.  For example, if VAL is a fixnum, it will be converted to a
+     bignum if it is too large, and if VAL is a bignum it will be
+     normalized by clipping off trailing (i.e., most-significant) zero
+     digits and converting to a fixnum if it is small.  All the
+     various data types are similarly converted to their standard
+     forms.  Variables are left alone, but function calls are actually
+     evaluated in formulas.  For example, normalizing `(+ 2
+     (calcFunc-abs -4))' will return 6.
+
+     If a function call fails, because the function is void or has the
+     wrong number of parameters, or because it returns `nil' or calls
+     `reject-arg' or `inexact-result', `normalize' returns the formula
+     still in symbolic form.
+
+     If the current Simplification Mode is "none" or "numeric
+     arguments only," `normalize' will act appropriately.  However,
+     the more powerful simplification modes (like algebraic
+     simplification) are not handled by `normalize'.  They are handled
+     by `calc-normalize', which calls `normalize' and possibly some
+     other routines, such as `simplify' or `simplify-units'.  Programs
+     generally will never call `calc-normalize' except when popping or
+     pushing values on the stack.
+
+ -- Function: evaluate-expr EXPR
+     Replace all variables in EXPR that have values with their values,
+     then use `normalize' to simplify the result.  This is what
+     happens when you press the `=' key interactively.
+
+ -- Macro: with-extra-prec N BODY
+     Evaluate the Lisp forms in BODY with precision increased by N
+     digits.  This is a macro which expands to
+
+	  (math-normalize
+	    (let ((calc-internal-prec (+ calc-internal-prec N)))
+	      BODY))
+
+     The surrounding call to `math-normalize' causes a floating-point
+     result to be rounded down to the original precision afterwards.
+     This is important because some arithmetic operations assume a
+     number's mantissa contains no more digits than the current
+     precision allows.
+
+ -- Function: make-frac N D
+     Build a fraction `N:D'.  This is equivalent to calling
+     `(normalize (list 'frac N D))', but more efficient.
+
+ -- Function: make-float MANT EXP
+     Build a floating-point value out of MANT and EXP, both of which
+     are arbitrary integers.  This function will return a properly
+     normalized float value, or signal an overflow or underflow if EXP
+     is out of range.
+
+ -- Function: make-sdev X SIGMA
+     Build an error form out of X and the absolute value of SIGMA.  If
+     SIGMA is zero, the result is the number X directly.  If SIGMA is
+     negative or complex, its absolute value is used.  If X or SIGMA
+     is not a valid type of object for use in error forms, this calls
+     `reject-arg'.
+
+ -- Function: make-intv MASK LO HI
+     Build an interval form out of MASK (which is assumed to be an
+     integer from 0 to 3), and the limits LO and HI.  If LO is greater
+     than HI, an empty interval form is returned.  This calls
+     `reject-arg' if LO or HI is unsuitable.
+
+ -- Function: sort-intv MASK LO HI
+     Build an interval form, similar to `make-intv', except that if LO
+     is less than HI they are simply exchanged, and the bits of MASK
+     are swapped accordingly.
+
+ -- Function: make-mod N M
+     Build a modulo form out of N and the modulus M.  Since modulo
+     forms do not allow formulas as their components, if N or M is not
+     a real number or HMS form the result will be a formula which is a
+     call to `makemod', the algebraic version of this function.
+
+ -- Function: float X
+     Convert X to floating-point form.  Integers and fractions are
+     converted to numerically equivalent floats; components of complex
+     numbers, vectors, HMS forms, date forms, error forms, intervals,
+     and modulo forms are recursively floated.  If the argument is a
+     variable or formula, this calls `reject-arg'.
+
+ -- Function: compare X Y
+     Compare the numbers X and Y, and return -1 if `(lessp X Y)', 1 if
+     `(lessp Y X)', 0 if `(math-equal X Y)', or 2 if the order is
+     undefined or cannot be determined.
+
+ -- Function: numdigs N
+     Return the number of digits of integer N, effectively
+     `ceil(log10(N))', but much more efficient.  Zero is considered to
+     have zero digits.
+
+ -- Function: scale-int X N
+     Shift integer X left N decimal digits, or right -N digits with
+     truncation toward zero.
+
+ -- Function: scale-rounding X N
+     Like `scale-int', except that a right shift rounds to the nearest
+     integer rather than truncating.
+
+ -- Function: fixnum N
+     Return the integer N as a fixnum, i.e., a native Lisp integer.
+     If N is outside the permissible range for Lisp integers (usually
+     24 binary bits) the result is undefined.
+
+ -- Function: sqr X
+     Compute the square of X; short for `(* X X)'.
+
+ -- Function: quotient X Y
+     Divide integer X by integer Y; return an integer quotient and
+     discard the remainder.  If X or Y is negative, the direction of
+     rounding is undefined.
+
+ -- Function: idiv X Y
+     Perform an integer division; if X and Y are both nonnegative
+     integers, this uses the `quotient' function, otherwise it
+     computes `floor(X/Y)'.  Thus the result is well-defined but
+     slower than for `quotient'.
+
+ -- Function: imod X Y
+     Divide integer X by integer Y; return the integer remainder and
+     discard the quotient.  Like `quotient', this works only for
+     integer arguments and is not well-defined for negative arguments.
+     For a more well-defined result, use `(% X Y)'.
+
+ -- Function: idivmod X Y
+     Divide integer X by integer Y; return a cons cell whose `car' is
+     `(quotient X Y)' and whose `cdr' is `(imod X Y)'.
+
+ -- Function: pow X Y
+     Compute X to the power Y.  In `defmath' code, this can also be
+     written `(^ X Y)' or `(expt X Y)'.
+
+ -- Function: abs-approx X
+     Compute a fast approximation to the absolute value of X.  For
+     example, for a rectangular complex number the result is the sum
+     of the absolute values of the components.
+
+ -- Function: pi
+     The function `(pi)' computes `pi' to the current precision.
+     Other related constant-generating functions are `two-pi',
+     `pi-over-2', `pi-over-4', `pi-over-180', `sqrt-two-pi', `e',
+     `sqrt-e', `ln-2', and `ln-10'.  Each function returns a
+     floating-point value in the current precision, and each uses
+     caching so that all calls after the first are essentially free.
+
+ -- Macro: math-defcache FUNC INITIAL FORM
+     This macro, usually used as a top-level call like `defun' or
+     `defvar', defines a new cached constant analogous to `pi', etc.
+     It defines a function `func' which returns the requested value;
+     if INITIAL is non-`nil' it must be a `(float ...)'  form which
+     serves as an initial value for the cache.  If FUNC is called when
+     the cache is empty or does not have enough digits to satisfy the
+     current precision, the Lisp expression FORM is evaluated with the
+     current precision increased by four, and the result minus its two
+     least significant digits is stored in the cache.  For example,
+     calling `(pi)' with a precision of 30 computes `pi' to 34 digits,
+     rounds it down to 32 digits for future use, then rounds it again
+     to 30 digits for use in the present request.
+
+ -- Function: full-circle SYMB
+     If the current angular mode is Degrees or HMS, this function
+     returns the integer 360.  In Radians mode, this function returns
+     either the corresponding value in radians to the current
+     precision, or the formula `2*pi', depending on the Symbolic Mode.
+     There are also similar function `half-circle' and
+     `quarter-circle'.
+
+ -- Function: power-of-2 N
+     Compute two to the integer power N, as a (potentially very large)
+     integer.  Powers of two are cached, so only the first call for a
+     particular N is expensive.
+
+ -- Function: integer-log2 N
+     Compute the base-2 logarithm of N, which must be an integer which
+     is a power of two.  If N is not a power of two, this function
+     will return `nil'.
+
+ -- Function: div-mod A B M
+     Divide A by B, modulo M.  This returns `nil' if there is no
+     solution, or if any of the arguments are not integers.
+
+ -- Function: pow-mod A B M
+     Compute A to the power B, modulo M.  If A, B, and M are integers,
+     this uses an especially efficient algorithm.  Otherwise, it
+     simply computes `(% (^ a b) m)'.
+
+ -- Function: isqrt N
+     Compute the integer square root of N.  This is the square root of
+     N rounded down toward zero, i.e., `floor(sqrt(N))'.  If N is
+     itself an integer, the computation is especially efficient.
+
+ -- Function: to-hms A ANG
+     Convert the argument A into an HMS form.  If ANG is specified, it
+     is the angular mode in which to interpret A, either `deg' or
+     `rad'.  Otherwise, the current angular mode is used.  If A is
+     already an HMS form it is returned as-is.
+
+ -- Function: from-hms A ANG
+     Convert the HMS form A into a real number.  If ANG is specified,
+     it is the angular mode in which to express the result, otherwise
+     the current angular mode is used.  If A is already a real number,
+     it is returned as-is.
+
+ -- Function: to-radians A
+     Convert the number or HMS form A to radians from the current
+     angular mode.
+
+ -- Function: from-radians A
+     Convert the number A from radians to the current angular mode.
+     If A is a formula, this returns the formula `deg(A)'.
+
+ -- Function: to-radians-2 A
+     Like `to-radians', except that in Symbolic Mode a degrees to
+     radians conversion yields a formula like `A*pi/180'.
+
+ -- Function: from-radians-2 A
+     Like `from-radians', except that in Symbolic Mode a radians to
+     degrees conversion yields a formula like `A*180/pi'.
+
+ -- Function: random-digit
+     Produce a random base-1000 digit in the range 0 to 999.
+
+ -- Function: random-digits N
+     Produce a random N-digit integer; this will be an integer in the
+     interval `[0, 10^N)'.
+
+ -- Function: random-float
+     Produce a random float in the interval `[0, 1)'.
+
+ -- Function: prime-test N ITERS
+     Determine whether the integer N is prime.  Return a list which
+     has one of these forms: `(nil F)' means the number is non-prime
+     because it was found to be divisible by F; `(nil)' means it was
+     found to be non-prime by table look-up (so no factors are known);
+     `(nil unknown)' means it is definitely non-prime but no factors
+     are known because N was large enough that Fermat's probabilistic
+     test had to be used; `(t)' means the number is definitely prime;
+     and `(maybe I P)' means that Fermat's test, after I iterations,
+     is P percent sure that the number is prime.  The ITERS parameter
+     is the number of Fermat iterations to use, in the case that this
+     is necessary.  If `prime-test' returns "maybe," you can call it
+     again with the same N to get a greater certainty; `prime-test'
+     remembers where it left off.
+
+ -- Function: to-simple-fraction F
+     If F is a floating-point number which can be represented exactly
+     as a small rational number. return that number, else return F.
+     For example, 0.75 would be converted to 3:4.  This function is
+     very fast.
+
+ -- Function: to-fraction F TOL
+     Find a rational approximation to floating-point number F to
+     within a specified tolerance TOL; this corresponds to the
+     algebraic function `frac', and can be rather slow.
+
+ -- Function: quarter-integer N
+     If N is an integer or integer-valued float, this function returns
+     zero.  If N is a half-integer (i.e., an integer plus 1:2 or 0.5),
+     it returns 2.  If N is a quarter-integer, it returns 1 or 3.  If
+     N is anything else, this function returns `nil'.
+
+
+
+File: calc.info, Node: Vector Lisp Functions, Next: Symbolic Lisp Functions, Prev: Computational Lisp Functions, Up: Internals
+
+Vector Functions
+................
+
+The functions described here perform various operations on vectors and
+matrices.
+
+ -- Function: math-concat X Y
+     Do a vector concatenation; this operation is written `X | Y' in a
+     symbolic formula.  *Note Building Vectors::.
+
+ -- Function: vec-length V
+     Return the length of vector V.  If V is not a vector, the result
+     is zero.  If V is a matrix, this returns the number of rows in
+     the matrix.
+
+ -- Function: mat-dimens M
+     Determine the dimensions of vector or matrix M.  If M is not a
+     vector, the result is an empty list.  If M is a plain vector but
+     not a matrix, the result is a one-element list containing the
+     length of the vector.  If M is a matrix with R rows and C
+     columns, the result is the list `(R C)'.  Higher-order tensors
+     produce lists of more than two dimensions.  Note that the object
+     `[[1, 2, 3], [4, 5]]' is a vector of vectors not all the same
+     size, and is treated by this and other Calc routines as a plain
+     vector of two elements.
+
+ -- Function: dimension-error
+     Abort the current function with a message of "Dimension error."
+     The Calculator will leave the function being evaluated in
+     symbolic form; this is really just a special case of
+     `reject-arg'.
+
+ -- Function: build-vector ARGS
+     Return a Calc vector with the zero-or-more ARGS as elements.
+     For example, `(build-vector 1 2 3)' returns the Calc vector
+     `[1, 2, 3]', stored internally as the list `(vec 1 2 3)'.
+
+ -- Function: make-vec OBJ DIMS
+     Return a Calc vector or matrix all of whose elements are equal to
+     OBJ.  For example, `(make-vec 27 3 4)' returns a 3x4 matrix
+     filled with 27's.
+
+ -- Function: row-matrix V
+     If V is a plain vector, convert it into a row matrix, i.e., a
+     matrix whose single row is V.  If V is already a matrix, leave it
+     alone.
+
+ -- Function: col-matrix V
+     If V is a plain vector, convert it into a column matrix, i.e., a
+     matrix with each element of V as a separate row.  If V is already
+     a matrix, leave it alone.
+
+ -- Function: map-vec F V
+     Map the Lisp function F over the Calc vector V.  For example,
+     `(map-vec 'math-floor v)' returns a vector of the floored
+     components of vector V.
+
+ -- Function: map-vec-2 F A B
+     Map the Lisp function F over the two vectors A and B.  If A and B
+     are vectors of equal length, the result is a vector of the
+     results of calling `(F AI BI)' for each pair of elements AI and
+     BI.  If either A or B is a scalar, it is matched with each value
+     of the other vector.  For example, `(map-vec-2 'math-add v 1)'
+     returns the vector V with each element increased by one.  Note
+     that using `'+' would not work here, since `defmath' does not
+     expand function names everywhere, just where they are in the
+     function position of a Lisp expression.
+
+ -- Function: reduce-vec F V
+     Reduce the function F over the vector V.  For example, if V is
+     `[10, 20, 30, 40]', this calls `(f (f (f 10 20) 30) 40)'.  If V
+     is a matrix, this reduces over the rows of V.
+
+ -- Function: reduce-cols F M
+     Reduce the function F over the columns of matrix M.  For example,
+     if M is `[[1, 2], [3, 4], [5, 6]]', the result is a vector of the
+     two elements `(f (f 1 3) 5)' and `(f (f 2 4) 6)'.
+
+ -- Function: mat-row M N
+     Return the Nth row of matrix M.  This is equivalent to `(elt m
+     n)'.  For a slower but safer version, use `mrow'.  (*Note
+     Extracting Elements::.)
+
+ -- Function: mat-col M N
+     Return the Nth column of matrix M, in the form of a vector.  The
+     arguments are not checked for correctness.
+
+ -- Function: mat-less-row M N
+     Return a copy of matrix M with its Nth row deleted.  The number N
+     must be in range from 1 to the number of rows in M.
+
+ -- Function: mat-less-col M N
+     Return a copy of matrix M with its Nth column deleted.
+
+ -- Function: transpose M
+     Return the transpose of matrix M.
+
+ -- Function: flatten-vector V
+     Flatten nested vector V into a vector of scalars.  For example,
+     if V is `[[1, 2, 3], [4, 5]]' the result is `[1, 2, 3, 4, 5]'.
+
+ -- Function: copy-matrix M
+     If M is a matrix, return a copy of M.  This maps `copy-sequence'
+     over the rows of M; in Lisp terms, each element of the result
+     matrix will be `eq' to the corresponding element of M, but none
+     of the `cons' cells that make up the structure of the matrix will
+     be `eq'.  If M is a plain vector, this is the same as
+     `copy-sequence'.
+
+ -- Function: swap-rows M R1 R2
+     Exchange rows R1 and R2 of matrix M in-place.  In other words,
+     unlike most of the other functions described here, this function
+     changes M itself rather than building up a new result matrix.
+     The return value is M, i.e., `(eq (swap-rows m 1 2) m)' is true,
+     with the side effect of exchanging the first two rows of M.
+
+
+
+File: calc.info, Node: Symbolic Lisp Functions, Next: Formatting Lisp Functions, Prev: Vector Lisp Functions, Up: Internals
+
+Symbolic Functions
+..................
+
+The functions described here operate on symbolic formulas in the
+Calculator.
+
+ -- Function: calc-prepare-selection NUM
+     Prepare a stack entry for selection operations.  If NUM is
+     omitted, the stack entry containing the cursor is used;
+     otherwise, it is the number of the stack entry to use.  This
+     function stores useful information about the current stack entry
+     into a set of variables.  `calc-selection-cache-num' contains the
+     number of the stack entry involved (equal to NUM if you specified
+     it); `calc-selection-cache-entry' contains the stack entry as a
+     list (such as `calc-top-list' would return with `entry' as the
+     selection mode); and `calc-selection-cache-comp' contains a
+     special "tagged" composition (*Note Formatting Lisp Functions::)
+     which allows Calc to relate cursor positions in the buffer with
+     their corresponding sub-formulas.
+
+     A slight complication arises in the selection mechanism because
+     formulas may contain small integers.  For example, in the vector
+     `[1, 2, 1]' the first and last elements are `eq' to each other;
+     selections are recorded as the actual Lisp object that appears
+     somewhere in the tree of the whole formula, but storing `1' would
+     falsely select both `1''s in the vector.  So
+     `calc-prepare-selection' also checks the stack entry and replaces
+     any plain integers with "complex number" lists of the form `(cplx
+     N 0)'.  This list will be displayed the same as a plain N and the
+     change will be completely invisible to the user, but it will
+     guarantee that no two sub-formulas of the stack entry will be
+     `eq' to each other.  Next time the stack entry is involved in a
+     computation, `calc-normalize' will replace these lists with plain
+     numbers again, again invisibly to the user.
+
+ -- Function: calc-encase-atoms X
+     This modifies the formula X to ensure that each part of the
+     formula is a unique atom, using the `(cplx N 0)' trick described
+     above.  This function may use `setcar' to modify the formula
+     in-place.
+
+ -- Function: calc-find-selected-part
+     Find the smallest sub-formula of the current formula that
+     contains the cursor.  This assumes `calc-prepare-selection' has
+     been called already.  If the cursor is not actually on any part
+     of the formula, this returns `nil'.
+
+ -- Function: calc-change-current-selection SELECTION
+     Change the currently prepared stack element's selection to
+     SELECTION, which should be `eq' to some sub-formula of the stack
+     element, or `nil' to unselect the formula.  The stack element's
+     appearance in the Calc buffer is adjusted to reflect the new
+     selection.
+
+ -- Function: calc-find-nth-part EXPR N
+     Return the Nth sub-formula of EXPR.  This function is used
+     by the selection commands, and (unless `j b' has been used) treats
+     sums and products as flat many-element formulas.  Thus if EXPR
+     is `((a + b) - c) + d', calling `calc-find-nth-part' with
+     N equal to four will return `d'.
+
+ -- Function: calc-find-parent-formula EXPR PART
+     Return the sub-formula of EXPR which immediately contains PART.
+     If EXPR is `a*b + (c+1)*d' and PART is `eq' to the `c+1' term of
+     EXPR, then this function will return `(c+1)*d'.  If PART turns
+     out not to be a sub-formula of EXPR, the function returns `nil'.
+     If PART is `eq' to EXPR, the function returns `t'.  This function
+     does not take associativity into account.
+
+ -- Function: calc-find-assoc-parent-formula EXPR PART
+     This is the same as `calc-find-parent-formula', except that
+     (unless `j b' has been used) it continues widening the selection
+     to contain a complete level of the formula.  Given `a' from `((a
+     + b) - c) + d', `calc-find-parent-formula' will return `a + b'
+     but `calc-find-assoc-parent-formula' will return the whole
+     expression.
+
+ -- Function: calc-grow-assoc-formula EXPR PART
+     This expands sub-formula PART of EXPR to encompass a complete
+     level of the formula.  If PART and its immediate parent are not
+     compatible associative operators, or if `j b' has been used, this
+     simply returns PART.
+
+ -- Function: calc-find-sub-formula EXPR PART
+     This finds the immediate sub-formula of EXPR which contains PART.
+     It returns an index N such that `(calc-find-nth-part EXPR N)'
+     would return PART.  If PART is not a sub-formula of EXPR, it
+     returns `nil'.  If PART is `eq' to EXPR, it returns `t'.  This
+     function does not take associativity into account.
+
+ -- Function: calc-replace-sub-formula EXPR OLD NEW
+     This function returns a copy of formula EXPR, with the
+     sub-formula that is `eq' to OLD replaced by NEW.
+
+ -- Function: simplify EXPR
+     Simplify the expression EXPR by applying various algebraic rules.
+     This is what the `a s' (`calc-simplify') command uses.  This
+     always returns a copy of the expression; the structure EXPR points
+     to remains unchanged in memory.
+
+     More precisely, here is what `simplify' does: The expression is
+     first normalized and evaluated by calling `normalize'.  If any
+     `AlgSimpRules' have been defined, they are then applied.  Then
+     the expression is traversed in a depth-first, bottom-up fashion;
+     at each level, any simplifications that can be made are made
+     until no further changes are possible.  Once the entire formula
+     has been traversed in this way, it is compared with the original
+     formula (from before the call to `normalize') and, if it has
+     changed, the entire procedure is repeated (starting with
+     `normalize') until no further changes occur.  Usually only two
+     iterations are needed: one to simplify the formula, and another
+     to verify that no further simplifications were possible.
+
+ -- Function: simplify-extended EXPR
+     Simplify the expression EXPR, with additional rules enabled that
+     help do a more thorough job, while not being entirely "safe" in
+     all circumstances.  (For example, this mode will simplify
+     `sqrt(x^2)' to `x', which is only valid when X is positive.)
+     This is implemented by temporarily binding the variable
+     `math-living-dangerously' to `t' (using a `let' form) and calling
+     `simplify'.  Dangerous simplification rules are written to check
+     this variable before taking any action.
+
+ -- Function: simplify-units EXPR
+     Simplify the expression EXPR, treating variable names as units
+     whenever possible.  This works by binding the variable
+     `math-simplifying-units' to `t' while calling `simplify'.
+
+ -- Macro: math-defsimplify FUNCS BODY
+     Register a new simplification rule; this is normally called as a
+     top-level form, like `defun' or `defmath'.  If FUNCS is a symbol
+     (like `+' or `calcFunc-sqrt'), this simplification rule is
+     applied to the formulas which are calls to the specified
+     function.  Or, FUNCS can be a list of such symbols; the rule
+     applies to all functions on the list.  The BODY is written like
+     the body of a function with a single argument called `expr'.  The
+     body will be executed with `expr' bound to a formula which is a
+     call to one of the functions FUNCS.  If the function body returns
+     `nil', or if it returns a result `equal' to the original `expr',
+     it is ignored and Calc goes on to try the next simplification
+     rule that applies.  If the function body returns something
+     different, that new formula is substituted for EXPR in the
+     original formula.
+
+     At each point in the formula, rules are tried in the order of the
+     original calls to `math-defsimplify'; the search stops after the
+     first rule that makes a change.  Thus later rules for that same
+     function will not have a chance to trigger until the next
+     iteration of the main `simplify' loop.
+
+     Note that, since `defmath' is not being used here, BODY must be
+     written in true Lisp code without the conveniences that `defmath'
+     provides.  If you prefer, you can have BODY simply call another
+     function (defined with `defmath') which does the real work.
+
+     The arguments of a function call will already have been
+     simplified before any rules for the call itself are invoked.
+     Since a new argument list is consed up when this happens, this
+     means that the rule's body is allowed to rearrange the function's
+     arguments destructively if that is convenient.  Here is a typical
+     example of a simplification rule:
+
+	  (math-defsimplify calcFunc-arcsinh
+	    (or (and (math-looks-negp (nth 1 expr))
+		     (math-neg (list 'calcFunc-arcsinh
+				     (math-neg (nth 1 expr)))))
+                (and (eq (car-safe (nth 1 expr)) 'calcFunc-sinh)
+		     (or math-living-dangerously
+			 (math-known-realp (nth 1 (nth 1 expr))))
+		     (nth 1 (nth 1 expr)))))
+
+     This is really a pair of rules written with one
+     `math-defsimplify' for convenience; the first replaces
+     `arcsinh(-x)' with `-arcsinh(x)', and the second, which is safe
+     only for real `x', replaces `arcsinh(sinh(x))' with `x'.
+
+ -- Function: common-constant-factor EXPR
+     Check EXPR to see if it is a sum of terms all multiplied by the
+     same rational value.  If so, return this value.  If not, return
+     `nil'.  For example, if called on `6x + 9y + 12z', it would
+     return 3, since 3 is a common factor of all the terms.
+
+ -- Function: cancel-common-factor EXPR FACTOR
+     Assuming EXPR is a sum with FACTOR as a common factor, divide
+     each term of the sum by FACTOR.  This is done by destructively
+     modifying parts of EXPR, on the assumption that it is being used
+     by a simplification rule (where such things are allowed; see
+     above).  For example, consider this built-in rule for square
+     roots:
+
+	  (math-defsimplify calcFunc-sqrt
+	    (let ((fac (math-common-constant-factor (nth 1 expr))))
+	      (and fac (not (eq fac 1))
+		   (math-mul (math-normalize (list 'calcFunc-sqrt fac))
+			     (math-normalize
+			      (list 'calcFunc-sqrt
+				    (math-cancel-common-factor
+				     (nth 1 expr) fac)))))))
+
+ -- Function: frac-gcd A B
+     Compute a "rational GCD" of A and B, which must both be rational
+     numbers.  This is the fraction composed of the GCD of the
+     numerators of A and B, over the GCD of the denominators.  It is
+     used by `common-constant-factor'.  Note that the standard `gcd'
+     function uses the LCM to combine the denominators.
+
+ -- Function: map-tree FUNC EXPR MANY
+     Try applying Lisp function FUNC to various sub-expressions of
+     EXPR.  Initially, call FUNC with EXPR itself as an argument.  If
+     this returns an expression which is not `equal' to EXPR, apply
+     FUNC again until eventually it does return EXPR with no changes.
+     Then, if EXPR is a function call, recursively apply FUNC to each
+     of the arguments.  This keeps going until no changes occur
+     anywhere in the expression; this final expression is returned by
+     `map-tree'.  Note that, unlike simplification rules, FUNC
+     functions may *not* make destructive changes to EXPR.  If a third
+     argument MANY is provided, it is an integer which says how many
+     times FUNC may be applied; the default, as described above, is
+     infinitely many times.
+
+ -- Function: compile-rewrites RULES
+     Compile the rewrite rule set specified by RULES, which should be
+     a formula that is either a vector or a variable name.  If the
+     latter, the compiled rules are saved so that later
+     `compile-rules' calls for that same variable can return
+     immediately.  If there are problems with the rules, this function
+     calls `error' with a suitable message.
+
+ -- Function: apply-rewrites EXPR CRULES HEADS
+     Apply the compiled rewrite rule set CRULES to the expression
+     EXPR.  This will make only one rewrite and only checks at the top
+     level of the expression.  The result `nil' if no rules matched,
+     or if the only rules that matched did not actually change the
+     expression.  The HEADS argument is optional; if is given, it
+     should be a list of all function names that (may) appear in EXPR.
+     The rewrite compiler tags each rule with the rarest-looking
+     function name in the rule; if you specify HEADS, `apply-rewrites'
+     can use this information to narrow its search down to just a few
+     rules in the rule set.
+
+ -- Function: rewrite-heads EXPR
+     Compute a HEADS list for EXPR suitable for use with
+     `apply-rewrites', as discussed above.
+
+ -- Function: rewrite EXPR RULES MANY
+     This is an all-in-one rewrite function.  It compiles the rule set
+     specified by RULES, then uses `map-tree' to apply the rules
+     throughout EXPR up to MANY (default infinity) times.
+
+ -- Function: match-patterns PAT VEC NOT-FLAG
+     Given a Calc vector VEC and an uncompiled pattern set or pattern
+     set variable PAT, this function returns a new vector of all
+     elements of VEC which do (or don't, if NOT-FLAG is non-`nil')
+     match any of the patterns in PAT.
+
+ -- Function: deriv EXPR VAR VALUE SYMB
+     Compute the derivative of EXPR with respect to variable VAR
+     (which may actually be any sub-expression).  If VALUE is specified,
+     the derivative is evaluated at the value of VAR; otherwise, the
+     derivative is left in terms of VAR.  If the expression contains
+     functions for which no derivative formula is known, new derivative
+     functions are invented by adding primes to the names; *Note Calculus::.
+     However, if SYMB is non-`nil', the presence of undifferentiable
+     functions in EXPR instead cancels the whole differentiation, and
+     `deriv' returns `nil' instead.
+
+     Derivatives of an N-argument function can be defined by adding a
+     `math-derivative-N' property to the property list of the symbol
+     for the function's derivative, which will be the function name
+     followed by an apostrophe.  The value of the property should be a
+     Lisp function; it is called with the same arguments as the
+     original function call that is being differentiated.  It should
+     return a formula for the derivative.  For example, the derivative
+     of `ln' is defined by
+
+	  (put 'calcFunc-ln\' 'math-derivative-1
+	       (function (lambda (u) (math-div 1 u))))
+
+     The two-argument `log' function has two derivatives,
+	  (put 'calcFunc-log\' 'math-derivative-2     ; d(log(x,b)) / dx
+	       (function (lambda (x b) ... )))
+	  (put 'calcFunc-log\'2 'math-derivative-2    ; d(log(x,b)) / db
+	       (function (lambda (x b) ... )))
+
+ -- Function: tderiv EXPR VAR VALUE SYMB
+     Compute the total derivative of EXPR.  This is the same as
+     `deriv', except that variables other than VAR are not assumed to
+     be constant with respect to VAR.
+
+ -- Function: integ EXPR VAR LOW HIGH
+     Compute the integral of EXPR with respect to VAR.
+     *Note Calculus::, for further details.
+
+ -- Macro: math-defintegral FUNCS BODY
+     Define a rule for integrating a function or functions of one argument;
+     this macro is very similar in format to `math-defsimplify'.
+     The main difference is that here BODY is the body of a function
+     with a single argument `u' which is bound to the argument to the
+     function being integrated, not the function call itself.  Also, the
+     variable of integration is available as `math-integ-var'.  If
+     evaluation of the integral requires doing further integrals, the body
+     should call `(math-integral X)' to find the integral of
+     X with respect to `math-integ-var'; this function returns
+     `nil' if the integral could not be done.  Some examples:
+
+	  (math-defintegral calcFunc-conj
+	    (let ((int (math-integral u)))
+	      (and int
+		   (list 'calcFunc-conj int))))
+
+	  (math-defintegral calcFunc-cos
+	    (and (equal u math-integ-var)
+		 (math-from-radians-2 (list 'calcFunc-sin u))))
+
+     In the `cos' example, we define only the integral of `cos(x) dx',
+     relying on the general integration-by-substitution facility to
+     handle cosines of more complicated arguments.  An integration
+     rule should return `nil' if it can't do the integral; if several
+     rules are defined for the same function, they are tried in order
+     until one returns a non-`nil' result.
+
+ -- Macro: math-defintegral-2 FUNCS BODY
+     Define a rule for integrating a function or functions of two
+     arguments.  This is exactly analogous to `math-defintegral',
+     except that BODY is written as the body of a function with two
+     arguments, U and V.
+
+ -- Function: solve-for LHS RHS VAR FULL
+     Attempt to solve the equation `LHS = RHS' by isolating the
+     variable VAR on the lefthand side; return the resulting righthand
+     side, or `nil' if the equation cannot be solved.  The variable
+     VAR must appear at least once in LHS or RHS.  Note that the
+     return value is a formula which does not contain VAR; this is
+     different from the user-level `solve' and `finv' functions, which
+     return a rearranged equation or a functional inverse,
+     respectively.  If FULL is non-`nil', a full solution including
+     dummy signs and dummy integers will be produced.  User-defined
+     inverses are provided as properties in a manner similar to
+     derivatives:
+
+	  (put 'calcFunc-ln 'math-inverse
+	       (function (lambda (x) (list 'calcFunc-exp x))))
+
+     This function can call `(math-solve-get-sign X)' to create a new
+     arbitrary sign variable, returning X times that sign, and
+     `(math-solve-get-int X)' to create a new arbitrary integer
+     variable multiplied by X.  These functions simply return X if the
+     caller requested a non-"full" solution.
+
+ -- Function: solve-eqn EXPR VAR FULL
+     This version of `solve-for' takes an expression which will
+     typically be an equation or inequality.  (If it is not, it will
+     be interpreted as the equation `EXPR = 0'.)  It returns an
+     equation or inequality, or `nil' if no solution could be found.
+
+ -- Function: solve-system EXPRS VARS FULL
+     This function solves a system of equations.  Generally, EXPRS
+     and VARS will be vectors of equal length.
+     *Note Solving Systems of Equations::, for other options.
+
+ -- Function: expr-contains EXPR VAR
+     Returns a non-`nil' value if VAR occurs as a subexpression of
+     EXPR.
+
+     This function might seem at first to be identical to
+     `calc-find-sub-formula'.  The key difference is that
+     `expr-contains' uses `equal' to test for matches, whereas
+     `calc-find-sub-formula' uses `eq'.  In the formula `f(a, a)', the
+     two `a's will be `equal' but not `eq' to each other.
+
+ -- Function: expr-contains-count EXPR VAR
+     Returns the number of occurrences of VAR as a subexpression of
+     EXPR, or `nil' if there are no occurrences.
+
+ -- Function: expr-depends EXPR VAR
+     Returns true if EXPR refers to any variable the occurs in VAR.
+     In other words, it checks if EXPR and VAR have any variables in
+     common.
+
+ -- Function: expr-contains-vars EXPR
+     Return true if EXPR contains any variables, or `nil' if EXPR
+     contains only constants and functions with constant arguments.
+
+ -- Function: expr-subst EXPR OLD NEW
+     Returns a copy of EXPR, with all occurrences of OLD replaced by
+     NEW.  This treats `lambda' forms specially with respect to the
+     dummy argument variables, so that the effect is always to return
+     EXPR evaluated at OLD = NEW.
+
+ -- Function: multi-subst EXPR OLD NEW
+     This is like `expr-subst', except that OLD and NEW are lists of
+     expressions to be substituted simultaneously.  If one list is
+     shorter than the other, trailing elements of the longer list are
+     ignored.
+
+ -- Function: expr-weight EXPR
+     Returns the "weight" of EXPR, basically a count of the total
+     number of objects and function calls that appear in EXPR.  For
+     primitive" objects, this will be one.
+
+ -- Function: expr-height EXPR
+     Returns the "height" of EXPR, which is the deepest level to which
+     function calls are nested.  (Note that `A + B' counts as a
+     function call.)  For primitive objects, this returns zero.
+
+ -- Function: polynomial-p EXPR VAR
+     Check if EXPR is a polynomial in variable (or sub-expression)
+     VAR.  If so, return the degree of the polynomial, that is, the
+     highest power of VAR that appears in EXPR.  For example, for
+     `(x^2 + 3)^3 + 4' this would return 6.  This function returns
+     `nil' unless EXPR, when expanded out by `a x' (`calc-expand'),
+     would consist of a sum of terms in which VAR appears only raised
+     to nonnegative integer powers.  Note that if VAR does not occur
+     in EXPR, then EXPR is considered a polynomial of degree 0.
+
+ -- Function: is-polynomial EXPR VAR DEGREE LOOSE
+     Check if EXPR is a polynomial in variable or sub-expression VAR,
+     and, if so, return a list representation of the polynomial where
+     the elements of the list are coefficients of successive powers of
+     VAR: `A + B x + C x^3' would produce the list `(A B 0 C)', and
+     `(x + 1)^2' would produce the list `(1 2 1)'.  The highest
+     element of the list will be non-zero, with the special exception
+     that if EXPR is the constant zero, the returned value will be
+     `(0)'.  Return `nil' if EXPR is not a polynomial in VAR.  If
+     DEGREE is specified, this will not consider polynomials of degree
+     higher than that value.  This is a good precaution because
+     otherwise an input of `(x+1)^1000' will cause a huge coefficient
+     list to be built.  If LOOSE is non-`nil', then a looser
+     definition of a polynomial is used in which coefficients are no
+     longer required not to depend on VAR, but are only required not
+     to take the form of polynomials themselves.  For example, `sin(x)
+     x^2 + cos(x)' is a loose polynomial with coefficients
+     `((calcFunc-cos x) 0 (calcFunc-sin x))'.  The result will never
+     be `nil' in loose mode, since any expression can be interpreted
+     as a "constant" loose polynomial.
+
+ -- Function: polynomial-base EXPR PRED
+     Check if EXPR is a polynomial in any variable that occurs in it;
+     if so, return that variable.  (If EXPR is a multivariate
+     polynomial, this chooses one variable arbitrarily.)  If PRED is
+     specified, it should be a Lisp function which is called as `(PRED
+     SUBEXPR)', and which should return true if `mpb-top-expr' (a
+     global name for the original EXPR) is a suitable polynomial in
+     SUBEXPR.  The default predicate uses `(polynomial-p mpb-top-expr
+     SUBEXPR)'; you can use PRED to specify additional conditions.
+     Or, you could have PRED build up a list of every suitable SUBEXPR
+     that is found.
+
+ -- Function: poly-simplify POLY
+     Simplify polynomial coefficient list POLY by (destructively)
+     clipping off trailing zeros.
+
+ -- Function: poly-mix A AC B BC
+     Mix two polynomial lists A and B (in the form returned by
+     `is-polynomial') in a linear combination with coefficient
+     expressions AC and BC.  The result is a (not necessarily
+     simplified) polynomial list representing `AC A + BC B'.
+
+ -- Function: poly-mul A B
+     Multiply two polynomial coefficient lists A and B.  The result
+     will be in simplified form if the inputs were simplified.
+
+ -- Function: build-polynomial-expr POLY VAR
+     Construct a Calc formula which represents the polynomial
+     coefficient list POLY applied to variable VAR.  The `a c'
+     (`calc-collect') command uses `is-polynomial' to turn an
+     expression into a coefficient list, then `build-polynomial-expr'
+     to turn the list back into an expression in regular form.
+
+ -- Function: check-unit-name VAR
+     Check if VAR is a variable which can be interpreted as a unit
+     name.  If so, return the units table entry for that unit.  This
+     will be a list whose first element is the unit name (not counting
+     prefix characters) as a symbol and whose second element is the
+     Calc expression which defines the unit.  (Refer to the Calc
+     sources for details on the remaining elements of this list.)  If
+     VAR is not a variable or is not a unit name, return `nil'.
+
+ -- Function: units-in-expr-p EXPR SUB-EXPRS
+     Return true if EXPR contains any variables which can be
+     interpreted as units.  If SUB-EXPRS is `t', the entire expression
+     is searched.  If SUB-EXPRS is `nil', this checks whether EXPR is
+     directly a units expression.
+
+ -- Function: single-units-in-expr-p EXPR
+     Check whether EXPR contains exactly one units variable.  If so,
+     return the units table entry for the variable.  If EXPR does not
+     contain any units, return `nil'.  If EXPR contains two or more
+     units, return the symbol `wrong'.
+
+ -- Function: to-standard-units EXPR WHICH
+     Convert units expression EXPR to base units.  If WHICH is `nil',
+     use Calc's native base units.  Otherwise, WHICH can specify a
+     units system, which is a list of two-element lists, where the
+     first element is a Calc base symbol name and the second is an
+     expression to substitute for it.
+
+ -- Function: remove-units EXPR
+     Return a copy of EXPR with all units variables replaced by ones.
+     This expression is generally normalized before use.
+
+ -- Function: extract-units EXPR
+     Return a copy of EXPR with everything but units variables
+     replaced by ones.
+
+
+
+File: calc.info, Node: Formatting Lisp Functions, Next: Hooks, Prev: Symbolic Lisp Functions, Up: Internals
+
+I/O and Formatting Functions
+............................
+
+The functions described here are responsible for parsing and
+formatting Calc numbers and formulas.
+
+ -- Function: calc-eval STR SEP ARG1 ARG2 ...
+     This is the simplest interface to the Calculator from another Lisp program.
+     *Note Calling Calc from Your Programs::.
+
+ -- Function: read-number STR
+     If string STR contains a valid Calc number, either integer,
+     fraction, float, or HMS form, this function parses and returns
+     that number.  Otherwise, it returns `nil'.
+
+ -- Function: read-expr STR
+     Read an algebraic expression from string STR.  If STR does not
+     have the form of a valid expression, return a list of the form
+     `(error POS MSG)' where POS is an integer index into STR of the
+     general location of the error, and MSG is a string describing the
+     problem.
+
+ -- Function: read-exprs STR
+     Read a list of expressions separated by commas, and return it as
+     a Lisp list.  If an error occurs in any expressions, an error
+     list as shown above is returned instead.
+
+ -- Function: calc-do-alg-entry INITIAL PROMPT NO-NORM
+     Read an algebraic formula or formulas using the minibuffer.  All
+     conventions of regular algebraic entry are observed.  The return
+     value is a list of Calc formulas; there will be more than one if
+     the user entered a list of values separated by commas.  The
+     result is `nil' if the user presses Return with a blank line.  If
+     INITIAL is given, it is a string which the minibuffer will
+     initially contain.  If PROMPT is given, it is the prompt string
+     to use; the default is "Algebraic:".  If NO-NORM is `t', the
+     formulas will be returned exactly as parsed; otherwise, they will
+     be passed through `calc-normalize' first.
+
+     To support the use of `$' characters in the algebraic entry, use
+     `let' to bind `calc-dollar-values' to a list of the values to be
+     substituted for `$', `$$', and so on, and bind `calc-dollar-used'
+     to 0.  Upon return, `calc-dollar-used' will have been changed to
+     the highest number of consecutive `$'s that actually appeared in
+     the input.
+
+ -- Function: format-number A
+     Convert the real or complex number or HMS form A to string form.
+
+ -- Function: format-flat-expr A PREC
+     Convert the arbitrary Calc number or formula A to string form, in
+     the style used by the trail buffer and the `calc-edit' command.
+     This is a simple format designed mostly to guarantee the string
+     is of a form that can be re-parsed by `read-expr'.  Most
+     formatting modes, such as digit grouping, complex number format,
+     and point character, are ignored to ensure the result will be
+     re-readable.  The PREC parameter is normally 0; if you pass a
+     large integer like 1000 instead, the expression will be
+     surrounded by parentheses unless it is a plain number or variable
+     name.
+
+ -- Function: format-nice-expr A WIDTH
+     This is like `format-flat-expr' (with PREC equal to 0), except
+     that newlines will be inserted to keep lines down to the
+     specified WIDTH, and vectors that look like matrices or rewrite
+     rules are written in a pseudo-matrix format.  The `calc-edit'
+     command uses this when only one stack entry is being edited.
+
+ -- Function: format-value A WIDTH
+     Convert the Calc number or formula A to string form, using the
+     format seen in the stack buffer.  Beware the the string returned
+     may not be re-readable by `read-expr', for example, because of
+     digit grouping.  Multi-line objects like matrices produce strings
+     that contain newline characters to separate the lines.  The W
+     parameter, if given, is the target window size for which to
+     format the expressions.  If W is omitted, the width of the
+     Calculator window is used.
+
+ -- Function: compose-expr A PREC
+     Format the Calc number or formula A according to the current
+     language mode, returning a "composition."  To learn about the
+     structure of compositions, see the comments in the Calc source
+     code.  You can specify the format of a given type of function
+     call by putting a `math-compose-LANG' property on the function's
+     symbol, whose value is a Lisp function that takes A and PREC as
+     arguments and returns a composition.  Here LANG is a language
+     mode name, one of `normal', `big', `c', `pascal', `fortran',
+     `tex', `eqn', `math', or `maple'.  In Big mode, Calc actually
+     tries `math-compose-big' first, then tries `math-compose-normal'.
+     If this property does not exist, or if the function returns
+     `nil', the function is written in the normal function-call
+     notation for that language.
+
+ -- Function: composition-to-string C W
+     Convert a composition structure returned by `compose-expr' into a
+     string.  Multi-line compositions convert to strings containing
+     newline characters.  The target window size is given by W.  The
+     `format-value' function basically calls `compose-expr' followed
+     by `composition-to-string'.
+
+ -- Function: comp-width C
+     Compute the width in characters of composition C.
+
+ -- Function: comp-height C
+     Compute the height in lines of composition C.
+
+ -- Function: comp-ascent C
+     Compute the portion of the height of composition C which is on or
+     above the baseline.  For a one-line composition, this will be
+     one.
+
+ -- Function: comp-descent C
+     Compute the portion of the height of composition C which is below
+     the baseline.  For a one-line composition, this will be zero.
+
+ -- Function: comp-first-char C
+     If composition C is a "flat" composition, return the first
+     (leftmost) character of the composition as an integer.
+     Otherwise, return `nil'.
+
+ -- Function: comp-last-char C
+     If composition C is a "flat" composition, return the last
+     (rightmost) character, otherwise return `nil'.
+
+
+
+
+File: calc.info, Node: Hooks, Prev: Formatting Lisp Functions, Up: Internals
+
+Hooks
+.....
+
+Hooks are variables which contain Lisp functions (or lists of
+functions) which are called at various times.  Calc defines a number
+of hooks that help you to customize it in various ways.  Calc uses the
+Lisp function `run-hooks' to invoke the hooks shown below.  Several
+other customization-related variables are also described here.
+
+ -- Variable: calc-load-hook
+     This hook is called at the end of `calc.el', after the file has
+     been loaded, before any functions in it have been called, but after
+     `calc-mode-map' and similar variables have been set up.
+
+ -- Variable: calc-ext-load-hook
+     This hook is called at the end of `calc-ext.el'.
+
+ -- Variable: calc-start-hook
+     This hook is called as the last step in a `M-x calc' command.  At
+     this point, the Calc buffer has been created and initialized if
+     necessary, the Calc window and trail window have been created,
+     and the "Welcome to Calc" message has been displayed.
+
+ -- Variable: calc-mode-hook
+     This hook is called when the Calc buffer is being created.
+     Usually this will only happen once per Emacs session.  The hook
+     is called after Emacs has switched to the new buffer, the
+     mode-settings file has been read if necessary, and all other
+     buffer-local variables have been set up.  After this hook
+     returns, Calc will perform a `calc-refresh' operation, set up the
+     mode line display, then evaluate any deferred `calc-define'
+     properties that have not been evaluated yet.
+
+ -- Variable: calc-trail-mode-hook
+     This hook is called when the Calc Trail buffer is being created.
+     It is called as the very last step of setting up the Trail
+     buffer.  Like `calc-mode-hook', this will normally happen only
+     once per Emacs session.
+
+ -- Variable: calc-end-hook
+     This hook is called by `calc-quit', generally because the user
+     presses `q' or `M-# c' while in Calc.  The Calc buffer will be
+     the current buffer.  The hook is called as the very first step,
+     before the Calc window is destroyed.
+
+ -- Variable: calc-window-hook
+     If this hook exists, it is called to create the Calc window.
+     Upon return, this new Calc window should be the current window.
+     (The Calc buffer will already be the current buffer when the hook
+     is called.)  If the hook is not defined, Calc will generally use
+     `split-window', `set-window-buffer', and `select-window' to
+     create the Calc window.
+
+ -- Variable: calc-trail-window-hook
+     If this hook exists, it is called to create the Calc Trail
+     window.  The variable `calc-trail-buffer' will contain the buffer
+     which the window should use.  Unlike `calc-window-hook', this
+     hook must *not* switch into the new window.
+
+ -- Variable: calc-edit-mode-hook
+     This hook is called by `calc-edit' (and the other "edit"
+     commands) when the temporary editing buffer is being created.
+     The buffer will have been selected and set up to be in
+     `calc-edit-mode', but will not yet have been filled with
+     text.  (In fact it may still have leftover text from a previous
+     `calc-edit' command.)
+
+ -- Variable: calc-mode-save-hook
+     This hook is called by the `calc-save-modes' command, after
+     Calc's own mode features have been inserted into the `.emacs'
+     buffer and just before the "End of mode settings" message is
+     inserted.
+
+ -- Variable: calc-reset-hook
+     This hook is called after `M-# 0' (`calc-reset') has reset all
+     modes.  The Calc buffer will be the current buffer.
+
+ -- Variable: calc-other-modes
+     This variable contains a list of strings.  The strings are
+     concatenated at the end of the modes portion of the Calc mode
+     line (after standard modes such as "Deg", "Inv" and "Hyp").  Each
+     string should be a short, single word followed by a space.  The
+     variable is `nil' by default.
+
+ -- Variable: calc-mode-map
+     This is the keymap that is used by Calc mode.  The best time to
+     adjust it is probably in a `calc-mode-hook'.  If the Calc
+     extensions package (`calc-ext.el') has not yet been loaded, many
+     of these keys will be bound to `calc-missing-key', which is a
+     command that loads the extensions package and "retypes" the key.
+     If your `calc-mode-hook' rebinds one of these keys, it will
+     probably be overridden when the extensions are loaded.
+
+ -- Variable: calc-digit-map
+     This is the keymap that is used during numeric entry.  Numeric
+     entry uses the minibuffer, but this map binds every non-numeric
+     key to `calcDigit-nondigit' which generally calls
+     `exit-minibuffer' and "retypes" the key.
+
+ -- Variable: calc-alg-ent-map
+     This is the keymap that is used during algebraic entry.  This is
+     mostly a copy of `minibuffer-local-map'.
+
+ -- Variable: calc-store-var-map
+     This is the keymap that is used during entry of variable names
+     for commands like `calc-store' and `calc-recall'.  This is mostly
+     a copy of `minibuffer-local-completion-map'.
+
+ -- Variable: calc-edit-mode-map
+     This is the (sparse) keymap used by `calc-edit' and other
+     temporary editing commands.  It binds RET, LFD, and `C-c C-c' to
+     `calc-edit-finish'.
+
+ -- Variable: calc-mode-var-list
+     This is a list of variables which are saved by `calc-save-modes'.
+     Each entry is a list of two items, the variable (as a Lisp
+     symbol) and its default value.  When modes are being saved, each
+     variable is compared with its default value (using `equal') and
+     any non-default variables are written out.
+
+ -- Variable: calc-local-var-list
+     This is a list of variables which should be buffer-local to the
+     Calc buffer.  Each entry is a variable name (as a Lisp symbol).
+     These variables also have their default values manipulated by the
+     `calc' and `calc-quit' commands; *Note Multiple Calculators::.
+     Since `calc-mode-hook' is called after this list has been used
+     the first time, your hook should add a variable to the list and
+     also call `make-local-variable' itself.
+
+
+

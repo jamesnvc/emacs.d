@@ -1,0 +1,1097 @@
+Info file: calc.info,    -*-Text-*-
+produced by `texinfo-format-buffer'
+from file `calc.texinfo'
+using `texinfmt.el' version 2.42 of  7 Jul 2006.
+
+This file documents Calc, the GNU Emacs calculator.
+
+Copyright (C) 1990, 1991 Free Software Foundation, Inc.
+
+Permission is granted to make and distribute verbatim copies of this
+manual provided the copyright notice and this permission notice are
+preserved on all copies.
+
+Permission is granted to copy and distribute modified versions of this
+manual under the conditions for verbatim copying, provided also that
+the section entitled "GNU General Public License" is included exactly
+as in the original, and provided that the entire resulting derived
+work is distributed under the terms of a permission notice identical
+to this one.
+
+Permission is granted to copy and distribute translations of this
+manual into another language, under the above conditions for modified
+versions, except that the section entitled "GNU General Public
+License" may be included in a translation approved by the author
+instead of in the original English.
+
+
+
+
+File: calc.info, Node: Undo, Next: Error Messages, Prev: Prefix Arguments, Up: Introduction
+
+Undoing Mistakes
+================
+
+The shift-`U' key (`calc-undo') undoes the most recent operation.  If
+that operation added or dropped objects from the stack, those objects
+are removed or restored.  If it was a "store" operation, you are
+queried whether or not to restore the variable to its original value.
+The `U' key may be pressed any number of times to undo successively
+farther back in time; with a numeric prefix argument it undoes a
+specified number of operations.  The undo history is cleared only by
+the `q' (`calc-quit') command.  (Recall that `M-# c' is synonymous
+with `calc-quit' while inside the Calculator; this also clears the
+undo history.)
+
+Currently the mode-setting commands (like `calc-precision') are not
+undoable.  You can undo past a point where you changed a mode, but you
+will need to reset the mode yourself.
+
+The shift-`D' key (`calc-redo') redoes an operation that was
+mistakenly undone.  Pressing `U' with a negative prefix argument is
+equivalent to executing `calc-redo'.  You can redo any number of
+times, up to the number of recent consecutive undo commands.  Redo
+information is cleared whenever you give any command that adds new
+undo information, i.e., if you undo, then enter a number on the stack
+or make any other change, then it will be too late to redo.
+
+The `M-RET' key (`calc-last-args') is like undo in that it restores
+the arguments of the most recent command onto the stack; however, it
+does not remove the result of that command.  Given a numeric prefix
+argument, this command applies to the `n'th most recent command which
+removed items from the stack; it pushes those items back onto the
+stack.
+
+The `K' (`calc-keep-args') command provides a related function to
+`M-RET'.  *Note Stack and Trail::.
+
+It is also possible to recall previous results or inputs using the trail.
+*Note Trail Commands::.
+
+The standard Emacs `C-_' undo key is recognized as a synonym for `U'.
+
+
+
+File: calc.info, Node: Error Messages, Next: Multiple Calculators, Prev: Undo, Up: Introduction
+
+Error Messages
+==============
+
+Many situations that would produce an error message in other calculators
+simply create unsimplified formulas in the Emacs Calculator.  For example,
+`1 RET 0 /' pushes the formula `1 / 0'; `0 L' pushes
+the formula `ln(0)'.  Floating-point overflow and underflow are also
+reasons for this to happen.
+
+When a function call must be left in symbolic form, Calc usually
+produces a message explaining why.  Messages that are probably
+surprising or indicative of user errors are displayed automatically.
+Other messages are simply kept in Calc's memory and are displayed only
+if you type `w' (`calc-why').  You can also press `w' if the same
+computation results in several messages.  (The first message will end
+with `[w=more]' in this case.)
+
+The `d w' (`calc-auto-why') command controls when error messages are
+displayed automatically.  (Calc effectively presses `w' for you after
+your computation finishes.)  By default, this occurs only for
+important" messages.  The other possible modes are to report *all*
+messages automatically, or to report none automatically (so that you
+must always press `w' yourself to see the messages).
+
+
+
+File: calc.info, Node: Multiple Calculators, Next: Troubleshooting Commands, Prev: Error Messages, Up: Introduction
+
+Multiple Calculators
+====================
+
+It is possible to have any number of Calc Mode buffers at once.
+Usually this is done by executing `M-x another-calc', which is similar
+to `M-# c' except that if a `*Calculator*' buffer already exists, a
+new, independent one with a name of the form `*Calculator*<N>' is
+created.  You can also use the command `calc-mode' to put any buffer
+into Calculator mode, but this would ordinarily never be done.
+
+The `q' (`calc-quit') command does not destroy a Calculator buffer; it
+only closes its window.  Use `M-x kill-buffer' to destroy a Calculator
+buffer.
+
+Each Calculator buffer keeps its own stack, undo list, and mode
+settings such as precision, angular mode, and display formats.  In
+Emacs terms, variables such as `calc-stack' are buffer-local
+variables.  The global default values of these variables are used only
+when a new Calculator buffer is created.  The `calc-quit' command
+saves the stack and mode settings of the buffer being quit as the new
+defaults.
+
+There is only one trail buffer, `*Calc Trail*', used by all Calculator
+buffers.
+
+
+
+File: calc.info, Node: Troubleshooting Commands, Prev: Multiple Calculators, Up: Introduction
+
+Troubleshooting Commands
+========================
+
+This section describes commands you can use in case a computation
+incorrectly fails or gives the wrong answer.
+
+*Note Reporting Bugs::, if you find a problem that appears to be due
+to a bug or deficiency in Calc.
+
+* Menu:
+
+* Autoloading Problems::
+* Recursion Depth::
+* Caches::
+* Debugging Calc::
+
+
+
+File: calc.info, Node: Autoloading Problems, Next: Recursion Depth, Prev: Troubleshooting Commands, Up: Troubleshooting Commands
+
+Autoloading Problems
+--------------------
+
+The Calc program is split into many component files; components are
+loaded automatically as you use various commands that require them.
+Occasionally Calc may lose track of when a certain component is
+necessary; typically this means you will type a command and it won't
+work because some function you've never heard of was undefined.
+
+If this happens, the easiest workaround is to type `M-# L'
+(`calc-load-everything') to force all the parts of Calc to be loaded
+right away.  This will cause Emacs to take up a lot more memory than
+it would otherwise, but it's guaranteed to fix the problem.
+
+If you seem to run into this problem no matter what you do, or if even
+the `M-# L' command crashes, Calc may have been improperly installed.
+*Note Installation::, for details of the installation process.
+
+
+
+File: calc.info, Node: Recursion Depth, Next: Caches, Prev: Autoloading Problems, Up: Troubleshooting Commands
+
+Recursion Depth
+---------------
+
+Calc uses recursion in many of its calculations.  Emacs Lisp keeps a
+variable `max-lisp-eval-depth' which limits the amount of recursion
+possible in an attempt to recover from program bugs.  If a calculation
+ever halts incorrectly with the message "Computation got stuck or ran
+too long," use the `M' command (`calc-more-recursion-depth') to
+increase this limit.  (Of course, this will not help if the
+calculation really did get stuck due to some problem inside Calc.)
+
+The limit is always increased (multiplied) by a factor of two.  There
+is also an `I M' (`calc-less-recursion-depth') command which decreases
+this limit by a factor of two, down to a minimum value of 200.  The
+default value is 1000.
+
+These commands also double or halve `max-specpdl-size', another
+internal Lisp recursion limit.  The minimum value for this limit is
+600.
+
+
+
+File: calc.info, Node: Caches, Next: Debugging Calc, Prev: Recursion Depth, Up: Troubleshooting Commands
+
+Caches
+------
+
+Calc saves certain values after they have been computed once.  For
+example, the `P' (`calc-pi') command initially "knows" the constant
+`pi' to about 20 decimal places; if the current precision is greater
+than this, it will recompute `pi' using a series approximation.  This
+value will not need to be recomputed ever again unless you raise the
+precision still further.  Many operations such as logarithms and sines
+make use of similarly cached values such as `pi/4' and `ln(2)'.  The
+visible effect of caching is that high-precision computations may seem
+to do extra work the first time.  Other things cached include powers
+of two (for the binary arithmetic functions), matrix inverses and
+determinants, symbolic integrals, and data points computed by the
+graphing commands.
+
+If you suspect a Calculator cache has become corrupt, you can use the
+`calc-flush-caches' command to reset all caches to the empty state.
+(This should only be necessary in the event of bugs in the
+Calculator.)  The `M-# 0' (with the zero key) command also resets
+caches along with all other aspects of the Calculator's state.
+
+
+
+File: calc.info, Node: Debugging Calc, Prev: Caches, Up: Troubleshooting Commands
+
+Debugging Calc
+--------------
+
+A few commands exist to help in the debugging of Calc commands.  *Note
+Programming::, to see the various ways that you can write your own
+Calc commands.
+
+The `Z T' (`calc-timing') command turns on and off a mode in which the
+timing of slow commands is reported in the Trail.  Any Calc command
+that takes two seconds or longer writes a line to the Trail showing
+how many seconds it took.  This value is accurate only to within one
+second.
+
+All steps of executing a command are included; in particular, time
+taken to format the result for display in the stack and trail is
+counted.  Some prompts also count time taken waiting for them to be
+answered, while others do not; this depends on the exact
+implementation of the command.  For best results, if you are timing a
+sequence that includes prompts or multiple commands, define a keyboard
+macro to run the whole sequence at once.  Calc's `X' command (*Note
+Keyboard Macros::) will then report the time taken to execute the
+whole macro.
+
+Another advantage of the `X' command is that while it is
+executing, the stack and trail are not updated from step to step.
+So if you expect the output of your test sequence to leave a result
+that may take a long time to format and you don't wish to count
+this formatting time, end your sequence with a DEL keystroke
+to clear the result from the stack.  When you run the sequence with
+`X', Calc will never bother to format the large result.
+
+Another thing `Z T' does is to increase the Emacs variable
+`gc-cons-threshold' to a much higher value (two million; the usual
+default in Calc is 250,000) for the duration of each command.  This
+generally prevents garbage collection during the timing of the
+command, though it may cause your Emacs process to grow abnormally
+large.  (Garbage collection time is a major unpredictable factor in
+the timing of Emacs operations.)
+
+Another command that is useful when debugging your own Lisp extensions
+to Calc is `M-x calc-pass-errors', which disables the error handler
+that changes the "`max-lisp-eval-depth' exceeded" message to the much
+more friendly "Computation got stuck or ran too long."  This handler
+interferes with the Emacs Lisp debugger's `debug-on-error' mode.
+Errors are reported in the handler itself rather than at the true
+location of the error.  After you have executed `calc-pass-errors',
+Lisp errors will be reported correctly but the user-friendly message
+will be lost.
+
+
+
+File: calc.info, Node: Data Types, Next: Stack and Trail, Prev: Introduction, Up: Top
+
+Data Types
+**********
+
+This chapter discusses the various types of objects that can be placed
+on the Calculator stack, how they are displayed, and how they are
+entered.  (*Note Data Type Formats::, for information on how these
+data types are represented as underlying Lisp objects.)
+
+Integers, fractions, and floats are various ways of describing real
+numbers.  HMS forms also for many purposes act as real numbers.  These
+types can be combined to form complex numbers, modulo forms, error
+forms, or interval forms.  (But these last four types cannot be
+combined arbitrarily: error forms may not contain modulo forms, for
+example.)  Finally, all these types of numbers may be combined into
+vectors, matrices, or algebraic formulas.
+
+* Menu:
+
+* Integers::                The most basic data type.
+* Fractions::               This and above are called "rationals".
+* Floats::                  This and above are called "reals".
+* Complex Numbers::         This and above are called "numbers".
+* Infinities::
+* Vectors and Matrices::
+* Strings::
+* HMS Forms::
+* Date Forms::
+* Modulo Forms::
+* Error Forms::
+* Interval Forms::
+* Incomplete Objects::
+* Variables::
+* Formulas::
+
+
+
+File: calc.info, Node: Integers, Next: Fractions, Prev: Data Types, Up: Data Types
+
+Integers
+========
+
+The Calculator stores integers to arbitrary precision.  Addition,
+subtraction, and multiplication of integers always yields an exact
+integer result.  (If the result of a division or exponentiation of
+integers is not an integer, it is expressed in fractional or
+floating-point form according to the current Fraction Mode.
+*Note Fraction Mode::.)
+
+A decimal integer is represented as an optional sign followed by a
+sequence of digits.  Grouping (*Note Grouping Digits::) can be used to
+insert a comma at every third digit for display purposes, but you must
+not type commas during the entry of numbers.
+
+A non-decimal integer is represented as an optional sign, a radix
+between 2 and 36, a `#' symbol, and one or more digits.  For radix 11
+and above, the letters A through Z (upper- or lower-case) count as
+digits and do not terminate numeric entry mode.  *Note Radix Modes::,
+for how to set the default radix for display of integers.  Numbers of
+any radix may be entered at any time.  If you press `#' at the
+beginning of a number, the current display radix is used.
+
+
+
+File: calc.info, Node: Fractions, Next: Floats, Prev: Integers, Up: Data Types
+
+Fractions
+=========
+
+A "fraction" is a ratio of two integers.  Fractions are traditionally
+written "2/3" but Calc uses the notation `2:3'.  (The `/' key performs
+RPN division; the following two sequences push the number `2:3' on the
+stack: `2 : 3 RET', or `2 RET 3 /' assuming Fraction Mode has been
+enabled.)  When the Calculator produces a fractional result it always
+reduces it to simplest form, which may in fact be an integer.
+
+Fractions may also be entered in a three-part form, where `2:3:4'
+represents two-and-three-quarters.  *Note Fraction Formats::, for
+fraction display formats.
+
+Non-decimal fractions are entered and displayed as `RADIX#NUM:DENOM'
+(or in the analogous three-part form).  The numerator and denominator
+always use the same radix.
+
+
+
+File: calc.info, Node: Floats, Next: Complex Numbers, Prev: Fractions, Up: Data Types
+
+Floats
+======
+
+A floating-point number or "float" is a number stored in scientific
+notation.  The number of significant digits in the fractional part is
+governed by the current floating precision (*Note Precision::).  The
+range of acceptable values is from `10^-3999999' (inclusive) to
+`10^4000000' (exclusive), plus the corresponding negative values and
+zero.
+
+Calculations that would exceed the allowable range of values (such as
+`exp(exp(20))') are left in symbolic form by Calc.  The messages
+floating-point overflow" or "floating-point underflow" indicate that
+during the calculation a number would have been produced that was too
+large or too close to zero, respectively, to be represented by Calc.
+This does not necessarily mean the final result would have overflowed,
+just that an overflow occurred while computing the result.  (In fact,
+it could report an underflow even though the final result would have
+overflowed!)
+
+If a rational number and a float are mixed in a calculation, the
+result will in general be expressed as a float.  Commands that require
+an integer value (such as `k g' [`gcd']) will also accept
+integer-valued floats, i.e., floating-point numbers with nothing after
+the decimal point.
+
+Floats are identified by the presence of a decimal point and/or an
+exponent.  In general a float consists of an optional sign, digits
+including an optional decimal point, and an optional exponent
+consisting of an `e', an optional sign, and up to seven exponent
+digits.  For example, `23.5e-2' is 23.5 times ten to the minus-second
+power, or 0.235.
+
+Floating-point numbers are normally displayed in decimal notation with
+all significant figures shown.  Exceedingly large or small numbers are
+displayed in scientific notation.  Various other display options are
+available.  *Note Float Formats::.
+
+Floating-point numbers are stored in decimal, not binary.  The result
+of each operation is rounded to the nearest value representable in the
+number of significant digits specified by the current precision,
+rounding away from zero in the case of a tie.  Thus (in the default
+display mode) what you see is exactly what you get.  Some operations
+such as square roots and transcendental functions are performed with
+several digits of extra precision and then rounded down, in an effort
+to make the final result accurate to the full requested precision.
+However, accuracy is not rigorously guaranteed.  If you suspect the
+validity of a result, try doing the same calculation in a higher
+precision.  The Calculator's arithmetic is not intended to be
+IEEE-conformant in any way.
+
+While floats are always *stored* in decimal, they can be entered and
+displayed in any radix just like integers and fractions.  The notation
+`RADIX#DDD.DDD' is a floating-point number whose digits are in the
+specified radix.  Note that the `.'  is more aptly referred to as a
+radix point" than as a decimal point in this case.  The number
+`8#123.4567' is defined as `8#1234567 * 8^-4'.  If the radix is 14 or
+less, you can use `e' notation to write a non-decimal number in
+scientific notation.  The exponent is written in decimal, and is
+considered to be a power of the radix: `8#1234567e-4'.  If the radix
+is 15 or above, the letter `e' is a digit, so scientific notation must
+be written out, e.g., `16#123.4567*16^2'.  The first two exercises of
+the Modes Tutorial explore some of the properties of non-decimal
+floats.
+
+
+
+File: calc.info, Node: Complex Numbers, Next: Infinities, Prev: Floats, Up: Data Types
+
+Complex Numbers
+===============
+
+There are two supported formats for complex numbers: rectangular and
+polar.  The default format is rectangular, displayed in the form
+`(REAL,IMAG)' where REAL is the real part and IMAG is the imaginary
+part, each of which may be any real number.  Rectangular complex
+numbers can also be displayed in `A+Bi' notation; *Note Complex
+Formats::.
+
+Polar complex numbers are displayed in the form `(R;THETA)' where R is
+the nonnegative magnitude and THETA is the argument or phase angle.
+The range of THETA depends on the current angular mode (*Note Angular
+Modes::); it is generally between -180 and +180 degrees or the
+equivalent range in radians.
+
+Complex numbers are entered in stages using incomplete objects.
+*Note Incomplete Objects::.
+
+Operations on rectangular complex numbers yield rectangular complex
+results, and similarly for polar complex numbers.  Where the two types
+are mixed, or where new complex numbers arise (as for the square root
+of a negative real), the current "Polar Mode" is used to determine the
+type.  *Note Polar Mode::.
+
+A complex result in which the imaginary part is zero (or the phase
+angle is 0 or 180 degrees or `pi' radians) is automatically converted
+to a real number.
+
+
+
+File: calc.info, Node: Infinities, Next: Vectors and Matrices, Prev: Complex Numbers, Up: Data Types
+
+Infinities
+==========
+
+The word `inf' represents the mathematical concept of "infinity".
+Calc actually has three slightly different infinity-like values:
+`inf', `uinf', and `nan'.  These are just regular variable names
+(*Note Variables::); you should avoid using these names for your own
+variables because Calc gives them special treatment.  Infinities, like
+all variable names, are normally entered using algebraic entry.
+
+Mathematically speaking, it is not rigorously correct to treat
+infinity" as if it were a number, but mathematicians often do so
+informally.  When they say that `1 / inf = 0', what they really mean
+is that `1 / x', as `x' becomes larger and larger, becomes arbitrarily
+close to zero.  So you can imagine that if `x' got "all the way to
+infinity," then `1 / x' would go all the way to zero.  Similarly, when
+they say that `exp(inf) = inf', they mean that `exp(x)' grows without
+bound as `x' grows.  The symbol `-inf' likewise stands for an
+infinitely negative real value; for example, we say that `exp(-inf) =
+0'.  You can have an infinity pointing in any direction on the complex
+plane: `sqrt(-inf) = i inf'.
+
+The same concept of limits can be used to define `1 / 0'.  We really
+want the value that `1 / x' approaches as `x' approaches zero.  But if
+all we have is `1 / 0', we can't tell which direction `x' was coming
+from.  If `x' was positive and decreasing toward zero, then we should
+say that `1 / 0 = inf'.  But if `x' was negative and increasing toward
+zero, the answer is `1 / 0 = -inf'.  In fact, `x' could be an
+imaginary number, giving the answer `i inf' or `-i inf'.  Calc uses
+the special symbol `uinf' to mean "undirected infinity", i.e., a value
+which is infinitely large but with an unknown sign (or direction on
+the complex plane).
+
+Calc actually has three modes that say how infinities are handled.
+Normally, infinities never arise from calculations that didn't already
+have them.  Thus, `1 / 0' is treated simply as an error and left
+unevaluated.  The `m i' (`calc-infinite-mode') command (*Note Infinite
+Mode::) enables a mode in which `1 / 0' evaluates to `uinf' instead.
+There is also an alternative type of infinite mode which says to treat
+zeros as if they were positive, so that `1 / 0 = inf'.  While this is
+less mathematically correct, it may be the answer you want in some
+cases.
+
+Since all infinities are "as large" as all others, Calc simplifies,
+e.g., `5 inf' to `inf'.  Another example is `5 - inf = -inf', where
+the `-inf' is so large that adding a finite number like five to it
+does not affect it.  Note that `a - inf' also results in `-inf'; Calc
+assumes that variables like `a' always stand for finite quantities.
+Just to show that infinities really are all the same size, note that
+`sqrt(inf) = inf^2 = exp(inf) = inf' in Calc's notation.
+
+It's not so easy to define certain formulas like `0 * inf' and `inf /
+inf'.  Depending on where these zeros and infinities came from, the
+answer could be literally anything.  The latter formula could be the
+limit of `x / x' (giving a result of one), or `2 x / x' (giving two),
+or `x^2 / x' (giving `inf'), or `x / x^2' (giving zero).  Calc uses
+the symbol `nan' to represent such an "indeterminate" value.  (The
+name "nan" comes from analogy with the "NAN" concept of IEEE standard
+arithmetic; it stands for "Not A Number."  This is somewhat of a
+misnomer, since `nan' *does* stand for some number or infinity, it's
+just that *which* number it stands for cannot be determined.)  In
+Calc's notation, `0 * inf = nan' and `inf / inf = nan'.  A few other
+common indeterminate expressions are `inf - inf' and `inf ^ 0'.  Also,
+`0 / 0 = nan' if you have turned on "infinite mode" (as described
+above).
+
+Infinities are especially useful as parts of "intervals".
+*Note Interval Forms::.
+
+
+
+File: calc.info, Node: Vectors and Matrices, Next: Strings, Prev: Infinities, Up: Data Types
+
+Vectors and Matrices
+====================
+
+The "vector" data type is flexible and general.  A vector is simply a
+list of zero or more data objects.  When these objects are numbers,
+the whole is a vector in the mathematical sense.  When these objects
+are themselves vectors of equal (nonzero) length, the whole is a
+matrix".  A vector which is not a matrix is referred to here as a
+plain vector".
+
+A vector is displayed as a list of values separated by commas and enclosed
+in square brackets:  `[1, 2, 3]'.  Thus the following is a 2 row by
+3 column matrix:  `[[1, 2, 3], [4, 5, 6]]'.  Vectors, like complex
+numbers, are entered as incomplete objects.  *Note Incomplete Objects::.
+During algebraic entry, vectors are entered all at once in the usual
+brackets-and-commas form.  Matrices may be entered algebraically as nested
+vectors, or using the shortcut notation `[1, 2, 3; 4, 5, 6]',
+with rows separated by semicolons.  The commas may usually be omitted
+when entering vectors:  `[1 2 3]'.  Curly braces may be used in
+place of brackets: `{1, 2, 3}', but the commas are required in
+this case.
+
+Traditional vector and matrix arithmetic is also supported; *Note
+Basic Arithmetic:: and *Note Matrix Functions::.  Many other
+operations are applied to vectors element-wise.  For example, the
+complex conjugate of a vector is a vector of the complex conjugates of
+its elements.
+
+Algebraic functions for building vectors include `vec(a, b, c)' to
+build `[a, b, c]', `cvec(a, n, m)' to build an NxM matrix of `a's, and
+`index(n)' to build a vector of integers from 1 to `n'.
+
+
+
+File: calc.info, Node: Strings, Next: HMS Forms, Prev: Vectors and Matrices, Up: Data Types
+
+Strings
+=======
+
+Character strings are not a special data type in the Calculator.
+Rather, a string is represented simply as a vector all of whose
+elements are integers in the range 0 to 255 (ASCII codes).  You can
+enter a string at any time by pressing the `"' key.  Quotation marks
+and backslashes are written `\"' and `\\', respectively, inside
+strings.  Other notations introduced by backslashes are:
+
+     \a     7          \^@    0
+     \b     8          \^a-z  1-26
+     \e     27         \^[    27
+     \f     12         \^\\   28
+     \n     10         \^]    29
+     \r     13         \^^    30
+     \t     9          \^_    31
+		       \^?    127
+
+Finally, a backslash followed by three octal digits produces any
+character from its ASCII code.
+
+Strings are normally displayed in vector-of-integers form.  The
+`d "' (`calc-display-strings') command toggles a mode in
+which any vectors of small integers are displayed as quoted strings
+instead.
+
+The backslash notations shown above are also used for displaying
+strings.  Characters 128 and above are not translated by Calc; unless
+you have an Emacs modified for 8-bit fonts, these will show up in
+backslash-octal-digits notation.  For characters below 32, and for
+character 127, Calc uses the backslash-letter combination if there is
+one, or otherwise uses a `\^' sequence.
+
+The only Calc feature that uses strings is "compositions"; *Note
+Compositions::.  Strings also provide a convenient way to do
+conversions between ASCII characters and integers.
+
+There is a `string' function which provides a different display
+format for strings.  Basically, `string(S)', where S
+is a vector of integers in the proper range, is displayed as the
+corresponding string of characters with no surrounding quotation
+marks or other modifications.  Thus `string("ABC")' (or
+`string([65 66 67])') will look like `ABC' on the stack.
+This happens regardless of whether `d "' has been used.  The
+only way to turn it off is to use `d U' (unformatted language
+mode) which will display `string("ABC")' instead.
+
+Control characters are displayed somewhat differently by `string'.
+Characters below 32, and character 127, are shown using `^' notation
+(same as shown above, but without the backslash).  The quote and
+backslash characters are left alone, as are characters 128 and above.
+
+The `bstring' function is just like `string' except that the resulting
+string is breakable across multiple lines if it doesn't fit all on one
+line.  Potential break points occur at every space character in the
+string.
+
+
+
+File: calc.info, Node: HMS Forms, Next: Date Forms, Prev: Strings, Up: Data Types
+
+HMS Forms
+=========
+
+"HMS" stands for Hours-Minutes-Seconds; when used as an angular
+argument, the interpretation is Degrees-Minutes-Seconds.  All
+functions that operate on angles accept HMS forms.  These are
+interpreted as degrees regardless of the current angular mode.  It is
+also possible to use HMS as the angular mode so that calculated angles
+are expressed in degrees, minutes, and seconds.
+
+The default format for HMS values is `HOURS@ MINS' SECS"'.  During
+entry, the letters `h' (for "hours") or `o' (approximating the
+degrees" symbol) are accepted as well as `@', `m' is accepted in place
+of `'', and `s' is accepted in place of `"'.  The HOURS value is an
+integer (or integer-valued float).  The MINS value is an integer or
+integer-valued float between 0 and 59.  The SECS value is a real
+number between 0 (inclusive) and 60 (exclusive).  A positive HMS form
+is interpreted as HOURS + MINS/60 + SECS/3600.  A negative HMS form is
+interpreted as - HOURS - MINS/60 - SECS/3600.  Display format for HMS
+forms is quite flexible.  *Note HMS Formats::.
+
+HMS forms can be added and subtracted.  When they are added to
+numbers, the numbers are interpreted according to the current angular
+mode.  HMS forms can also be multiplied and divided by real numbers.
+Dividing two HMS forms produces a real-valued ratio of the two angles.
+
+Just for kicks, `M-x calc-time' pushes the current time of day on the
+stack as an HMS form.
+
+
+
+File: calc.info, Node: Date Forms, Next: Modulo Forms, Prev: HMS Forms, Up: Data Types
+
+Date Forms
+==========
+
+A "date form" represents a date and possibly an associated time.
+Simple date arithmetic is supported: Adding a number to a date
+produces a new date shifted by that many days; adding an HMS form to a
+date shifts it by that many hours.  Subtracting two date forms
+computes the number of days between them (represented as a simple
+number).  Many other operations, such as multiplying two date forms,
+are nonsensical and are not allowed by Calc.
+
+Date forms are entered and displayed enclosed in `< >' brackets.  The
+default format is, e.g., `<Wed Jan 9, 1991>' for dates, or `<3:32:20pm
+Wed Jan 9, 1991>' for dates with times.  Input is flexible; date forms
+can be entered in any of the usual notations for dates and times.
+*Note Date Formats::.
+
+Date forms are stored internally as numbers, specifically the number
+of days since midnight on the morning of January 1 of the year 1 AD.
+If the internal number is an integer, the form represents a date only;
+if the internal number is a fraction or float, the form represents a
+date and time.  For example, `<6:00am Wed Jan 9, 1991>' is represented
+by the number 726842.25.  The standard precision of 12 decimal digits
+is enough to ensure that a (reasonable) date and time can be stored
+without roundoff error.
+
+If the current precision is greater than 12, date forms will keep
+additional digits in the seconds position.  For example, if the
+precision is 15, the seconds will keep three digits after the decimal
+point.  Decreasing the precision below 12 may cause the time part of a
+date form to become inaccurate.  This can also happen if
+astronomically high years are used, though this will not be an issue
+in everyday (or even everymillenium) use.  Note that date forms
+without times are stored as exact integers, so roundoff is never an
+issue for them.
+
+You can use the `v p' (`calc-pack') and `v u' (`calc-unpack') commands
+to get at the numerical representation of a date form.  *Note Packing
+and Unpacking::.
+
+Date forms can go arbitrarily far into the future or past.  Negative
+year numbers represent years BC.  Calc uses a combination of the
+Gregorian and Julian calendars, following the history of Great Britain
+and the British colonies.  This is the same calendar that is used by
+the `cal' program in most Unix implementations.
+
+Some historical background: The Julian calendar was created by Julius
+Caesar in the year 46 BC as an attempt to fix the gradual drift caused
+by the lack of leap years in the calendar used until that time.  The
+Julian calendar introduced an extra day in all years divisible by
+four.  After some initial confusion, the calendar was adopted around
+the year we call 8 AD.  Some centuries later it became apparent that
+the Julian year of 365.25 days was itself not quite right.  In 1582
+Pope Gregory XIII introduced the Gregorian calendar, which added the
+new rule that years divisible by 100, but not by 400, were not to be
+considered leap years despite being divisible by four.  Many countries
+delayed adoption of the Gregorian calendar because of religious
+differences; in Britain it was put off until the year 1752, by which
+time the Julian calendar had fallen eleven days behind the true
+seasons.  So the switch to the Gregorian calendar in early September
+1752 introduced a discontinuity: The day after Sep 2, 1752 is Sep 14,
+1752.  Calc follows this convention.  To take another example, Russia
+waited until 1918 before adopting the new calendar, and thus needed to
+remove thirteen days (between Feb 1, 1918 and Feb 14, 1918).  This
+means that Calc's reckoning will be inconsistent with Russian history
+between 1752 and 1918, and similarly for various other countries.
+
+Today's timekeepers introduce an occasional "leap second" as
+well, but Calc does not take these minor effects into account.
+(If it did, it would have to report a non-integer number of days
+between, say, `<12:00am Mon Jan 1, 1900>' and
+`<12:00am Sat Jan 1, 2000>'.)
+
+Calc uses the Julian calendar for all dates before the year 1752,
+including dates BC when the Julian calendar technically had not yet
+been invented.  Thus the claim that day number -10000 is called
+August 16, 28 BC" should be taken with a grain of salt.
+
+Please note that there is no "year 0"; the day before `<Sat Jan 1,
++1>' is `<Fri Dec 31, -1>'.  These are days 0 and -1 respectively in
+Calc's internal numbering scheme.
+
+Another day counting system in common use is, confusingly, also called
+Julian."  It was invented in 1583 by Joseph Justus Scaliger, who named
+it in honor of his father Julius Caesar Scaliger.  For obscure reasons
+he chose to start his day numbering on Jan 1, 4713 BC at noon, which
+in Calc's scheme is -1721423.5 (recall that Calc starts at midnight
+instead of noon).  Thus to convert a Calc date code obtained by
+unpacking a date form into a Julian day number, simply add 1721423.5.
+The Julian code for `6:00am Jan 9, 1991' is 2448265.75.  The built-in
+`t J' command performs this conversion for you.
+
+The Unix operating system measures time as an integer number of
+seconds since midnight, Jan 1, 1970.  To convert a Calc date value
+into a Unix time stamp, first subtract 719164 (the code for `<Jan 1,
+1970>'), then multiply by 86400 (the number of seconds in a day) and
+press `R' to round to the nearest integer.  If you have a date form,
+you can simply subtract the day `<Jan 1, 1970>' instead of unpacking
+and subtracting 719164.  Likewise, divide by 86400 and add `<Jan 1,
+1970>' to convert from Unix time to a Calc date form.  (Note that Unix
+normally maintains the time in the GMT time zone; you may need to
+subtract five hours to get New York time, or eight hours for
+California time.  The same is usually true of Julian day counts.)  The
+built-in `t U' command performs these conversions.
+
+
+
+File: calc.info, Node: Modulo Forms, Next: Error Forms, Prev: Date Forms, Up: Data Types
+
+Modulo Forms
+============
+
+A "modulo form" is a real number which is taken modulo (i.e., within
+an integer multiple of) some value `M'.  Arithmetic modulo `M' often
+arises in number theory.  Modulo forms are written `a mod M', where
+`a' and `M' are real numbers or HMS forms, and `0 <= a < M'.  In many
+applications `a' and `M' will be integers but this is not required.
+
+Modulo forms are not to be confused with the modulo operator `%'.  The
+expression `27 % 10' means to compute 27 modulo 10 to produce the
+result 7.  Further computations treat this 7 as just a regular
+integer.  The expression `27 mod 10' produces the result `7 mod 10';
+further computations with this value are again reduced modulo 10 so
+that the result always lies in the desired range.
+
+When two modulo forms with identical `M''s are added or multiplied,
+the Calculator simply adds or multiplies the values, then reduces
+modulo `M'.  If one argument is a modulo form and the other a plain
+number, the plain number is treated like a compatible modulo form.  It
+is also possible to raise modulo forms to powers; the result is the
+value raised to the power, then reduced modulo `M'.  (When all values
+involved are integers, this calculation is done much more efficiently
+than actually computing the power and then reducing.)
+
+Two modulo forms `a mod M' and `b mod M' can be divided if `a', `b',
+and `M' are all integers.  The result is the modulo form which, when
+multiplied by `b mod M', produces `a mod M'.  If there is no solution
+to this equation (which can happen only when `M' is non-prime), or if
+any of the arguments are non-integers, the division is left in
+symbolic form.  Other operations, such as square roots, are not yet
+supported for modulo forms.  (Note that, although `(a mod M)^.5' will
+compute a "modulo square root" in the sense of reducing `sqrt(a)'
+modulo `M', this is not a useful definition from the
+number-theoretical point of view.)
+
+To create a modulo form during numeric entry, press the shift-`M' key
+to enter the word `mod'.  As a special convenience, pressing shift-`M'
+a second time automatically enters the value of `M' that was most
+recently used before.  During algebraic entry, either type `mod' by
+hand or press `M-m' (that's `META-m').  Once again, pressing this a
+second time enters the current modulo.
+
+You can also use `v p' and `%' to modify modulo forms.
+*Note Building Vectors::.  *Note Basic Arithmetic::.
+
+It is possible to mix HMS forms and modulo forms.  For example, an
+HMS form modulo 24 could be used to manipulate clock times; an HMS
+form modulo 360 would be suitable for angles.  Making the modulo `M'
+also be an HMS form eliminates troubles that would arise if the angular
+mode were inadvertently set to Radians, in which case
+`2@ 0' 0" mod 24' would be interpreted as two degrees modulo
+24 radians!
+
+Modulo forms cannot have variables or formulas for components.  If you
+enter the formula `(x + 2) mod 5', Calc propagates the modulus to each
+of the coefficients: `(1 mod 5) x + (2 mod 5)'.
+
+The algebraic function `makemod(a, m)' builds the modulo form
+`a mod m'.
+
+
+
+File: calc.info, Node: Error Forms, Next: Interval Forms, Prev: Modulo Forms, Up: Data Types
+
+Error Forms
+===========
+
+An "error form" is a number with an associated standard deviation, as
+in `2.3 +/- 0.12'.  The notation `x +/- sigma' stands for an uncertain
+value which follows a normal or Gaussian distribution of mean `x' and
+standard deviation or "error" `sigma'.  Both the mean and the error
+can be either numbers or formulas.  Generally these are real numbers
+but the mean may also be complex.  If the error is negative or
+complex, it is changed to its absolute value.  An error form with zero
+error is converted to a regular number by the Calculator.
+
+All arithmetic and transcendental functions accept error forms as
+input.  Operations on the mean-value part work just like operations on
+regular numbers.  The error part for any function `f(x)' (such as
+`sin(x)') is defined by the error of `x' times the derivative of `f'
+evaluated at the mean value of `x'.  For a two-argument function
+`f(x,y)' (such as addition) the error is the square root of the sum of
+the squares of the errors due to `x' and `y'.  Note that this
+definition assumes the errors in `x' and `y' are uncorrelated.  A side
+effect of this definition is that `(2 +/- 1) * (2 +/- 1)' is not the
+same as `(2 +/- 1)^2'; the former represents the product of two
+independent values which happen to have the same probability
+distributions, and the latter is the product of one random value with
+itself.  The former will produce an answer with less error, since on
+the average the two independent errors can be expected to cancel out.
+
+Consult a good text on error analysis for a discussion of the proper
+use of standard deviations.  Actual errors often are neither
+Gaussian-distributed nor uncorrelated, and the above formulas are
+valid only when errors are small.  As an example, the error arising
+from `sin(x +/- sigma)' is `sigma abs(cos(x))'.  When `x' is close to
+zero, `cos(x)' is close to one so the error in the sine is close to
+`sigma'; this makes sense, since `sin(x)' is approximately `x' near
+zero, so a given error in `x' will produce about the same error in the
+sine.  Likewise, near 90 degrees `cos(x)' is nearly zero and so the
+computed error is small: The sine curve is nearly flat in that region,
+so an error in `x' has relatively little effect on the value of
+`sin(x)'.  However, consider `sin(90 +/- 1000)'.  The cosine of 90 is
+zero, so Calc will report zero error!  We get an obviously wrong
+result because we have violated the small-error approximation
+underlying the error analysis.  If the error in `x' had been small,
+the error in `sin(x)' would indeed have been negligible.
+
+To enter an error form during regular numeric entry, use the `p'
+("plus-or-minus") key to type the `+/-' symbol.  (If you try actually
+typing `+/-' the `+' key will be interpreted as the Calculator's `+'
+command!)  Within an algebraic formula, you can press `M-p' to type
+the `+/-' symbol, or type it out by hand.
+
+Error forms and complex numbers can be mixed; the formulas shown above
+are used for complex numbers, too; note that if the error part
+evaluates to a complex number its absolute value (or the square root
+of the sum of the squares of the absolute values of the two error
+contributions) is used.  Mathematically, this corresponds to a
+radially symmetric Gaussian distribution of numbers on the complex
+plane.  However, note that Calc considers an error form with real
+components to represent a real number, not a complex distribution
+around a real mean.
+
+Error forms may also be composed of HMS forms.  For best results, both
+the mean and the error should be HMS forms if either one is.
+
+The algebraic function `sdev(a, b)' builds the error form `a +/- b'.
+
+
+
+File: calc.info, Node: Interval Forms, Next: Incomplete Objects, Prev: Error Forms, Up: Data Types
+
+Interval Forms
+==============
+
+An "interval" is a subset of consecutive real numbers.  For example,
+the interval `[2 .. 4]' represents all the numbers from 2 to 4,
+inclusive.  If you multiply it by the interval `[0.5 .. 2]' you obtain
+`[1 .. 8]'.  This calculation represents the fact that if you multiply
+some number in the range `[2 .. 4]' by some other number in the range
+`[0.5 .. 2]', your result will lie in the range from 1 to 8.  Interval
+arithmetic is used to get a worst-case estimate of the possible range
+of values a computation will produce, given the set of possible values
+of the input.
+
+Calc supports several varieties of intervals, including "closed"
+intervals of the type shown above, "open" intervals such as
+`(2 .. 4)', which represents the range of numbers from 2 to 4
+*exclusive*, and "semi-open" intervals in which one end uses a round
+parenthesis and the other a square bracket.  In mathematical terms,
+`[2 .. 4]' means `2 <= x <= 4', whereas `[2 .. 4)' represents `2 <= x
+< 4', `(2 .. 4]' represents `2 < x <= 4', and `(2 .. 4)' represents `2
+< x < 4'.
+
+The lower and upper limits of an interval must be either real numbers
+(or HMS or date forms), or symbolic expressions which are assumed to
+be real-valued, or `-inf' and `inf'.  In general the lower limit must
+be less than the upper limit.  A closed interval containing only one
+value, `[3 .. 3]', is converted to a plain number (3) automatically.
+An interval containing no values at all (such as `[3 .. 2]' or
+`[2 .. 2)') can be represented but is not guaranteed to behave well
+when used in arithmetic.  Note that the interval `[3 .. inf)'
+represents all real numbers greater than or equal to 3, and
+`(-inf .. inf)' represents all real numbers.  In fact, `[-inf .. inf]'
+represents all real numbers including the real infinities.
+
+Intervals are entered in the notation shown here, either as algebraic
+formulas, or using incomplete forms.  (*Note Incomplete Objects::.)
+In algebraic formulas, multiple periods in a row are collected from
+left to right, so that `1...1e2' is interpreted as `1.0 .. 1e2' rather
+than `1 .. 0.1e2'.  Add spaces or zeros if you want to get the other
+interpretation.  If you omit the lower or upper limit, a default of
+`-inf' or `inf' (respectively) is furnished.
+
+"Infinite mode" also affects operations on intervals
+(*Note Infinities::).  Calc will always introduce an open infinity,
+as in `1 / (0 .. 2] = [0.5 .. inf)'.  But closed infinities,
+`1 / [0 .. 2] = [0.5 .. inf]', arise only in infinite mode;
+otherwise they are left unevaluated.  Note that the "direction" of
+a zero is not an issue in this case since the zero is always assumed
+to be continuous with the rest of the interval.  For intervals that
+contain zero inside them Calc is forced to give the result,
+`1 / (-2 .. 2) = [-inf .. inf]'.
+
+While it may seem that intervals and error forms are similar, they are
+based on entirely different concepts of inexact quantities.  An error
+form `x +/- sigma' means a variable is random, and its value could be
+anything but is "probably" within one sigma of the mean value `x'.  An
+interval `[a .. b]' means a variable's value is unknown, but
+guaranteed to lie in the specified range.  Error forms are statistical
+or "average case" approximations; interval arithmetic tends to produce
+worst case" bounds on an answer.
+
+Intervals may not contain complex numbers, but they may contain HMS
+forms or date forms.
+
+*Note Set Operations::, for commands that interpret interval forms as
+subsets of the set of real numbers.
+
+The algebraic function `intv(n, a, b)' builds an interval form from
+`a' to `b'; `n' is an integer code which must be 0 for `(..)', 1 for
+`(..]', 2 for `[..)', or 3 for `[..]'.
+
+Please note that in fully rigorous interval arithmetic, care would be
+taken to make sure that the computation of the lower bound rounds
+toward minus infinity, while upper bound computations round toward
+plus infinity.  Calc's arithmetic always uses a round-to-nearest mode,
+which means that roundoff errors could creep into an interval
+calculation to produce intervals slightly smaller than they ought to
+be.  For example, entering `[1..2]' and pressing `Q 2 ^' should yield
+the interval `[1..2]' again, but in fact it yields the (slightly too
+small) interval `[1..1.9999999]' due to roundoff error.
+
+
+
+File: calc.info, Node: Incomplete Objects, Next: Variables, Prev: Interval Forms, Up: Data Types
+
+Incomplete Objects
+==================
+
+When `(' or `[' is typed to begin entering a complex number or vector,
+respectively, the effect is to push an "incomplete" complex number or
+vector onto the stack.  The `,' key adds the value(s) at the top of
+the stack onto the current incomplete object.  The `)' and `]' keys
+close" the incomplete object after adding any values on the top of the
+stack in front of the incomplete object.
+
+As a result, the sequence of keystrokes `[ 2 , 3 RET 2 * , 9 ]' pushes
+the vector `[2, 6, 9]' onto the stack.  Likewise, `( 1 , 2 Q )' pushes
+the complex number `(1, 1.414)' (approximately).
+
+If several values lie on the stack in front of the incomplete object,
+all are collected and appended to the object.  Thus the `,' key is
+redundant: `[ 2 RET 3 RET 2 * 9 ]'.  Some people prefer the equivalent
+SPC key to RET.
+
+As a special case, typing `,' immediately after `(', `[', or `,' adds
+a zero or duplicates the preceding value in the list being formed.
+Typing DEL during incomplete entry removes the last item from the
+list.
+
+The `;' key is used in the same way as `,' to create polar complex
+numbers: `( 1 ; 2 )'.  When entering a vector, `;' is useful for
+creating a matrix.  In particular, `[ [ 1 , 2 ; 3 , 4 ; 5 , 6 ] ]' is
+equivalent to `[ [ 1 , 2 ] , [ 3 , 4 ] , [ 5 , 6 ] ]'.
+
+Incomplete entry is also used to enter intervals.  For example, `[
+2 .. 4 )' enters a semi-open interval.  Note that when you type the
+first period, it will be interpreted as a decimal point, but when you
+type a second period immediately afterward, it is re-interpreted as
+part of the interval symbol.  Typing `..' corresponds to executing the
+`calc-dots' command.
+
+If you find incomplete entry distracting, you may wish to enter
+vectors and complex numbers as algebraic formulas by pressing the
+apostrophe key.
+
+
+
+File: calc.info, Node: Variables, Next: Formulas, Prev: Incomplete Objects, Up: Data Types
+
+Variables
+=========
+
+A "variable" is somewhere between a storage register on a conventional
+calculator, and a variable in a programming language.  (In fact, a
+Calc variable is really just an Emacs Lisp variable that contains a
+Calc number or formula.)  A variable's name is normally composed of
+letters and digits.  Calc also allows apostrophes and `#' signs in
+variable names.  The Calc variable `foo' corresponds to the Emacs Lisp
+variable `var-foo'.  Commands like `s s' (`calc-store') that operate
+on variables can be made to use any arbitrary Lisp variable simply by
+backspacing over the `var-' prefix in the minibuffer.
+
+In a command that takes a variable name, you can either type the full
+name of a variable, or type a single digit to use one of the special
+convenience variables `var-q0' through `var-q9'.  For example, `3 s s
+2' stores the number 3 in variable `var-q2', and `3 s s foo RET'
+stores that number in variable `var-foo'.
+
+To push a variable itself (as opposed to the variable's value) on the
+stack, enter its name as an algebraic expression using the apostrophe
+(') key.  Variable names in algebraic formulas implicitly have `var-'
+prefixed to their names.  The `#' character in variable names used in
+algebraic formulas corresponds to a dash `-' in the Lisp variable
+name.  If the name contains any dashes, the prefix `var-' is *not*
+automatically added.  Thus the two formulas `foo + 1' and `var#foo +
+1' both refer to the same variable.
+
+The `=' (`calc-evaluate') key "evaluates" a formula by replacing all
+variables in the formula which have been given values by a
+`calc-store' or `calc-let' command by their stored values.  Other
+variables are left alone.  Thus a variable that has not been stored
+acts like an abstract variable in algebra; a variable that has been
+stored acts more like a register in a traditional calculator.  With a
+positive numeric prefix argument, `=' evaluates the top N stack
+entries; with a negative argument, `=' evaluates the Nth stack entry.
+
+A few variables are called "special constants".  Their names are `e',
+`pi', `i', `phi', and `gamma'.  (*Note Scientific Functions::.)  When
+they are evaluated with `=', their values are calculated if necessary
+according to the current precision or complex polar mode.  If you wish
+to use these symbols for other purposes, simply undefine or redefine
+them using `calc-store'.
+
+The variables `inf', `uinf', and `nan' stand for infinite or
+indeterminate values.  It's best not to use them as regular variables,
+since Calc uses special algebraic rules when it manipulates them.
+Calc displays a warning message if you store a value into any of these
+special variables.
+
+*Note Store and Recall::, for a discussion of commands dealing with variables.
+
+
+

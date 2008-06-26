@@ -1,0 +1,53 @@
+(set-default 'auto-mode-alist
+	     (append '(("\\.lisp$" . lisp-mode)
+		       ("\\.lsp$" . lisp-mode)
+		       ("\\.cl$" . lisp-mode))
+		     auto-mode-alist))
+
+(set-default 'auto-mode-alist
+	     (append '(("\\.d$" . c-mode)
+		       ("\\.pde$" . c-mode))
+		     auto-mode-alist))
+
+(set-default 'auto-mode-alist
+	     (append '(("\\.rhtml$" . arorem-rhtml))
+		     auto-mode-alist))
+
+(set-default 'auto-mode-alist
+	     (append '(("\\.css$" . css-mode))
+		     auto-mode-alist))
+
+(set-default 'auto-mode-alist
+	     (append '(("\\.st$" . smalltalk-mode))
+		     auto-mode-alist))
+
+(set-default 'auto-mode-alist
+	     (append '(("\\.html$" . nxml-mode))
+		     auto-mode-alist))
+
+(set-default 'auto-mode-alist
+	     (append '(("\\.ml$" . tuareg-mode))
+		     auto-mode-alist))
+
+(set-default 'auto-mode-alist
+	     (cons '("\\.rb$" . ruby-mode)
+		   auto-mode-alist))
+
+(set-default 'auto-mode-alist
+	     (cons '("\\.hs$" . haskell-mode)
+		   auto-mode-alist))
+
+(setq auto-mode-alist
+      (cons '("\\.php$" . php-mode)
+	    auto-mode-alist))
+
+(set-default 'auto-mode-alist
+	     (cons '("\\.\\(xml\\|xsl\\|rng\\|xhtml\\)\\'" . nxml-mode)
+		   auto-mode-alist))
+
+(set-default 'auto-mode-alist
+	     (cons '("\\.java$" . jde-mode)
+		   auto-mode-alist))
+(setq auto-mode-alist
+      (cons '( "\\.d\\'" . jde-mode )
+	    auto-mode-alist ))

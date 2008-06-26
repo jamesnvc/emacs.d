@@ -1,0 +1,23 @@
+dvc (0.1-1) unstable; urgency=low
+
+  * Baz snapshot
+
+ -- Daniel Dehennin <nebuchadnezzar@asgardr.info>  Sun, 05 Feb 2006 13:18:11 +0100
+
+xtla (1.2-2) unstable; urgency=low
+
+  * Try to fix the XEmacs installation problem
+
+ -- Matthieu Moy <Matthieu.Moy@imag.fr>  Sun, 12 Feb 2006 18:09:11 +0100
+
+xtla (1.2-1) unstable; urgency=low
+
+  * New upstream version.
+
+ -- Matthieu Moy <Matthieu.Moy@imag.fr>  Mon, 06 Feb 2006 14:30:52 +0100
+
+xtla (1.1-1) unstable; urgency=low
+
+  * Baz snapshot
+
+ -- Daniel Dehennin <nebuchadnezzar@asgardr.info>  Sun, 05 Feb 2006 13:18:11 +0100

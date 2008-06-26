@@ -1,0 +1,20 @@
+# -*- coding: utf-8 -*-
+αβγ δε,zeta ζ,theta θ κλμ ,xi ξ,π ,rho ρ,sigma σ,tao τ,phi ϕ,chi χ,psi ψ,omega ω
+≤≥≠≈≔⊂⊃⊆⊇∈
+ⅇⅈⅉ∞∆°
+ℵℜ
+domains: ℤℚℝℂ ℙ
+∞
+∫∑∏ ⊕⊖⊗⊘⊙⊚⊛∘◦∙× ±
+“”‘’©—
+→←↑↓ ↔↗ ⇐⇑⇒⇓ ⇔⇗ ◀▲▶
+()「」『』〈〉《》{}〔〕【】〝〞！。，：chinese punctuations
+■□•‣
+♥★☆＊♪
+☄
+../Periodic_dosage_dir/t1/20040505_unicode.html
+
+C-x RET C-\ rfc1345 RET
+
+  李杀网
+ ∑ http://xahlee.org/

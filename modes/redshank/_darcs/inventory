@@ -1,0 +1,241 @@
+[Version 0
+Michael Weber <michaelw@foldr.org>**20070923135959] 
+[skeletons-balanced-parens
+Michael Weber <michaelw@foldr.org>**20070923213149
+ * Parentheses are kept balanced when inserting Skeletons
+ 
+ * Customizable accessor style
+] 
+[typos
+Michael Weber <michaelw@foldr.org>**20070924072654] 
+[redshank-accessor-name: no strings allowed
+Michael Weber <michaelw@foldr.org>**20070924093815] 
+[redshank-maybe-splice-progn keybinding
+Michael Weber <michaelw@foldr.org>**20070924094140] 
+[typos
+Michael Weber <michaelw@foldr.org>**20070924121249] 
+[setup instructions
+Michael Weber <michaelw@foldr.org>**20070924175305] 
+[documentation additions
+Michael Weber <michaelw@foldr.org>**20070925112014] 
+[redshank-defclass-skeleton-filename
+Michael Weber <michaelw@foldr.org>**20070925112104
+ More robust when no file name is attached to a buffer
+] 
+[redshank-defpackage-skeleton-newline
+Michael Weber <michaelw@foldr.org>**20070925112812
+ Re-add newline between DEFPACKAGE and IN-PACKAGE forms
+] 
+[redshank--looking-at-or-inside-point
+Michael Weber <michaelw@foldr.org>**20070925120738
+ Don't move point if NIL is returned
+] 
+[outline-minor-mode-compat
+Michael Weber <michaelw@foldr.org>**20071004205918] 
+[redshank-eval-whenify-form
+Michael Weber <michaelw@foldr.org>**20071004210336
+ Slightly modified version of `asf-eval-whenify' from
+ <http://boinkor.net/archives/2006/11/three_useful_emacs_hacks_for_l.html>
+] 
+[remove redshank-define-keys
+Michael Weber <michaelw@foldr.org>**20071007201325
+ Inline `redshank-define-keys' into (defvar redshank-mode-map ...), as there 
+ was no advantage in having a separate function.
+ 
+ C-M-x on the defvar form redefines it (useful after modifying keybindings). 
+] 
+[redshank--looking-at-or-inside minor beautification
+Michael Weber <michaelw@foldr.org>**20071009191253] 
+[added turn-on-redshank-mode
+Michael Weber <michaelw@foldr.org>**20071012124257] 
+[turn-on-redshank-mode documentation fix
+Michael Weber <michaelw@foldr.org>**20071012141517
+ quote opening parenthesis in docstring, 
+ adjust setup documentation
+] 
+[comment wibble
+Michael Weber <michaelw@foldr.org>**20071104212614] 
+[skeleton refactoring
+Michael Weber <michaelw@foldr.org>**20071104213232
+ 
+ * redshank-reformat-defclass-forms: new, renamed from
+   redshank-reformat-defclass-skeletons
+ 
+ * redshank-mode-line-skeleton, redshank-in-package-skeleton: new
+ 
+ * redshank-defpackage-skeleton: does not insert mode line or
+   in-package form any more
+] 
+[redshank-complete-form
+Michael Weber <michaelw@foldr.org>**20071104214942
+ Bound to C-x C-r f, also attempts to redefine keys bound to
+ slime-complete-form.  (This appears not to work within slime mode,
+ because minor mode keymaps are reshuffled.)
+] 
+[require 'cl when compiling
+Michael Weber <michaelw@foldr.org>**20071106150233] 
+[redshank-extract-to-defun: new function
+Michael Weber <michaelw@foldr.org>**20071106153747
+ Bound to C-x C-r x by default
+   
+ * redshank.lisp: new file
+ Additional setup is needed for the lisp-side support.
+ Instructions are at the top of redshank.el.
+] 
+[typo
+Michael Weber <michaelw@foldr.org>**20071106161938] 
+[redshank-extract-to-defun
+Michael Weber <michaelw@foldr.org>**20071106162830
+ Use lisp-mode in temporary buffer to ensure proper indentation.  Check
+ for buffer being writable.
+] 
+[redshank.lisp (find-free-variables): alternative implementation, picks
+Michael Weber <michaelw@foldr.org>**20071107090500
+ up free variables without second tree-walk
+ 
+ * redshank.lisp (%extract-variable): new function, support for
+ find-free-variables
+ 
+ * redshank.el (redshank-extract-to-defun): wrap extracted region in
+ LOCALLY, to allow declarations at its start
+] 
+[redshank.el (redshank-prefix-key): docstring typo
+Michael Weber <michaelw@foldr.org>**20071107162635] 
+[redshank.el (redshank-extract-to-defun): simplified printing the
+Michael Weber <michaelw@foldr.org>**20071107221639
+ function call
+] 
+[redshank.el: use eval-and-compile
+Michael Weber <michaelw@foldr.org>**20071108101435] 
+[redshank.el: automatically hook into SLIME
+Michael Weber <michaelw@foldr.org>**20071108101550
+ setup instructions changed accordingly.
+ 
+ * redshank.el (redshank-path): new variable
+ 
+ * redshank.el (redshank-on-connect,redshank-slime-install,
+   redshank-slime-uninstall): new functions
+ 
+ *** This change requires CVS SLIME (post-refactoring) ***
+ 
+ If upgrading SLIME is not an option, this might help:
+   (eval-after-load "redshank"
+     '(redshank-slime-uninstall))
+ 
+ and load redshank.lisp manually into your running lisp (e.g., via
+ ~/.swank.lisp).
+ 
+] 
+[redshank.el: add menu support,
+Michael Weber <michaelw@foldr.org>**20071109095244
+ (redshank-menu): new constant,
+ (redshank-mode-map): hook menu into mode map,
+ (redshank-mode): activate menu,
+ (redshank-connected-p): new function
+ 
+] 
+[redshank.el: more docstrings
+Michael Weber <michaelw@foldr.org>**20071109095820] 
+[redshank.el: add customizable option to load lisp-side support,
+Michael Weber <michaelw@foldr.org>**20071109102053
+ enabled by default.
+ (redshank-install-lisp-support): new variable
+] 
+[redshank.el: indentation fixes
+Michael Weber <michaelw@foldr.org>**20071115220738] 
+[redshank.el (redshank-copy-thing-at-point): new function, 
+Michael Weber <michaelw@foldr.org>**20071116091708
+ implements MCL-style 'Mouse Copy'.
+ 
+ By default, bound to M-down-mouse-1, M-{drag,}mouse-1 "keys" are
+ overridden not to interfere. (They are usually bound to secondary
+ selection manipulation.)
+ 
+ (redshank--region-active-p): new function.  No idea whether this works
+ with XEmacs at all.  (Patches welcome!)
+] 
+[redshank.el (redshank-copy-thing-at-point): insert spaces if appropriate
+Michael Weber <michaelw@foldr.org>**20071116191003
+ Thanks to Rainer Joswig for explanations how MCL does it.
+ 
+ (redshank-ignore-event): new function
+ Bound to M-mouse-1 and M-drag-mouse-1, which should override their
+ bindings in major modes.
+ 
+ README: new file
+] 
+[redshank.el: corrected setup instructions
+Michael Weber <michaelw@foldr.org>**20071116212317] 
+[redshank.el (redshank-mode): print redshank-mode-map in docstring
+Michael Weber <michaelw@foldr.org>**20071116212545] 
+[Add support for canonical slot names
+Maciej Katafiasz <mathrick@gmail.com>**20071117150958] 
+[redshank.el: cleanup
+Michael Weber <michaelw@foldr.org>**20071117213907] 
+[Don't add % if the slot name already has it
+Maciej Katafiasz <mathrick@gmail.com>**20071117215748] 
+[version 1
+Michael Weber <michaelw@foldr.org>**20071122083948] 
+[redshank.el (redshank-mode-map): use KBD to name keys
+Michael Weber <michaelw@foldr.org>**20071125154713] 
+[redshank.lisp: downcase #:CL for readtable-case :invert happiness
+Michael Weber <michaelw@foldr.org>**20071229212947
+ (thanks to Maciej Katafiasz <mathrick@gmail.com> for point this out.)
+ 
+ * redshank.el (redshank-defpackage-skeleton): insert lower-case #:cl
+] 
+[redshank.el (redshank-defsystem-skeleton): new function,
+Michael Weber <michaelw@foldr.org>**20071230213641
+ added to Redshank menu only, for now.  
+ 
+ Original idea and patches by Aankhen <aankhen@gmail.com>.  This patch
+ is a stripped-down version, with more automation and less questions
+ More complicated features like :depends-on, :in-order-to, etc., are
+ left for another time (depending on user feedback).
+ 
+ (redshank-licence-names, redshank-asdf-component-mapping,
+ redshank-asdf-exclusion-regexp): new variables
+ 
+ (redshank-walk-filesystem, redshank-asdf-classify-component,
+ redshank-asdf-insert-module-components,
+ redshank-asdf-read-system-name): new functions
+] 
+[redshank.el (redshank-asdf-defsystem-skeleton): renamed from
+Michael Weber <michaelw@foldr.org>**20080104212251
+ redshank-defsystem-skeleton, to be consistent
+ 
+ (redshank-asdf-defsystem-skeleton): switch to asdf-mode if in
+ fundamental-mode or text-mode (otherwise indentation is wrong, and
+ most people probably don't have auto-mode-alist set up for .asd
+ files)
+ 
+ (redshank-asdf-defsystem-skeleton): more robust string insertion, via
+ paredit
+ 
+ (asdf-mode): new mode (derived from lisp-mode)
+ 
+ (redshank--with-doublequotes): new function
+ 
+] 
+[TODO: new file
+Michael Weber <michaelw@foldr.org>**20080104215213] 
+[redshank.el (redshank-asdf-classify-component): bug fix: asdf has no
+Michael Weber <michaelw@foldr.org>**20080120213238
+ :type argument for :static-file (why not?)
+ 
+ (redshank-asdf-make-spec/file-type): new function
+ (redshank-asdf-make-spec/filename): new function
+] 
+[redshank.el (redshank-asdf-make-spec/filename): use :pathname argument
+Michael Weber <michaelw@foldr.org>**20080127141040
+ when :static-file filename has an extension, otherwise
+ asdf-packaging-tools (and possibly others, too) barfs.
+ 
+ (redshank-asdf-defsystem-skeleton): handle C-g at the "Directory:" prompt:
+ insert empty :components lists instead of killing the whole defsystem
+ form.
+] 
+[redshank.el (redshank-defpackage-skeleton): downcase package name
+Michael Weber <michaelw@foldr.org>**20080127141142] 
+[TODO: added idea for import feature
+Michael Weber <michaelw@foldr.org>**20080310160841] 

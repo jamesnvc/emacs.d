@@ -1,0 +1,761 @@
+;; -*- mode: emacs-lisp; coding: emacs-mule; -*-
+;; --------------------------------------------------------------------------
+;; Desktop File for Emacs
+;; --------------------------------------------------------------------------
+;; Created Mon Jun 23 13:02:05 2008
+;; Desktop file format version 206
+;; Emacs version 23.0.60.3
+
+;; Global section:
+(setq extended-command-history '("desktop-save" "set-input-method" "factor-mode" "load-library" "unload-feature" "factor-mode" "load-library" "factor-mode" "load-library" "rename-file-and-buffer" "load-library" "unload-feature" "gnugo" "load-file" "load-library" "gnus-summary-expire-articles-now" "find-file" "customize-group" "find-file" "run-ruby" "factor-mode" "load-library" "factor-mode" "load-library" "unload-feature" "factor-mode" "load-library" "unload-feature" "factor-mode" "load-library"))
+(setq file-name-history '("" "/usr/share/emacs/site-lisp/gnugo.el" "/scp:james@wolever.net:/home/james/public_html/main.html" "/usr/bin/irb1.9" "~/misc/stevey/index.html" "/usr/" "/home/james/emacs.d/mymisc/myfactor-mode.el" "/usr/bin/squeak" "/home/james/src/factor/unmaintained/lisp/lisp.factor" "/home/james/.mozilla/firefox/v32tfana.default/itsalltext/paste.factorcode.org.3a2w282b1d.txt" "/home/james/.mozilla/firefox/v32tfana.default/itsalltext/www.blogger.com.2t2s1v253a.txt" "/home/james/src/factor/extra/webapps/planet/planet.factor" "~/src/factor/extra/x/widgets/wm/child/child.factor" "/home/james/.mozilla/firefox/v32tfana.default/itsalltext/paste.factorcode.org.2g342p1b1g.txt" "/home/james/src/factor/.git/COMMIT_EDITMSG" "/home/james/.mozilla/firefox/v32tfana.default/itsalltext/www.blogger.com.2t2s1v253a.txt" "/home/james/.mozilla/firefox/v32tfana.default/itsalltext/www.blogger.com.2g2g1z261e.txt" "/home/james/.mozilla/firefox/v32tfana.default/itsalltext/paste.factorcode.org.1v1w1z2u21.txt" "~/src/factor/extra/math/erato/erato.factor" "~/src/factor/extra/math/primes/primes-tests.factor" "~/src/factor/extra/math/primes/factors/factors.factor" "~/src/factor/extra/math/primes/primes.factor" "~/src/factor/extra/lists/lazy/lazy-tests.factor" "~/src/factor/extra/tetris/piece/piece.factor" "~/src/factor/extra/parser-combinators/simple/simple.factor" "~/src/factor/extra/parser-combinators/simple/simple-docs.factor" "~/src/factor/extra/parser-combinators/parser-combinators-tests.factor" "~/src/factor/extra/parser-combinators/parser-combinators-docs.factor" "~/src/factor/extra/parser-combinators/parser-combinators.factor" "~/src/factor/extra/project-euler/007/007.factor"))
+(setq grep-history nil)
+(setq compile-history nil)
+(setq minibuffer-history '("find-file-confirm-nonexistent-file" "factor-mode" "mymisc.el" "factor-mode" "gnugo" "gnus-summary-expire-articles" "gnus-group-expire-articles" "expired" "Gnus" "Usage" "tramp" "factor-mode" "COPING" "keymap" "should" "define" "Abbrev" "Idnent" "newly" "02110" "along" "USING" "gmail" "list" "name" "make" "free" "hope" "kbd" "tag"))
+(setq query-replace-history '("strong" "emph" "\\\\" "\\\\\\\\" "factor-word-re\\1" "factor-word\\([^-]\\)" "identity" "ident" "foldl" "lreduce" "lmap" "lreduce" ":D" "a" "+nil+" "T{ cons f f f }" " lmap>array " " lmap " " +nil+ " " nil " "nil" "T{ cons f f f }" "" "class " "null?" "nil\\?" "class" "color" "span" "font"))
+(setq read-expression-history '("(require 'factor-mode)" "(wicked/bbdb-import-csv-buffer)" "(setq shell-file-name \"/bin/bash\")" "(g-xsl-transform-region (point-min) (point-max) g-atom-view-xsl)" "(require 'lambdacalc)" "(require 'zenburn)" "(require 'factor)" "(require 'vm)"))
+(setq regexp-history '("face " ":type" "defcustom" "defcustome" "git push" "wget" "\\(n\\|N\\)etwork" "n\\|Network" "1" "1\\|0" "1" "wget" "old-style"))
+(setq regexp-search-ring '("find" "\\(^\\|[^\\] \\)!" "DELq" "DEL" "delet" "fg" "tramp" "case-fos" "emph" "dr" "js2-bounce-indent" "indent" "\\(^\\|[^\\] \\);" "\\(^\\|[^ \\] \\);" "[\\]" "comment" "factor" "factor-number" "face " "face$"))
+(setq search-ring '("metasendsescape" ";; M"))
+(setq shell-command-history '("rm fuzzy-match.el" "stumpwm --restart" "stumpwm"))
+(setq tags-file-name nil)
+(setq register-alist (list (desktop-list* 97 (let ((mk (make-marker))) (add-hook 'desktop-delay-hook (list 'lambda '() (list 'set-marker mk 3102 (get-buffer "keys.el")))) mk)) (list 82 "Unprintable entity" (let ((mk (make-marker))) (add-hook 'desktop-delay-hook (list 'lambda '() (list 'set-marker mk nil (get-buffer " *temp*")))) mk))))
+
+;; Buffer section -- buffers listed in same order as in buffer list:
+(desktop-create-buffer 206
+  "/home/james/emacs.d/mymisc/factor-mode.el"
+  "factor-mode.el"
+  'emacs-lisp-mode
+  '(abbrev-mode paredit-mode icicle-mode yas/minor-mode)
+  3676
+  '(3676 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . utf-8-unix)))
+
+(desktop-create-buffer 206
+  nil
+  "emacs"
+  'dired-mode
+  '(abbrev-mode icicle-mode yas/minor-mode)
+  2557
+  '(nil nil)
+  t
+  '("/home/james/src/emacs/")
+  nil)
+
+(desktop-create-buffer 206
+  "/home/james/emacs.d/custom/keys.el"
+  "keys.el"
+  'emacs-lisp-mode
+  '(abbrev-mode paredit-mode icicle-mode yas/minor-mode)
+  3448
+  '(1 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . utf-8-unix)))
+
+(desktop-create-buffer 206
+  "/home/james/Programming/ruby/googleDef2.rb"
+  "googleDef2.rb"
+  'ruby-mode
+  '(abbrev-mode ruby-electric-mode icicle-mode yas/minor-mode)
+  493
+  '(nil nil)
+  nil
+  nil
+  '((indent-tabs-mode) (buffer-file-coding-system . utf-8-unix)))
+
+(desktop-create-buffer 206
+  "/home/james/src/factor/extra/lisp/lisp.factor"
+  "lisp.factor"
+  'factor-mode
+  '(abbrev-mode icicle-mode)
+  735
+  '(558 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . utf-8-unix)))
+
+(desktop-create-buffer 206
+  nil
+  "ruby"
+  'dired-mode
+  '(abbrev-mode icicle-mode yas/minor-mode)
+  788
+  '(nil nil)
+  t
+  '("/home/james/Programming/ruby/")
+  nil)
+
+(desktop-create-buffer 206
+  "/home/james/src/factor/misc/factor.el"
+  "factor.el"
+  'emacs-lisp-mode
+  '(abbrev-mode paredit-mode icicle-mode yas/minor-mode)
+  2818
+  '(2795 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . utf-8-unix)))
+
+(desktop-create-buffer 206
+  nil
+  "modes"
+  'dired-mode
+  '(abbrev-mode icicle-mode yas/minor-mode)
+  758
+  '(5163 nil)
+  t
+  '("/home/james/emacs.d/modes/")
+  nil)
+
+(desktop-create-buffer 206
+  "/home/james/emacs.d/mymisc/d-mode.el"
+  "d-mode.el"
+  'emacs-lisp-mode
+  '(abbrev-mode paredit-mode icicle-mode yas/minor-mode)
+  1
+  '(nil nil)
+  nil
+  nil
+  '((buffer-file-coding-system . utf-8-unix)))
+
+(desktop-create-buffer 206
+  "/home/james/emacs.d/custom/customizations.el"
+  "customizations.el"
+  'emacs-lisp-mode
+  '(abbrev-mode paredit-mode icicle-mode yas/minor-mode)
+  578
+  '(2703 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . utf-8-unix)))
+
+(desktop-create-buffer 206
+  nil
+  "lists"
+  'dired-mode
+  '(abbrev-mode icicle-mode yas/minor-mode)
+  377
+  '(1 nil)
+  t
+  '("/home/james/src/factor/extra/lists/")
+  nil)
+
+(desktop-create-buffer 206
+  "/home/james/.bbdb"
+  ".bbdb"
+  'fundamental-mode
+  '(abbrev-mode icicle-mode yas/minor-mode)
+  1
+  '(21108 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . utf-8-unix)))
+
+(desktop-create-buffer 206
+  "/home/james/misc/useful-notes.txt"
+  "useful-notes.txt"
+  'text-mode
+  '(auto-fill-mode abbrev-mode icicle-mode yas/minor-mode)
+  142
+  '(31 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . utf-8-unix)))
+
+(desktop-create-buffer 206
+  "/home/james/.Xmodmap"
+  ".Xmodmap"
+  'fundamental-mode
+  '(abbrev-mode icicle-mode yas/minor-mode)
+  435
+  '(nil nil)
+  nil
+  nil
+  '((buffer-file-coding-system . utf-8-unix)))
+
+(desktop-create-buffer 206
+  "/home/james/emacs.d/modes/ropemacs/README.txt"
+  "README.txt"
+  'text-mode
+  '(auto-fill-mode abbrev-mode icicle-mode yas/minor-mode)
+  1
+  '(13265 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . utf-8-unix)))
+
+(desktop-create-buffer 206
+  "/home/james/emacs.d/modes/auto-modes.el"
+  "auto-modes.el"
+  'emacs-lisp-mode
+  '(abbrev-mode paredit-mode icicle-mode yas/minor-mode)
+  31
+  '(895 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . utf-8-unix)))
+
+(desktop-create-buffer 206
+  nil
+  "ropemacs"
+  'dired-mode
+  '(abbrev-mode icicle-mode yas/minor-mode)
+  662
+  '(nil nil)
+  t
+  '("/home/james/emacs.d/modes/ropemacs/")
+  nil)
+
+(desktop-create-buffer 206
+  nil
+  "other"
+  'dired-mode
+  '(abbrev-mode icicle-mode yas/minor-mode)
+  4171
+  '(4156 nil)
+  t
+  '("/home/james/emacs.d/other/")
+  nil)
+
+(desktop-create-buffer 206
+  nil
+  "emacs.d"
+  'dired-mode
+  '(abbrev-mode icicle-mode yas/minor-mode)
+  1187
+  '(1 nil)
+  t
+  '("/home/james/emacs.d/")
+  nil)
+
+(desktop-create-buffer 206
+  nil
+  " *info-browse-tmp*"
+  'Info-mode
+  '(abbrev-mode icicle-mode yas/minor-mode)
+  12367
+  '(nil nil)
+  t
+  '("dir" "Top")
+  '((tab-width . 8) (case-fold-search . t)))
+
+(desktop-create-buffer 206
+  nil
+  " temp-info-look"
+  'Info-mode
+  '(abbrev-mode icicle-mode yas/minor-mode)
+  401917
+  '(nil nil)
+  t
+  '("/usr/share/info/gnuplot" "terminal")
+  '((tab-width . 8) (buffer-file-coding-system . utf-8-unix) (case-fold-search . t)))
+
+(desktop-create-buffer 206
+  nil
+  "Programming"
+  'dired-mode
+  '(abbrev-mode icicle-mode yas/minor-mode)
+  1228
+  '(nil nil)
+  t
+  '("/home/james/Programming/")
+  nil)
+
+(desktop-create-buffer 206
+  nil
+  "extra"
+  'dired-mode
+  '(abbrev-mode icicle-mode yas/minor-mode)
+  1
+  '(8821 nil)
+  t
+  '("/home/james/src/factor/extra/")
+  nil)
+
+(desktop-create-buffer 206
+  nil
+  "factor"
+  'dired-mode
+  '(abbrev-mode icicle-mode yas/minor-mode)
+  582
+  '(27 nil)
+  t
+  '("/home/james/src/factor/")
+  nil)
+
+(desktop-create-buffer 206
+  nil
+  "yasnippet-0.5.3"
+  'dired-mode
+  '(abbrev-mode icicle-mode yas/minor-mode)
+  249
+  '(nil nil)
+  t
+  '("/home/james/emacs.d/other/yasnippet-0.5.3/")
+  nil)
+
+(desktop-create-buffer 206
+  nil
+  "jde"
+  'dired-mode
+  '(abbrev-mode icicle-mode yas/minor-mode)
+  346
+  '(nil nil)
+  t
+  '("/home/james/emacs.d/modes/jde/")
+  nil)
+
+(desktop-create-buffer 206
+  nil
+  "text-mode"
+  'dired-mode
+  '(abbrev-mode icicle-mode yas/minor-mode)
+  801
+  '(nil nil)
+  t
+  '("/home/james/emacs.d/other/yasnippet-0.5.3/snippets/text-mode/")
+  nil)
+
+(desktop-create-buffer 206
+  nil
+  "snippets"
+  'dired-mode
+  '(abbrev-mode icicle-mode yas/minor-mode)
+  258
+  '(nil nil)
+  t
+  '("/home/james/emacs.d/other/yasnippet-0.5.3/snippets/")
+  nil)
+
+(desktop-create-buffer 206
+  "/home/james/.zshrc"
+  ".zshrc"
+  'sh-mode
+  '(abbrev-mode icicle-mode yas/minor-mode)
+  4051
+  '(4080 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . utf-8-unix)))
+
+(desktop-create-buffer 206
+  "/home/james/dvorak.xmodmap"
+  "dvorak.xmodmap"
+  'fundamental-mode
+  '(abbrev-mode icicle-mode yas/minor-mode)
+  4097
+  '(1 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . utf-8-unix)))
+
+(desktop-create-buffer 206
+  "/home/james/Programming/other/jonesforth.S"
+  "jonesforth.S"
+  'asm-mode
+  '(abbrev-mode icicle-mode yas/minor-mode)
+  284
+  '(82138 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . utf-8-unix)))
+
+(desktop-create-buffer 206
+  "/home/james/.Xresources"
+  ".Xresources"
+  'conf-xdefaults-mode
+  '(abbrev-mode icicle-mode yas/minor-mode)
+  117
+  '(113 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . utf-8-unix)))
+
+(desktop-create-buffer 206
+  nil
+  "bin"
+  'dired-mode
+  '(abbrev-mode icicle-mode yas/minor-mode)
+  1476
+  '(nil nil)
+  t
+  '("/home/james/bin/")
+  nil)
+
+(desktop-create-buffer 206
+  nil
+  "contrib"
+  'dired-mode
+  '(abbrev-mode icicle-mode yas/minor-mode)
+  677
+  '(nil nil)
+  t
+  '("/home/james/src/stumpwm/contrib/")
+  nil)
+
+(desktop-create-buffer 206
+  nil
+  "misc"
+  'dired-mode
+  '(abbrev-mode icicle-mode yas/minor-mode)
+  6009
+  '(nil nil)
+  t
+  '("/home/james/misc/")
+  nil)
+
+(desktop-create-buffer 206
+  "/home/james/emacs.d/other/bbdb-import-csv.el"
+  "bbdb-import-csv.el"
+  'emacs-lisp-mode
+  '(abbrev-mode paredit-mode icicle-mode yas/minor-mode)
+  1480
+  '(1367 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . utf-8-unix)))
+
+(desktop-create-buffer 206
+  "/home/james/todo.org"
+  "todo.org"
+  'org-mode
+  '(auto-fill-mode abbrev-mode icicle-mode yas/minor-mode)
+  361
+  '(361 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . utf-8-unix) (fill-column . 78) (truncate-lines . t)))
+
+(desktop-create-buffer 206
+  "/home/james/diary"
+  "diary"
+  'diary-mode
+  '(abbrev-mode icicle-mode yas/minor-mode)
+  936
+  '(nil nil)
+  nil
+  nil
+  '((buffer-file-coding-system . utf-8-unix)))
+
+(desktop-create-buffer 206
+  "/home/james/src/factor/extra/usa-cities/usa-cities.factor"
+  "usa-cities.factor"
+  'factor-mode
+  '(abbrev-mode icicle-mode)
+  856
+  '(700 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . utf-8-unix)))
+
+(desktop-create-buffer 206
+  "/home/james/misc/unicode.txt"
+  "unicode.txt"
+  'text-mode
+  '(auto-fill-mode abbrev-mode icicle-mode yas/minor-mode)
+  240
+  '(239 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . utf-8-unix)))
+
+(desktop-create-buffer 206
+  "/home/james/src/factor/extra/lisp/parser/parser-tests.factor"
+  "parser-tests.factor"
+  'factor-mode
+  '(abbrev-mode icicle-mode)
+  1354
+  '(1349 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . utf-8-unix)))
+
+(desktop-create-buffer 206
+  "/home/james/.screenrc"
+  ".screenrc"
+  'sh-mode
+  '(abbrev-mode icicle-mode yas/minor-mode)
+  640
+  '(435 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . utf-8-unix)))
+
+(desktop-create-buffer 206
+  "/home/james/src/factor/extra/lists/lazy/lazy-tests.factor"
+  "lazy-tests.factor"
+  'factor-mode
+  '(abbrev-mode icicle-mode)
+  388
+  '(nil nil)
+  nil
+  nil
+  '((buffer-file-coding-system . utf-8-unix)))
+
+(desktop-create-buffer 206
+  "/home/james/src/factor/extra/lists/lazy/lazy-docs.factor"
+  "lazy-docs.factor"
+  'factor-mode
+  '(abbrev-mode icicle-mode)
+  9360
+  '(9449 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . utf-8-unix)))
+
+(desktop-create-buffer 206
+  "/home/james/src/factor/extra/lists/lists-docs.factor"
+  "lists-docs.factor"
+  'factor-mode
+  '(abbrev-mode icicle-mode)
+  4272
+  '(2398 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . utf-8-unix)))
+
+(desktop-create-buffer 206
+  "/home/james/src/factor/work/mystuff/mystuff.factor"
+  "mystuff.factor"
+  'factor-mode
+  '(abbrev-mode icicle-mode)
+  1
+  '(nil nil)
+  nil
+  nil
+  '((buffer-file-coding-system . utf-8-unix)))
+
+(desktop-create-buffer 206
+  "/home/james/src/factor/extra/lists/lazy/lazy.factor"
+  "lazy.factor"
+  'factor-mode
+  '(abbrev-mode icicle-mode)
+  36
+  '(3640 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . utf-8-unix)))
+
+(desktop-create-buffer 206
+  "/home/james/src/factor/extra/unicode/collation/allkeys.txt"
+  "allkeys.txt"
+  'text-mode
+  '(auto-fill-mode abbrev-mode icicle-mode yas/minor-mode)
+  1
+  '(nil nil)
+  nil
+  nil
+  '((buffer-file-coding-system . utf-8-unix)))
+
+(desktop-create-buffer 206
+  "/home/james/src/factor/build-support/factor.sh"
+  "factor.sh"
+  'sh-mode
+  '(abbrev-mode icicle-mode yas/minor-mode)
+  10924
+  '(6363 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . utf-8-unix)))
+
+(desktop-create-buffer 206
+  nil
+  "geo-ip"
+  'dired-mode
+  '(abbrev-mode icicle-mode yas/minor-mode)
+  246
+  '(nil nil)
+  t
+  '("/home/james/src/factor/extra/geo-ip/")
+  nil)
+
+(desktop-create-buffer 206
+  "/home/james/bin/gesture-listener.pl"
+  "gesture-listener.pl"
+  'cperl-mode
+  '(abbrev-mode icicle-mode yas/minor-mode eldoc-mode)
+  114
+  '(126 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . utf-8-unix)))
+
+(desktop-create-buffer 206
+  "/home/james/misc/polish.txt"
+  "polish.txt"
+  'text-mode
+  '(auto-fill-mode abbrev-mode icicle-mode yas/minor-mode)
+  1401
+  '(1458 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . utf-8-unix) (case-fold-search . t)))
+
+(desktop-create-buffer 206
+  "/home/james/src/factor/extra/lisp/lisp-tests.factor"
+  "lisp-tests.factor"
+  'factor-mode
+  '(abbrev-mode icicle-mode)
+  1960
+  '(1630 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . utf-8-unix)))
+
+(desktop-create-buffer 206
+  "/home/james/src/factor/extra/lisp/parser/parser.factor"
+  "parser.factor"
+  'factor-mode
+  '(abbrev-mode icicle-mode)
+  285
+  '(286 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . utf-8-unix)))
+
+(desktop-create-buffer 206
+  "/home/james/emacs.d/modes/javascript-mode.el"
+  "javascript-mode.el"
+  'emacs-lisp-mode
+  '(abbrev-mode paredit-mode icicle-mode yas/minor-mode)
+  9130
+  '(4310 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . utf-8-unix)))
+
+(desktop-create-buffer 206
+  "/home/james/emacs.d/modes/mode-configs.el"
+  "mode-configs.el"
+  'emacs-lisp-mode
+  '(abbrev-mode paredit-mode icicle-mode yas/minor-mode)
+  780
+  '(733 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . utf-8-unix)))
+
+(desktop-create-buffer 206
+  "/home/james/src/factor/extra/lists/lists-tests.factor"
+  "lists-tests.factor"
+  'factor-mode
+  '(abbrev-mode icicle-mode)
+  1
+  '(868 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . utf-8-unix)))
+
+(desktop-create-buffer 206
+  "/usr/local/share/emacs/23.0.60/lisp/font-lock.el.gz"
+  "font-lock.el.gz"
+  'emacs-lisp-mode
+  '(abbrev-mode paredit-mode icicle-mode yas/minor-mode)
+  14028
+  '(nil nil)
+  t
+  nil
+  '((buffer-file-coding-system . utf-8-unix)))
+
+(desktop-create-buffer 206
+  "/home/james/.emacs"
+  ".emacs"
+  'emacs-lisp-mode
+  '(abbrev-mode paredit-mode icicle-mode yas/minor-mode)
+  2340
+  '(12694 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . utf-8-unix)))
+
+(desktop-create-buffer 206
+  "/home/james/emacs.d/modes/js2.el"
+  "js2.el"
+  'emacs-lisp-mode
+  '(abbrev-mode paredit-mode icicle-mode yas/minor-mode)
+  380937
+  '(7490 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . utf-8-unix)))
+
+(desktop-create-buffer 206
+  "/home/james/public_html/styles/mainStyle.css"
+  "mainStyle.css"
+  'css-mode
+  '(abbrev-mode icicle-mode)
+  1414
+  '(1652 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . utf-8-unix)))
+
+(desktop-create-buffer 206
+  "/home/james/public_html/styles/james-style.css"
+  "james-style.css"
+  'css-mode
+  '(abbrev-mode icicle-mode)
+  617
+  '(1 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . utf-8-unix)))
+
+(desktop-create-buffer 206
+  "/home/james/src/emacs/lisp/emacs-lisp/lisp-mode.el"
+  "lisp-mode.el"
+  'emacs-lisp-mode
+  '(abbrev-mode paredit-mode icicle-mode yas/minor-mode)
+  15859
+  '(15894 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . utf-8-unix)))
+
+(desktop-create-buffer 206
+  nil
+  "*info*"
+  'Info-mode
+  '(abbrev-mode icicle-mode yas/minor-mode)
+  231538
+  '(4324 nil)
+  t
+  '("/usr/local/share/info/gnus" "Persistent Articles")
+  '((tab-width . 8) (buffer-file-coding-system . utf-8-unix) (case-fold-search . t)))
+
+(desktop-create-buffer 206
+  "/home/james/.newsrc-dribble"
+  ".newsrc-dribble"
+  'fundamental-mode
+  '(abbrev-mode icicle-mode)
+  5074
+  '(nil nil)
+  nil
+  nil
+  nil)
+
+(desktop-create-buffer 206
+  "/home/james/.stumpwmrc"
+  ".stumpwmrc"
+  'lisp-mode
+  '(abbrev-mode paredit-mode stumpwm-mode slime-mode cldoc-mode icicle-mode yas/minor-mode redshank-mode)
+  3759
+  '(525 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . utf-8-unix)))
+
+(desktop-create-buffer 206
+  "/home/james/emacs.d/mymisc/mymisc.el"
+  "mymisc.el"
+  'emacs-lisp-mode
+  '(abbrev-mode paredit-mode icicle-mode yas/minor-mode)
+  45
+  '(139 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . utf-8-unix)))
+

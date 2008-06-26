@@ -1,0 +1,15 @@
+;; Object other/
+;; SEMANTICDB Tags save file
+(semanticdb-project-database-file "other/"
+  :tables (list 
+   (semanticdb-table "bbdb-import-csv.el"
+    :major-mode 'emacs-lisp-mode
+    :tags '(("lookout" include nil nil [1 19]) ("wicked/lookout-bbdb-mapping-table-outlook" variable (:constant-flag t :default-value (quote (("name" "Name") ("net" "E-mail Address") ("notes" "Notes") ("phones" "Mobile Phone" "Home Phone" "Home Phone 2" "Home Fax" "Business Phone" "Business Phone 2" "Business Fax" "Other Phone" "Other Fax") ("addr1" "Home Address") ("addr2" "Business Address") ("addr3" "Other Address") ("lastname" "Last Name") ("firstname" "First Name") ("job" "Job Title") ("company" "Company") ("otherfields" "")))) nil [21 642]) ("wicked/lookout-bbdb-mapping-table-thunderbird" variable (:constant-flag t :default-value (quote (("firstname" "First Name") ("lastname" "Last Name") ("name" "Display Name") "Nickname" ("net" "Primary Email") "Secondary Email" ("phones" "Work Phone" "Home Phone" "Fax Number" "Pager Number" "Mobile Number") ("addr1" "Home Address") ("addr2" "Home Address 2") "Home City" "Home State" "Home ZipCode" "Home Country" ("addr3" "Work Address") "Work Address 2" "Work City" "Work State" "Work ZipCode" "Work Country" ("job" "Job Title") "Department" ("company" "Organization") "Web Page 1" "Web Page 2" "Birth Year" "Birth Month" "Birth Day" ("otherfields" "Custom 1" "Custom 2" "Custom 3" "Custom 4") ("notes" "Notes")))) nil [644 1480]) ("wicked/bbdb-import-csv-line" function (:arguments ("line")) nil [1482 4756]) ("wicked/lookout-bbdb-create-entry" function (:arguments ("name" "company" "net" "addrs" "phones" "notes" "&optional" "otherfields")) nil [4758 5396]) ("wicked/bbdb-import-csv-buffer" function (:user-visible-flag t) nil [5398 5675]))
+    :file "bbdb-import-csv.el"
+    :pointmax 5675
+    )
+   )
+  :file "semantic.cache"
+  :semantic-tag-version "2.0pre4"
+  :semanticdb-version "2.0pre4"
+  )

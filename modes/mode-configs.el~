@@ -1,0 +1,157 @@
+;; Various useful modes
+
+;; Need to be set before org.el is loaded
+(setq org-return-follows-link t
+      org-tab-follows-link t)
+ 
+(require 'coq)
+(require 'css-mode)
+(require 'distel)
+(require 'erlang)
+(require 'ess-site) ;; R
+(require 'factor)
+(require 'flyspell)
+(require 'gambit)
+(require 'gst-mode)
+(require 'haskell-doc)
+(require 'haskell-indent)
+(require 'haskell-mode)
+(require 'ido)
+(require 'inf-ruby)
+(require 'inferior-coq)
+(require 'javascript-mode)
+(require 'lua-mode)
+(require 'mmm-mode)
+(require 'muse-mode)
+(require 'muse-docbook)
+(require 'muse-html)
+(require 'muse-latex)
+(require 'muse-latex2png)
+(require 'muse-project)
+(require 'muse-texinfo)
+(require 'nxml-mode)
+(require 'paredit)
+(require 'php-mode)
+(require 'python-mode)
+(require 'remember)
+(require 'ruby-electric)
+(require 'ruby-mode)
+(require 'slime)
+(require 'smalltalk-mode)
+(require 'tuareg)
+
+(load-library "auto-modes")
+(load-library "d-mode")
+(load-library "haskell-configs")
+(load-library "icicles")
+(load-library "light-symbol-mode")
+(load-library "muse-configs")
+(load-library "org")
+(load-library "org-config")
+(load-library "quack")
+(load-library "scheme-configs")
+
+(display-battery-mode 1)
+(setq battery-update-interval 30)
+
+(setq factor-binary "~/src/factor/factor"
+      factor-image "~/src/factor/factor.image")
+(setq forth-program-name "gforth")
+
+;; Flyspell
+(setq flyspell-prog-text-faces (append '(nxml-text-face) flyspell-prog-text-faces))
+;; (add-hook 'text-mode-hook 'flyspell-mode-on)
+
+(ido-mode t)
+
+;; XML and HTML
+(defalias 'xml-mode 'nxml-mode)
+(defalias 'html-mode 'nxml-mode)
+
+;; Erlang
+(setq erlang-root-dir "/usr/lib/erlang")
+(distel-setup)
+;; Some Erlang customizations
+(add-hook 'erlang-mode-hook
+	  (lambda ()
+	    ;; when starting an Erlang shell in Emacs, default in the node name
+	    (setq inferior-erlang-machine-options '("-sname" "emacs"))))
+;; For debugging
+(setq fsm-use-debug-buffer t)
+
+;; Ruby
+(add-hook 'ruby-mode-hook 'ruby-electric-mode)
+
+;; Latex
+;; (if (equal (emacs-type) 'emacs-window) (require 'yatex))
+(add-hook 'latex-mode-hook 'flyspell-mode)
+(add-hook 'yatex-mode-hook 'flyspell-mode)
+(add-hook 'latex-mode-hook 'pretty-greek)
+
+;; Eshell
+(add-hook 'eshell-mode-hook
+  '(lambda ()
+     (define-key eshell-mode-map "\C-a" 'eshell-bol)))
+
+;; Lisp
+(add-hook 'inferior-lisp-mode-hook (lambda () (inferior-slime-mode t)))
+(add-hook 'lisp-mode-hook 'pretty-greek)
+(add-hook 'lisp-mode-hook (lambda () (paredit-mode t)))
+(add-hook 'emacs-lisp-mode-hook (lambda () (paredit-mode t)))
+(add-hook 'emacs-lisp-mode-hook 'pretty-greek)
+(add-hook 'lisp-mode-hook (lambda () (slime-mode t)))
+(if (file-exists-p "/usr/share/doc/hyperspec/")
+    (setq common-lisp-hyperspec-root "file:/usr/share/doc/hyperspec/"))
+(dolist (hook '(lisp-mode-hook
+		slime-repl-mode-hook))
+  (add-hook hook #'(lambda nil (cldoc-mode 1))))
+(require 'info-look)
+(info-lookup-add-help
+ :mode 'lisp-mode
+ :regexp "[^][()'\" \t\n]+"
+ :ignore-case t
+ :doc-spec '(("(ansicl)Symbol Index" nil nil nil)))
+;;; Slime
+(setq slime-backend "/home/james/Programming/lisp/swank-custom-loader.lisp")
+(setq slime-net-coding-system 'utf-8-unix)
+(eval-after-load "slime" 
+  '(progn
+    (slime-setup '(slime-fancy slime-banner slime-asdf))
+    (setq slime-complete-symbol*-fancy t) 
+    (setq slime-complete-symbol-function 'slime-fuzzy-complete-symbol) 
+    (setq inferior-lisp-program "/home/james/bin/sbcl --core /home/james/lib/sbcl/monster.core")
+    (setq qlisp-indent-function 'common-lisp-indent-function)
+    (setq slime-complete-symbol 'slime-fuzzy-complete-symbol)
+    (slime-setup)))
+(autoload 'cl-lookup "cl-lookup" "View the documentation on ENTRY from the Common Lisp HyperSpec, et al.")
+;;; Paredit
+(autoload 'paredit-mode "paredit" "Minor mode for pseudo-structurally editing Lisp code." t)
+(dolist (hook '(lisp-mode-hook
+                slime-repl-mode-hook))
+  (add-hook hook #'(lambda nil (paredit-mode 1))))
+(eval-after-load "paredit"
+  '(progn
+     (define-key paredit-mode-map [?\)] 'paredit-close-parenthesis)
+     (define-key paredit-mode-map [(meta ?\))] 'paredit-close-parenthesis-and-newline)))
+
+;; CSS
+(autoload 'css-mode "css-mode" "Mode for editing CSS files" t)
+
+;; Factor
+(setq factor-binary "~/src/repos/Factor/f")
+(setq factor-image "~/src/repos/Factor/factor.image")
+(server-start)
+
+;; flymake
+(defun my-flymake-show-next-error()
+  (interactive)
+  (flymake-goto-next-error)
+  (flymake-display-err-menu-for-current-line)
+  )
+
+;; C
+;; (add-hook 'c-mode-common-hook 'flymake-mode)
+
+;; Other
+(add-hook 'text-mode-hook 'flyspell-mode)
+(add-hook 'mail-mode-hook 'flyspell-mode)

@@ -1,0 +1,873 @@
+# bzr knit index 8
+
+stefan@xsteve.at-20060607202726-2efe1e4256f1ec31 fulltext 0 5645  :
+stefan@xsteve.at-20060612190012-7fb2a7af0702153a line-delta 5645 277 0 :
+stefan@xsteve.at-20060612193349-5a0cc8a4345b415a line-delta 5922 274 1 :
+stefan@xsteve.at-20060613185119-fac2c6aebd4adde7 line-delta 6196 402 2 :
+stefan@xsteve.at-20060613185643-c5a78b07b206c66c line-delta 6598 272 3 :
+stefan@xsteve.at-20060613185931-7b82dc39b3541eab line-delta 6870 271 4 :
+stefan@xsteve.at-20060614193257-6aff6ebdf20b691d line-delta 7141 278 5 :
+stefan@xsteve.at-20060614193427-fdd5bb027c3e9419 line-delta 7419 272 6 :
+stefan@xsteve.at-20060615194025-80471aa910d1c2ee line-delta 7691 339 7 :
+stefan@xsteve.at-20060615195422-d2650b59e6c055f3 line-delta 8030 466 8 :
+stefan@xsteve.at-20060615213500-8a07d8e9e70913fa line-delta 8496 275 9 :
+stefan@xsteve.at-20060615214449-0acec128c5ac9022 line-delta 8771 402 10 :
+stefan@xsteve.at-20060618190605-47875c23a390b8af line-delta 9173 345 11 :
+stefan@xsteve.at-20060618192919-f17c3f25dea85d26 line-delta 9518 333 12 :
+nebuchadnezzar@asgardr.info-20060618201111-5e79301498aa94ca line-delta 9851 289 13 :
+nebuchadnezzar@asgardr.info-20060618201835-14e74da0388c52c5 line-delta 10140 289 14 :
+nebuchadnezzar@asgardr.info-20060618202004-6b779b3b7c972268 line-delta 10429 306 13 15 :
+stefan@xsteve.at-20060618201926-7ba42b8d50ccba91 line-delta 10735 280 13 :
+stefan@xsteve.at-20060619191125-f7544b20f92cc67d line-delta 11015 318 17 16 :
+stefan@xsteve.at-20060619191615-8d729173d524ff58 line-delta 11333 271 18 :
+stefan@xsteve.at-20060619191907-dfe806c2d6edefdf line-delta 11604 525 19 :
+stefan@xsteve.at-20060619193725-ba6609a64fa13b7a line-delta 12129 271 20 :
+stefan@xsteve.at-20060621193915-6b866f44a9575a0c line-delta 12400 283 21 :
+stefan@xsteve.at-20060621194114-9da2981dfe5e74d7 line-delta 12683 271 22 :
+stefan@xsteve.at-20060621194509-07ae0388037bd19c line-delta 12954 457 23 :
+stefan@xsteve.at-20060621195425-6d9cd2d6afdfc976 line-delta 13411 280 24 :
+stefan@xsteve.at-20060623193652-bdfa0ff1d39c67bf line-delta 13691 282 25 :
+stefan@xsteve.at-20060623193942-f93746342f5c8a06 line-delta 13973 401 26 :
+stefan@xsteve.at-20060623194906-a23faca9eb404504 line-delta 14374 460 27 :
+nebuchadnezzar@asgardr.info-20060618202535-7d119ee45505ca37 line-delta 14834 315 16 17 :
+nebuchadnezzar@asgardr.info-20060622154516-8c84dc33c1c11154 line-delta 15149 721 29 25 :
+nebuchadnezzar@asgardr.info-20060623203404-67d6f35b6bac13e1 line-delta 15870 717 30 28 :
+nebuchadnezzar@asgardr.info-20060628213506-88c87c5f06354d8a line-delta 16587 573 31 :
+nebuchadnezzar@asgardr.info-20060628215029-350118a33d03725b line-delta 17160 409 32 :
+nebuchadnezzar@asgardr.info-20060629161504-e63d3b891d64ba2d line-delta 17569 293 33 :
+nebuchadnezzar@asgardr.info-20060629162004-d098018f0af68ef2 line-delta 17862 285 34 :
+stefan@xsteve.at-20060629204122-603ec09308fad3a2 fulltext 18147 6052 28 35 :
+stefan@xsteve.at-20060629204327-a6f5e496ddb4534b line-delta 24199 275 36 :
+Matthieu.Moy@imag.fr-20060701110304-eff987406dd09b2d line-delta 24474 574 37 :
+Matthieu.Moy@imag.fr-20060701114301-af21988d72d36b98 line-delta 25048 453 38 :
+Matthieu.Moy@imag.fr-20060701120554-336137a2c35b7d90 line-delta 25501 375 39 :
+Matthieu.Moy@imag.fr-20060701121514-ad7fcbc75c62942c line-delta 25876 325 40 :
+stefan@xsteve.at-20060703192157-a7379aa52cbd3236 line-delta 26201 273 37 :
+stefan@xsteve.at-20060703192347-35e7f69884d8b0af line-delta 26474 273 42 :
+stefan@xsteve.at-20060703192857-f3d20beab6e677f2 line-delta 26747 1024 43 41 :
+Matthieu.Moy@imag.fr-20060704095420-3f173ffd02139bf4 line-delta 27771 298 41 :
+Matthieu.Moy@imag.fr-20060704095509-291cafacd9423dc4 line-delta 28069 385 45 44 :
+Matthieu.Moy@imag.fr-20060708124613-271ae1a4804217a3 line-delta 28454 284 46 :
+nebuchadnezzar@asgardr.info-20060703205951-0ce831edde65eafb line-delta 28738 285 44 :
+nebuchadnezzar@asgardr.info-20060703210422-372bdcce905d6579 line-delta 29023 284 48 :
+nebuchadnezzar@asgardr.info-20060704173032-ddd2b5f82fbf73d0 line-delta 29307 338 49 :
+nebuchadnezzar@asgardr.info-20060704173703-75afd944948b9f02 line-delta 29645 285 50 :
+nebuchadnezzar@asgardr.info-20060704173919-f7f166f7169457f4 line-delta 29930 286 51 :
+stefan@xsteve.at-20060704184949-d8c0760e671c5fcc line-delta 30216 379 44 52 :
+stefan@xsteve.at-20060704190102-c64b3b3c3ab5122f line-delta 30595 405 53 :
+stefan@xsteve.at-20060704194404-411c8c088761b58c line-delta 31000 273 54 :
+Matthieu.Moy@imag.fr-20060708125723-135fc08ab942d5eb line-delta 31273 671 46 55 :
+Matthieu.Moy@imag.fr-20060708130732-6387c22379e0f6dd line-delta 31944 300 56 47 :
+Matthieu.Moy@imag.fr-20060708131841-5fc88b080fe987b4 line-delta 32244 257 57 :
+Matthieu.Moy@imag.fr-20060713134347-aff88a16fdc9ba49 line-delta 32501 407 58 :
+stefan@xsteve.at-20060710184941-c36bc59e3afdc2c2 line-delta 32908 511 55 58 :
+stefan@xsteve.at-20060712193305-0da39a6977dd1145 line-delta 33419 337 60 :
+stefan@xsteve.at-20060712201600-111a653d242a4ef8 line-delta 33756 278 61 :
+stefan@xsteve.at-20060712201645-68ba29bab8676351 line-delta 34034 278 62 :
+stefan@xsteve.at-20060712203924-3d3c5b80aea84911 line-delta 34312 339 63 :
+Matthieu.Moy@imag.fr-20060713061437-4b263461fafa1551 line-delta 34651 280 58 :
+Matthieu.Moy@imag.fr-20060713134651-983b734256cc2a64 line-delta 34931 454 65 64 :
+Matthieu.Moy@imag.fr-20060713134816-bf84461cc1c7a45c line-delta 35385 421 66 59 :
+stefan@xsteve.at-20060713195422-4bbab321ab243c83 line-delta 35806 336 64 :
+stefan@xsteve.at-20060713195957-682192b142801419 line-delta 36142 271 68 :
+stefan@xsteve.at-20060713200240-17c7ceedc793a31e line-delta 36413 277 69 :
+stefan@xsteve.at-20060713202823-1c3da0180990afe6 line-delta 36690 497 70 67 :
+nebuchadnezzar@asgardr.info-20060708165556-76eee686eba851e5 line-delta 37187 521 55 58 :
+nebuchadnezzar@asgardr.info-20060710192134-c6c7f3e1deca5b38 line-delta 37708 159 72 60 :
+nebuchadnezzar@asgardr.info-20060714113431-fe536eb572910f0b line-delta 37867 736 73 71 :
+nebuchadnezzar@asgardr.info-20060715113540-8b1bb9820dd4afe0 line-delta 38603 281 74 :
+nebuchadnezzar@asgardr.info-20060715134431-7600bdd18da0eb79 line-delta 38884 285 75 :
+nebuchadnezzar@asgardr.info-20060720115150-8bd51849fa6cecb0 line-delta 39169 468 76 :
+nebuchadnezzar@asgardr.info-20060720120650-14e84447c8804fc8 line-delta 39637 285 77 :
+stefan@xsteve.at-20060714201932-959e91adb9aa9473 line-delta 39922 278 71 :
+stefan@xsteve.at-20060714202532-bc709318d070aa27 line-delta 40200 275 79 :
+stefan@xsteve.at-20060720184530-d68971e530b935dd line-delta 40475 687 80 78 :
+Matthieu.Moy@imag.fr-20060724093901-ef69a30e0d0b16ec line-delta 41162 1006 67 81 :
+Matthieu.Moy@imag.fr-20060724113535-ed9043b38c9640c7 line-delta 42168 279 82 :
+moy@moy-20060804174759-2e501e361400b3ad line-delta 42447 265 83 :
+stefan@xsteve.at-20060801193058-3e8191c03a622bb0 line-delta 42712 307 81 83 :
+stefan@xsteve.at-20060804194505-fc3c1a42bfc2ef8f line-delta 43019 292 85 84 :
+stefan@xsteve.at-20060804201550-b2555759ba5e12dc line-delta 43311 279 86 :
+stefan@xsteve.at-20060807201823-3f17022207bb122a line-delta 43590 455 87 :
+Matthieu.Moy@imag.fr-20060806191240-820762598b7b88e0 line-delta 44045 692 84 :
+Matthieu.Moy@imag.fr-20060806194551-bf9b9c070057165b line-delta 44737 346 89 :
+Matthieu.Moy@imag.fr-20060807121819-3d140a8e2dbee269 line-delta 45083 311 90 87 :
+Matthieu.Moy@imag.fr-20060808110325-4629cdd300d76bf0 line-delta 45394 494 91 88 :
+Matthieu.Moy@imag.fr-20060918115141-f2f26966ae216c37 line-delta 45888 367 92 :
+stefan@xsteve.at-20060808184855-6d62bc21aafbf906 line-delta 46255 743 88 90 :
+stefan@xsteve.at-20060808185426-ae46cc064e417ad9 line-delta 46998 278 94 :
+stefan@xsteve.at-20060830195814-4ae3e0d1701bb694 fulltext 47276 6506 95 :
+stefan@xsteve.at-20060905183123-cb598fa1ae0a76a8 line-delta 53782 274 96 :
+stefan@xsteve.at-20060905183927-c715e6086b82eae8 line-delta 54056 277 97 :
+stefan@xsteve.at-20060905184023-fdacb6786ed00c07 line-delta 54333 276 98 :
+stefan@xsteve.at-20060905184142-917dd06bfd8fcb71 line-delta 54609 278 99 :
+stefan@xsteve.at-20060906192750-a98ad106d6616651 line-delta 54887 280 100 :
+stefan@xsteve.at-20060906192919-5604e7580ecb9514 line-delta 55167 348 101 :
+stefan@xsteve.at-20060906193017-0a7dbbebab7b965b line-delta 55515 277 102 :
+stefan@xsteve.at-20060906193109-a3b889d04698da18 line-delta 55792 276 103 :
+stefan@xsteve.at-20060909194240-a2e13f4be008f84c line-delta 56068 271 104 :
+stefan@xsteve.at-20060909194323-0326e83f698583ab line-delta 56339 273 105 :
+Matthieu.Moy@imag.fr-20060910095544-1de5b135d1f3eb7c fulltext 56612 6441 95 :
+Matthieu.Moy@imag.fr-20060910095845-25d31c77da62422b line-delta 63053 741 107 106 :
+moy@ecrins-20060913061438-975e614c053aca43 line-delta 63794 336 108 :
+moy@ecrins-20060918122846-1343440989fd96e2 line-delta 64130 461 109 93 :
+Matthieu.Moy@imag.fr-20060919051225-39a4913b973bc4a2 line-delta 64591 279 110 :
+Matthieu.Moy@imag.fr-20060919051419-f2eaa83b148e53be line-delta 64870 279 111 :
+Matthieu.Moy@imag.fr-20060921113725-824a2a292657a9c4 line-delta 65149 278 112 :
+Matthieu.Moy@imag.fr-20060921134112-4bb36bfd22288339 line-delta 65427 278 113 :
+stefan@xsteve.at-20060910185920-d3ab086fe879fd48 line-delta 65705 897 106 108 :
+stefan@xsteve.at-20060911183605-5ea48ee131b7bccc line-delta 66602 347 115 :
+stefan@xsteve.at-20060912192300-42aee49c3310468d line-delta 66949 274 116 :
+stefan@xsteve.at-20060913191515-fcbe78227b6f56dc line-delta 67223 272 117 :
+stefan@xsteve.at-20060913193027-c2c4960d5ec6a4ea line-delta 67495 365 118 109 :
+stefan@xsteve.at-20060918184555-c2ef9f337b9251a9 line-delta 67860 272 119 :
+stefan@xsteve.at-20060918190142-36f8933fc4956c52 line-delta 68132 488 120 110 :
+stefan@xsteve.at-20060919181947-c65da8f023d3b117 line-delta 68620 277 121 :
+stefan@xsteve.at-20060919183446-73f68c5880e7ee54 line-delta 68897 273 122 112 :
+Matthieu.Moy@imag.fr-20060920062144-bbb7b93374922b15 line-delta 69170 568 112 123 :
+Matthieu.Moy@imag.fr-20060920062227-15da7bbbb560d554 line-delta 69738 282 124 :
+Matthieu.Moy@imag.fr-20060921151012-037f5a57244a0689 line-delta 70020 352 125 114 :
+stefan@xsteve.at-20060921183215-abb3afa555ca2515 line-delta 70372 476 123 126 :
+stefan@xsteve.at-20060921183303-198ddeb0790389c1 line-delta 70848 274 127 :
+stefan@xsteve.at-20060921183344-4fc7d69e6c07de2b line-delta 71122 332 128 :
+stefan@xsteve.at-20060921183956-23ece9cb79b88b8c line-delta 71454 286 129 :
+Matthieu.Moy@imag.fr-20060922104845-d9e90a5cf71be8eb line-delta 71740 278 126 :
+Matthieu.Moy@imag.fr-20060922195702-ea679826784829f3 line-delta 72018 277 131 :
+Matthieu.Moy@imag.fr-20060922202658-251a797b627d013c line-delta 72295 573 132 :
+Matthieu.Moy@imag.fr-20060922204144-2cd31dc40be74706 line-delta 72868 286 133 :
+Matthieu.Moy@imag.fr-20060922210138-fa541ee825a846c9 line-delta 73154 405 134 :
+nebuchadnezzar@asgardr.info-20060922213140-e8ca74b12726469f line-delta 73559 289 121 :
+nebuchadnezzar@asgardr.info-20060922213750-ffeda0421b0ffbd8 line-delta 73848 287 136 :
+nebuchadnezzar@asgardr.info-20060922214217-5389ce2bed710cdf line-delta 74135 1185 137 135 130 :
+nebuchadnezzar@asgardr.info-20060922215007-09131e3e243e80e1 line-delta 75320 286 138 :
+nebuchadnezzar@asgardr.info-20060923060816-e1655cb79ab82bee line-delta 75606 4004 139 :
+stefan@xsteve.at-20060923175942-a7ca524edc7d8433 line-delta 79610 4207 130 140 :
+nebuchadnezzar@asgardr.info-20060925185620-2ca4cf19f72528f2 line-delta 83817 283 140 :
+nebuchadnezzar@asgardr.info-20060927201104-83cdc59c7f41dfa1 line-delta 84100 160 142 141 :
+Matthieu.Moy@imag.fr-20060926083402-4be15b0cf3206694 line-delta 84260 280 135 :
+Matthieu.Moy@imag.fr-20060927071848-62e4bf36f96052a3 line-delta 84540 348 144 :
+stefan@xsteve.at-20060929191852-dfea1e0799ced05f line-delta 84888 272 141 :
+stefan@xsteve.at-20060929192011-40385398aa035cea fulltext 85160 6355 146 :
+stefan@xsteve.at-20060929192312-ab41ff4ac8dc2d44 line-delta 91515 570 147 :
+stefan@xsteve.at-20060929192449-95cfe3123f583b18 line-delta 92085 280 148 :
+stefan@xsteve.at-20060929192645-0478f91dd93b72ff line-delta 92365 399 149 :
+stefan@xsteve.at-20060929194218-2c5fc855ab26a35e line-delta 92764 341 150 145 :
+stefan@xsteve.at-20060929194516-20c152a7e5c659ac line-delta 93105 274 151 143 :
+stefan@xsteve.at-20060929194635-0467d6fec1367932 line-delta 93379 272 152 :
+stefan@xsteve.at-20060929194853-da6d056f6717590f line-delta 93651 570 153 :
+Matthieu.Moy@imag.fr-20060930073322-2c586d1bc0b8e201 line-delta 94221 540 145 130 :
+Matthieu.Moy@imag.fr-20060930074202-877944d96063ec46 line-delta 94761 4230 155 141 :
+Matthieu.Moy@imag.fr-20060930074356-8d027aa28cefc550 line-delta 98991 794 156 150 :
+Matthieu.Moy@imag.fr-20060930074416-43358c31d3d6c6da line-delta 99785 684 157 154 :
+Matthieu.Moy@imag.fr-20061007123233-cc1ae1b9a18e31c8 line-delta 100469 579 145 :
+Matthieu.Moy@imag.fr-20061007125120-982da1f693562312 line-delta 101048 280 159 :
+Matthieu.Moy@imag.fr-20061007130941-198cc630994a6fbb line-delta 101328 4425 160 158 :
+stefan@xsteve.at-20061003193354-c79e656376bd7e63 line-delta 105753 273 154 :
+stefan@xsteve.at-20061003193548-7ef8f698546a468b line-delta 106026 340 162 :
+stefan@xsteve.at-20061011192127-ed94f6693d8b9325 line-delta 106366 686 163 161 :
+stefan@xsteve.at-20061012183123-db766641284d9b73 line-delta 107052 280 164 :
+stefan@xsteve.at-20061012193912-0423d76d51dac5ea line-delta 107332 279 165 :
+stefan@xsteve.at-20061012193642-f9b5a1967bee4481 line-delta 107611 514 164 :
+stefan@xsteve.at-20061012194013-b4a84ea2dfb2d91c line-delta 108125 275 167 :
+stefan@xsteve.at-20061012194134-f2b14d9df0f86379 line-delta 108400 477 168 :
+stefan@xsteve.at-20061012194250-a0bc61b39da47359 line-delta 108877 276 169 :
+stefan@xsteve.at-20061012195155-1349039d3203f2f5 line-delta 109153 370 170 166 :
+Matthieu.Moy@imag.fr-20061015070242-a91f0294977348f9 line-delta 109523 375 161 :
+Matthieu.Moy@imag.fr-20061015072400-1aed64884876e43c line-delta 109898 1040 172 171 :
+Matthieu.Moy@imag.fr-20061015094123-9df0c645ad4d6871 line-delta 110938 287 173 :
+Matthieu.Moy@imag.fr-20061015095155-2bfddad3a9916a5e line-delta 111225 285 174 :
+stefan@xsteve.at-20061015194611-aed5cea122c717c1 line-delta 111510 556 171 175 :
+stefan@xsteve.at-20061016193313-a6f5867ca6829192 line-delta 112066 277 176 :
+stefan@xsteve.at-20061016193609-6d4386b2315d3f53 line-delta 112343 276 177 :
+stefan@xsteve.at-20061016193648-8be313efeb08128c line-delta 112619 275 178 :
+stefan@xsteve.at-20061017191511-87192d9669924a7d line-delta 112894 273 179 :
+stefan@xsteve.at-20061018183755-353c3173af9f6015 line-delta 113167 334 180 :
+stefan@xsteve.at-20061018183926-0bbec880c422a8af line-delta 113501 280 181 :
+stefan@xsteve.at-20061019193536-2ab2954e43f96e81 line-delta 113781 272 182 :
+Matthieu.Moy@imag.fr-20061026045948-d98a365fcd747548 line-delta 114053 405 175 :
+Matthieu.Moy@imag.fr-20061017193156-d208ca9cb44a8139 line-delta 114458 279 175 :
+Matthieu.Moy@imag.fr-20061026064217-172f6e587f9c251b line-delta 114737 427 185 184 :
+Matthieu.Moy@imag.fr-20061026064515-976842e2fc4d29f6 line-delta 115164 586 186 183 :
+stefan@xsteve.at-20061027185805-53555df6cc7cfe39 line-delta 115750 449 183 187 :
+stefan@xsteve.at-20061029072317-b8930e6c7b5d6d25 line-delta 116199 278 188 :
+stefan@xsteve.at-20061029195518-d9016bc3daf4c481 fulltext 116477 6554 189 :
+stefan@xsteve.at-20061029201343-5da8e274979495bd line-delta 123031 340 190 :
+stefan@xsteve.at-20061029202550-40cff41080f94aa1 line-delta 123371 278 191 :
+stefan@xsteve.at-20061030193052-7dc0256cd4314463 line-delta 123649 332 192 :
+stefan@xsteve.at-20061030194824-fd6b8060e5169ec7 line-delta 123981 342 193 :
+stefan@xsteve.at-20061031192253-ad82b18f682b7ccb line-delta 124323 399 194 :
+stefan@xsteve.at-20061031192758-88f5819a380e03e9 line-delta 124722 278 195 :
+stefan@xsteve.at-20061031192913-d669d385f5a88f7e line-delta 125000 272 196 :
+stefan@xsteve.at-20061031193028-0ee93d21e72d586c line-delta 125272 344 197 :
+stefan@xsteve.at-20061102202512-ff3cdc441cd55779 line-delta 125616 343 198 :
+nebuchadnezzar@asgardr.info-20061015115757-973ea1830d7fa38d line-delta 125959 410 171 173 :
+nebuchadnezzar@asgardr.info-20061021060308-fff950dce39c1a0b line-delta 126369 693 200 183 :
+nebuchadnezzar@asgardr.info-20061107211946-3cb98266af497b31 line-delta 127062 354 201 :
+nebuchadnezzar@asgardr.info-20061107212210-1e9f9915c239febd line-delta 127416 1086 202 199 :
+nebuchadnezzar@asgardr.info-20061224171652-8403cef2da9945eb line-delta 128502 286 203 :
+nebuchadnezzar@asgardr.info-20061224172721-8e9d8d849bb9ff48 line-delta 128788 386 204 :
+nebuchadnezzar@asgardr.info-20061224174148-1b17e91774fbec85 line-delta 129174 380 205 :
+stefan@xsteve.at-20061108200322-b0d8b0b701537e9f line-delta 129554 381 199 203 :
+stefan@xsteve.at-20061114210755-726d2ca65b289e3f line-delta 129935 344 207 :
+stefan@xsteve.at-20061121195323-adb0547b626de743 line-delta 130279 339 208 :
+stefan@xsteve.at-20061121195925-bd94229c8e272cfc line-delta 130618 278 209 :
+stefan@xsteve.at-20061122204352-b0cea51d1ac9d42c line-delta 130896 277 210 :
+stefan@xsteve.at-20061123191907-1fecc4b2386970a4 line-delta 131173 338 211 :
+stefan@xsteve.at-20061127205306-792152f559e735a0 line-delta 131511 277 212 :
+stefan@xsteve.at-20061128203158-668bd00a6d90b622 line-delta 131788 283 213 :
+stefan@xsteve.at-20061128204739-e38c48b6bd948f08 line-delta 132071 348 214 :
+stefan@xsteve.at-20061129205714-c52a73fb49123f15 line-delta 132419 283 215 :
+stefan@xsteve.at-20061129205805-e25bea16abbd793e line-delta 132702 281 216 :
+stefan@xsteve.at-20061130195629-9fc1249d3e0ae1de line-delta 132983 279 217 :
+stefan@xsteve.at-20061206191947-ac798663157e0036 line-delta 133262 272 218 :
+stefan@xsteve.at-20061211191657-dd5ad7c066ebf151 line-delta 133534 273 219 :
+stefan@xsteve.at-20061211203408-664fc30932c44703 line-delta 133807 398 220 :
+stefan@xsteve.at-20061212194350-f1de8495219c66d3 line-delta 134205 404 221 :
+stefan@xsteve.at-20061212194423-d643a25e79537895 fulltext 134609 6742 222 :
+stefan@xsteve.at-20061212194458-9026f9e71b9f1846 line-delta 141351 282 223 :
+stefan@xsteve.at-20061213200143-facfd09495b2b5b6 line-delta 141633 279 224 :
+stefan@xsteve.at-20061213200305-5defc6c62ace97d8 line-delta 141912 401 225 :
+stefan@xsteve.at-20061226194827-02e37dce28a590fa line-delta 142313 495 226 206 :
+matthieu.moy@imag.fr-20061229162510-37vwnjpxmfb9tiwl fulltext 142808 6781 187 227 :
+matthieu.moy@imag.fr-20070315152742-xx7ckhnkfn9448hg line-delta 149589 283 228 :
+matthieu.moy@imag.fr-20070316155957-f42w1e1xw9rz4i3g line-delta 149872 281 229 :
+matthieu.moy@imag.fr-20070316212449-j8dhqszodn4fdhsf line-delta 150153 462 230 :
+stefan@xsteve.at-20070129200443-a7ecd7a5ac055d22 line-delta 150615 279 227 :
+stefan@xsteve.at-20070315194951-e8bc30a75657d38f line-delta 150894 307 232 229 :
+stefan@xsteve.at-20070317104050-2e8248401033191b line-delta 151201 493 233 231 :
+stefan@xsteve.at-20070317121324-8c526ad2e71abbd6 line-delta 151694 277 234 :
+stefan@xsteve.at-20070320210809-9a6ce123358f951b line-delta 151971 279 235 :
+stefan@xsteve.at-20070321204832-64b198d9dc772b79 line-delta 152250 279 236 :
+stefan@xsteve.at-20070321204918-c1bd6508596cf97e line-delta 152529 279 237 :
+stefan@xsteve.at-20070322191115-542c85d45a7eef2d line-delta 152808 252 238 :
+stefan@xsteve.at-20070326192255-170a777205184cb5 line-delta 153060 581 239 :
+stefan@xsteve.at-20070326193109-12640134678054ee line-delta 153641 938 240 :
+stefan@xsteve.at-20070329175233-f5e1f8660b77b1cf line-delta 154579 342 241 :
+stefan@xsteve.at-20070329175438-de7f123d3631f1ee line-delta 154921 278 242 :
+stefan@xsteve.at-20070329175526-55162e26472f4ccd line-delta 155199 278 243 :
+stefan@xsteve.at-20070329175607-5f2ae9453b4659fb line-delta 155477 275 244 :
+stefan@xsteve.at-20070331190219-cd2822f959a91bac line-delta 155752 270 245 :
+stefan@xsteve.at-20070407192452-fa3cc316be5fa90f line-delta 156022 709 246 :
+matthieu.moy@imag.fr-20070408102612-2h8nz4hnzvucbgl0 line-delta 156731 383 241 :
+matthieu.moy@imag.fr-20070408140550-8lqmdurmr2s6dbsd line-delta 157114 286 248 :
+matthieu.moy@imag.fr-20070408140932-c2i76xuonvh1m96p line-delta 157400 1185 249 247 :
+stefan@xsteve.at-20070408194143-c6d62f073e2e90b4 line-delta 158585 504 247 250 :
+stefan@xsteve.at-20070409191518-86e9dbe9797e95af line-delta 159089 343 251 :
+stefan@xsteve.at-20070409191838-fa45343952c8b896 line-delta 159432 361 252 :
+stefan@xsteve.at-20070411191702-0c907a351c8cf4f7 line-delta 159793 372 253 :
+stefan@xsteve.at-20070411192255-79e95fe44be37230 line-delta 160165 279 254 :
+stefan@xsteve.at-20070412190056-3acb5091ca2b333c fulltext 160444 7511 255 :
+matthieu.moy@imag.fr-20070413090504-i7zie5g2py04733f fulltext 167955 7451 250 :
+matthieu.moy@imag.fr-20070413090716-zlbjihw7gv0ivqxv line-delta 175406 778 257 256 :
+matthieu.moy@imag.fr-20070417194537-d8nj9l1v346113uk line-delta 176184 282 258 :
+stefan@xsteve.at-20070413194505-fd03cac7f28c4ad8 line-delta 176466 342 256 :
+stefan@xsteve.at-20070413200333-803a056e1b584d3b line-delta 176808 498 260 258 :
+stefan@xsteve.at-20070416183248-767623ff91ddc86c line-delta 177306 341 261 :
+stefan@xsteve.at-20070419181531-3719aec56b901778 line-delta 177647 279 262 :
+stefan@xsteve.at-20070419182536-6cfe89025e3214c4 line-delta 177926 308 263 259 :
+stephe@acs1100007992-20070421151739-5uew10xh0a91qsbz line-delta 178234 283 264 :
+stephe@acs1100007992-20070421155157-9ah8eexvc66u8axp line-delta 178517 277 265 :
+stephe@acs1100007992-20070421162316-bdj86hee0znesfb6 line-delta 178794 428 266 :
+stefan@xsteve.at-20070421195412-43d377ba8adc1a46 line-delta 179222 636 264 267 :
+ats@acm.org-20070422163452-q11o2h1b8914pk4h line-delta 179858 332 268 :
+ats@acm.org-20070422165525-vvqas34krj8oeokh line-delta 180190 276 269 :
+ats@acm.org-20070423022908-bahkf0h4tweguypw line-delta 180466 335 270 :
+ats@acm.org-20070423024342-wuxj5tte66ezazg2 line-delta 180801 274 271 :
+stefan@xsteve.at-20070423202915-2a49a400ff222c8b line-delta 181075 484 268 272 :
+stefan@xsteve.at-20070425185349-72013f0006912829 line-delta 181559 275 273 :
+ohler+mtn@fastmail.net-20070422182454-upr0xhy2z2q5aq32 line-delta 181834 290 268 :
+ohler+mtn@fastmail.net-20070422183414-xi50vjbcccsrezv1 line-delta 182124 405 275 :
+ohler+mtn@fastmail.net-20070424114213-siamme4ih8cwke60 line-delta 182529 294 276 :
+ohler+mtn@fastmail.net-20070424115413-qy6wheg6cska4dub line-delta 182823 289 277 :
+ohler+mtn@fastmail.net-20070424120055-fkpei14zvlk5svrr line-delta 183112 294 278 :
+ohler+mtn@fastmail.net-20070425224500-ja7l1wdtjogi464r line-delta 183406 579 279 274 :
+ohler+mtn@fastmail.net-20070427201535-27r0v2t51k5sw3r1 line-delta 183985 375 280 :
+ohler+mtn@fastmail.net-20070427202919-a9uzynarmssfinkt line-delta 184360 286 281 :
+ohler+mtn@fastmail.net-20070427204051-1cfck6apyz98vpoz line-delta 184646 288 282 :
+ohler+mtn@fastmail.net-20070427204647-oqurn9395kgunppo line-delta 184934 361 283 :
+ohler+mtn@fastmail.net-20070428131455-w19tlohi38d9vt8z line-delta 185295 294 284 :
+ohler+mtn@fastmail.net-20070428143605-3lcurd6foxtl8u5h line-delta 185589 301 285 :
+ohler+mtn@fastmail.net-20070428144034-6f3f35lu1utg0ooc line-delta 185890 430 286 :
+ohler+mtn@fastmail.net-20070428184941-abfvw8glp8kgb9ao line-delta 186320 302 287 :
+ohler+mtn@fastmail.net-20070428190246-7azpx4gyjibcpbx3 line-delta 186622 294 288 :
+ohler+mtn@fastmail.net-20070428231426-2eg5fawmoicm5vwb line-delta 186916 295 289 :
+stefan@xsteve.at-20070429200151-ky80pfgkp2y2ygxy line-delta 187211 927 274 290 :
+stefan@xsteve.at-20070429200845-vtsnp0tl8n13gaoa line-delta 188138 274 291 :
+ohler+mtn@fastmail.net-20070429175754-z1jjcwgsascoau98 fulltext 188412 7891 290 :
+ohler+mtn@fastmail.net-20070429180202-uwth0h2psavboz7z line-delta 196303 294 293 :
+ohler+mtn@fastmail.net-20070430103725-pspjf46kkt0rdx9v line-delta 196597 562 294 :
+ohler+mtn@fastmail.net-20070430115634-vgcxb1qxmhtzyexq line-delta 197159 296 295 :
+ohler+mtn@fastmail.net-20070430120106-vbe4ui2nzoxjoje8 line-delta 197455 428 296 :
+ohler+mtn@fastmail.net-20070430151037-hl1n8o9xczygh2t1 line-delta 197883 534 297 :
+ohler+mtn@fastmail.net-20070430151230-08lsgsa224jcnerx line-delta 198417 385 298 :
+ohler+mtn@fastmail.net-20070430151509-ul7pgavie2c2k70d line-delta 198802 282 299 292 :
+ohler+mtn@fastmail.net-20070430155134-e7cxunys6fwuelkc line-delta 199084 373 300 :
+stefan@xsteve.at-20070430195844-cdsdk1h16p7xam2m line-delta 199457 1539 292 301 :
+stephe@acs1100007992-20070422005251-7uiokhff6k2f60pd line-delta 200996 657 267 :
+stephe@acs1100007992-20070422014002-4bcouq6o2p0ddm4i line-delta 201653 367 303 :
+stephe@acs1100007992-20070422083625-6xdn0h3r319mra8s line-delta 202020 278 304 268 :
+stephe@acs1100007992-20070430002044-vtqhvbvhn7lh3m9v line-delta 202298 367 305 :
+stephe@acs1100007992-20070430003311-mgw5chuzbri7wlle line-delta 202665 1272 306 292 :
+stephe@acs1100007992-20070502085141-8cdam6085h1ipt0s line-delta 203937 289 307 :
+stephe@acs1100007992-20070502092041-k2hk64u70jmosa0v line-delta 204226 1516 308 302 :
+stephe@acs1100007992-20070502093747-7z6anf79qa4j2m3a line-delta 205742 291 309 :
+stefan@pyramide-20070503195019-fhv4x1tvutlq1xzv line-delta 206033 277 302 :
+stefan@pyramide-20070503201827-yivu0di52d4bvkjr line-delta 206310 978 311 310 :
+stefan@xsteve.at-20070507191723-54yr01gwz0301t83 line-delta 207288 275 312 :
+stefan@xsteve.at-20070507192823-acamrd7wr2b1gq9g line-delta 207563 499 313 :
+stefan@xsteve.at-20070508200329-1amnc60pi0cl4sqs fulltext 208062 8045 314 :
+stephe@acs1100007992-20070509083650-ipm2tadt56el87k2 fulltext 216107 7934 310 :
+stephe@acs1100007992-20070509084546-mbushx85rd6or0ad line-delta 224041 281 316 :
+stephe@acs1100007992-20070509090316-d10pnh1odwm3cqya line-delta 224322 779 317 315 :
+stefan@xsteve.at-20070509192352-08edz0ypiag3jj7a line-delta 225101 287 315 :
+stefan@xsteve.at-20070509192758-lyq5a6xjhfjx33fr line-delta 225388 983 319 318 :
+stefan@xsteve.at-20070510184907-pu9i1hthswq9y77o line-delta 226371 279 320 :
+stefan@xsteve.at-20070511203319-sxdym5uzrgidftaw line-delta 226650 404 321 :
+stefan@xsteve.at-20070516191756-qrkt3vlzl6pbwh94 line-delta 227054 284 322 :
+stefan@xsteve.at-20070517192007-t4odzq8jpadyfms1 line-delta 227338 344 323 :
+stefan@xsteve.at-20070524175320-eez0nxdgxs4b1p21 line-delta 227682 280 324 :
+stefan@xsteve.at-20070524175744-ixr0nv7ail6iql5n line-delta 227962 274 325 :
+takuzo.ohara@gmail.com-20070602152542-nv8ivqwpxrfuvlah line-delta 228236 259 326 :
+takuzo.ohara@gmail.com-20070603124032-3my7jazf6ue3z2p4 line-delta 228495 284 327 :
+takuzo.ohara@gmail.com-20070603124804-7fshuk5brvw494ev line-delta 228779 289 328 :
+takuzo.ohara@gmail.com-20070603124943-f6ffokuclef7eqno line-delta 229068 289 329 :
+takuzo.ohara@gmail.com-20070603125215-h0a0qjhme95nkt8x line-delta 229357 350 330 :
+takuzo.ohara@gmail.com-20070603125628-gkt17yfwhku91zb9 line-delta 229707 360 331 :
+takuzo.ohara@gmail.com-20070603125730-hc709n3b5irc7mpv line-delta 230067 360 332 :
+takuzo.ohara@gmail.com-20070604142622-wywyh6l6kulq5mby line-delta 230427 299 333 :
+takuzo.ohara@gmail.com-20070604142803-ku9hqu06rxs8ktnt line-delta 230726 289 334 :
+stefan@xsteve.at-20070605182108-shsr0za86ruk88ww line-delta 231015 796 326 335 :
+stefan@xsteve.at-20070605182224-fqncovpyy2yl2pm7 line-delta 231811 278 336 :
+stefan@xsteve.at-20070605182300-s77hhoohttsu0chl line-delta 232089 277 337 :
+stefan@xsteve.at-20070605193152-1yihk5d446wbs30l line-delta 232366 286 338 :
+stefan@xsteve.at-20070607185544-av4eoilfh8nt4wws line-delta 232652 273 339 :
+stefan@xsteve.at-20070607190230-88r20pq76r5i0nlp line-delta 232925 370 340 :
+stefan@xsteve.at-20070610075730-2ar2q8krnt0l5s84 line-delta 233295 417 341 :
+ohler+mtn@fastmail.net-20070509203027-3vze22j1u4n2atij line-delta 233712 288 301 :
+ohler+mtn@fastmail.net-20070509203245-tzn2ycko9l1538z1 line-delta 234000 1820 343 320 :
+ohler+mtn@fastmail.net-20070511201507-9zajkw0u5ypyvqfh line-delta 235820 316 344 321 :
+ohler+mtn@fastmail.net-20070511201715-o9xsjzifj32afd7b line-delta 236136 290 345 :
+ohler+mtn@fastmail.net-20070516120903-0f5o48bkf10p8pzx line-delta 236426 288 346 :
+ohler+mtn@fastmail.net-20070614144751-u4d50rvtbty2s05r line-delta 236714 1704 347 342 :
+ohler+mtn@fastmail.net-20070614144932-3q1lg65oh27qs3p6 line-delta 238418 307 348 :
+ohler+mtn@fastmail.net-20070614145818-vevp29za6epld36y fulltext 238725 8489 349 :
+ohler+mtn@fastmail.net-20070614180620-glz3bkva269eb3d5 line-delta 247214 284 350 :
+stefan@xsteve.at-20070614190004-na8zv9yxa32nmohc line-delta 247498 302 342 :
+jet@gps06-20070615115445-9j8o1dh3589709te line-delta 247800 308 352 :
+jet@gps06-20070615124005-alxfm1pa927j9poq line-delta 248108 269 353 :
+jet@gps06-20070617144534-dco2jlr2v5i98pf8 line-delta 248377 277 354 :
+matthieu.moy@imag.fr-20070616142818-on52fevq8aw8ozf3 line-delta 248654 284 321 :
+matthieu.moy@imag.fr-20070616142859-gn0uhaoo3tnmj804 line-delta 248938 1730 356 352 :
+mwolson@member.fsf.org-20070618022041-if2rycrxv96yx2iw line-delta 250668 284 352 :
+mwolson@member.fsf.org-20070618022135-r231a3i2j979yjw3 line-delta 250952 293 358 :
+mwolson@member.fsf.org-20070618022715-uuiaj8gib3e7rab6 line-delta 251245 299 359 :
+mwolson@member.fsf.org-20070618023118-0gvw40ed0ybreq5r line-delta 251544 317 360 357 :
+mwolson@member.fsf.org-20070618023758-ijdzwipqf0w9j4oj line-delta 251861 289 361 :
+mwolson@member.fsf.org-20070618024626-wmwvr8215nwgyjiy line-delta 252150 533 362 355 :
+ohler+mtn@fastmail.net-20070617202915-hix8q3snu2wjfm78 line-delta 252683 295 351 :
+ohler+mtn@fastmail.net-20070617223905-3zhjrapaclou5v88 line-delta 252978 546 364 :
+ohler+mtn@fastmail.net-20070617224221-7vtduk5uu77wf6bw line-delta 253524 308 365 352 :
+ohler+mtn@fastmail.net-20070617225048-2d1m72cxpdw13jit line-delta 253832 317 366 357 :
+ohler+mtn@fastmail.net-20070618082905-pxb0jbs4eke6kb43 line-delta 254149 871 367 363 :
+ohler+mtn@fastmail.net-20070618085743-55ujsbe8vwtwpdce line-delta 255020 296 368 :
+ohler+mtn@fastmail.net-20070618091655-2c6076wr0diagdmp line-delta 255316 295 369 :
+ohler+mtn@fastmail.net-20070618102354-xbpwuqyszksibu6x line-delta 255611 418 370 :
+mwolson@member.fsf.org-20070618115225-8ezvquj94ldn9dbi fulltext 256029 8548 363 371 :
+mwolson@member.fsf.org-20070618115441-pytuuqo7anwy3y0r line-delta 264577 288 372 :
+stefan@xsteve.at-20070618180217-j7nufqmt2p1e3kqq line-delta 264865 1644 352 373 :
+mwolson@member.fsf.org-20070619033617-jik0yzmf6bbtvta5 line-delta 266509 320 374 374 :
+mwolson@member.fsf.org-20070619035720-elcfswoa14mu4nax fulltext 266829 8562 375 :
+mwolson@member.fsf.org-20070619171215-uw39sormn1vo370k line-delta 275391 287 376 :
+mwolson@member.fsf.org-20070619185048-kxbcboqxejzp302h line-delta 275678 258 377 :
+mwolson@member.fsf.org-20070621024248-0i9n89tbughmbokp line-delta 275936 288 378 :
+mwolson@member.fsf.org-20070621050522-sk0jidzyq56eye9q line-delta 276224 287 379 :
+stefan@xsteve.at-20070621193252-xvk3u4mwn6we54j4 line-delta 276511 784 374 380 :
+stefan@xsteve.at-20070626182130-cu89g8mdoulmfkmu fulltext 277295 8586 381 :
+stefan@xsteve.at-20070627182443-bvhxytcpy731zmgr line-delta 285881 347 382 :
+stefan@xsteve.at-20070628182835-ufolrrknsn1wwb74 line-delta 286228 461 383 :
+stephe@lm000850872-20070520125907-pmye932d3bcm43qy line-delta 286689 839 318 324 :
+stephe@lm000850872-20070623090937-em22at7lqlruqdbc line-delta 287528 2463 385 381 :
+ohler+mtn@fastmail.net-20070629101856-twkxijmq5i7z0xfw line-delta 289991 295 371 :
+ohler+mtn@fastmail.net-20070629102050-kgi5b6sbfuixkku3 line-delta 290286 954 387 386 :
+ohler+mtn@fastmail.net-20070629102206-pyt1k9gltphv39jx line-delta 291240 659 388 384 :
+stefan@xsteve.at-20070629190034-xk56l2pp9d9zpuqx line-delta 291899 568 384 389 :
+stefan@xsteve.at-20070629190423-7kfft03q5m1awldl line-delta 292467 281 390 :
+stefan@xsteve.at-20070706185905-rhu2bd7st14ftb9r line-delta 292748 282 391 :
+stefan@xsteve.at-20070706191300-s1m9stqnindzllvr line-delta 293030 279 392 :
+stefan@xsteve.at-20070706192559-cjope5gytd5jcbt7 line-delta 293309 277 393 :
+stefan@xsteve.at-20070709185523-dm2rq6yu2o4rwoyg line-delta 293586 346 394 :
+stefan@xsteve.at-20070709185602-ul1vxnl2w3n726bu line-delta 293932 278 395 :
+stefan@xsteve.at-20070709185647-83j35hrqtckl30qm line-delta 294210 281 396 :
+stefan@xsteve.at-20070711185858-m7xihhe3ny17qjw7 line-delta 294491 279 397 :
+stefan@xsteve.at-20070711190739-s9oabhjeitizo4kj line-delta 294770 348 398 :
+stefan@xsteve.at-20070712191909-7i7unal1lir13dkd line-delta 295118 280 399 :
+stefan@xsteve.at-20070712192605-4ke4e3bhsx4jcziq line-delta 295398 282 400 :
+matthieu.moy@imag.fr-20070716120740-5r0reiye7k0k188t line-delta 295680 281 401 :
+nebuchadnezzar@asgardr.info-20070106141131-10a06bfe359dd92f line-delta 295961 1167 206 227 :
+nebuchadnezzar@asgardr.info-20070204152033-902099af4444aef8 line-delta 297128 316 403 232 :
+nebuchadnezzar@asgardr.info-20070715082045-xh027z2izolmvow9 fulltext 297444 8640 404 401 :
+nebuchadnezzar@asgardr.info-20070715082156-d20jy2kimrfb39bt line-delta 306084 284 405 :
+stefan@xsteve.at-20070716184045-zxccx60081dknlji line-delta 306368 313 401 406 :
+stefan@xsteve.at-20070716185931-px4i25m7w5uvc9ys line-delta 306681 309 407 402 :
+stefan@xsteve.at-20070716200634-kzaucmbefceid7ex line-delta 306990 284 408 :
+stefan@xsteve.at-20070716201429-jbx9pmepkn8if41b line-delta 307274 414 409 :
+stefan@xsteve.at-20070717190543-m6ob4m6hbgguqv8j line-delta 307688 343 410 :
+stefan@xsteve.at-20070717200637-fb5ox7or2gt3jjzb line-delta 308031 284 411 :
+mwolson@gnu.org-20070718204235-h9mbv02quips6qfp line-delta 308315 282 412 :
+mwolson@gnu.org-20070718035934-3vqlbp4ko5uj18av line-delta 308597 315 412 :
+stefan@xsteve.at-20070718184943-xibe1yip56cp6jay line-delta 308912 532 412 :
+stefan@xsteve.at-20070718191042-5kg6b31w0an0lp5f line-delta 309444 348 415 :
+stefan@xsteve.at-20070718193941-5p58pnqwj5wpanl8 line-delta 309792 415 416 :
+stefan@xsteve.at-20070718194231-2juxintpzw3ujbxz line-delta 310207 347 417 414 :
+mwolson@gnu.org-20070718204834-0jamfcu70hsydkuw line-delta 310554 299 418 413 :
+ohler+mtn@fastmail.net-20070707201249-6cw92v0dd3wtm9x3 line-delta 310853 294 389 :
+ohler+mtn@fastmail.net-20070718204105-fwzyoh449qwbn2m6 line-delta 311147 543 420 394 :
+ohler+mtn@fastmail.net-20070718212643-p3zhks6u20dxbxs6 line-delta 311690 295 421 :
+ohler+mtn@fastmail.net-20070718213355-8rmfaydq9orlyom3 line-delta 311985 1604 422 418 :
+ohler+mtn@fastmail.net-20070718214103-tsz7dvgx6sp6al15 line-delta 313589 351 423 :
+ohler+mtn@fastmail.net-20070718214846-x0ajrcjd306hz6ln fulltext 313940 8540 424 419 :
+ohler+mtn@fastmail.net-20070718215707-lvsok8o78hd2f9zz line-delta 322480 287 425 :
+ohler+mtn@fastmail.net-20070718225221-yd6fmxf6iorlffvu line-delta 322767 296 426 :
+ohler+mtn@fastmail.net-20070718235102-9vm9u1cr8fisz6lz line-delta 323063 349 427 :
+ohler+mtn@fastmail.net-20070719085833-8oshqvasdhiawoz2 line-delta 323412 292 428 :
+stefan@xsteve.at-20070719192838-ca3evp0rnhw51lkw line-delta 323704 973 418 429 :
+mwolson@gnu.org-20070723184436-3nm86oqvkx0xxc1z fulltext 324677 8563 430 :
+stefan@xsteve.at-20070723191637-pvw304evj2sjyvww fulltext 333240 8593 430 :
+stefan@xsteve.at-20070723201419-nrblfm9yjuwf07tn line-delta 341833 345 432 431 :
+mwolson@gnu.org-20070723210109-126nj8gn3w9ctoie line-delta 342178 462 431 :
+mwolson@gnu.org-20070723210310-kbt7lk3xjh5g2ijx line-delta 342640 307 434 433 :
+stefan@xsteve.at-20070724180956-ryg37eoitlgodwfz line-delta 342947 494 433 435 :
+stefan@xsteve.at-20070724181037-vkwvalbjvc8rol0p line-delta 343441 280 436 :
+stefan@xsteve.at-20070724181128-uzbvr5s1h2cu2d5c line-delta 343721 342 437 :
+stefan@xsteve.at-20070724181410-emwrkvhx9ekcjd5b line-delta 344063 288 438 :
+mwolson@gnu.org-20070802042544-s8rycjtgjrczbfmm line-delta 344351 284 439 :
+mwolson@gnu.org-20070802050847-t01jacddao8gbv3y line-delta 344635 281 440 :
+stefan@xsteve.at-20070805191235-5srza5338th64gox line-delta 344916 396 439 441 :
+mwolson@gnu.org-20070803132223-muccvr5rx6zhxxc0 line-delta 345312 279 441 :
+mwolson@exabyte-20070808175455-bff9tcxtug43zd1y line-delta 345591 155 443 442 :
+mwolson@exabyte-20070808192433-yplxzvwnmmjxo3pa line-delta 345746 341 444 :
+mwolson@exabyte-20070808195853-6zhkvzq98deot6n8 line-delta 346087 409 445 :
+mwolson@exabyte-20070808200355-oxzkmyfdh4bkkqrl line-delta 346496 284 446 :
+mwolson@gnu.org-20070810192129-an00x61deoa24b6u line-delta 346780 278 447 :
+mwolson@gnu.org-20070810193158-wvky5z7zhaefsco2 line-delta 347058 281 448 :
+mwolson@gnu.org-20070812213028-04j14nhf2xnxvhj3 line-delta 347339 281 449 :
+mwolson@gnu.org-20070812214302-47fkr9zg0mw1h9d1 line-delta 347620 281 450 :
+mwolson@gnu.org-20070812215441-c1s4b36p336vfga0 line-delta 347901 651 451 :
+stefan@xsteve.at-20070808203518-svx90v5zwp1s3x5c line-delta 348552 647 442 447 :
+stefan@xsteve.at-20070812201116-t8hgns39h0gux03i line-delta 349199 310 453 449 :
+stephe@lm000850872-20070709235608-ipu65t5lao85rpbv line-delta 349509 670 386 :
+stephe@lm000850872-20070710022541-tswf2xed3yj7uuzb line-delta 350179 369 455 :
+stephe@lm000850872-20070710213915-ygdy9w32cmqkhccx line-delta 350548 664 456 :
+stephe@lm000850872-20070712005411-nqdeaoxcqpm0w3uj line-delta 351212 494 457 :
+stephe@lm000850872-20070713000607-22k5yiewvc0a71kk line-delta 351706 490 458 :
+stephe@lm000850872-20070715094211-27ilk4qihtxrhf2c line-delta 352196 368 459 :
+stephe@lm000850872-20070721174351-wr9vtpmjtn5t5no3 line-delta 352564 369 460 :
+stephe@lm000850872-20070807132119-xmkfqfqwud5nx5df line-delta 352933 432 461 :
+stephe@lm000850872-20070812150809-0v8xt43rs27xwq61 fulltext 353365 8657 462 453 :
+stephe@lm000850872-20070812152830-6b6dhxosynhp4h3i line-delta 362022 297 463 :
+stephe@lm000850872-20070812223304-a2xm7otgezacnqrq line-delta 362319 312 464 454 :
+stefan@xsteve.at-20070813183610-mexvg7avxkypbynb line-delta 362631 941 454 465 :
+stefan@xsteve.at-20070813184102-0isc18zz6d40su94 line-delta 363572 784 466 452 :
+matthieu.moy@imag.fr-20070819182434-ot3zwyrl3a5lwi2v line-delta 364356 487 467 :
+matthieu.moy@imag.fr-20070819183352-q7nb9rn3oljm2k0s line-delta 364843 287 468 :
+matthieu.moy@imag.fr-20070819192527-3yaix7ot74vuzi0p line-delta 365130 344 469 :
+matthieu.moy@imag.fr-20070819200000-cxh78ou3bzttpqfz line-delta 365474 354 470 :
+matthieu.moy@imag.fr-20070819201848-d77ujw2zqr2p839r line-delta 365828 285 471 :
+matthieu.moy@imag.fr-20070819210119-lbjjtvk18a9ojzlx line-delta 366113 352 472 :
+matthieu.moy@imag.fr-20070819210216-9w000mnnaldjh0oy line-delta 366465 344 473 :
+matthieu.moy@imag.fr-20070820155411-1sls2d3425uc0yor line-delta 366809 344 474 :
+matthieu.moy@imag.fr-20070820155908-qgf8765bq3twqzxm line-delta 367153 287 475 :
+matthieu.moy@imag.fr-20070821125748-l9ua74tgoq6rfzvy line-delta 367440 401 476 :
+mwolson@gnu.org-20070815184911-2f23jlji94ol1v8h line-delta 367841 281 467 :
+mwolson@gnu.org-20070815211358-2sx0vuf4iok26fqx line-delta 368122 287 478 :
+mwolson@gnu.org-20070815233537-eza525iyg34z5lw1 line-delta 368409 409 479 :
+mwolson@gnu.org-20070816045006-4i7dq1e0nkjmnehf line-delta 368818 281 480 :
+stefan@xsteve.at-20070816193656-n07vr981tr5j9pnn line-delta 369099 551 467 481 :
+mwolson@gnu.org-20070820013348-mm8sez2noofe9kzj line-delta 369650 282 482 :
+mwolson@gnu.org-20070820015308-gql9h6d7uhik2efr line-delta 369932 828 483 474 :
+mwolson@gnu.org-20070820020014-f0kyy9fv2hp5pc5s line-delta 370760 759 484 :
+mwolson@gnu.org-20070820102628-b2b3n52jm2qzbqn2 line-delta 371519 283 485 :
+mwolson@gnu.org-20070820103023-dcvgufisyzkxb96y line-delta 371802 284 486 :
+stefan@xsteve.at-20070820191732-4b1c6t02uzznv8a3 line-delta 372086 845 482 476 :
+stefan@xsteve.at-20070820192314-71p23n2ys10l3x16 line-delta 372931 870 488 487 :
+stefan@xsteve.at-20070820192406-telq4diss9rxuz4x line-delta 373801 341 489 :
+stefan@xsteve.at-20070821183841-hekf8beer6tyih9w line-delta 374142 278 490 :
+stefan@xsteve.at-20070821190229-8wp5gxwqyjzac7r6 line-delta 374420 441 491 477 :
+stephe@lm000850872-20070821103158-kzsl8wvokdc82ij3 line-delta 374861 295 465 :
+stephe@lm000850872-20070821105451-4l0c8kyy524oisxt line-delta 375156 1954 493 490 :
+stephe@lm000850872-20070824093322-m67jq5ql0aolw4de line-delta 377110 468 494 492 :
+stephe@lm000850872-20070824105703-1rgazzfhaiywmahk line-delta 377578 284 495 :
+matthieu.moy@imag.fr-20070824103648-j8vyynjsfrdq9q6e line-delta 377862 288 492 :
+mwolson@gnu.org-20070823214756-j1pq4zju3hsxnfnb line-delta 378150 345 492 :
+stefan@xsteve.at-20070824190954-d1jctopq328ay3kr line-delta 378495 374 492 498 :
+stefan@xsteve.at-20070824192714-j9qrv6mtzfqwa7j2 line-delta 378869 317 499 497 :
+stefan@xsteve.at-20070824193038-qvgng5m65inm3vs8 fulltext 379186 8716 500 496 :
+stefan@xsteve.at-20070824194057-9ynx8diy1tkwcalb line-delta 387902 274 501 :
+stephe@lm000850872-20070825130101-elblmrvrwdeedv93 line-delta 388176 458 502 :
+stephe@lm000850872-20070826113625-4akeyve491yevzb8 line-delta 388634 538 503 :
+stephe@lm000850872-20070827113148-e1f8e2nfm2tec5dd line-delta 389172 343 504 :
+nebuchadnezzar@asgardr.info-20070718085822-0ghvdzeryiu7f5rh line-delta 389515 705 406 412 :
+nebuchadnezzar@asgardr.info-20070719113200-defn5nsoey9afbzn line-delta 390220 945 506 418 :
+nebuchadnezzar@asgardr.info-20070802114759-15ztfb42fls65k8x line-delta 391165 1615 507 439 :
+nebuchadnezzar@asgardr.info-20070802115357-lpeocyuohwz0w82e line-delta 392780 404 508 441 :
+nebuchadnezzar@asgardr.info-20070815113205-gd8w1d79h5skz80a line-delta 393184 1705 509 467 :
+nebuchadnezzar@asgardr.info-20070816203343-pnbsre3tdmk2pnfh line-delta 394889 557 510 482 :
+nebuchadnezzar@asgardr.info-20070821154441-x0dffnctwx9hjp26 line-delta 395446 1483 511 490 :
+nebuchadnezzar@asgardr.info-20070823230541-6mqdspy5b9xq1zjx line-delta 396929 473 512 492 :
+nebuchadnezzar@asgardr.info-20070826155506-ir30hg9gb6wlnu06 line-delta 397402 363 513 :
+nebuchadnezzar@asgardr.info-20070826155823-gquurxm017ool15v line-delta 397765 762 514 502 :
+nebuchadnezzar@asgardr.info-20070826211516-0vh5radg2sr6gr84 fulltext 398527 8707 515 :
+mwolson@gnu.org-20070823220839-5l1w9ex3aeh55vgj line-delta 407234 284 498 :
+mwolson@gnu.org-20070825044235-hmklzgcnqtpfj30u fulltext 407518 8735 517 502 :
+mwolson@gnu.org-20070826221021-f005580bl8mfxqfn line-delta 416253 392 518 515 :
+mwolson@gnu.org-20070826224333-1eersp502zl6cal6 line-delta 416645 345 519 :
+mwolson@gnu.org-20070826224729-u6g7k7fdpwxsrbs8 line-delta 416990 303 520 516 :
+mwolson@gnu.org-20070826231615-21wo5kxqwq7wo609 line-delta 417293 284 521 :
+mwolson@gnu.org-20070826231923-18suzw0bvvi0hk1f line-delta 417577 343 522 :
+mwolson@gnu.org-20070826232424-792m4rhuj3gawsmc line-delta 417920 494 523 503 :
+mwolson@gnu.org-20070827000344-1m4fbwhf2k7hi21y line-delta 418414 283 524 :
+mwolson@gnu.org-20070827012723-e6vw01vrdsqhu1z5 line-delta 418697 283 525 :
+mwolson@gnu.org-20070827015443-0pks08w9x56k90p7 line-delta 418980 280 526 :
+mwolson@gnu.org-20070827015715-0q2zsz9d2sl7i33y line-delta 419260 281 527 :
+stefan@xsteve.at-20070827182540-mmw3uey5hug52hd2 line-delta 419541 1317 502 528 :
+stefan@xsteve.at-20070827183216-9s3bspqzj2m6yzbq line-delta 420858 710 529 505 :
+stefan@xsteve.at-20070827192628-uyjiz0gqrb4k097q line-delta 421568 280 530 :
+stephe@lm000850872-20070831195430-2vwtcj8qqoqwo6ll line-delta 421848 537 531 :
+stephe@lm000850872-20070902162400-9m1ksbb9f52i4ys0 line-delta 422385 485 532 :
+stephe@lm000850872-20070902163206-eux3vm5wscm7a3ka line-delta 422870 294 533 :
+mwolson@gnu.org-20070902190123-gko7nj32121irtz0 line-delta 423164 591 534 :
+mwolson@gnu.org-20070902193025-53gw922pve1w8u2y line-delta 423755 470 535 :
+mwolson@gnu.org-20070902213404-no5pojz6ghpuws4o line-delta 424225 280 536 :
+mwolson@gnu.org-20070902214707-cax7z4k6jmkkz5es line-delta 424505 355 537 :
+mwolson@gnu.org-20070903001142-utglqacvh7bevf0i line-delta 424860 408 538 :
+mwolson@gnu.org-20070903003820-kz3iij5b8yc3iriq line-delta 425268 284 539 :
+mwolson@gnu.org-20070903020753-m0dbgw5ugaikw2e8 line-delta 425552 344 540 :
+mwolson@gnu.org-20070903024153-f5o756l5mj4cept2 line-delta 425896 275 541 :
+mwolson@gnu.org-20070903055828-q1nw57s1souwy3sd line-delta 426171 767 542 :
+mwolson@gnu.org-20070903065012-309numut1zchd2v3 line-delta 426938 344 543 :
+matthieu.moy@imag.fr-20070903133136-qnglco4e6x01ff5t line-delta 427282 285 544 :
+mwolson@gnu.org-20070903171159-ssebms4bhk4q0pnx line-delta 427567 283 545 :
+mwolson@gnu.org-20070903193842-aklkcvy4cgu3540g line-delta 427850 281 546 :
+mwolson@gnu.org-20070904031904-6v5imwbc972k8ecj fulltext 428131 8598 547 :
+mwolson@gnu.org-20070904032147-ry3qj6flk88y99ks line-delta 436729 285 548 :
+stefan@xsteve.at-20070902183219-qslowq2i2xyzf7wf line-delta 437014 714 531 534 :
+stefan@xsteve.at-20070902194041-ugx1n1jmktalsr5z line-delta 437728 886 550 536 :
+stefan@xsteve.at-20070903184247-1m67y1bb8e6lapf2 line-delta 438614 1136 551 544 :
+stefan@xsteve.at-20070903190214-ayj971jpogwoa8u7 line-delta 439750 314 552 545 :
+stephe@lm000850872-20070903230858-vlz3340qljpflns5 line-delta 440064 284 534 :
+stephe@lm000850872-20070903231606-qqzfwtgt86k19y48 line-delta 440348 1549 554 553 :
+stephe@lm000850872-20070903235225-h9r8r4279ndremjr line-delta 441897 281 555 :
+stefan@xsteve.at-20070904183258-mdlwafwkc176077l line-delta 442178 310 553 556 :
+stefan@xsteve.at-20070904183441-su0n4o8novobrv1q line-delta 442488 286 557 :
+stefan@xsteve.at-20070904184324-jt5o6j6361l75g8y line-delta 442774 313 558 549 :
+mwolson@gnu.org-20070905225127-9kb6borulduo1l52 line-delta 443087 279 549 :
+mwolson@gnu.org-20070905225226-3wi3hurubprxk820 line-delta 443366 410 560 559 :
+stefan@xsteve.at-20070906181247-mauh0esornhbh3n7 line-delta 443776 282 559 :
+stefan@xsteve.at-20070906182208-dscvqkpr9kbykkrj line-delta 444058 311 562 561 :
+stephe@lm000850872-20070907101734-fl4kxr6izo33g2qc line-delta 444369 365 556 :
+stephe@lm000850872-20070907102607-8zs1e3isnthuasid line-delta 444734 281 564 :
+stephe@lm000850872-20070907102757-8xp9ic0c82803tdu line-delta 445015 572 565 563 :
+stephe@lm000850872-20070907115619-hbrno88h2vt0xy4g line-delta 445587 472 566 :
+stephe@lm000850872-20070907125550-sdejx9otpzma1cjt line-delta 446059 294 567 :
+mwolson@gnu.org-20070908175821-4nwdripr5lu9428e line-delta 446353 279 561 :
+mwolson@gnu.org-20070908175958-vbg85f6y1zr6irkw line-delta 446632 695 569 568 :
+mwolson@gnu.org-20070908181337-aefplzutk9rzc4yt line-delta 447327 315 570 :
+mwolson@gnu.org-20070908190515-jahetel0m1f1obm6 line-delta 447642 338 571 :
+mwolson@gnu.org-20070908202314-fvusir0qj70womxc line-delta 447980 280 572 :
+mwolson@gnu.org-20070908210059-2qmahgn18st9jpy9 line-delta 448260 354 573 :
+mwolson@gnu.org-20070908210701-a0jgsajvhnbrl66b line-delta 448614 284 574 :
+mwolson@gnu.org-20070908211148-5rlxgvqh70e2wb9g line-delta 448898 284 575 :
+mwolson@gnu.org-20070909045038-lyb4egq7bgajop1g line-delta 449182 317 576 :
+mwolson@gnu.org-20070909045523-pnx9v3tuacf0as10 line-delta 449499 279 577 :
+stephe@lm000850872-20070909024641-g630neu6clo2yl3a line-delta 449778 931 568 :
+stefan@xsteve.at-20070909071106-3waiz68i5h8q6avs line-delta 450709 1036 563 579 :
+stefan@xsteve.at-20070909071833-k4gs4yzq2o3m0ghp line-delta 451745 745 580 578 :
+stefan@xsteve.at-20070909081900-zkctdbonmrwqi46a fulltext 452490 8556 581 :
+stefan@xsteve.at-20070909182659-9bfy3ugt8sznfwzc line-delta 461046 282 582 :
+mwolson@gnu.org-20070909160814-t4mt3xsohdxj2ywh line-delta 461328 317 578 :
+mwolson@gnu.org-20070909194244-x1vsxw1orrk9kphg line-delta 461645 1101 584 583 :
+mwolson@gnu.org-20070910001100-uq2gwreuk7picuab line-delta 462746 280 585 :
+mwolson@gnu.org-20070915223103-vnmj24l3vlsk94np line-delta 463026 314 586 :
+mwolson@gnu.org-20070919135324-wwb9rwgjvq352g5d line-delta 463340 315 587 :
+mwolson@gnu.org-20070930030657-7h7jc9t1fp06u9yh line-delta 463655 294 588 :
+mwolson@gnu.org-20070930033655-36xcgc518p67sbmh line-delta 463949 283 589 :
+mwolson@gnu.org-20071003110448-3dhrii5z9hhqxsq3 line-delta 464232 316 590 :
+mwolson@gnu.org-20071003181436-ko3teoozhysdt3vp line-delta 464548 281 591 :
+mwolson@gnu.org-20071005113749-1w5pqmvmldqok2ae line-delta 464829 281 592 :
+mwolson@gnu.org-20071005140417-3w27pc6qm041k48f line-delta 465110 280 593 :
+matthieu.moy@imag.fr-20070911145540-tj7pi4fz8qayq7gi line-delta 465390 290 563 :
+stefan@xsteve.at-20070910193816-9nuz1lmi2fbud94d line-delta 465680 280 583 :
+stefan@xsteve.at-20070910194533-l26300lr4nnv3zs6 line-delta 465960 338 596 :
+stefan@xsteve.at-20070910195104-imek0kd2tc04os0h line-delta 466298 280 597 :
+stefan@xsteve.at-20070910195532-vz4hrws7mc9hsh3p line-delta 466578 454 598 586 :
+stefan@xsteve.at-20070912192118-bgkn564v0y9t9o97 line-delta 467032 321 599 595 :
+matthieu.moy@imag.fr-20070917203812-d2nzpz6jt07kt28o line-delta 467353 499 600 :
+matthieu.moy@imag.fr-20070917211206-kst5er04i188or1n line-delta 467852 349 601 :
+matthieu.moy@imag.fr-20070917212224-qsnxg4g148rhl28m line-delta 468201 286 602 :
+matthieu.moy@imag.fr-20070917213916-ytr7bxancgef8llp line-delta 468487 348 603 :
+matthieu.moy@imag.fr-20070917214450-2w3gvln2yphzqkz5 line-delta 468835 285 604 :
+matthieu.moy@imag.fr-20070920184938-08wuc4lz5jbxfk8d line-delta 469120 586 605 :
+matthieu.moy@imag.fr-20070920191458-mygxc18t098vba2r line-delta 469706 282 606 :
+stefan@xsteve.at-20070918182628-cf20qr1e1indp2ry line-delta 469988 253 600 :
+stefan@xsteve.at-20070918184012-rdqm0lochfn0lqlr line-delta 470241 641 608 605 :
+stefan@xsteve.at-20070918185513-cj2lnpbl0vpc7cy2 line-delta 470882 281 609 :
+stefan@xsteve.at-20070920203522-qr6m4lz0fxamtgi0 line-delta 471163 640 610 607 :
+stefan@xsteve.at-20070920203600-rv4gx5kv02cafp9c line-delta 471803 282 611 :
+stephe@lm000850872-20070921100049-va45tv3g4ysmvw49 line-delta 472085 292 583 :
+stephe@lm000850872-20070921110428-4tle5wq86rl4713n line-delta 472377 1485 613 612 :
+stephe@lm000850872-20070923155618-mpfzz4b8qrnt8bo4 line-delta 473862 290 614 :
+stephe@lm000850872-20070926112132-2l4veol4mdrp9pz7 line-delta 474152 348 615 :
+matthieu.moy@imag.fr-20070922164226-qa1g5yd4eipxjuc4 line-delta 474500 377 607 :
+matthieu.moy@imag.fr-20070925162607-c6ou5v32nmgp9hox line-delta 474877 278 617 :
+stefan@xsteve.at-20070923181945-zv7j6mr4d3r33b4d line-delta 475155 409 612 617 :
+stefan@xsteve.at-20070923183011-scsxm2g8gb7fswdz line-delta 475564 471 619 615 :
+stefan@xsteve.at-20070926184110-lod8fmaf8cx2l2qq line-delta 476035 308 620 618 :
+stefan@xsteve.at-20070928191231-sqcunqwk28onopbo line-delta 476343 377 621 616 :
+stefan@xsteve.at-20070930070038-bwtrhjqs8h6qbkvd line-delta 476720 536 622 590 :
+matthieu.moy@imag.fr-20071003222019-sdhb6rl320k57ww6 line-delta 477256 351 623 :
+matthieu.moy@imag.fr-20071004094832-r2f07e3sl0v6cz7y line-delta 477607 349 624 :
+stefan@xsteve.at-20071004181909-9cdql94tkx56322r line-delta 477956 438 623 592 :
+stefan@xsteve.at-20071004183450-t62nsauu3ng70zn3 line-delta 478394 465 626 625 :
+stefan@xsteve.at-20071008190931-51eb6e753ovhtr4u line-delta 478859 277 627 594 :
+stephe@lm000850872-20070928101219-m3adunyplm8kdcgo line-delta 479136 499 616 621 :
+stephen_leake@stephe-leake.org-20071009152625-3m5mvpqtbd9vcbfs line-delta 479635 1096 629 :
+stephen_leake@stephe-leake.org-20071011163456-us4e4bvnigg6kvxt line-delta 480731 289 630 :
+stephen_leake@stephe-leake.org-20071011163742-xwicl91d52mjexa3 line-delta 481020 846 631 628 :
+stefan@xsteve.at-20071014175003-ln1nnumam2bnobip line-delta 481866 1163 628 632 :
+matthieu.moy@imag.fr-20071015083557-cqw62m6z36gwghlr line-delta 483029 285 633 :
+matthieu.moy@imag.fr-20071015090505-a82n3iqvor7ca36k fulltext 483314 8583 634 :
+matthieu.moy@imag.fr-20071015092452-si0eskdhpb4w728a line-delta 491897 373 635 :
+matthieu.moy@imag.fr-20071015141504-usxu1jhnvhvrtmwi line-delta 492270 881 636 :
+matthieu.moy@imag.fr-20071015150505-7k3rprakumiyq7dr line-delta 493151 283 637 :
+stefan@xsteve.at-20071015185130-he1ujr8qryr7f78k line-delta 493434 1204 633 638 :
+mwolson@gnu.org-20071011132448-ep58xbi9ijw6lcnm line-delta 494638 315 594 :
+mwolson@gnu.org-20071014212552-nagispnghm2pn67r fulltext 494953 8694 640 633 :
+mwolson@gnu.org-20071018233859-uhh8fav87tn4angu line-delta 503647 1211 641 638 :
+mwolson@gnu.org-20071018233920-hk80mn0b2jfe0jpv line-delta 504858 154 642 639 :
+mwolson@gnu.org-20071024150349-1tcwjhj7vol4oe0q line-delta 505012 351 643 :
+mwolson@gnu.org-20071029111302-siwaqz280nbhv7pi line-delta 505363 284 644 :
+mwolson@gnu.org-20071029140542-p3kkxpo1mjee78xs line-delta 505647 522 645 :
+mwolson@gnu.org-20071029140853-kv7cn4qy5phwpwr3 line-delta 506169 286 646 :
+mwolson@gnu.org-20071029141855-s0ngbwj5pp8twrnl line-delta 506455 589 647 :
+mwolson@gnu.org-20071030003025-k91pfm63uj7q842i line-delta 507044 285 648 :
+mwolson@gnu.org-20071030041734-afmk85l5uz9pqlq0 line-delta 507329 285 649 :
+mwolson@gnu.org-20071030141956-cuec70qkb9f5nlx0 line-delta 507614 285 650 :
+mwolson@gnu.org-20071102165842-ua6iw7m75dye1sed line-delta 507899 274 651 :
+matthieu.moy@imag.fr-20071026082429-r7gwft9shx5oy8hx line-delta 508173 263 638 :
+stefan@xsteve.at-20071030185924-lqgkfhqlxohhxtar fulltext 508436 8606 639 651 :
+stefan@xsteve.at-20071030190037-0nyufg2urmtncm01 line-delta 517042 291 654 653 :
+stefan@xsteve.at-20071031202922-murynn39r8km0tpt line-delta 517333 338 655 :
+stefan@xsteve.at-20071031205632-l2yzl9a2mvuhxnjg line-delta 517671 340 656 :
+nebuchadnezzar@asgardr.info-20070902160541-i8d1tyiwsggce6q7 line-delta 518011 1401 516 531 :
+nebuchadnezzar@asgardr.info-20070905155801-po9o13r09vwaacp4 line-delta 519412 2049 658 559 :
+nebuchadnezzar@asgardr.info-20070908111355-vkst96rlw5j1k1zy line-delta 521461 416 659 563 :
+daniel.dehennin@baby-gnu.org-20070913151814-4ccuf9seirl3yjs7 line-delta 521877 1720 660 600 :
+daniel.dehennin@baby-gnu.org-20070920161715-sz1pksk0noiacl8r line-delta 523597 750 661 610 :
+daniel.dehennin@baby-gnu.org-20071014105912-i16fxfaf6b77k0ke line-delta 524347 1679 662 628 :
+daniel.dehennin@baby-gnu.org-20071016092613-br02ui8ba07axzse line-delta 526026 1767 663 639 :
+daniel.dehennin@baby-gnu.org-20071031131913-wys9wym6xpulywqv fulltext 527793 8722 664 655 :
+daniel.dehennin@baby-gnu.org-20071102090853-7i6g17np9offofe5 line-delta 536515 379 665 657 :
+daniel.dehennin@baby-gnu.org-20071102090959-vhzwk2f169dqhyrx line-delta 536894 295 666 :
+daniel.dehennin@baby-gnu.org-20071104144913-fw7rm84uac5vir6y line-delta 537189 307 667 652 :
+stephen_leake@stephe-leake.org-20071031115824-tadc5e8azigmnu21 line-delta 537496 299 633 :
+stephen_leake@stephe-leake.org-20071031123129-l3e6pwsmuphk7o6n fulltext 537795 8605 669 655 :
+stephen_leake@stephe-leake.org-20071101124741-53semuvbfree9ieo line-delta 546400 443 670 :
+stephen_leake@stephe-leake.org-20071102101656-t7twnrdu7ri8zsek line-delta 546843 378 671 657 :
+stephen_leake@stephe-leake.org-20071103110219-wveaivaljd2p66kt line-delta 547221 555 672 :
+stephen_leake@stephe-leake.org-20071104115225-au2nj2gzcz35id8w line-delta 547776 1276 673 :
+stephen_leake@stephe-leake.org-20071104124212-inzxyx7h1uzu70aq line-delta 549052 357 674 :
+stephen_leake@stephe-leake.org-20071104124507-bagrq7q1lyjhf4zn line-delta 549409 292 675 :
+stefan@xsteve.at-20071104194701-sejosioc71u1m2pv line-delta 549701 1714 657 676 :
+stefan@xsteve.at-20071104194833-2xyb0cxqqov0wrpj line-delta 551415 275 677 652 :
+stefan@xsteve.at-20071104194929-k3kqjzeht5c3vza5 line-delta 551690 283 678 668 :
+stefan@xsteve.at-20071105212755-da5t5qogkxud7al6 line-delta 551973 287 679 :
+stefan@xsteve.at-20071105212925-plr1xbgohe2k4yyl line-delta 552260 285 680 :
+stephen_leake@stephe-leake.org-20071105101031-krfqqgbdr3iqbkeo line-delta 552545 290 679 :
+stephen_leake@stephe-leake.org-20071106104459-tyygt34xsy86gjpy line-delta 552835 497 682 :
+stephen_leake@stephe-leake.org-20071106110059-vjr2r0a2krp2xrzj line-delta 553332 294 683 681 :
+stephen_leake@stephe-leake.org-20071111141017-d0bvhzodzexroj1r line-delta 553626 436 684 :
+stephen_leake@stephe-leake.org-20071113124124-urxnrxvmno2pwca8 line-delta 554062 693 685 :
+daniel.dehennin@baby-gnu.org-20071107202438-1dxit3qgb1fgg24q line-delta 554755 1837 668 681 :
+daniel.dehennin@baby-gnu.org-20071107205458-gezowjm4l4ky7rci line-delta 556592 297 687 :
+mwolson@gnu.org-20071108064919-wysgo96152ub68ov line-delta 556889 479 652 657 :
+mwolson@gnu.org-20071108065100-90ln01yblp6wydb8 line-delta 557368 1831 689 681 :
+mwolson@gnu.org-20071108065459-dq4w8t0numxt7bcf line-delta 559199 282 690 :
+stefan@xsteve.at-20071113170449-3vnp35fi46u0tr68 line-delta 559481 310 681 691 :
+stefan@xsteve.at-20071113170605-uip5ddrsasazd2kj line-delta 559791 324 692 688 :
+stefan@xsteve.at-20071113170947-suooc2sr0a0abcrg line-delta 560115 1015 693 686 :
+stephen_leake@stephe-leake.org-20071114095002-agwg2zrug35pnizq line-delta 561130 375 694 :
+stephen_leake@stephe-leake.org-20071114104630-xkg1zhabmp3zy64z line-delta 561505 429 695 :
+daniel.dehennin@baby-gnu.org-20071115064820-tvskkg3g4xk2t6tk line-delta 561934 1140 688 694 :
+daniel.dehennin@baby-gnu.org-20071118112455-7mdlxt8lall8wd84 line-delta 563074 545 697 696 :
+daniel.dehennin@baby-gnu.org-20071118123103-tzwi21vhsp5jxq52 line-delta 563619 286 698 :
+daniel.dehennin@baby-gnu.org-20071118123528-9yigcv4cgaydnh8y line-delta 563905 283 699 :
+daniel.dehennin@baby-gnu.org-20071118123655-2y3n45ebaa3gnibb line-delta 564188 294 700 :
+daniel.dehennin@baby-gnu.org-20071118123736-c4pzk2d9iljk2ufv line-delta 564482 287 701 :
+daniel.dehennin@baby-gnu.org-20071118124048-1g9rfuugv3jjkkr7 line-delta 564769 549 698 702 :
+stephen_leake@stephe-leake.org-20071115131812-ugc9knakw42t38a0 line-delta 565318 611 696 :
+stephen_leake@stephe-leake.org-20071116080918-rcakqj3wnlmmpmzs line-delta 565929 538 704 :
+stephen_leake@stephe-leake.org-20071118174348-4z8ucpvggcejayqa line-delta 566467 905 705 :
+stefan@xsteve.at-20071118191654-7p1okanw2iyuxp10 line-delta 567372 1156 694 706 :
+stefan@xsteve.at-20071118191750-09yi24jmklj3ajs9 line-delta 568528 560 707 703 :
+stephen_leake@stephe-leake.org-20071120083231-96j5x2rvuj4xytlc line-delta 569088 417 706 :
+stephen_leake@stephe-leake.org-20071120123716-846olk2e9v643r2b fulltext 569505 8758 709 708 :
+stefan@xsteve.at-20071121200206-4nfhy1iaiaf5iu1p line-delta 578263 279 708 :
+stefan@xsteve.at-20071121200714-veawzqts0tgabahq line-delta 578542 443 711 710 :
+stephen_leake@stephe-leake.org-20071120133356-3mk2bqnbcc9hqueg line-delta 578985 377 710 :
+stephen_leake@stephe-leake.org-20071122100419-4xynyr8udp6skj4g line-delta 579362 378 713 :
+stephen_leake@stephe-leake.org-20071122112349-oygl0zxz17tw0dmn line-delta 579740 561 714 712 :
+stefan@xsteve.at-20071122185818-xm6iymi918d33gjk line-delta 580301 598 712 715 :
+bojan@bnikolic.co.uk-20071201153605-82d8gx21edytjyzd line-delta 580899 280 716 :
+stephen_leake@stephe-leake.org-20071122161912-cvewaismb5cmjtlt line-delta 581179 863 715 :
+stephen_leake@stephe-leake.org-20071122191616-ipczxuh8ah3hhjty line-delta 582042 600 718 :
+stephen_leake@stephe-leake.org-20071123132405-il53t71izs7hb0y7 line-delta 582642 288 719 :
+stephen_leake@stephe-leake.org-20071123202545-ezh9lsukk0g1o4vr line-delta 582930 298 720 :
+stephen_leake@stephe-leake.org-20071123202617-vpl4dwgdlwrgja3n line-delta 583228 162 721 716 :
+stephen_leake@stephe-leake.org-20071127095917-sgtkdt03dtuqt7k5 line-delta 583390 298 722 :
+stephen_leake@stephe-leake.org-20071201201741-pte9s1pcy0ycp7pi line-delta 583688 427 723 :
+stefan@xsteve.at-20071205193911-m9icm1ewpgxtuzpx line-delta 584115 1198 716 724 :
+stefan@xsteve.at-20071206192622-6w3doygli6kocxqm fulltext 585313 8756 725 717 :
+mwolson@gnu.org-20071206194819-y0s5fxhnyaqvdi7f line-delta 594069 315 726 :
+mwolson@gnu.org-20071209065451-713ml4slokx2224k line-delta 594384 284 727 :
+stephen_leake@stephe-leake.org-20071206092355-hysnxoi1tg981ciz line-delta 594668 290 724 :
+stephen_leake@stephe-leake.org-20071206093824-19wmtm3ys2q6mmm3 line-delta 594958 603 729 :
+stephen_leake@stephe-leake.org-20071206094042-4mbrsgcelz2oxosw line-delta 595561 163 730 725 :
+stephen_leake@stephe-leake.org-20071206100452-mwz9hyb5p4nnmtaf line-delta 595724 288 731 :
+stephen_leake@stephe-leake.org-20071207083706-wotlup11s2g3d1ce line-delta 596012 292 732 :
+stephen_leake@stephe-leake.org-20071207083825-vel9jr5w1b1av6tx line-delta 596304 645 733 :
+stephen_leake@stephe-leake.org-20071207083859-roxlt1i91c6zlscp line-delta 596949 311 734 726 :
+stephen_leake@stephe-leake.org-20071207084841-nmyljmg091ezhjo8 line-delta 597260 290 735 :
+stephen_leake@stephe-leake.org-20071209210800-ccx4jhfz9d3q48un line-delta 597550 357 736 :
+bojan@bnikolic.co.uk-20071202103700-i27yro47quhhs77n fulltext 597907 8776 717 :
+bojan@bnikolic.co.uk-20071202134201-qp3ty4h1ip3srdyk line-delta 606683 281 738 :
+bojan@bnikolic.co.uk-20071206162631-w9tt1obqech3ao2o line-delta 606964 479 739 :
+bojan@bnikolic.co.uk-20071206214505-f5p2ql1vxod85ht1 line-delta 607443 280 740 :
+bojan@bnikolic.co.uk-20071209211433-a33afthneo4tgjia line-delta 607723 280 741 :
+bojan@bnikolic.co.uk-20071211144554-lui5sywl14lgr9f8 line-delta 608003 1210 742 726 :
+stefan@xsteve.at-20071211194241-7osaovb4hq06fi0v line-delta 609213 513 726 743 :
+stefan@xsteve.at-20071211194420-6gj1y1rw56rfx8b8 line-delta 609726 1062 744 737 :
+stefan@xsteve.at-20071211194908-f0orsqnqqeadfynk line-delta 610788 443 745 728 :
+bojan@bnikolic.co.uk-20071213231355-nw2bmamyrtsha89l line-delta 611231 279 746 :
+stefan@xsteve.at-20071209190014-7sgkksf98mhz62dt line-delta 611510 1297 726 741 736 :
+stephen_leake@stephe-leake.org-20071214124442-ijk8m70hlwwp21uw line-delta 612807 640 737 748 :
+stephen_leake@stephe-leake.org-20071214125618-omn4iymr1bl5yh0r line-delta 613447 700 749 746 :
+stefan@xsteve.at-20071216204428-arsrdxvrd9bis07j line-delta 614147 652 746 750 :
+stefan@xsteve.at-20071216204744-jzxk1h9rbwoxy7us line-delta 614799 278 751 747 :
+stephen_leake@stephe-leake.org-20071217100503-9qk29uo79wy8jcpf fulltext 615077 8747 750 :
+stephen_leake@stephe-leake.org-20071217100646-a022madoonj40hy5 line-delta 623824 313 753 752 :
+stephen_leake@stephe-leake.org-20071221082055-7t8si2xyhyyfrh5c line-delta 624137 654 754 :
+stefan@xsteve.at-20071222074214-puobu0p2wpzen07v line-delta 624791 684 752 755 :
+stephen_leake@stephe-leake.org-20071225170733-obm3qqxzs8osj7xk line-delta 625475 667 755 :
+stephen_leake@stephe-leake.org-20071225170953-e6nd4dryra0fkt5o line-delta 626142 160 757 756 :
+stephen_leake@stephe-leake.org-20071225171132-5h3hy3yr01krldku line-delta 626302 285 758 :
+stephen_leake@stephe-leake.org-20071225190338-6bnom1rr3tf24a8n line-delta 626587 349 759 :
+stephen_leake@stephe-leake.org-20071227165732-5ks7kzz6trssvj1r line-delta 626936 426 760 :
+stephen_leake@stephe-leake.org-20071228060655-gmxd5jzb1ry9l51f line-delta 627362 375 761 :
+stephen_leake@stephe-leake.org-20071229134940-m8zdhftbi9t27b91 line-delta 627737 413 762 :
+stephen_leake@stephe-leake.org-20071231091850-bnqkcifj5q8j0mgt line-delta 628150 722 763 :
+stephen_leake@stephe-leake.org-20080102110437-2zlhldlm3n8cngkf line-delta 628872 354 764 :
+stephen_leake@stephe-leake.org-20071122113348-dd21oqaie6lewz5n line-delta 629226 294 714 :
+stephen_leake@stephe-leake.org-20071122113452-a5g46q5np21x5l7v line-delta 629520 579 766 715 :
+stephen_leake@stephe-leake.org-20071127100038-l1qdhfw2r4lwxapl line-delta 630099 1198 767 723 :
+stephen_leake@stephe-leake.org-20071221083811-g1qe0p424hofdzv3 line-delta 631297 1610 768 755 :
+stephen_leake@stephe-leake.org-20071225170300-542k6mijdo82net3 line-delta 632907 790 769 :
+stephen_leake@stephe-leake.org-20071225173541-467cmpk5qvgn9brm line-delta 633697 663 770 759 :
+stephen_leake@stephe-leake.org-20071225174853-9ujqrz9nawlhy15k line-delta 634360 368 771 :
+stephen_leake@stephe-leake.org-20071225190822-5wi065r1skexzoa6 line-delta 634728 366 772 :
+stephen_leake@stephe-leake.org-20071226075049-9epr165hu0m183ed line-delta 635094 495 773 :
+stephen_leake@stephe-leake.org-20071227170241-o22yjx53wd9k6kpg line-delta 635589 505 774 761 :
+stephen_leake@stephe-leake.org-20071228061123-cgvgb0a3kb10091v line-delta 636094 390 775 762 :
+stephen_leake@stephe-leake.org-20071229085146-bxy4uw8vxa1ee09u line-delta 636484 658 776 :
+stephen_leake@stephe-leake.org-20071230122257-75ohc3cs0mhmcw2o line-delta 637142 411 777 :
+stephen_leake@stephe-leake.org-20071230132828-pfj9cqgekj6nw1g8 fulltext 637553 8867 778 :
+stephen_leake@stephe-leake.org-20071231092945-mhf76p12iri1a6ef line-delta 646420 427 779 :
+stephen_leake@stephe-leake.org-20071231093246-2iiv5dyr88ti7vkw line-delta 646847 878 780 764 :
+stephen_leake@stephe-leake.org-20080102122732-pen6lywgx1wvy07q line-delta 647725 712 781 :
+stephen_leake@stephe-leake.org-20080102122835-q6zt3n2mdi5u7ait line-delta 648437 374 782 765 :
+stefan@xsteve.at-20080106184930-mujo8i12gkp0m6qg line-delta 648811 1402 756 765 :
+stefan@xsteve.at-20080106192927-bkjs8lmx6gvf71tt line-delta 650213 1323 784 783 :
+stephen_leake@stephe-leake.org-20080104105957-686xo3ab4bo9mbu2 line-delta 651536 289 765 :
+stephen_leake@stephe-leake.org-20080107100158-jtkpph6r5kroqlp1 line-delta 651825 351 786 :
+stephen_leake@stephe-leake.org-20080107100839-slph3ld25v330g1m line-delta 652176 1318 787 785 :
+stefan@xsteve.at-20080107185639-xyux6sn2o2kt2mi6 line-delta 653494 458 785 788 :
+mwolson@gnu.org-20080108013813-rli9fkpslqbcsud3 line-delta 653952 283 789 :
+mwolson@gnu.org-20080108014118-vq2ji1ti8sl3qq0l line-delta 654235 282 790 :
+mwolson@gnu.org-20080108015937-1h3638qksjisb8jp line-delta 654517 358 791 :
+mwolson@gnu.org-20080108020340-8599e79kv0adj2pw line-delta 654875 280 792 :
+stefan@xsteve.at-20080108200702-0xzcm5xegpw2644t line-delta 655155 620 789 793 :
+stephen_leake@stephe-leake.org-20080108100951-axwxfb3k5ic1i5br line-delta 655775 294 788 789 :
+stephen_leake@stephe-leake.org-20080109074139-1idqz2z25bcrhjxw line-delta 656069 291 795 :
+stephen_leake@stephe-leake.org-20080109080141-p3qnzmn9kusgv0v2 line-delta 656360 607 796 794 :
+stephen_leake@stephe-leake.org-20080109080323-75xe9y88gb026gpx line-delta 656967 369 797 :
+stephen_leake@stephe-leake.org-20080111085527-tjssmwo6x301idhn line-delta 657336 418 798 :
+mwolson@gnu.org-20080109032132-adqhls240fhps9qw line-delta 657754 278 794 :
+mwolson@gnu.org-20080109040552-rv1bsiuoz96fj5v7 line-delta 658032 281 800 :
+mwolson@gnu.org-20080109200543-kxvejdd95ywta5wj line-delta 658313 284 801 :
+mwolson@gnu.org-20080109202136-pyy8kwhy6ujdergw line-delta 658597 284 802 :
+mwolson@gnu.org-20080111180442-vubtyi20cfmdu40a line-delta 658881 696 803 799 :
+mwolson@gnu.org-20080111180733-xtst2cesdq7eny72 fulltext 659577 9015 804 :
+mwolson@gnu.org-20080116233536-ljlhzrg67j0xzzz1 line-delta 668592 291 805 :
+mwolson@gnu.org-20080116235141-tr52goqnqmqlfw2d line-delta 668883 295 806 :
+mwolson@gnu.org-20080116235646-1rjdh7m2k37dvgu2 line-delta 669178 281 807 :
+mwolson@gnu.org-20080117002323-zyh03rizpcvty4gj line-delta 669459 260 808 :
+mwolson@gnu.org-20080117010432-20ydq1qhofbn2qkc line-delta 669719 293 809 :
+mwolson@gnu.org-20080117024947-if2lomgsa5hdmd9s line-delta 670012 258 810 :
+stephen_leake@stephe-leake.org-20080103132754-gm9cqld653o5ay9u line-delta 670270 373 783 :
+stephen_leake@stephe-leake.org-20080104110516-s2hd239vb8q1huui line-delta 670643 560 812 :
+stephen_leake@stephe-leake.org-20080104110803-bgp3kz4n5vnj8606 line-delta 671203 289 813 786 :
+stephen_leake@stephe-leake.org-20080105112110-ryo9jkj1bs7i474h line-delta 671492 427 814 :
+stephen_leake@stephe-leake.org-20080107103632-eorrb0de1h8kc45b line-delta 671919 429 815 788 :
+stefan@xsteve.at-20080110185957-8d1l2d67vujgyadm line-delta 672348 556 794 803 :
+stefan@xsteve.at-20080111183922-rd9ooo4h4gbx1n82 line-delta 672904 696 817 799 :
+stephen_leake@stephe-leake.org-20080112083503-txbp3neiq5c8hepm line-delta 673600 532 799 817 :
+stephen_leake@stephe-leake.org-20080112084748-3pvoqw9wo2k0tm5c fulltext 674132 8901 819 818 816 :
+stefan@xsteve.at-20080112183740-1uwk481e1lg7gzo6 line-delta 683033 285 818 :
+stefan@xsteve.at-20080112184027-ob7f7uiaysd8is97 fulltext 683318 8935 821 820 :
+stefan@xsteve.at-20080112184314-iv2o9hm5v89ibihp line-delta 692253 343 822 805 :
+stephen_leake@stephe-leake.org-20080113091722-fr217zo35fz0oo9r line-delta 692596 460 820 823 :
+stephen_leake@stephe-leake.org-20080114110528-6asiv3crntba2jvo line-delta 693056 371 824 :
+stephen_leake@stephe-leake.org-20080117064052-y34jxge6gue65udc line-delta 693427 425 825 :
+stephen_leake@stephe-leake.org-20080117072100-wsvxna1bs1tjoe5m line-delta 693852 795 826 :
+mwolson@gnu.org-20080117082148-umdmqbf8dzm7rxhg line-delta 694647 294 811 :
+stefan@xsteve.at-20080117182000-5gi0jri1pcudroyi line-delta 694941 694 823 828 :
+stefan@xsteve.at-20080117182143-hfeqc72pjvig8ui6 line-delta 695635 957 829 827 :
+mwolson@gnu.org-20080117192814-c1jk8g6d6wm0f1zh line-delta 696592 281 828 :
+mwolson@gnu.org-20080117233737-3nzj45qo2l641vxw line-delta 696873 1217 831 830 :
+mwolson@gnu.org-20080118002130-7hc8vfer8dggo8zy line-delta 698090 520 832 :
+mwolson@gnu.org-20080118003936-envyrw2hc7522j64 line-delta 698610 736 833 :
+mwolson@gnu.org-20080118011250-i494j7k7llthpw27 line-delta 699346 952 834 :
+mwolson@gnu.org-20080118013136-6ors8jmevm9odgto line-delta 700298 294 835 :
+mwolson@gnu.org-20080118013817-d1m9kafhwj6qc632 line-delta 700592 294 836 :
+mwolson@gnu.org-20080118015626-yaqwz865x4yjgpw3 line-delta 700886 421 837 :
+mwolson@gnu.org-20080118023650-b2hj664u1fnaujz7 line-delta 701307 417 838 :
+mwolson@gnu.org-20080118024150-fj0mvks2fy0tr15f line-delta 701724 281 839 :
+mwolson@gnu.org-20080118031800-i3n8wn6ube6qrkqu line-delta 702005 258 840 :
+mwolson@gnu.org-20080118042130-8v1mliq1nrp00qzc line-delta 702263 257 841 :
+mwolson@gnu.org-20080118042259-0360myttvdulxhob line-delta 702520 290 842 :
+mwolson@gnu.org-20080118043245-evsjscnuzf1yefgy line-delta 702810 281 843 :
+stefan@xsteve.at-20080118143713-001w5s9rllb9yity line-delta 703091 2215 830 844 :
+stephen_leake@stephe-leake.org-20080118061023-3m6uvmpekrqwk03i line-delta 705306 715 827 830 :
+stephen_leake@stephe-leake.org-20080118083319-zxnp9qbqw3zbbho2 line-delta 706021 370 846 :
+stephen_leake@stephe-leake.org-20080119073316-jrsgbb9qooso0n4h line-delta 706391 2224 847 845 :
+stefan@xsteve.at-20080119211533-gmbngm6zowyar55c line-delta 708615 396 845 848 :
+stephen_leake@stephe-leake.org-20080120140059-f44he2g8f5f3mmde line-delta 709011 767 848 :
+mwolson@gnu.org-20080119005054-5666emusf3zdq7lu line-delta 709778 282 844 :
+mwolson@gnu.org-20080119010541-ss3vrqng3htaxllj line-delta 710060 258 851 :
+mwolson@gnu.org-20080119011202-a6no4ymx68yfh2zf line-delta 710318 342 852 :
+mwolson@gnu.org-20080119011410-mai1drgw2z2bhk2c fulltext 710660 8867 853 :
+mwolson@gnu.org-20080119011543-ks0ga03i3pwngiby line-delta 719527 258 854 :
+stephen_leake@stephe-leake.org-20080120142354-bw2cda01ktmoak2r line-delta 719785 296 850 :
+mwolson@gnu.org-20080123040353-xql66c7he2tp2aoa line-delta 720081 281 855 :
+mwolson@gnu.org-20080123041848-zdmyo67p3vdcf6pp line-delta 720362 276 857 :
+mwolson@gnu.org-20080123050648-vc4oqujs90an280i line-delta 720638 278 858 :
+mwolson@gnu.org-20080123171158-23ifreg6htab0ocq line-delta 720916 281 859 :
+stefan@xsteve.at-20080123183248-1gada0kci6yieoj7 line-delta 721197 781 849 860 :
+stefan@xsteve.at-20080123190732-408o5tmb10vvmfwf line-delta 721978 811 861 856 :
+mwolson@gnu.org-20080124021609-xu6sqfht5tqxd7jy line-delta 722789 286 860 :
+mwolson@gnu.org-20080124023847-m92d29p7o4b6o0l6 line-delta 723075 356 863 :
+mwolson@gnu.org-20080124024222-ou7d18rub6szzi8f line-delta 723431 817 864 862 :
+mwolson@gnu.org-20080124035102-7lquobvcjmpg52by line-delta 724248 420 865 :
+mwolson@gnu.org-20080124040018-et98yqscatunrhs1 line-delta 724668 360 866 :
+mwolson@gnu.org-20080124051450-eitvgqpoi53hrm4r line-delta 725028 372 867 :
+mwolson@gnu.org-20080124051805-maidago9ckelje2n line-delta 725400 292 868 :
+stefan@xsteve.at-20080124184408-9573z0qtjhdxgvan line-delta 725692 652 862 869 :

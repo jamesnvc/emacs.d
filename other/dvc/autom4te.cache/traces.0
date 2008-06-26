@@ -1,0 +1,570 @@
+m4trace:configure.ac:32: -1- AC_DEFUN([DVC_ARG_SUBST], [
+  AC_SUBST([$1])
+  AC_ARG_WITH([$2],
+    AC_HELP_STRING([--with-][$2]ifelse($3, [], [], [=$3]),
+      [$4]ifelse($5, [], [], [ [[[$5]]]])),
+    [
+      ifelse($6, [], [], $6)
+      $1="${withval}"
+    ],
+    ifelse($5, [], [], [$1="$5"]))
+])
+m4trace:configure.ac:49: -1- AC_DEFUN([DVC_COLON_TO_SPACE], [ case "$$1" in *:*)
+    $1="`echo $$1 | sed -e 's/:/ /g'`";;
+  esac ])
+m4trace:configure.ac:55: -1- AC_DEFUN([DVC_OTHERDIRS], [ DVC_ARG_SUBST([OTHERDIRS], [other-dirs], [DIRS],
+    [set other needed directories (a list of space or colon separated paths)],
+    [],
+    dnl #### WARNING: pay attention to the quoting of ACTION if given !!!!!
+    [[ DVC_COLON_TO_SPACE(withval) ]])])
+m4trace:configure.ac:64: -1- AC_DEFUN([DVC_PROG_GNU_TAR], [ AC_CHECK_PROGS(TAR, gtar tar)
+    if test "x${TAR}" = "xtar" ; then
+      AC_MSG_CHECKING([that tar is GNU tar])
+      ${TAR} --version > /dev/null 2>&1 || TAR=
+      if test "x${TAR}" = "x" ; then
+        AC_MSG_RESULT(no)
+      else
+        AC_MSG_RESULT(yes)
+      fi
+    fi
+    if test "x${TAR}" = "x" ; then
+      AC_MSG_WARN([*** No GNU tar program found.])
+      AC_MSG_WARN([*** Some targets will be unavailable.])
+    fi ])
+m4trace:configure.ac:82: -1- AC_DEFUN([DVC_PROG_MAKEINFO], [ AC_CHECK_PROG(MAKEINFO, makeinfo, makeinfo)
+    if test "x${MAKEINFO}" = "x" ; then
+      AC_MSG_WARN([*** No makeinfo program found.])
+      AC_MSG_WARN([*** Info files will not be built.])
+    fi ])
+m4trace:configure.ac:91: -1- AC_DEFUN([DVC_PROG_TEXI2DVI], [ AC_CHECK_PROG(TEXI2DVI, texi2dvi, texi2dvi)
+    if test "x${TEXI2DVI}" = "x" ; then
+      AC_MSG_WARN([*** No texi2dvi program found.])
+      AC_MSG_WARN([*** DVI and PDF files will not be built.])
+    fi ])
+m4trace:configure.ac:100: -1- AC_DEFUN([DVC_PROG_ETAGS], [ AC_CHECK_PROG(ETAGS, etags, etags)
+    if test "x${ETAGS}" = "x" ; then
+      AC_MSG_WARN([*** No etags program found.])
+      AC_MSG_WARN([*** Tags file will not be built.])
+    fi ])
+m4trace:configure.ac:108: -1- AC_DEFUN([DVC_PROG_WARN], [ AC_SUBST([$1])
+    AC_ARG_WITH([$2],
+      AC_HELP_STRING([--with-][$2]=PROG, [$3]),
+      [ [$1]=${withval} ],
+      [
+        AC_CHECK_PROG($1, $2, $2)
+        if test "x${$1}" = "x" ; then
+          AC_MSG_WARN([*** No $2 program found.])
+        fi
+      ])
+  ])
+m4trace:configure.ac:122: -1- AC_DEFUN([DVC_PROG], [ AC_SUBST([$1])
+    AC_ARG_WITH([$2],
+      AC_HELP_STRING([--with-][$2]=PROG, [$3]),
+      [ [$1]=${withval} ],
+      [
+        AC_CHECK_PROG($1, $2, $2)
+      ])
+  ])
+m4trace:configure.ac:134: -1- AC_DEFUN([DVC_PROG_XARGS], [ AC_CHECK_PROG(XARGS, xargs, xargs)
+    if test "x${XARGS}" = "x" ; then
+      AC_MSG_WARN([*** No xargs program found.])
+      AC_MSG_WARN([*** make clean/tarball will not work.])
+    fi ])
+m4trace:configure.ac:141: -1- AC_DEFUN([DVC_BAZ_OR_TLA], [ AC_MSG_CHECKING([arch branch to use])
+    AC_ARG_WITH(arch,
+      AC_HELP_STRING([--with-arch={baz|tla|none}]
+        [Whether to use tla or baz (or none of them) by default]),
+      [ ARCH_BRANCH=${withval} ]
+      [ ])
+    if test "x${BAZ}" != "x"; then
+      if test "x${ARCH_BRANCH}" = "x"; then
+        ARCH_BRANCH=baz
+      fi
+      ARCH=${BAZ}
+    else
+      if test "x${ARCH_BRANCH}" = "x"; then
+        ARCH_BRANCH=tla
+      fi
+      ARCH=${TLA}
+    fi
+    if test "x${ARCH_BRANCH}" = "xnone"; then
+      ARCH="${TRUE_PROG}"
+    fi
+
+    if test "y${ARCH_BRANCH}" = "ytla" -a "y${TLA}" = "y"; then
+      ARCH="${TRUE_PROG}"
+      ARCH_BRANCH=none
+    fi
+    if test "y${ARCH_BRANCH}" = "ytla" -a "y${TLA}" = "y"; then
+      AC_MSG_ERROR([*** Can't use tla because tla isn't available])
+    fi
+    if test "x${ARCH_BRANCH}" = "xbaz" -a "x${BAZ}" = "x"; then
+      AC_MSG_ERROR([*** Can't use baz because baz isn't available])
+    fi
+    AC_MSG_RESULT(${ARCH_BRANCH})
+    AC_SUBST(ARCH_BRANCH)
+    AC_SUBST(ARCH)
+  ])
+m4trace:configure.ac:183: -1- AC_DEFUN([DVC_PROG_EMACS], [ AC_ARG_WITH([emacs],
+     AC_HELP_STRING([--with-emacs=PROG],
+        [choose which flavor of Emacs to use]),
+      [ EMACS_PROG="${withval}" ],
+      [ AC_CHECK_PROGS(EMACS_PROG, emacs xemacs) ])
+    if test "x${EMACS_PROG}" = "x" ; then
+      dnl This is critical enough to generate an error and not a warning...
+      AC_MSG_ERROR([*** No Emacs program found.])
+    fi
+    # EMACS TYPE ##################################################
+    AC_MSG_CHECKING([emacs-type of ${EMACS_PROG}])
+    cat > conftest.el <<TEST
+(princ (format "%s" (if (featurep 'xemacs ) 'xemacs 'emacs)))
+TEST
+    EMACS_FLAVOR=`${EMACS_PROG} --no-site-file --batch -l conftest.el | ${GREP} .`
+    if test "x${EMACS_FLAVOR}" = "xxemacs"; then
+        SITEFLAG=-no-site-file
+    else
+        SITEFLAG=--no-site-file
+    fi
+    AC_MSG_RESULT([${EMACS_FLAVOR}])
+    # EMACS VERSION ###############################################
+    AC_MSG_CHECKING([emacs-version of ${EMACS_PROG}])
+    cat > conftest.el <<TEST
+(if (featurep 'xemacs )
+     (princ (format "%d.%d%s"
+                 emacs-major-version emacs-minor-version
+                 (if (numberp emacs-patch-level)
+                     (concat "." (number-to-string emacs-patch-level))
+                   "")))
+  (princ (format "%s" emacs-version)))
+TEST
+    EMACS_VERSION=`${EMACS_PROG} ${SITEFLAG} --batch -l conftest.el | ${GREP} .`
+    # EMACS DEPENDENT SETTINGS ####################################
+    # We may add a version check here ...
+    AC_MSG_RESULT([${EMACS_VERSION}])
+
+    # Copied from gnus aclocal.m4
+    AC_ARG_WITH(lispdir,[  --with-lispdir=DIR      Where to install lisp files], lispdir=${withval})
+    AC_MSG_CHECKING([where .elc files should go])
+    if test -z "$lispdir"; then
+      dnl Set default value
+      theprefix=$prefix
+      if test "x$theprefix" = "xNONE"; then
+  	theprefix=$ac_default_prefix
+      fi
+      datadir="\$(prefix)/share"
+      if test "$EMACS_FLAVOR" = "xemacs"; then
+          datadir="\$(prefix)/lib"
+          lispdir="${datadir}/${EMACS_FLAVOR}/site-packages/lisp/dvc"
+          if test ! -d "${lispdir}"; then
+             if test -d "${theprefix}/share/${EMACS_FLAVOR}/site-lisp"; then
+                lispdir="\$(prefix)/lib/${EMACS_FLAVOR}/site-packages/lisp/dvc"
+             fi
+          fi
+      else
+          lispdir="${datadir}/${EMACS_FLAVOR}/site-lisp/dvc"
+      fi
+    fi
+    AC_MSG_RESULT($lispdir)
+    AC_SUBST(lispdir)
+
+#    if test "x${EMACS_FLAVOR}" = "xemacs" ; then
+#      PACKAGEDIR="${prefix}/share/emacs/site-lisp"
+#    else
+#      PACKAGEDIR="${HOME}/.xemacs/xemacs-packages"
+#    fi
+
+    AC_SUBST(EMACS_PROG)
+    AC_SUBST(EMACS_FLAVOR)
+    AC_SUBST(EMACS_VERSION)
+    AC_SUBST(SITEFLAG)
+])
+m4trace:configure.ac:259: -1- AC_DEFUN([DVC_BUILD_FLAGS], [
+  AC_MSG_CHECKING([which options to pass on to (X)Emacs])
+  if test "x$FLAGS" = "x"; then
+    if test "x$EMACS_FLAVOR" = "xxemacs"; then
+      FLAGS="-batch ${SITEFLAG} -no-autoloads -l \$(srcdir)/dvc-build.el"
+    else
+      FLAGS="-batch -q ${SITEFLAG} -no-init-file -l \$(srcdir)/dvc-build.el"
+    fi
+  else
+    FLAGS=$FLAGS
+  fi
+  AC_MSG_RESULT($FLAGS)
+  AC_SUBST(FLAGS)
+])
+m4trace:configure.ac:276: -1- AC_DEFUN([DVC_PATH_INFO_DIR], [
+  AC_MSG_CHECKING([where the TeXinfo docs should go])
+  dnl Set default value.  This must be an absolute path.
+  if test "$infodir" = "\${prefix}/info"; then
+    if test "$EMACS_FLAVOR" = "xemacs"; then
+      info_dir="\$(prefix)/${thedir}/${EMACS_FLAVOR}/site-packages/info"
+    else
+      info_dir="\$(prefix)/share/info"
+    fi
+  else
+    info_dir=$infodir
+  fi
+  AC_MSG_RESULT($info_dir)
+  AC_SUBST(info_dir)
+])
+m4trace:configure.ac:292: -1- AC_DEFUN([DVC_HAS_TREE_WIDGET], [ AC_MSG_CHECKING([whether tree-widget is in the load-path])
+    OTHERDIRS_LIST='"'`echo ${OTHERDIRS} | sed 's/ /" "/g'`'"'
+    cat > conftest.el << TEST
+(mapcar (lambda (x) (add-to-list 'load-path x))
+        '(${OTHERDIRS_LIST}))
+(if (locate-library "tree-widget")
+    (princ "yes")
+    (princ "no"))
+TEST
+    HAS_TREE_WIDGET=`${EMACS_PROG} ${SITEFLAG} --batch -l conftest.el | ${GREP} .`
+    AC_MSG_RESULT([${HAS_TREE_WIDGET}])
+    if test "x${HAS_TREE_WIDGET}" = "xno" ; then
+      AC_MSG_WARN([*** tree-widget.el not found in 'load-path.])
+      AC_MSG_WARN([*** tla-browse.el won't be available unless you install it.])
+      AC_MSG_WARN([*** See http://sourceforge.net/projects/emhacks/])
+      AC_MSG_WARN([*** Provide the path to tree-widget with --with-other-dirs])
+      AC_MSG_WARN([*** if tree-widget.el is already present on your system])
+    fi
+    AC_SUBST(HAS_TREE_WIDGET)
+  ])
+m4trace:configure.ac:328: -1- AC_INIT([DVC], [DVC_VERSION], [dvc-dev@gna.org])
+m4trace:configure.ac:328: -1- m4_pattern_forbid([^_?A[CHUM]_])
+m4trace:configure.ac:328: -1- m4_pattern_forbid([_AC_])
+m4trace:configure.ac:328: -1- m4_pattern_forbid([^LIBOBJS$], [do not use LIBOBJS directly, use AC_LIBOBJ (see section `AC_LIBOBJ vs LIBOBJS'])
+m4trace:configure.ac:328: -1- m4_pattern_allow([^AS_FLAGS$])
+m4trace:configure.ac:328: -1- m4_pattern_forbid([^_?m4_])
+m4trace:configure.ac:328: -1- m4_pattern_forbid([^dnl$])
+m4trace:configure.ac:328: -1- m4_pattern_forbid([^_?AS_])
+m4trace:configure.ac:328: -1- AC_SUBST([SHELL], [${CONFIG_SHELL-/bin/sh}])
+m4trace:configure.ac:328: -1- AC_SUBST_TRACE([SHELL])
+m4trace:configure.ac:328: -1- m4_pattern_allow([^SHELL$])
+m4trace:configure.ac:328: -1- AC_SUBST([PATH_SEPARATOR])
+m4trace:configure.ac:328: -1- AC_SUBST_TRACE([PATH_SEPARATOR])
+m4trace:configure.ac:328: -1- m4_pattern_allow([^PATH_SEPARATOR$])
+m4trace:configure.ac:328: -1- AC_SUBST([PACKAGE_NAME], [m4_ifdef([AC_PACKAGE_NAME],      ['AC_PACKAGE_NAME'])])
+m4trace:configure.ac:328: -1- AC_SUBST_TRACE([PACKAGE_NAME])
+m4trace:configure.ac:328: -1- m4_pattern_allow([^PACKAGE_NAME$])
+m4trace:configure.ac:328: -1- AC_SUBST([PACKAGE_TARNAME], [m4_ifdef([AC_PACKAGE_TARNAME],   ['AC_PACKAGE_TARNAME'])])
+m4trace:configure.ac:328: -1- AC_SUBST_TRACE([PACKAGE_TARNAME])
+m4trace:configure.ac:328: -1- m4_pattern_allow([^PACKAGE_TARNAME$])
+m4trace:configure.ac:328: -1- AC_SUBST([PACKAGE_VERSION], [m4_ifdef([AC_PACKAGE_VERSION],   ['AC_PACKAGE_VERSION'])])
+m4trace:configure.ac:328: -1- AC_SUBST_TRACE([PACKAGE_VERSION])
+m4trace:configure.ac:328: -1- m4_pattern_allow([^PACKAGE_VERSION$])
+m4trace:configure.ac:328: -1- AC_SUBST([PACKAGE_STRING], [m4_ifdef([AC_PACKAGE_STRING],    ['AC_PACKAGE_STRING'])])
+m4trace:configure.ac:328: -1- AC_SUBST_TRACE([PACKAGE_STRING])
+m4trace:configure.ac:328: -1- m4_pattern_allow([^PACKAGE_STRING$])
+m4trace:configure.ac:328: -1- AC_SUBST([PACKAGE_BUGREPORT], [m4_ifdef([AC_PACKAGE_BUGREPORT], ['AC_PACKAGE_BUGREPORT'])])
+m4trace:configure.ac:328: -1- AC_SUBST_TRACE([PACKAGE_BUGREPORT])
+m4trace:configure.ac:328: -1- m4_pattern_allow([^PACKAGE_BUGREPORT$])
+m4trace:configure.ac:328: -1- AC_SUBST([exec_prefix], [NONE])
+m4trace:configure.ac:328: -1- AC_SUBST_TRACE([exec_prefix])
+m4trace:configure.ac:328: -1- m4_pattern_allow([^exec_prefix$])
+m4trace:configure.ac:328: -1- AC_SUBST([prefix], [NONE])
+m4trace:configure.ac:328: -1- AC_SUBST_TRACE([prefix])
+m4trace:configure.ac:328: -1- m4_pattern_allow([^prefix$])
+m4trace:configure.ac:328: -1- AC_SUBST([program_transform_name], [s,x,x,])
+m4trace:configure.ac:328: -1- AC_SUBST_TRACE([program_transform_name])
+m4trace:configure.ac:328: -1- m4_pattern_allow([^program_transform_name$])
+m4trace:configure.ac:328: -1- AC_SUBST([bindir], ['${exec_prefix}/bin'])
+m4trace:configure.ac:328: -1- AC_SUBST_TRACE([bindir])
+m4trace:configure.ac:328: -1- m4_pattern_allow([^bindir$])
+m4trace:configure.ac:328: -1- AC_SUBST([sbindir], ['${exec_prefix}/sbin'])
+m4trace:configure.ac:328: -1- AC_SUBST_TRACE([sbindir])
+m4trace:configure.ac:328: -1- m4_pattern_allow([^sbindir$])
+m4trace:configure.ac:328: -1- AC_SUBST([libexecdir], ['${exec_prefix}/libexec'])
+m4trace:configure.ac:328: -1- AC_SUBST_TRACE([libexecdir])
+m4trace:configure.ac:328: -1- m4_pattern_allow([^libexecdir$])
+m4trace:configure.ac:328: -1- AC_SUBST([datarootdir], ['${prefix}/share'])
+m4trace:configure.ac:328: -1- AC_SUBST_TRACE([datarootdir])
+m4trace:configure.ac:328: -1- m4_pattern_allow([^datarootdir$])
+m4trace:configure.ac:328: -1- AC_SUBST([datadir], ['${datarootdir}'])
+m4trace:configure.ac:328: -1- AC_SUBST_TRACE([datadir])
+m4trace:configure.ac:328: -1- m4_pattern_allow([^datadir$])
+m4trace:configure.ac:328: -1- AC_SUBST([sysconfdir], ['${prefix}/etc'])
+m4trace:configure.ac:328: -1- AC_SUBST_TRACE([sysconfdir])
+m4trace:configure.ac:328: -1- m4_pattern_allow([^sysconfdir$])
+m4trace:configure.ac:328: -1- AC_SUBST([sharedstatedir], ['${prefix}/com'])
+m4trace:configure.ac:328: -1- AC_SUBST_TRACE([sharedstatedir])
+m4trace:configure.ac:328: -1- m4_pattern_allow([^sharedstatedir$])
+m4trace:configure.ac:328: -1- AC_SUBST([localstatedir], ['${prefix}/var'])
+m4trace:configure.ac:328: -1- AC_SUBST_TRACE([localstatedir])
+m4trace:configure.ac:328: -1- m4_pattern_allow([^localstatedir$])
+m4trace:configure.ac:328: -1- AC_SUBST([includedir], ['${prefix}/include'])
+m4trace:configure.ac:328: -1- AC_SUBST_TRACE([includedir])
+m4trace:configure.ac:328: -1- m4_pattern_allow([^includedir$])
+m4trace:configure.ac:328: -1- AC_SUBST([oldincludedir], ['/usr/include'])
+m4trace:configure.ac:328: -1- AC_SUBST_TRACE([oldincludedir])
+m4trace:configure.ac:328: -1- m4_pattern_allow([^oldincludedir$])
+m4trace:configure.ac:328: -1- AC_SUBST([docdir], [m4_ifset([AC_PACKAGE_TARNAME],
+				     ['${datarootdir}/doc/${PACKAGE_TARNAME}'],
+				     ['${datarootdir}/doc/${PACKAGE}'])])
+m4trace:configure.ac:328: -1- AC_SUBST_TRACE([docdir])
+m4trace:configure.ac:328: -1- m4_pattern_allow([^docdir$])
+m4trace:configure.ac:328: -1- AC_SUBST([infodir], ['${datarootdir}/info'])
+m4trace:configure.ac:328: -1- AC_SUBST_TRACE([infodir])
+m4trace:configure.ac:328: -1- m4_pattern_allow([^infodir$])
+m4trace:configure.ac:328: -1- AC_SUBST([htmldir], ['${docdir}'])
+m4trace:configure.ac:328: -1- AC_SUBST_TRACE([htmldir])
+m4trace:configure.ac:328: -1- m4_pattern_allow([^htmldir$])
+m4trace:configure.ac:328: -1- AC_SUBST([dvidir], ['${docdir}'])
+m4trace:configure.ac:328: -1- AC_SUBST_TRACE([dvidir])
+m4trace:configure.ac:328: -1- m4_pattern_allow([^dvidir$])
+m4trace:configure.ac:328: -1- AC_SUBST([pdfdir], ['${docdir}'])
+m4trace:configure.ac:328: -1- AC_SUBST_TRACE([pdfdir])
+m4trace:configure.ac:328: -1- m4_pattern_allow([^pdfdir$])
+m4trace:configure.ac:328: -1- AC_SUBST([psdir], ['${docdir}'])
+m4trace:configure.ac:328: -1- AC_SUBST_TRACE([psdir])
+m4trace:configure.ac:328: -1- m4_pattern_allow([^psdir$])
+m4trace:configure.ac:328: -1- AC_SUBST([libdir], ['${exec_prefix}/lib'])
+m4trace:configure.ac:328: -1- AC_SUBST_TRACE([libdir])
+m4trace:configure.ac:328: -1- m4_pattern_allow([^libdir$])
+m4trace:configure.ac:328: -1- AC_SUBST([localedir], ['${datarootdir}/locale'])
+m4trace:configure.ac:328: -1- AC_SUBST_TRACE([localedir])
+m4trace:configure.ac:328: -1- m4_pattern_allow([^localedir$])
+m4trace:configure.ac:328: -1- AC_SUBST([mandir], ['${datarootdir}/man'])
+m4trace:configure.ac:328: -1- AC_SUBST_TRACE([mandir])
+m4trace:configure.ac:328: -1- m4_pattern_allow([^mandir$])
+m4trace:configure.ac:328: -1- AC_DEFINE_TRACE_LITERAL([PACKAGE_NAME])
+m4trace:configure.ac:328: -1- m4_pattern_allow([^PACKAGE_NAME$])
+m4trace:configure.ac:328: -1- AH_OUTPUT([PACKAGE_NAME], [/* Define to the full name of this package. */
+#undef PACKAGE_NAME])
+m4trace:configure.ac:328: -1- AC_DEFINE_TRACE_LITERAL([PACKAGE_TARNAME])
+m4trace:configure.ac:328: -1- m4_pattern_allow([^PACKAGE_TARNAME$])
+m4trace:configure.ac:328: -1- AH_OUTPUT([PACKAGE_TARNAME], [/* Define to the one symbol short name of this package. */
+#undef PACKAGE_TARNAME])
+m4trace:configure.ac:328: -1- AC_DEFINE_TRACE_LITERAL([PACKAGE_VERSION])
+m4trace:configure.ac:328: -1- m4_pattern_allow([^PACKAGE_VERSION$])
+m4trace:configure.ac:328: -1- AH_OUTPUT([PACKAGE_VERSION], [/* Define to the version of this package. */
+#undef PACKAGE_VERSION])
+m4trace:configure.ac:328: -1- AC_DEFINE_TRACE_LITERAL([PACKAGE_STRING])
+m4trace:configure.ac:328: -1- m4_pattern_allow([^PACKAGE_STRING$])
+m4trace:configure.ac:328: -1- AH_OUTPUT([PACKAGE_STRING], [/* Define to the full name and version of this package. */
+#undef PACKAGE_STRING])
+m4trace:configure.ac:328: -1- AC_DEFINE_TRACE_LITERAL([PACKAGE_BUGREPORT])
+m4trace:configure.ac:328: -1- m4_pattern_allow([^PACKAGE_BUGREPORT$])
+m4trace:configure.ac:328: -1- AH_OUTPUT([PACKAGE_BUGREPORT], [/* Define to the address where bug reports for this package should be sent. */
+#undef PACKAGE_BUGREPORT])
+m4trace:configure.ac:328: -1- AC_SUBST([DEFS])
+m4trace:configure.ac:328: -1- AC_SUBST_TRACE([DEFS])
+m4trace:configure.ac:328: -1- m4_pattern_allow([^DEFS$])
+m4trace:configure.ac:328: -1- AC_SUBST([ECHO_C])
+m4trace:configure.ac:328: -1- AC_SUBST_TRACE([ECHO_C])
+m4trace:configure.ac:328: -1- m4_pattern_allow([^ECHO_C$])
+m4trace:configure.ac:328: -1- AC_SUBST([ECHO_N])
+m4trace:configure.ac:328: -1- AC_SUBST_TRACE([ECHO_N])
+m4trace:configure.ac:328: -1- m4_pattern_allow([^ECHO_N$])
+m4trace:configure.ac:328: -1- AC_SUBST([ECHO_T])
+m4trace:configure.ac:328: -1- AC_SUBST_TRACE([ECHO_T])
+m4trace:configure.ac:328: -1- m4_pattern_allow([^ECHO_T$])
+m4trace:configure.ac:328: -1- AC_SUBST([LIBS])
+m4trace:configure.ac:328: -1- AC_SUBST_TRACE([LIBS])
+m4trace:configure.ac:328: -1- m4_pattern_allow([^LIBS$])
+m4trace:configure.ac:328: -1- AC_SUBST([build_alias])
+m4trace:configure.ac:328: -1- AC_SUBST_TRACE([build_alias])
+m4trace:configure.ac:328: -1- m4_pattern_allow([^build_alias$])
+m4trace:configure.ac:328: -1- AC_SUBST([host_alias])
+m4trace:configure.ac:328: -1- AC_SUBST_TRACE([host_alias])
+m4trace:configure.ac:328: -1- m4_pattern_allow([^host_alias$])
+m4trace:configure.ac:328: -1- AC_SUBST([target_alias])
+m4trace:configure.ac:328: -1- AC_SUBST_TRACE([target_alias])
+m4trace:configure.ac:328: -1- m4_pattern_allow([^target_alias$])
+m4trace:configure.ac:338: -1- AC_CONFIG_FILES([Makefile lisp/Makefile texinfo/Makefile dvc-load.el dvc-load-install.el lisp/dvc-site.el])
+m4trace:configure.ac:341: -1- AC_SUBST([SET_MAKE])
+m4trace:configure.ac:341: -1- AC_SUBST_TRACE([SET_MAKE])
+m4trace:configure.ac:341: -1- m4_pattern_allow([^SET_MAKE$])
+m4trace:configure.ac:342: -1- AC_REQUIRE_AUX_FILE([install-sh])
+m4trace:configure.ac:342: -1- AC_SUBST([INSTALL_PROGRAM])
+m4trace:configure.ac:342: -1- AC_SUBST_TRACE([INSTALL_PROGRAM])
+m4trace:configure.ac:342: -1- m4_pattern_allow([^INSTALL_PROGRAM$])
+m4trace:configure.ac:342: -1- AC_SUBST([INSTALL_SCRIPT])
+m4trace:configure.ac:342: -1- AC_SUBST_TRACE([INSTALL_SCRIPT])
+m4trace:configure.ac:342: -1- m4_pattern_allow([^INSTALL_SCRIPT$])
+m4trace:configure.ac:342: -1- AC_SUBST([INSTALL_DATA])
+m4trace:configure.ac:342: -1- AC_SUBST_TRACE([INSTALL_DATA])
+m4trace:configure.ac:342: -1- m4_pattern_allow([^INSTALL_DATA$])
+m4trace:configure.ac:343: -1- AC_SUBST([LN_S], [$as_ln_s])
+m4trace:configure.ac:343: -1- AC_SUBST_TRACE([LN_S])
+m4trace:configure.ac:343: -1- m4_pattern_allow([^LN_S$])
+m4trace:configure.ac:344: -1- AC_SUBST([RM])
+m4trace:configure.ac:344: -1- AC_SUBST_TRACE([RM])
+m4trace:configure.ac:344: -1- m4_pattern_allow([^RM$])
+m4trace:configure.ac:345: -1- AC_SUBST([LS])
+m4trace:configure.ac:345: -1- AC_SUBST_TRACE([LS])
+m4trace:configure.ac:345: -1- m4_pattern_allow([^LS$])
+m4trace:configure.ac:346: -1- AC_SUBST([GREP])
+m4trace:configure.ac:346: -1- AC_SUBST_TRACE([GREP])
+m4trace:configure.ac:346: -1- m4_pattern_allow([^GREP$])
+m4trace:configure.ac:347: -1- AC_SUBST([TRUE_PROG])
+m4trace:configure.ac:347: -1- AC_SUBST_TRACE([TRUE_PROG])
+m4trace:configure.ac:347: -1- m4_pattern_allow([^TRUE_PROG$])
+m4trace:configure.ac:350: -1- DVC_PROG_EMACS
+m4trace:configure.ac:350: -2- _m4_warn([obsolete], [The macro `AC_HELP_STRING' is obsolete.
+You should run autoupdate.], [../../lib/autoconf/general.m4:209: AC_HELP_STRING is expanded from...
+configure.ac:183: DVC_PROG_EMACS is expanded from...
+configure.ac:350: the top level])
+m4trace:configure.ac:350: -1- AC_SUBST([EMACS_PROG])
+m4trace:configure.ac:350: -1- AC_SUBST_TRACE([EMACS_PROG])
+m4trace:configure.ac:350: -1- m4_pattern_allow([^EMACS_PROG$])
+m4trace:configure.ac:350: -1- AC_SUBST([lispdir])
+m4trace:configure.ac:350: -1- AC_SUBST_TRACE([lispdir])
+m4trace:configure.ac:350: -1- m4_pattern_allow([^lispdir$])
+m4trace:configure.ac:350: -1- AC_SUBST([EMACS_PROG])
+m4trace:configure.ac:350: -1- AC_SUBST_TRACE([EMACS_PROG])
+m4trace:configure.ac:350: -1- m4_pattern_allow([^EMACS_PROG$])
+m4trace:configure.ac:350: -1- AC_SUBST([EMACS_FLAVOR])
+m4trace:configure.ac:350: -1- AC_SUBST_TRACE([EMACS_FLAVOR])
+m4trace:configure.ac:350: -1- m4_pattern_allow([^EMACS_FLAVOR$])
+m4trace:configure.ac:350: -1- AC_SUBST([EMACS_VERSION])
+m4trace:configure.ac:350: -1- AC_SUBST_TRACE([EMACS_VERSION])
+m4trace:configure.ac:350: -1- m4_pattern_allow([^EMACS_VERSION$])
+m4trace:configure.ac:350: -1- AC_SUBST([SITEFLAG])
+m4trace:configure.ac:350: -1- AC_SUBST_TRACE([SITEFLAG])
+m4trace:configure.ac:350: -1- m4_pattern_allow([^SITEFLAG$])
+m4trace:configure.ac:351: -1- DVC_BUILD_FLAGS
+m4trace:configure.ac:351: -1- AC_SUBST([FLAGS])
+m4trace:configure.ac:351: -1- AC_SUBST_TRACE([FLAGS])
+m4trace:configure.ac:351: -1- m4_pattern_allow([^FLAGS$])
+m4trace:configure.ac:352: -1- DVC_PATH_INFO_DIR
+m4trace:configure.ac:352: -1- AC_SUBST([info_dir])
+m4trace:configure.ac:352: -1- AC_SUBST_TRACE([info_dir])
+m4trace:configure.ac:352: -1- m4_pattern_allow([^info_dir$])
+m4trace:configure.ac:355: -1- DVC_PROG([TLA], [tla], [tla program to use])
+m4trace:configure.ac:355: -1- AC_SUBST([TLA])
+m4trace:configure.ac:355: -1- AC_SUBST_TRACE([TLA])
+m4trace:configure.ac:355: -1- m4_pattern_allow([^TLA$])
+m4trace:configure.ac:355: -2- _m4_warn([obsolete], [The macro `AC_HELP_STRING' is obsolete.
+You should run autoupdate.], [../../lib/autoconf/general.m4:209: AC_HELP_STRING is expanded from...
+configure.ac:122: DVC_PROG is expanded from...
+configure.ac:355: the top level])
+m4trace:configure.ac:355: -1- AC_SUBST([TLA])
+m4trace:configure.ac:355: -1- AC_SUBST_TRACE([TLA])
+m4trace:configure.ac:355: -1- m4_pattern_allow([^TLA$])
+m4trace:configure.ac:356: -1- DVC_PROG([BAZ], [baz], [baz program to use])
+m4trace:configure.ac:356: -1- AC_SUBST([BAZ])
+m4trace:configure.ac:356: -1- AC_SUBST_TRACE([BAZ])
+m4trace:configure.ac:356: -1- m4_pattern_allow([^BAZ$])
+m4trace:configure.ac:356: -2- _m4_warn([obsolete], [The macro `AC_HELP_STRING' is obsolete.
+You should run autoupdate.], [../../lib/autoconf/general.m4:209: AC_HELP_STRING is expanded from...
+configure.ac:122: DVC_PROG is expanded from...
+configure.ac:356: the top level])
+m4trace:configure.ac:356: -1- AC_SUBST([BAZ])
+m4trace:configure.ac:356: -1- AC_SUBST_TRACE([BAZ])
+m4trace:configure.ac:356: -1- m4_pattern_allow([^BAZ$])
+m4trace:configure.ac:357: -1- DVC_PROG([BZR], [bzr], [Bazaar-NG])
+m4trace:configure.ac:357: -1- AC_SUBST([BZR])
+m4trace:configure.ac:357: -1- AC_SUBST_TRACE([BZR])
+m4trace:configure.ac:357: -1- m4_pattern_allow([^BZR$])
+m4trace:configure.ac:357: -2- _m4_warn([obsolete], [The macro `AC_HELP_STRING' is obsolete.
+You should run autoupdate.], [../../lib/autoconf/general.m4:209: AC_HELP_STRING is expanded from...
+configure.ac:122: DVC_PROG is expanded from...
+configure.ac:357: the top level])
+m4trace:configure.ac:357: -1- AC_SUBST([BZR])
+m4trace:configure.ac:357: -1- AC_SUBST_TRACE([BZR])
+m4trace:configure.ac:357: -1- m4_pattern_allow([^BZR$])
+m4trace:configure.ac:361: -1- DVC_BAZ_OR_TLA
+m4trace:configure.ac:361: -2- _m4_warn([obsolete], [The macro `AC_HELP_STRING' is obsolete.
+You should run autoupdate.], [../../lib/autoconf/general.m4:209: AC_HELP_STRING is expanded from...
+configure.ac:141: DVC_BAZ_OR_TLA is expanded from...
+configure.ac:361: the top level])
+m4trace:configure.ac:361: -1- AC_SUBST([ARCH_BRANCH])
+m4trace:configure.ac:361: -1- AC_SUBST_TRACE([ARCH_BRANCH])
+m4trace:configure.ac:361: -1- m4_pattern_allow([^ARCH_BRANCH$])
+m4trace:configure.ac:361: -1- AC_SUBST([ARCH])
+m4trace:configure.ac:361: -1- AC_SUBST_TRACE([ARCH])
+m4trace:configure.ac:361: -1- m4_pattern_allow([^ARCH$])
+m4trace:configure.ac:363: -1- DVC_PROG_WARN([DIFF], [diff], [diff program to use])
+m4trace:configure.ac:363: -1- AC_SUBST([DIFF])
+m4trace:configure.ac:363: -1- AC_SUBST_TRACE([DIFF])
+m4trace:configure.ac:363: -1- m4_pattern_allow([^DIFF$])
+m4trace:configure.ac:363: -2- _m4_warn([obsolete], [The macro `AC_HELP_STRING' is obsolete.
+You should run autoupdate.], [../../lib/autoconf/general.m4:209: AC_HELP_STRING is expanded from...
+configure.ac:108: DVC_PROG_WARN is expanded from...
+configure.ac:363: the top level])
+m4trace:configure.ac:363: -1- AC_SUBST([DIFF])
+m4trace:configure.ac:363: -1- AC_SUBST_TRACE([DIFF])
+m4trace:configure.ac:363: -1- m4_pattern_allow([^DIFF$])
+m4trace:configure.ac:364: -1- DVC_PROG_WARN([PATCH], [patch], [patch program to use])
+m4trace:configure.ac:364: -1- AC_SUBST([PATCH])
+m4trace:configure.ac:364: -1- AC_SUBST_TRACE([PATCH])
+m4trace:configure.ac:364: -1- m4_pattern_allow([^PATCH$])
+m4trace:configure.ac:364: -2- _m4_warn([obsolete], [The macro `AC_HELP_STRING' is obsolete.
+You should run autoupdate.], [../../lib/autoconf/general.m4:209: AC_HELP_STRING is expanded from...
+configure.ac:108: DVC_PROG_WARN is expanded from...
+configure.ac:364: the top level])
+m4trace:configure.ac:364: -1- AC_SUBST([PATCH])
+m4trace:configure.ac:364: -1- AC_SUBST_TRACE([PATCH])
+m4trace:configure.ac:364: -1- m4_pattern_allow([^PATCH$])
+m4trace:configure.ac:365: -1- DVC_PROG_ETAGS
+m4trace:configure.ac:365: -1- AC_SUBST([ETAGS])
+m4trace:configure.ac:365: -1- AC_SUBST_TRACE([ETAGS])
+m4trace:configure.ac:365: -1- m4_pattern_allow([^ETAGS$])
+m4trace:configure.ac:366: -1- DVC_PROG_XARGS
+m4trace:configure.ac:366: -1- AC_SUBST([XARGS])
+m4trace:configure.ac:366: -1- AC_SUBST_TRACE([XARGS])
+m4trace:configure.ac:366: -1- m4_pattern_allow([^XARGS$])
+m4trace:configure.ac:367: -1- DVC_PROG_GNU_TAR
+m4trace:configure.ac:367: -1- AC_SUBST([TAR])
+m4trace:configure.ac:367: -1- AC_SUBST_TRACE([TAR])
+m4trace:configure.ac:367: -1- m4_pattern_allow([^TAR$])
+m4trace:configure.ac:368: -1- DVC_PROG_MAKEINFO
+m4trace:configure.ac:368: -1- AC_SUBST([MAKEINFO])
+m4trace:configure.ac:368: -1- AC_SUBST_TRACE([MAKEINFO])
+m4trace:configure.ac:368: -1- m4_pattern_allow([^MAKEINFO$])
+m4trace:configure.ac:369: -1- DVC_PROG_TEXI2DVI
+m4trace:configure.ac:369: -1- AC_SUBST([TEXI2DVI])
+m4trace:configure.ac:369: -1- AC_SUBST_TRACE([TEXI2DVI])
+m4trace:configure.ac:369: -1- m4_pattern_allow([^TEXI2DVI$])
+m4trace:configure.ac:370: -1- DVC_OTHERDIRS
+m4trace:configure.ac:370: -1- DVC_ARG_SUBST([OTHERDIRS], [other-dirs], [DIRS], [set other needed directories (a list of space or colon separated paths)], [], [    [ DVC_COLON_TO_SPACE(withval) ]])
+m4trace:configure.ac:370: -1- AC_SUBST([OTHERDIRS])
+m4trace:configure.ac:370: -1- AC_SUBST_TRACE([OTHERDIRS])
+m4trace:configure.ac:370: -1- m4_pattern_allow([^OTHERDIRS$])
+m4trace:configure.ac:370: -2- _m4_warn([obsolete], [The macro `AC_HELP_STRING' is obsolete.
+You should run autoupdate.], [../../lib/autoconf/general.m4:209: AC_HELP_STRING is expanded from...
+configure.ac:32: DVC_ARG_SUBST is expanded from...
+configure.ac:55: DVC_OTHERDIRS is expanded from...
+configure.ac:370: the top level])
+m4trace:configure.ac:370: -1- DVC_COLON_TO_SPACE([withval])
+m4trace:configure.ac:371: -1- DVC_HAS_TREE_WIDGET
+m4trace:configure.ac:371: -1- AC_SUBST([HAS_TREE_WIDGET])
+m4trace:configure.ac:371: -1- AC_SUBST_TRACE([HAS_TREE_WIDGET])
+m4trace:configure.ac:371: -1- m4_pattern_allow([^HAS_TREE_WIDGET$])
+m4trace:configure.ac:375: -1- DVC_ARG_SUBST([PACKAGEDIR], [package-dir], [DIR], [set the Emacs package directory to DIR], [])
+m4trace:configure.ac:375: -1- AC_SUBST([PACKAGEDIR])
+m4trace:configure.ac:375: -1- AC_SUBST_TRACE([PACKAGEDIR])
+m4trace:configure.ac:375: -1- m4_pattern_allow([^PACKAGEDIR$])
+m4trace:configure.ac:375: -2- _m4_warn([obsolete], [The macro `AC_HELP_STRING' is obsolete.
+You should run autoupdate.], [../../lib/autoconf/general.m4:209: AC_HELP_STRING is expanded from...
+configure.ac:32: DVC_ARG_SUBST is expanded from...
+configure.ac:375: the top level])
+m4trace:configure.ac:378: -1- DVC_ARG_SUBST([SYMLINKS], [symlinks], [], [install DVC by linking instead of copying], [no])
+m4trace:configure.ac:378: -1- AC_SUBST([SYMLINKS])
+m4trace:configure.ac:378: -1- AC_SUBST_TRACE([SYMLINKS])
+m4trace:configure.ac:378: -1- m4_pattern_allow([^SYMLINKS$])
+m4trace:configure.ac:378: -2- _m4_warn([obsolete], [The macro `AC_HELP_STRING' is obsolete.
+You should run autoupdate.], [../../lib/autoconf/general.m4:209: AC_HELP_STRING is expanded from...
+configure.ac:32: DVC_ARG_SUBST is expanded from...
+configure.ac:378: the top level])
+m4trace:configure.ac:381: -1- DVC_ARG_SUBST([LINKPATH], [linkpath], [PATH], [path to symlink from if `pwd' does not work])
+m4trace:configure.ac:381: -1- AC_SUBST([LINKPATH])
+m4trace:configure.ac:381: -1- AC_SUBST_TRACE([LINKPATH])
+m4trace:configure.ac:381: -1- m4_pattern_allow([^LINKPATH$])
+m4trace:configure.ac:381: -2- _m4_warn([obsolete], [The macro `AC_HELP_STRING' is obsolete.
+You should run autoupdate.], [../../lib/autoconf/general.m4:209: AC_HELP_STRING is expanded from...
+configure.ac:32: DVC_ARG_SUBST is expanded from...
+configure.ac:381: the top level])
+m4trace:configure.ac:384: -1- AC_SUBST([LIB@&t@OBJS], [$ac_libobjs])
+m4trace:configure.ac:384: -1- AC_SUBST_TRACE([LIB@&t@OBJS])
+m4trace:configure.ac:384: -1- m4_pattern_allow([^LIB@&t@OBJS$])
+m4trace:configure.ac:384: -1- AC_SUBST([LTLIBOBJS], [$ac_ltlibobjs])
+m4trace:configure.ac:384: -1- AC_SUBST_TRACE([LTLIBOBJS])
+m4trace:configure.ac:384: -1- m4_pattern_allow([^LTLIBOBJS$])
+m4trace:configure.ac:384: -1- AC_SUBST_TRACE([top_builddir])
+m4trace:configure.ac:384: -1- AC_SUBST_TRACE([srcdir])
+m4trace:configure.ac:384: -1- AC_SUBST_TRACE([abs_srcdir])
+m4trace:configure.ac:384: -1- AC_SUBST_TRACE([top_srcdir])
+m4trace:configure.ac:384: -1- AC_SUBST_TRACE([abs_top_srcdir])
+m4trace:configure.ac:384: -1- AC_SUBST_TRACE([builddir])
+m4trace:configure.ac:384: -1- AC_SUBST_TRACE([abs_builddir])
+m4trace:configure.ac:384: -1- AC_SUBST_TRACE([abs_top_builddir])
+m4trace:configure.ac:384: -1- AC_SUBST_TRACE([INSTALL])

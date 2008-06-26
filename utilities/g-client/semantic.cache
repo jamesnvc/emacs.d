@@ -1,0 +1,31 @@
+;; Object g-client/
+;; SEMANTICDB Tags save file
+(semanticdb-project-database-file "g-client/"
+  :tables (list 
+   (semanticdb-table "gblogger.el"
+    :major-mode 'emacs-lisp-mode
+    :tags '(("cl" include nil nil [2673 2686]) ("derived" include nil nil [2687 2705]) ("g-utils" include nil nil [2706 2724]) ("g-auth" include nil nil [2725 2742]) ("defgroup" code nil nil [2772 2848]) ("gblogger-user-email" variable nil nil [2850 3051]) ("gblogger-user-password" variable nil nil [3053 3273]) ("gblogger-author" variable (:default-value (user-full-name)) nil [3275 3395]) ("gblogger-generator-name" variable (:default-value "http://purl.org/net/emacs-gblogger/") nil [3397 3495]) ("gblogger-publish-action" variable nil nil [3497 3653]) ("gblogger-new-entry-template" variable (:default-value "<entry xmlns='http://www.w3.org/2005/Atom'>
+  <generator url=\"%s\">%s</generator>
+  <author> <name>%s </name> </author>
+  <title mode=\"escaped\" type=\"text/html\">%s </title>
+  <content type='xhtml'>
+    <div xmlns=\"http://www.w3.org/1999/xhtml\">
+<!--content goes here -->
+    </div>
+  </content>
+</entry>") nil [3655 4044]) ("gblogger-service-name" variable (:constant-flag t :default-value "blogger") nil [4070 4153]) ("gblogger-base-url" variable (:constant-flag t :default-value "http://www.blogger.com/feeds/default/blogs") nil [4155 4263]) ("gblogger-p" function (:arguments ("service")) nil [4270 4422]) ("make-gblogger-auth" function nil nil [4459 4772]) ("gblogger-auth-handle" variable (:default-value (make-gblogger-auth)) nil [4773 4934]) ("define-derived-mode" code nil nil [4971 5129]) ("declaim" code nil nil [5131 5168]) ("define-key" code nil nil [5169 5228]) ("gblogger-this-url" variable nil nil [5231 5318]) ("make-variable-buffer-local" code nil nil [5320 5367]) ("gblogger-blog" function (:user-visible-flag t) nil [5419 5957]) ("gblogger-atom-display" function (:user-visible-flag t :arguments ("url")) nil [5973 6607]) ("gblogger-get-entry" function (:arguments ("url")) nil [6609 7321]) ("gblogger-edit-entry" function (:user-visible-flag t :arguments ("url")) nil [7338 8195]) ("gblogger-new-entry" function (:user-visible-flag t :arguments ("url")) nil [8212 9160]) ("gblogger-send-buffer-contents" function (:arguments ("http-method")) nil [9163 10064]) ("gblogger-post-entry" function (:user-visible-flag t) nil [10081 10213]) ("gblogger-put-entry" function (:user-visible-flag t) nil [10230 10353]) ("gblogger-publish" function (:user-visible-flag t) nil [10404 10903]) ("gblogger-delete-entry" function (:user-visible-flag t :arguments ("url")) nil [10921 11334]) ("atom-blogger" package nil nil [11342 11365]))
+    :file "gblogger.el"
+    :pointmax 11469
+    :unmatched-syntax 'nil
+    )
+   (semanticdb-table "g-utils.el"
+    :major-mode 'emacs-lisp-mode
+    :tags '(("cl" include nil nil [2285 2298]) ("backquote" include nil nil [2299 2319]) ("json" include nil nil [2320 2335]) ("declaim" code nil nil [2336 2379]) ("g-directory" variable (:default-value (and load-file-name (file-name-directory load-file-name))) nil [2410 2570]) ("g-scratch-buffer" variable (:default-value " *g scratch*") nil [2572 2655]) ("g-curl-program" variable (:default-value "curl") nil [2657 2747]) ("g-atom-view-xsl" variable (:default-value (expand-file-name "atom-view.xsl" g-directory)) nil [2749 2902]) ("g-atom-edit-filter" variable (:default-value (expand-file-name "blogger-edit-post.xsl" g-directory)) nil [2904 3114]) ("g-curl-common-options" variable (:default-value "--compressed --silent --location --location-trusted") nil [3116 3285]) ("g-html-handler" variable (:default-value (quote browse-url-of-buffer)) nil [3287 3591]) ("g-url-under-point" variable (:default-value (quote browse-url-url-at-point)) nil [3593 3873]) ("g-xslt-program" variable (:default-value "xsltproc") nil [3875 3960]) ("g-cookie-jar" variable (:default-value (expand-file-name "~/.g-cookie-jar")) nil [3962 4377]) ("g-cookie-options" variable (:default-value (format "--cookie %s --cookie-jar %s" g-cookie-jar g-cookie-jar)) nil [4379 4548]) ("g-curl-debug" variable nil nil [4550 4647]) ("g-xslt-debug" variable nil nil [4649 4751]) ("g-curl-debug" function nil nil [4780 4920]) ("g-xslt-debug" function nil nil [4922 5062]) ("g-url-encode" function (:arguments ("str")) nil [5089 5387]) ("g-xsl-transform-region" function (:arguments ("start" "end" "xsl")) nil [5419 5682]) ("g-html-charent-alist" variable (:default-value (quote (("&lt;" . "<") ("&gt;" . ">") ("&quot;" . "\"") ("&apos;" . "'") ("&amp;" . "&")))) nil [5711 5888]) ("g-html-unescape-region" function (:arguments ("start" "end")) nil [5890 6289]) ("g-html-escape-region" function (:arguments ("start" "end")) nil [6291 6686]) ("g-json-get" function (:arguments ("key" "object")) nil [6720 6841]) ("defalias" code nil nil [6843 6872]) ("g-using-scratch" function (:arguments ("&rest" "body")) nil [6901 7256]) ("g-get-result" function (:arguments ("command")) nil [7258 7428]) ("g-json-get-result" function (:arguments ("command")) nil [7430 7591]) ("g-display-result" function (:arguments ("command" "style")) nil [7593 8059]) ("g-display-xml-string" function (:arguments ("string" "style")) nil [8061 8441]) ("g-crlf-pair" variable (:default-value (format "%c%c" 10 10)) nil [8471 8618]) ("g-http-headers" function (:arguments ("start" "end")) nil [8620 9822]) ("g-http-body" function (:arguments ("start" "end")) nil [9824 10065]) ("g-http-header" function (:arguments ("name" "header-alist")) nil [10067 10228]) ("g-utils" package nil nil [10236 10254]))
+    :file "g-utils.el"
+    :pointmax 10358
+    )
+   )
+  :file "semantic.cache"
+  :semantic-tag-version "2.0pre4"
+  :semanticdb-version "2.0pre4"
+  )

@@ -1,0 +1,16 @@
+;; Object mymisc/
+;; SEMANTICDB Tags save file
+(semanticdb-project-database-file "mymisc/"
+  :tables (list 
+   (semanticdb-table "mymisc.el"
+    :major-mode 'emacs-lisp-mode
+    :tags '(("char-count-buffer" function (:user-visible-flag t) nil [45 400]) ("count-words-buffer" function (:user-visible-flag t) nil [402 736]) ("count-words-region" function (:user-visible-flag t :arguments ("beginning" "end")) nil [738 1267]) ("eval-and-replace" function (:user-visible-flag t) nil [1269 1560]) ("scheme-include-file" function (:user-visible-flag t :arguments ("file-name")) nil [1562 2177]) ("smalltalk-subclass-template" function (:arguments ("class-name" "inherits")) nil [2180 2742]) ("copy-line" function (:user-visible-flag t :arguments ("arg")) nil [2744 2994]))
+    :file "mymisc.el"
+    :pointmax 3459
+    :unmatched-syntax 'nil
+    )
+   )
+  :file "semantic.cache"
+  :semantic-tag-version "2.0pre3"
+  :semanticdb-version "2.0pre3"
+  )

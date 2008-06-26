@@ -1,0 +1,199 @@
+This is pdfTeXk, Version 3.141592-1.40.3 (Web2C 7.5.6) (format=etex 2007.8.16)  11 SEP 2007 11:50
+entering extended mode
+ file:line:error style messages enabled.
+ %&-line parsing enabled.
+**/home/james/emacs.d/src/distel/doc/distel.texi
+(/home/james/emacs.d/src/distel/doc/distel.texi
+(/usr/share/texmf/tex/texinfo/texinfo.tex
+Loading texinfo [version 2006-02-13.16]: Basics,
+\bindingoffset=\dimen16
+\normaloffset=\dimen17
+\pagewidth=\dimen18
+\pageheight=\dimen19
+\outerhsize=\dimen20
+\outervsize=\dimen21
+\cornerlong=\dimen22
+\cornerthick=\dimen23
+\topandbottommargin=\dimen24
+\headlinebox=\box16
+\footlinebox=\box17
+\margin=\insert252
+\EMsimple=\toks13
+\groupbox=\box18
+\groupinvalidhelp=\toks14
+\mil=\dimen25
+\exdentamount=\skip18
+\inmarginspacing=\skip19
+ pdf,
+\tempnum=\count27
+\lnkcount=\count28
+\filename=\toks15
+\filenamelength=\count29
+\pgn=\count30
+\toksA=\toks16
+\toksB=\toks17
+\toksC=\toks18
+\toksD=\toks19
+\boxA=\box19
+\countA=\count31
+ fonts,
+\sffam=\fam8
+\textleading=\dimen26
+\fontdepth=\count32
+ page headings,
+\titlepagetopglue=\skip20
+\titlepagebottomglue=\skip21
+\evenheadline=\toks20
+\oddheadline=\toks21
+\evenfootline=\toks22
+\oddfootline=\toks23
+
+tables,
+\tableindent=\dimen27
+\itemindent=\dimen28
+\itemmargin=\dimen29
+\itemmax=\dimen30
+\itemno=\count33
+\multitableparskip=\skip22
+\multitableparindent=\skip23
+\multitablecolspace=\dimen31
+\multitablelinespace=\skip24
+\colcount=\count34
+\everytab=\toks24
+ conditionals,
+\doignorecount=\count35
+ indexing,
+\secondaryindent=\skip25
+\partialpage=\box20
+\doublecolumnhsize=\dimen32
+ sectioning,
+\unnumberedno=\count36
+\chapno=\count37
+\secno=\count38
+\subsecno=\count39
+\subsubsecno=\count40
+\appendixno=\count41
+\absseclevel=\count42
+\secbase=\count43
+\chapheadingskip=\skip26
+\secheadingskip=\skip27
+\subsecheadingskip=\skip28
+ toc,
+\tocfile=\write0
+\contentsrightmargin=\skip29
+\savepageno=\count44
+\lastnegativepageno=\count45
+\tocindent=\dimen33
+ environments,
+\errorbox=\box21
+\lispnarrowing=\skip30
+\envskipamount=\skip31
+\circthick=\dimen34
+\cartouter=\dimen35
+\cartinner=\dimen36
+\normbskip=\skip32
+\normpskip=\skip33
+\normlskip=\skip34
+\lskip=\skip35
+\rskip=\skip36
+\tabw=\dimen37
+ defuns,
+\defbodyindent=\skip37
+\defargsindent=\skip38
+\deflastargmargin=\skip39
+\parencount=\count46
+\brackcount=\count47
+ macros,
+\paramno=\count48
+\macname=\toks25
+
+cross references,
+\auxfile=\write1
+\savesfregister=\count49
+ insertions,
+\footnoteno=\count50
+\SAVEfootins=\box22
+\SAVEmargin=\box23
+
+(/usr/share/texmf-texlive/tex/generic/epsf/epsf.tex
+This is `epsf.tex' v2.7.3 <23 July 2005>
+\epsffilein=\read1
+\epsfframemargin=\dimen38
+\epsfframethickness=\dimen39
+\epsfrsize=\dimen40
+\epsftmp=\dimen41
+\epsftsize=\dimen42
+\epsfxsize=\dimen43
+\epsfysize=\dimen44
+\pspoints=\dimen45
+)
+\noepsfhelp=\toks26
+ localization,
+\nolanghelp=\toks27
+\defaultparindent=\dimen46
+ and turning on texinfo input format.) (./distel.aux)
+\openout1 = `distel.aux'.
+
+@cpindfile=@write2
+@fnindfile=@write3
+@vrindfile=@write4
+@tpindfile=@write5
+@kyindfile=@write6
+@pgindfile=@write7
+ [1
+\openout2 = `distel.cp'.
+
+\openout3 = `distel.fn'.
+
+\openout4 = `distel.vr'.
+
+\openout5 = `distel.tp'.
+
+\openout6 = `distel.ky'.
+
+\openout7 = `distel.pg'.
+
+]
+(./distel.toc) [-1] Chapter 1
+\openout0 = `distel.toc'.
+
+ Chapter 2 [1] [2] [3] Chapter 3 [4] [5]
+Underfull \hbox (badness 2245) in paragraph at lines 457--460
+ @textttsl C-c C-d i[]@textrm Toggle in-ter-pret-ed-ness of the cur-rent buffer
+'s mod-ule. (@texttt edb-toggle-
+
+@hbox(8.2125+2.73749)x433.62, glue set 2.82446
+.@glue(@leftskip) 57.81621
+.@penalty 10000
+.@kern -57.81621
+.@textttsl C
+.@textttsl -
+.etc.
+
+[6]
+(dbg.eps
+)
+[7] [8]
+Underfull \hbox (badness 3590) in paragraph at lines 627--630
+ @textttsl C-c C-d P[]@textrm Load and dis-play pre-re-corded pro-filer data, f
+rom a file cre-ated by
+
+@hbox(7.60416+2.12917)x433.62, glue set 3.30275
+.@glue(@leftskip) 57.81621
+.@penalty 10000
+.@kern -57.81621
+.@textttsl C
+.@textttsl -
+.etc.
+
+[9] ) 
+Here is how much of TeX's memory you used:
+ 1507 strings out of 97164
+ 16789 string characters out of 1208552
+ 36657 words of memory out of 1500000
+ 2673 multiletter control sequences out of 10000+50000
+ 32127 words of font info for 112 fonts, out of 1200000 for 2000
+ 51 hyphenation exceptions out of 8191
+ 12i,5n,22p,270b,291s stack positions out of 5000i,500n,6000p,200000b,5000s
+
+Output written on distel.dvi (11 pages, 32712 bytes).

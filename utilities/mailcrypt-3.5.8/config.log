@@ -1,0 +1,7 @@
+This file contains any messages produced by compilers while
+running configure, to aid debugging if configure makes a mistake.
+
+configure:557: checking for a BSD compatible install
+configure:613: checking for install-info
+configure:654: checking for basename
+configure:702: checking for emacs

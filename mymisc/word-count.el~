@@ -1,0 +1,10 @@
+(defun word-count-buffer ()
+  (interactive)
+  (save-excursion
+    (goto-char (point-min)) ;; eqv (beginning-of-buffer)
+    (let ((char-count 0))
+      (while (not (eobp))
+	(unless (looking-at "[ \t\r\n]")
+	  (incf (char-count)))
+	)
+    (message "

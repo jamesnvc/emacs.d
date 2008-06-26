@@ -1,0 +1,1 @@
+(font-lock-add-keywords 'ruby-mode '(("\\(|\\w+?\\(,\\w+?\\)?|\\)" 1 'py-builtins-face)))

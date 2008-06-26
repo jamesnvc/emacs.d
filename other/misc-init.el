@@ -1,0 +1,6 @@
+;; (require 'icicles)
+;; (require 'power-macros)
+;; (require 'desktop)
+;; (desktop-load-default)
+;; (desktop-read)
+;; (require 'chop)

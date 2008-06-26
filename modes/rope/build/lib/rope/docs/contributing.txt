@@ -1,0 +1,105 @@
+======================
+ Contributing to Rope
+======================
+
+
+Get Involved!
+=============
+
+Rope was started because of the lack of good refactoring tools for
+python.  But after observing python IDE limitations we grew bigger
+ideas in our heads.
+
+If you want to have a more powerful python IDE and have big ideas
+in your head, you are welcome to get involved.
+
+
+How to Help Rope?
+=================
+
+Rope mailing list is `rope-dev (at) googlegroups.com`_.  You can send
+a mail to ``rope-dev-subscribe (at) googlegroups [dot] com`` to
+subscribe.
+
+* Use rope
+* Send bugs reports and request features
+* Submit patches for bugs or new features
+* Discuss your ideas
+
+.. _`rope-dev (at) googlegroups.com`: http://groups.google.com/group/rope-dev
+
+
+Wish List
+=========
+
+If you're interested you are welcome to discuss your ideas in
+`rope-dev (at) googlegroups.com`_ mailing list or send your patches.
+Here is only a list of suggestions.
+
+Issues
+------
+
+The `dev/issues.txt`_ file is actually the main rope todo file.  There
+is a section called "unresolved issues"; it contains almost every kind
+of task.  Most of them need some thought or discussion.  Pickup
+whichever you are most interested in.  If you have ideas or questions
+about them, don't hesitate to discuss it in the mailing list.
+
+.. _`dev/issues.txt`: dev/issues.html
+
+Getting Ready For Python 3.0
+----------------------------
+
+Checkout http://rope.sf.net/hg/rope_py3k Mercurial_ repository.
+Contributions are welcome.
+
+Write Plugins For Other IDEs
+----------------------------
+
+See ropemacs_ and ropeide_.
+
+
+.. _ropemacs: http://rope.sf.net/ropemacs.html
+.. _ropeide: http://rope.sf.net/ropeide.html
+
+
+Rope Structure
+==============
+
+Rope package structure::
+
+  rope
+    base
+    refactor
+    contrib
+
+Have a look at ``__init__.py`` of packages for finding their
+description.  Also have a look at `library.txt`_ for a few
+examples.
+
+.. _`library.txt`: library.html
+
+
+Source Repository
+=================
+
+Rope uses Mercurial_ CMS:
+
+* Rope main branch: http://rope.sourceforge.net/hg/rope
+* Rope py3k branch: http://rope.sourceforge.net/hg/rope_py3k
+
+.. _Mercurial: http://selenic.com/mercurial
+
+
+Submitting patches
+==================
+
+Patches to rope's code are welcome.
+
+Patch style
+-----------
+
+* Follow :PEP:`8`.
+* Use four spaces for indentation.
+* Include good unit-tests if possible.
+* Rope test suite should pass after patching

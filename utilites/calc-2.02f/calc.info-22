@@ -1,0 +1,1363 @@
+Info file: calc.info,    -*-Text-*-
+produced by `texinfo-format-buffer'
+from file `calc.texinfo'
+using `texinfmt.el' version 2.42 of  7 Jul 2006.
+
+This file documents Calc, the GNU Emacs calculator.
+
+Copyright (C) 1990, 1991 Free Software Foundation, Inc.
+
+Permission is granted to make and distribute verbatim copies of this
+manual provided the copyright notice and this permission notice are
+preserved on all copies.
+
+Permission is granted to copy and distribute modified versions of this
+manual under the conditions for verbatim copying, provided also that
+the section entitled "GNU General Public License" is included exactly
+as in the original, and provided that the entire resulting derived
+work is distributed under the terms of a permission notice identical
+to this one.
+
+Permission is granted to copy and distribute translations of this
+manual into another language, under the above conditions for modified
+versions, except that the section entitled "GNU General Public
+License" may be included in a translation approved by the author
+instead of in the original English.
+
+
+
+
+File: calc.info, Node: Defining Stack Commands, Next: Argument Qualifiers, Prev: Defining Simple Commands, Up: Lisp Definitions
+
+Defining New Stack-Based Commands
+---------------------------------
+
+To define a new computational command which takes and/or leaves
+arguments on the stack, a special form of `interactive' clause is
+used.
+
+     (interactive NUM TAG)
+
+where NUM is an integer, and TAG is a string.  The effect is to pop
+NUM values off the stack, resimplify them by calling `calc-normalize',
+and hand them to your function according to the function's argument
+list.  Your function may include `&optional' and `&rest' parameters,
+so long as calling the function with NUM parameters is legal.
+
+Your function must return either a number or a formula in a form
+acceptable to Calc, or a list of such numbers or formulas.  These
+value(s) are pushed onto the stack when the function completes.  They
+are also recorded in the Calc Trail buffer on a line beginning with
+TAG, a string of (normally) four characters or less.  If you omit TAG
+or use `nil' as a tag, the result is not recorded in the trail.
+
+As an example, the definition
+
+     (defmath myfact (n)
+       "Compute the factorial of the integer at the top of the stack."
+       (interactive 1 "fact")
+       (if (> n 0)
+	   (* n (myfact (1- n)))
+	 (and (= n 0) 1)))
+
+is a version of the factorial function shown previously which can be
+used as a command as well as an algebraic function.  It expands to
+
+     (defun calc-myfact ()
+       "Compute the factorial of the integer at the top of the stack."
+       (interactive)
+       (calc-slow-wrapper
+        (calc-enter-result 1 "fact"
+	  (cons 'calcFunc-myfact (calc-top-list-n 1)))))
+
+     (defun calcFunc-myfact (n)
+       "Compute the factorial of the integer at the top of the stack."
+       (if (math-posp n)
+	   (math-mul n (calcFunc-myfact (math-add n -1)))
+	 (and (math-zerop n) 1)))
+
+The `calc-slow-wrapper' function is a version of `calc-wrapper' that
+automatically puts up a `Working...' message before the computation
+begins.  (This message can be turned off by the user with an `m w'
+(`calc-working') command.)
+
+The `calc-top-list-n' function returns a list of the specified number
+of values from the top of the stack.  It resimplifies each value by
+calling `calc-normalize'.  If its argument is zero it returns an empty
+list.  It does not actually remove these values from the stack.
+
+The `calc-enter-result' function takes an integer NUM and string TAG
+as described above, plus a third argument which is either a Calculator
+data object or a list of such objects.  These objects are resimplified
+and pushed onto the stack after popping the specified number of values
+from the stack.  If TAG is non-`nil', the values being pushed are also
+recorded in the trail.
+
+Note that if `calcFunc-myfact' returns `nil' this represents "leave
+the function in symbolic form."  To return an actual empty list, in
+the sense that `calc-enter-result' will push zero elements back onto
+the stack, you should return the special value `'(nil)', a list
+containing the single symbol `nil'.
+
+The `interactive' declaration can actually contain a limited
+Emacs-style code string as well which comes just before NUM and
+TAG.  Currently the only Emacs code supported is `"p"', as in
+
+     (defmath foo (a b &optional c)
+       (interactive "p" 2 "foo")
+       BODY)
+
+In this example, the command `calc-foo' will evaluate the expression
+`foo(a,b)' if executed with no argument, or `foo(a,b,n)' if executed
+with a numeric prefix argument of `n'.
+
+The other code string allowed is `"m"' (unrelated to the usual `"m"'
+code as used with `defun').  It uses the numeric prefix argument as
+the number of objects to remove from the stack and pass to the
+function.  In this case, the integer NUM serves as a default number of
+arguments to be used when no prefix is supplied.
+
+
+
+File: calc.info, Node: Argument Qualifiers, Next: Example Definitions, Prev: Defining Stack Commands, Up: Lisp Definitions
+
+Argument Qualifiers
+-------------------
+
+Anywhere a parameter name can appear in the parameter list you can
+also use an "argument qualifier".  Thus the general form of a
+definition is:
+
+     (defmath NAME (PARAM PARAM...
+		    &optional PARAM PARAM...
+		    &rest PARAM)
+       BODY)
+
+where each PARAM is either a symbol or a list of the form
+
+     (QUAL PARAM)
+
+The following qualifiers are recognized:
+
+`complete'
+     The argument must not be an incomplete vector, interval, or
+     complex number.  (This is rarely needed since the Calculator
+     itself will never call your function with an incomplete argument.
+     But there is nothing stopping your own Lisp code from calling
+     your function with an incomplete argument.)
+
+`integer'
+     The argument must be an integer.  If it is an integer-valued
+     float it will be accepted but converted to integer form.
+     Non-integers and formulas are rejected.
+
+`natnum'
+     Like `integer', but the argument must be non-negative.
+
+`fixnum'
+     Like `integer', but the argument must fit into a native Lisp
+     integer, which on most systems means less than 2^23 in absolute
+     value.  The argument is converted into Lisp-integer form if
+     necessary.
+
+`float'
+     The argument is converted to floating-point format if it is a
+     number or vector.  If it is a formula it is left alone.  (The
+     argument is never actually rejected by this qualifier.)
+
+`PRED'
+     The argument must satisfy predicate PRED, which is one of the
+     standard Calculator predicates.  *Note Predicates::.
+
+`not-PRED'
+     The argument must *not* satisfy predicate PRED.
+
+For example,
+
+     (defmath foo (a (constp (not-matrixp b)) &optional (float c)
+		   &rest (integer d))
+       BODY)
+
+expands to
+
+     (defun calcFunc-foo (a b &optional c &rest d)
+       (and (math-matrixp b)
+	    (math-reject-arg b 'not-matrixp))
+       (or (math-constp b)
+	   (math-reject-arg b 'constp))
+       (and c (setq c (math-check-float c)))
+       (setq d (mapcar 'math-check-integer d))
+       BODY)
+
+which performs the necessary checks and conversions before executing
+the body of the function.
+
+
+
+File: calc.info, Node: Example Definitions, Next: Calling Calc from Your Programs, Prev: Argument Qualifiers, Up: Lisp Definitions
+
+Example Definitions
+-------------------
+
+This section includes some Lisp programming examples on a larger scale.
+These programs make use of some of the Calculator's internal functions;
+*Note Internals::.
+
+* Menu:
+
+* Bit Counting Example::
+* Sine Example::
+
+
+
+File: calc.info, Node: Bit Counting Example, Next: Sine Example, Prev: Example Definitions, Up: Example Definitions
+
+Bit-Counting
+............
+
+Calc does not include a built-in function for counting the number of
+one" bits in a binary integer.  It's easy to invent one using `b u' to
+convert the integer to a set, and `V #' to count the elements of that
+set; let's write a function that counts the bits without having to
+create an intermediate set.
+
+     (defmath bcount ((natnum n))
+       (interactive 1 "bcnt")
+       (let ((count 0))
+	 (while (> n 0)
+	   (if (oddp n)
+	       (setq count (1+ count)))
+	   (setq n (lsh n -1)))
+	 count))
+
+When this is expanded by `defmath', it will become the following Emacs
+Lisp function:
+
+     (defun calcFunc-bcount (n)
+       (setq n (math-check-natnum n))
+       (let ((count 0))
+	 (while (math-posp n)
+	   (if (math-oddp n)
+	       (setq count (math-add count 1)))
+	   (setq n (calcFunc-lsh n -1)))
+	 count))
+
+If the input numbers are large, this function involves a fair amount
+of arithmetic.  A binary right shift is essentially a division by two;
+recall that Calc stores integers in decimal form so bit shifts must
+involve actual division.
+
+To gain a bit more efficiency, we could divide the integer into n-bit
+chunks, each of which can be handled quickly because they fit into
+Lisp integers.  It turns out that Calc's arithmetic routines are
+especially fast when dividing by an integer less than 1000, so we can
+set n = 9 bits and use repeated division by 512:
+
+     (defmath bcount ((natnum n))
+       (interactive 1 "bcnt")
+       (let ((count 0))
+	 (while (not (fixnump n))
+	   (let ((qr (idivmod n 512)))
+	     (setq count (+ count (bcount-fixnum (cdr qr)))
+		   n (car qr))))
+	 (+ count (bcount-fixnum n))))
+
+     (defun bcount-fixnum (n)
+       (let ((count 0))
+	 (while (> n 0)
+	   (setq count (+ count (logand n 1))
+		 n (lsh n -1)))
+	 count))
+
+Note that the second function uses `defun', not `defmath'.  Because
+this function deals only with native Lisp integers ("fixnums"), it can
+use the actual Emacs `+' and related functions rather than the slower
+but more general Calc equivalents which `defmath' uses.
+
+The `idivmod' function does an integer division, returning both the
+quotient and the remainder at once.  Again, note that while it might
+seem that `(logand n 511)' and `(lsh n -9)' are more efficient ways to
+split off the bottom nine bits of `n', actually they are less
+efficient because each operation is really a division by 512 in
+disguise; `idivmod' allows us to do the same thing with a single
+division by 512.
+
+
+
+File: calc.info, Node: Sine Example, Prev: Bit Counting Example, Up: Example Definitions
+
+The Sine Function
+.................
+
+A somewhat limited sine function could be defined as follows, using the
+well-known Taylor series expansion for `sin(x)':
+
+     (defmath mysin ((float (anglep x)))
+       (interactive 1 "mysn")
+       (setq x (to-radians x))    ; Convert from current angular mode.
+       (let ((sum x)              ; Initial term of Taylor expansion of sin.
+	     newsum
+	     (nfact 1)            ; "nfact" equals "n" factorial at all times.
+	     (xnegsqr :"-(x^2)")) ; "xnegsqr" equals -x^2.
+	 (for ((n 3 100 2))       ; Upper limit of 100 is a good precaution.
+	   (working "mysin" sum)  ; Display "Working" message, if enabled.
+	   (setq nfact (* nfact (1- n) n)
+		 x (* x xnegsqr)
+		 newsum (+ sum (/ x nfact)))
+	   (if (~= newsum sum)    ; If newsum is "nearly equal to" sum,
+	       (break))           ;  then we are done.
+	   (setq sum newsum))
+	 sum))
+
+The actual `sin' function in Calc works by first reducing the problem
+to a sine or cosine of a nonnegative number less than `pi/4'.  This
+ensures that the Taylor series will converge quickly.  Also, the
+calculation is carried out with two extra digits of precision to guard
+against cumulative round-off in `sum'.  Finally, complex arguments are
+allowed and handled by a separate algorithm.
+
+     (defmath mysin ((float (scalarp x)))
+       (interactive 1 "mysn")
+       (setq x (to-radians x))    ; Convert from current angular mode.
+       (with-extra-prec 2         ; Evaluate with extra precision.
+	 (cond ((complexp x)
+                (mysin-complex x))
+	       ((< x 0)
+                (- (mysin-raw (- x)))    ; Always call mysin-raw with x >= 0.
+	       (t (mysin-raw x))))))
+
+     (defmath mysin-raw (x)
+       (cond ((>= x 7)
+	      (mysin-raw (% x (two-pi))))     ; Now x < 7.
+	     ((> x (pi-over-2))
+	      (- (mysin-raw (- x (pi)))))     ; Now -pi/2 <= x <= pi/2.
+	     ((> x (pi-over-4))
+	      (mycos-raw (- x (pi-over-2))))  ; Now -pi/2 <= x <= pi/4.
+	     ((< x (- (pi-over-4)))
+	      (- (mycos-raw (+ x (pi-over-2)))))  ; Now -pi/4 <= x <= pi/4,
+	     (t (mysin-series x))))           ; so the series will be efficient.
+
+where `mysin-complex' is an appropriate function to handle complex
+numbers, `mysin-series' is the routine to compute the sine Taylor
+series as before, and `mycos-raw' is a function analogous to
+`mysin-raw' for cosines.
+
+The strategy is to ensure that `x' is nonnegative before calling
+`mysin-raw'.  This function then recursively reduces its argument to a
+suitable range, namely, plus-or-minus `pi/4'.  Note that each test,
+and particularly the first comparison against 7, is designed so that
+small roundoff errors cannnot produce an infinite loop.  (Suppose we
+compared with `(two-pi)' instead; if due to roundoff problems the
+modulo operator ever returned `(two-pi)' exactly, an infinite
+recursion could result!)  We use modulo only for arguments that will
+clearly get reduced, knowing that the next rule will catch any
+reductions that this rule misses.
+
+If a program is being written for general use, it is important to code
+it carefully as shown in this second example.  For quick-and-dirty
+programs, when you know that your own use of the sine function will
+never encounter a large argument, a simpler program like the first one
+shown is fine.
+
+
+
+File: calc.info, Node: Calling Calc from Your Programs, Next: Internals, Prev: Example Definitions, Up: Lisp Definitions
+
+Calling Calc from Your Lisp Programs
+------------------------------------
+
+A later section (*Note Internals::) gives a full description of Calc's
+internal Lisp functions.  It's not hard to call Calc from inside your
+programs, but the number of these functions can be daunting.  So Calc
+provides one special "programmer-friendly" function called `calc-eval'
+that can be made to do just about everything you need.  It's not as
+fast as the low-level Calc functions, but it's much simpler to use!
+
+It may seem that `calc-eval' itself has a daunting number of options,
+but they all stem from one simple operation.
+
+In its simplest manifestation, `(calc-eval "1+2")' parses the string
+`"1+2"' as if it were a Calc algebraic entry and returns the result
+formatted as a string: `"3"'.
+
+Since `calc-eval' is on the list of recommended `autoload' functions,
+you don't need to make any special preparations to load Calc before
+calling `calc-eval' the first time.  Calc will be loaded and
+initialized for you.
+
+All the Calc modes that are currently in effect will be used when
+evaluating the expression and formatting the result.
+
+
+
+Additional Arguments to `calc-eval'
+...................................
+
+If the input string parses to a list of expressions, Calc returns
+the results separated by `", "'.  You can specify a different
+separator by giving a second string argument to `calc-eval':
+`(calc-eval "1+2,3+4" ";")' returns `"3;7"'.
+
+The "separator" can also be any of several Lisp symbols which request
+other behaviors from `calc-eval'.  These are discussed one by one
+below.
+
+You can give additional arguments to be substituted for `$', `$$', and
+so on in the main expression.  For example, `(calc-eval "$/$$" nil "7"
+1+1")' evaluates the expression `"7/(1+1)"' to yield the result
+`"3.5"' (assuming Fraction mode is not in effect).  Note the `nil'
+used as a placeholder for the item-separator argument.
+
+
+
+Error Handling
+..............
+
+If `calc-eval' encounters an error, it returns a list containing the
+character position of the error, plus a suitable message as a string.
+Note that `1 / 0' is *not* an error by Calc's standards; it simply
+returns the string `"1 / 0"' which is the division left in symbolic
+form.  But `(calc-eval "1/")' will return the list `(2 "Expected a
+number")'.
+
+If you bind the variable `calc-eval-error' to `t' using a `let' form
+surrounding the call to `calc-eval', errors instead call the Emacs
+`error' function which aborts to the Emacs command loop with a beep
+and an error message.
+
+If you bind this variable to the symbol `string', error messages are
+returned as strings instead of lists.  The character position is
+ignored.
+
+As a courtesy to other Lisp code which may be using Calc, be sure to
+bind `calc-eval-error' using `let' rather than changing it permanently
+with `setq'.
+
+
+
+Numbers Only
+............
+
+Sometimes it is preferable to treat `1 / 0' as an error rather than
+returning a symbolic result.  If you pass the symbol `num' as the
+second argument to `calc-eval', results that are not constants are
+treated as errors.  The error message reported is the first `calc-why'
+message if there is one, or otherwise "Number expected."
+
+A result is "constant" if it is a number, vector, or other object that
+does not include variables or function calls.  If it is a vector, the
+components must themselves be constants.
+
+
+
+Default Modes
+.............
+
+If the first argument to `calc-eval' is a list whose first element is
+a formula string, then `calc-eval' sets all the various Calc modes to
+their default values while the formula is evaluated and formatted.
+For example, the precision is set to 12 digits, digit grouping is
+turned off, and the normal language mode is used.
+
+This same principle applies to the other options discussed below.  If
+the first argument would normally be X, then it can also be the list
+`(X)' to use the default mode settings.
+
+If there are other elements in the list, they are taken as
+variable-name/value pairs which override the default mode settings.
+Look at the documentation at the front of the `calc.el' file to find
+the names of the Lisp variables for the various modes.  The mode
+settings are restored to their original values when `calc-eval' is
+done.
+
+For example, `(calc-eval '("$+$$" calc-internal-prec 8) 'num a b)'
+computes the sum of two numbers, requiring a numeric result, and using
+default mode settings except that the precision is 8 instead of the
+default of 12.
+
+It's usually best to use this form of `calc-eval' unless your program
+actually considers the interaction with Calc's mode settings to be a
+feature.  This will avoid all sorts of potential "gotchas"; consider
+what happens with `(calc-eval "sqrt(2)" 'num)' when the user has left
+Calc in symbolic mode or no-simplify mode.
+
+As another example, `(equal (calc-eval '("$<$$") nil a b) "1")' checks
+if the number in string `a' is less than the one in string `b'.
+Without using a list, the integer 1 might come out in a variety of
+formats which would be hard to test for conveniently: `"1"', `"8#1"',
+`"00001"'.  (But see "Predicates" mode, below.)
+
+
+
+Raw Numbers
+...........
+
+Normally all input and output for `calc-eval' is done with strings.
+You can do arithmetic with, say, `(calc-eval "$+$$" nil a b)' in place
+of `(+ a b)', but this is very inefficient since the numbers must be
+converted to and from string format as they are passed from one
+`calc-eval' to the next.
+
+If the separator is the symbol `raw', the result will be returned as a
+raw Calc data structure rather than a string.  You can read about how
+these objects look in the following sections, but usually you can
+treat them as "black box" objects with no important internal
+structure.
+
+There is also a `rawnum' symbol, which is a combination of `raw'
+(returning a raw Calc object) and `num' (signalling an error if that
+object is not a constant).
+
+You can pass a raw Calc object to `calc-eval' in place of a string,
+either as the formula itself or as one of the `$' arguments.  Thus
+`(calc-eval "$+$$" 'raw a b)' is an addition function that operates on
+raw Calc objects.  Of course in this case it would be easier to call
+the low-level `math-add' function in Calc, if you can remember its
+name.
+
+In particular, note that a plain Lisp integer is acceptable to Calc as
+a raw object.  (All Lisp integers are accepted on input, but integers
+of more than six decimal digits are converted to "big-integer" form
+for output.  *Note Data Type Formats::.)
+
+When it comes time to display the object, just use `(calc-eval a)' to
+format it as a string.
+
+It is an error if the input expression evaluates to a list of values.
+The separator symbol `list' is like `raw' except that it returns a
+list of one or more raw Calc objects.
+
+Note that a Lisp string is not a valid Calc object, nor is a list
+containing a string.  Thus you can still safely distinguish all the
+various kinds of error returns discussed above.
+
+
+
+Predicates
+..........
+
+If the separator symbol is `pred', the result of the formula is
+treated as a true/false value; `calc-eval' returns `t' or `nil',
+respectively.  A value is considered "true" if it is a non-zero
+number, or false if it is zero or if it is not a number.
+
+For example, `(calc-eval "$<$$" 'pred a b)' tests whether one value is
+less than another.
+
+As usual, it is also possible for `calc-eval' to return one of
+the error indicators described above.  Lisp will interpret such an
+indicator as "true" if you don't check for it explicitly.  If you
+wish to have an error register as "false", use something like
+`(eq (calc-eval ...) t)'.
+
+
+
+Variable Values
+...............
+
+Variables in the formula passed to `calc-eval' are not normally
+replaced by their values.  If you wish this, you can use the `evalv'
+function (*Note Algebraic Manipulation::).  For example, if 4 is
+stored in Calc variable `a' (i.e., in Lisp variable `var-a'), then
+`(calc-eval "a+pi")' will return the formula `"a + pi"', but
+`(calc-eval "evalv(a+pi)")' will return `"7.14159265359"'.
+
+To store in a Calc variable, just use `setq' to store in the
+corresponding Lisp variable.  (This is obtained by prepending `var-'
+to the Calc variable name.)  Calc routines will understand either
+string or raw form values stored in variables, although raw data
+objects are much more efficient.  For example, to increment the Calc
+variable `a':
+
+     (setq var-a (calc-eval "evalv(a+1)" 'raw))
+
+
+
+Stack Access
+............
+
+If the separator symbol is `push', the formula argument is evaluated
+(with possible `$' expansions, as usual).  The result is pushed onto
+the Calc stack.  The return value is `nil' (unless there is an error
+from evaluating the formula, in which case the return value depends on
+`calc-eval-error' in the usual way).
+
+If the separator symbol is `pop', the first argument to `calc-eval'
+must be an integer instead of a string.  That many values are popped
+from the stack and thrown away.  A negative argument deletes the entry
+at that stack level.  The return value is the number of elements
+remaining in the stack after popping; `(calc-eval 0 'pop)' is a good
+way to measure the size of the stack.
+
+If the separator symbol is `top', the first argument to `calc-eval'
+must again be an integer.  The value at that stack level is formatted
+as a string and returned.  Thus `(calc-eval 1 'top)' returns the
+top-of-stack value.  If the integer is out of range, `nil' is
+returned.
+
+The separator symbol `rawtop' is just like `top' except that the stack
+entry is returned as a raw Calc object instead of as a string.
+
+In all of these cases the first argument can be made a list in order
+to force the default mode settings, as described above.  Thus
+`(calc-eval '(2 calc-number-radix 16) 'top)' returns the second-to-top
+stack entry, formatted as a string using the default instead of
+current display modes, except that the radix is hexadecimal instead of
+decimal.
+
+It is, of course, polite to put the Calc stack back the way you found
+it when you are done, unless the user of your program is actually
+expecting it to affect the stack.
+
+Note that you do not actually have to switch into the `*Calculator*'
+buffer in order to use `calc-eval'; it temporarily switches into the
+stack buffer if necessary.
+
+
+
+Keyboard Macros
+...............
+
+If the separator symbol is `macro', the first argument must be a
+string of characters which Calc can execute as a sequence of
+keystrokes.  This switches into the Calc buffer for the duration of
+the macro.  For example, `(calc-eval "vx5\rVR+" 'macro)' pushes the
+vector `[1,2,3,4,5]' on the stack and then replaces it with the sum of
+those numbers.  Note that `\r' is the Lisp notation for the
+carriage-return, RET, character.
+
+If your keyboard macro wishes to pop the stack, `\C-d' is safer than
+`\177' (the DEL character) because some installations may have
+switched the meanings of DEL and `C-h'.  Calc always interprets `C-d'
+as a synonym for "pop-stack" regardless of key mapping.
+
+If you provide a third argument to `calc-eval', evaluation of the
+keyboard macro will leave a record in the Trail using that argument as
+a tag string.  Normally the Trail is unaffected.
+
+The return value in this case is always `nil'.
+
+
+
+Lisp Evaluation
+...............
+
+Finally, if the separator symbol is `eval', then the Lisp
+`eval' function is called on the first argument, which must
+be a Lisp expression rather than a Calc formula.  Remember to
+quote the expression so that it is not evaluated until inside
+`calc-eval'.
+
+The difference from plain `eval' is that `calc-eval' switches to the
+Calc buffer before evaluating the expression.  For example,
+`(calc-eval '(setq calc-internal-prec 17) 'eval)' will correctly
+affect the buffer-local Calc precision variable.
+
+An alternative would be `(calc-eval '(calc-precision 17) 'eval)'.
+This is evaluating a call to the function that is normally invoked by
+the `p' key, giving it 17 as its "numeric prefix argument."  Note that
+this function will leave a message in the echo area as a side effect.
+Also, all Calc functions switch to the Calc buffer automatically if
+not invoked from there, so the above call is also equivalent to
+`(calc-precision 17)' by itself.  In all cases, Calc uses
+`save-excursion' to switch back to your original buffer when it is
+done.
+
+As usual the first argument can be a list that begins with a Lisp
+expression to use default instead of current mode settings.
+
+The result of `calc-eval' in this usage is just the result returned by
+the evaluated Lisp expression.
+
+
+
+Example
+.......
+
+Here is a sample Emacs command that uses `calc-eval'.  Suppose you
+have a document with lots of references to temperatures on the
+Fahrenheit scale, say "98.6 F", and you wish to convert these
+references to Centigrade.  The following command does this conversion.
+Place the Emacs cursor right after the letter "F" and invoke the
+command to change "98.6 F" to "37 C".  Or, if the temperature is
+already in Centigrade form, the command changes it back to Fahrenheit.
+
+     (defun convert-temp ()
+       (interactive)
+       (save-excursion
+	 (re-search-backward "[^-.0-9]\\([-.0-9]+\\) *\\([FC]\\)")
+	 (let* ((top1 (match-beginning 1))
+                (bot1 (match-end 1))
+                (number (buffer-substring top1 bot1))
+                (top2 (match-beginning 2))
+                (bot2 (match-end 2))
+                (type (buffer-substring top2 bot2)))
+	   (if (equal type "F")
+	       (setq type "C"
+		     number (calc-eval "($ - 32)*5/9" nil number))
+	     (setq type "F"
+		   number (calc-eval "$*9/5 + 32" nil number)))
+	   (goto-char top2)
+	   (delete-region top2 bot2)
+	   (insert-before-markers type)
+	   (goto-char top1)
+	   (delete-region top1 bot1)
+	   (if (string-match "\\.$" number)   ; change "37." to "37"
+	       (setq number (substring number 0 -1)))
+	   (insert number))))
+
+Note the use of `insert-before-markers' when changing between "F" and
+C", so that the character winds up before the cursor instead of after
+it.
+
+
+
+File: calc.info, Node: Internals, Prev: Calling Calc from Your Programs, Up: Lisp Definitions
+
+Calculator Internals
+--------------------
+
+This section describes the Lisp functions defined by the Calculator
+that may be of use to user-written Calculator programs (as described
+in the rest of this chapter).  These functions are shown by their
+names as they conventionally appear in `defmath'.  Their full Lisp
+names are generally gotten by prepending `calcFunc-' or `math-' to
+their apparent names.  (Names that begin with `calc-' are already in
+their full Lisp form.)  You can use the actual full names instead if
+you prefer them, or if you are calling these functions from regular
+Lisp.
+
+The functions described here are scattered throughout the various Calc
+component files.  Note that `calc.el' includes `autoload's for only a
+few component files; when Calc wants to call an advanced function it
+calls `(calc-extensions)' first; this function autoloads
+`calc-ext.el', which in turn autoloads all the functions in the
+remaining component files.
+
+Because `defmath' itself uses the extensions, user-written code
+generally always executes with the extensions already loaded, so
+normally you can use any Calc function and be confident that it will
+be autoloaded for you when necessary.  If you are doing something
+special, check carefully to make sure each function you are using is
+from `calc.el' or its components, and call `(calc-extensions)' before
+using any function based in `calc-ext.el' if you can't prove this file
+will already be loaded.
+
+* Menu:
+
+* Data Type Formats::
+* Interactive Lisp Functions::
+* Stack Lisp Functions::
+* Predicates::
+* Computational Lisp Functions::
+* Vector Lisp Functions::
+* Symbolic Lisp Functions::
+* Formatting Lisp Functions::
+* Hooks::
+
+
+
+File: calc.info, Node: Data Type Formats, Next: Interactive Lisp Functions, Prev: Internals, Up: Internals
+
+Data Type Formats
+.................
+
+Integers are stored in either of two ways, depending on their
+magnitude.  Integers less than one million in absolute value are
+stored as standard Lisp integers.  This is the only storage format for
+Calc data objects which is not a Lisp list.
+
+Large integers are stored as lists of the form `(bigpos D0
+D1 D2 ...)' for positive integers 1000000 or more, or
+`(bigneg D0 D1 D2 ...)' for negative integers
+-1000000 or less.  Each D is a base-1000 "digit," a Lisp integer
+from 0 to 999.  The least significant digit is D0; the last digit, DN,
+which is always nonzero, is the most significant digit.  For example,
+the integer -12345678 is stored as `(bigneg 678 345 12)'.
+
+The distinction between small and large integers is entirely hidden
+from the user.  In `defmath' definitions, the Lisp predicate
+`integerp' returns true for either kind of integer, and in general
+both big and small integers are accepted anywhere the word "integer"
+is used in this manual.  If the distinction must be made, native Lisp
+integers are called "fixnums" and large integers are called "bignums".
+
+Fractions are stored as a list of the form, `(frac N D)' where N is an
+integer (big or small) numerator, D is an integer denominator greater
+than one, and N and D are relatively prime.  Note that fractions where
+D is one are automatically converted to plain integers by all math
+routines; fractions where D is negative are normalized by negating the
+numerator and denominator.
+
+Floating-point numbers are stored in the form, `(float MANT
+EXP)', where MANT (the "mantissa") is an integer less than
+`10^P' in absolute value (P represents the current
+precision), and EXP (the "exponent") is a fixnum.  The value of
+the float is `MANT * 10^EXP'.  For example, the number
+-3.14 is stored as `(float -314 -2) = -314*10^-2'.  Other constraints
+are that the number 0.0 is always stored as `(float 0 0)', and, except
+for the 0.0 case, the rightmost base-10 digit of MANT is always
+nonzero.  (If the rightmost digit is zero, the number is rearranged by
+dividing MANT by ten and incrementing EXP.)
+
+Rectangular complex numbers are stored in the form `(cplx RE IM)',
+where RE and IM are each real numbers, either integers, fractions, or
+floats.  The value is `RE + IMi'.  The IM part is nonzero; complex
+numbers with zero imaginary components are converted to real numbers
+automatically.
+
+Polar complex numbers are stored in the form `(polar R THETA)', where
+R is a positive real value and THETA is a real value or HMS form
+representing an angle.  This angle is usually normalized to lie in the
+interval `(-180 .. 180)' degrees, or `(-pi .. pi)' radians, according
+to the current angular mode.  If the angle is 0 the value is converted
+to a real number automatically.  (If the angle is 180 degrees, the
+value is usually also converted to a negative real number.)
+
+Hours-minutes-seconds forms are stored as `(hms H M S)', where H is an
+integer or an integer-valued float (i.e., a float with `EXP >= 0'), M
+is an integer or integer-valued float in the range `[0 .. 60)', and S
+is any real number in the range `[0 .. 60)'.
+
+Date forms are stored as `(date N)', where N is a real number that
+counts days since midnight on the morning of January 1, 1 AD.  If N is
+an integer, this is a pure date form.  If N is a fraction or float,
+this is a date/time form.
+
+Modulo forms are stored as `(mod N M)', where M is a positive real
+number or HMS form, and N is a real number or HMS form in the range
+`[0 .. M)'.
+
+Error forms are stored as `(sdev X SIGMA)', where X is the mean value
+and SIGMA is the standard deviation.  Each component is either a
+number, an HMS form, or a symbolic object (a variable or function
+call).  If SIGMA is zero, the value is converted to a plain real
+number.  If SIGMA is negative or complex, it is automatically
+normalized to be a positive real.
+
+Interval forms are stored as `(intv MASK LO HI)',
+where MASK is one of the integers 0, 1, 2, or 3, and LO and
+HI are real numbers, HMS forms, or symbolic objects.  The MASK
+is a binary integer where 1 represents the fact that the interval is
+closed on the high end, and 2 represents the fact that it is closed on
+the low end.  (Thus 3 represents a fully closed interval.)  The interval
+`(intv 3 X X)' is converted to the plain number X;
+intervals `(intv MASK X X)' for any other MASK
+represent empty intervals.  If HI is less than LO, the interval
+is converted to a standard empty interval by replacing HI with LO.
+
+Vectors are stored as `(vec V1 V2 ...)', where V1 is the first element
+of the vector, V2 is the second, and so on.  An empty vector is stored
+as `(vec)'.  A matrix is simply a vector where all V's are themselves
+vectors of equal lengths.  Note that Calc vectors are unrelated to the
+Emacs Lisp "vector" type, which is generally unused by Calc data
+structures.
+
+Variables are stored as `(var NAME SYM)', where NAME is a Lisp symbol
+whose print name is used as the visible name of the variable, and SYM
+is a Lisp symbol in which the variable's value is actually stored.
+Thus, `(var pi var-pi)' represents the special constant `pi'.  Almost
+always, the form is `(var V var-V)'.  If the variable name was entered
+with `#' signs (which are converted to hyphens internally), the form
+is `(var U V)', where U is a symbol whose name contains `#'
+characters, and V is a symbol that contains `-' characters instead.
+The value of a variable is the Calc object stored in its SYM symbol's
+value cell.  If the symbol's value cell is void or if it contains
+`nil', the variable has no value.  Special constants have the form
+`(special-const VALUE)' stored in their value cell, where VALUE is a
+formula which is evaluated when the constant's value is requested.
+Variables which represent units are not stored in any special way;
+they are units only because their names appear in the units table.  If
+the value cell contains a string, it is parsed to get the variable's
+value when the variable is used.
+
+A Lisp list with any other symbol as the first element is a function
+call.  The symbols `+', `-', `*', `/', `%', `^', and `|' represent
+special binary operators; these lists are always of the form `(OP LHS
+RHS)' where LHS is the sub-formula on the lefthand side and RHS is the
+sub-formula on the right.  The symbol `neg' represents unary negation;
+this list is always of the form `(neg ARG)'.  Any other symbol FUNC
+represents a function that would be displayed in function-call
+notation; the symbol FUNC is in general always of the form
+`calcFunc-NAME'.  The function cell of the symbol FUNC should contain
+a Lisp function for evaluating a call to FUNC.  This function is
+passed the remaining elements of the list (themselves already
+evaluated) as arguments; such functions should return `nil' or call
+`reject-arg' to signify that they should be left in symbolic form, or
+they should return a Calc object which represents their value, or a
+list of such objects if they wish to return multiple values.  (The
+latter case is allowed only for functions which are the outer-level
+call in an expression whose value is about to be pushed on the stack;
+this feature is considered obsolete and is not used by any built-in
+Calc functions.)
+
+
+
+File: calc.info, Node: Interactive Lisp Functions, Next: Stack Lisp Functions, Prev: Data Type Formats, Up: Internals
+
+Interactive Functions
+.....................
+
+The functions described here are used in implementing interactive Calc
+commands.  Note that this list is not exhaustive!  If there is an
+existing command that behaves similarly to the one you want to define,
+you may find helpful tricks by checking the source code for that
+command.
+
+ -- Function: calc-set-command-flag FLAG
+     Set the command flag FLAG.  This is generally a Lisp symbol, but
+     may in fact be anything.  The effect is to add FLAG to the list
+     stored in the variable `calc-command-flags', unless it is already
+     there.  *Note Defining Simple Commands::.
+
+ -- Function: calc-clear-command-flag FLAG
+     If FLAG appears among the list of currently-set command flags,
+     remove it from that list.
+
+ -- Function: calc-record-undo REC
+     Add the "undo record" REC to the list of steps to take if the
+     current operation should need to be undone.  Stack push and pop
+     functions automatically call `calc-record-undo', so the kinds of
+     undo records you might need to create take the form `(set SYM
+     VALUE)', which says that the Lisp variable SYM was changed and
+     had previously contained VALUE; `(store VAR VALUE)' which says
+     that the Calc variable VAR (a string which is the name of the
+     symbol that contains the variable's value) was stored and its
+     previous value was VALUE (either a Calc data object, or `nil' if
+     the variable was previously void); or `(eval UNDO REDO
+     ARGS ...)', which means that to undo requires calling the
+     function `(UNDO ARGS ...)' and, if the undo is later redone,
+     calling `(REDO ARGS ...)'.
+
+ -- Function: calc-record-why MSG ARGS
+     Record the error or warning message MSG, which is normally a
+     string.  This message will be replayed if the user types `w'
+     (`calc-why'); if the message string begins with a `*', it is
+     considered important enough to display even if the user doesn't
+     type `w'.  If one or more ARGS are present, the displayed message
+     will be of the form, `MSG: ARG1, ARG2, ...', where the arguments
+     are formatted on the assumption that they are either strings or
+     Calc objects of some sort.  If MSG is a symbol, it is the name of
+     a Calc predicate (such as `integerp' or `numvecp') which the
+     arguments did not satisfy; it is expanded to a suitable string
+     such as "Expected an integer."  The `reject-arg' function calls
+     `calc-record-why' automatically; *Note Predicates::.
+
+ -- Function: calc-is-inverse
+     This predicate returns true if the current command is inverse,
+     i.e., if the Inverse (`I' key) flag was set.
+
+ -- Function: calc-is-hyperbolic
+     This predicate is the analogous function for the `H' key.
+
+
+
+File: calc.info, Node: Stack Lisp Functions, Next: Predicates, Prev: Interactive Lisp Functions, Up: Internals
+
+Stack-Oriented Functions
+........................
+
+The functions described here perform various operations on the Calc
+stack and trail.  They are to be used in interactive Calc commands.
+
+ -- Function: calc-push-list VALS N
+     Push the Calc objects in list VALS onto the stack at stack level
+     N.  If N is omitted it defaults to 1, so that the elements are
+     pushed at the top of the stack.  If N is greater than 1, the
+     elements will be inserted into the stack so that the last element
+     will end up at level N, the next-to-last at level N+1, etc.  The
+     elements of VALS are assumed to be valid Calc objects, and are
+     not evaluated, rounded, or renormalized in any way.  If VALS is
+     an empty list, nothing happens.
+
+     The stack elements are pushed without any sub-formula selections.
+     You can give an optional third argument to this function, which
+     must be a list the same size as VALS of selections.  Each
+     selection must be `eq' to some sub-formula of the corresponding
+     formula in VALS, or `nil' if that formula should have no
+     selection.
+
+ -- Function: calc-top-list N M
+     Return a list of the N objects starting at level M of the stack.
+     If M is omitted it defaults to 1, so that the elements are taken
+     from the top of the stack.  If N is omitted, it also defaults to
+     1, so that the top stack element (in the form of a one-element
+     list) is returned.  If M is greater than 1, the Mth stack element
+     will be at the end of the list, the M+1st element will be
+     next-to-last, etc.  If N or M are out of range, the command is
+     aborted with a suitable error message.  If N is zero, the
+     function returns an empty list.  The stack elements are not
+     evaluated, rounded, or renormalized.
+
+     If any stack elements contain selections, and selections have not
+     been disabled by the `j e' (`calc-enable-selections') command,
+     this function returns the selected portions rather than the
+     entire stack elements.  It can be given a third "selection-mode"
+     argument which selects other behaviors.  If it is the symbol `t',
+     then a selection in any of the requested stack elements produces
+     an "illegal operation on selections" error.  If it is the symbol
+     `full', the whole stack entry is always returned regardless of
+     selections.  If it is the symbol `sel', the selected portion is
+     always returned, or `nil' if there is no selection.  (This mode
+     ignores the `j e' command.)  If the symbol is `entry', the
+     complete stack entry in list form is returned; the first element
+     of this list will be the whole formula, and the third element
+     will be the selection (or `nil').
+
+ -- Function: calc-pop-stack N M
+     Remove the specified elements from the stack.  The parameters N
+     and M are defined the same as for `calc-top-list'.  The return
+     value of `calc-pop-stack' is uninteresting.
+
+     If there are any selected sub-formulas among the popped elements,
+     and `j e' has not been used to disable selections, this produces
+     an error without changing the stack.  If you supply an optional
+     third argument of `t', the stack elements are popped even if they
+     contain selections.
+
+ -- Function: calc-record-list VALS TAG
+     This function records one or more results in the trail.  The VALS
+     are a list of strings or Calc objects.  The TAG is the
+     four-character tag string to identify the values.  If TAG is
+     omitted, a blank tag will be used.
+
+ -- Function: calc-normalize N
+     This function takes a Calc object and "normalizes" it.  At the
+     very least this involves re-rounding floating-point values
+     according to the current precision and other similar jobs.  Also,
+     unless the user has selected no-simplify mode (*Note
+     Simplification Modes::), this involves actually evaluating a
+     formula object by executing the function calls it contains, and
+     possibly also doing algebraic simplification, etc.
+
+ -- Function: calc-top-list-n N M
+     This function is identical to `calc-top-list', except that it calls
+     `calc-normalize' on the values that it takes from the stack.  They
+     are also passed through `check-complete', so that incomplete
+     objects will be rejected with an error message.  All computational
+     commands should use this in preference to `calc-top-list'; the only
+     standard Calc commands that operate on the stack without normalizing
+     are stack management commands like `calc-enter' and `calc-roll-up'.
+     This function accepts the same optional selection-mode argument as
+     `calc-top-list'.
+
+ -- Function: calc-top-n M
+     This function is a convenient form of `calc-top-list-n' in which
+     only a single element of the stack is taken and returned, rather
+     than a list of elements.  This also accepts an optional
+     selection-mode argument.
+
+ -- Function: calc-enter-result N TAG VALS
+     This function is a convenient interface to most of the above
+     functions.  The VALS argument should be either a single Calc
+     object, or a list of Calc objects; the object or objects are
+     normalized, and the top N stack entries are replaced by the
+     normalized objects.  If TAG is non-`nil', the normalized objects
+     are also recorded in the trail.  A typical stack-based
+     computational command would take the form,
+
+	  (calc-enter-result N TAG (cons 'calcFunc-FUNC
+					 (calc-top-list-n N)))
+
+     If any of the N stack elements replaced contain sub-formula
+     selections, and selections have not been disabled by `j e', this
+     function takes one of two courses of action.  If N is equal to
+     the number of elements in VALS, then each element of VALS is
+     spliced into the corresponding selection; this is what happens
+     when you use the TAB key, or when you use a unary arithmetic
+     operation like `sqrt'.  If VALS has only one element but N is
+     greater than one, there must be only one selection among the top
+     N stack elements; the element from VALS is spliced into that
+     selection.  This is what happens when you use a binary arithmetic
+     operation like `+'.  Any other combination of N and VALS is an
+     error when selections are present.
+
+ -- Function: calc-unary-op TAG FUNC ARG
+     This function implements a unary operator that allows a numeric
+     prefix argument to apply the operator over many stack entries.
+     If the prefix argument ARG is `nil', this uses
+     `calc-enter-result' as outlined above.  Otherwise, it maps the
+     function over several stack elements; *Note Prefix Arguments::.
+     For example,
+
+	  (defun calc-zeta (arg)
+	    (interactive "P")
+	    (calc-unary-op "zeta" 'calcFunc-zeta arg))
+
+ -- Function: calc-binary-op TAG FUNC ARG IDENT UNARY
+     This function implements a binary operator, analogously to
+     `calc-unary-op'.  The optional IDENT and UNARY arguments specify
+     the behavior when the prefix argument is zero or one,
+     respectively.  If the prefix is zero, the value IDENT is pushed
+     onto the stack, if specified, otherwise an error message is
+     displayed.  If the prefix is one, the unary function UNARY is
+     applied to the top stack element, or, if UNARY is not specified,
+     nothing happens.  When the argument is two or more, the binary
+     function FUNC is reduced across the top ARG stack elements; when
+     the argument is negative, the function is mapped between the
+     next-to-top -ARG stack elements and the top element.
+
+ -- Function: calc-stack-size
+     Return the number of elements on the stack as an integer.  This
+     count does not include elements that have been temporarily hidden
+     by stack truncation; *Note Truncating the Stack::.
+
+ -- Function: calc-cursor-stack-index N
+     Move the point to the Nth stack entry.  If N is zero, this will
+     be the `.' line.  If N is from 1 to the current stack size, this
+     will be the beginning of the first line of that stack entry's
+     display.  If line numbers are enabled, this will move to the
+     first character of the line number, not the stack entry itself.
+
+ -- Function: calc-substack-height N
+     Return the number of lines between the beginning of the Nth stack
+     entry and the bottom of the buffer.  If N is zero, this will be
+     one (assuming no stack truncation).  If all stack entries are one
+     line long (i.e., no matrices are displayed), the return value
+     will be equal N+1 as long as N is in range.  (Note that in Big
+     mode, the return value includes the blank lines that separate
+     stack entries.)
+
+ -- Function: calc-refresh
+     Erase the `*Calculator*' buffer and reformat its contents from
+     memory.  This must be called after changing any parameter, such
+     as the current display radix, which might change the appearance
+     of existing stack entries.  (During a keyboard macro invoked by
+     the `X' key, refreshing is suppressed, but a flag is set so that
+     the entire stack will be refreshed rather than just the top few
+     elements when the macro finishes.)
+
+
+
+File: calc.info, Node: Predicates, Next: Computational Lisp Functions, Prev: Stack Lisp Functions, Up: Internals
+
+Predicates
+..........
+
+The functions described here are predicates, that is, they return a
+true/false value where `nil' means false and anything else means true.
+These predicates are expanded by `defmath', for example, from `zerop'
+to `math-zerop'.  In many cases they correspond to native Lisp
+functions by the same name, but are extended to cover the full range
+of Calc data types.
+
+ -- Function: zerop X
+     Returns true if X is numerically zero, in any of the Calc data
+     types.  (Note that for some types, such as error forms and
+     intervals, it never makes sense to return true.)  In `defmath',
+     the expression `(= x 0)' will automatically be converted to
+     `(math-zerop x)', and `(/= x 0)' will be converted to `(not
+     (math-zerop x))'.
+
+ -- Function: negp X
+     Returns true if X is negative.  This accepts negative real
+     numbers of various types, negative HMS and date forms, and
+     intervals in which all included values are negative.  In
+     `defmath', the expression `(< x 0)' will automatically be
+     converted to `(math-negp x)', and `(>= x 0)' will be converted to
+     `(not (math-negp x))'.
+
+ -- Function: posp X
+     Returns true if X is positive (and non-zero).  For complex
+     numbers, none of these three predicates will return true.
+
+ -- Function: looks-negp X
+     Returns true if X is "negative-looking."  This returns true if X
+     is a negative number, or a formula with a leading minus sign such
+     as `-a/b'.  In other words, this is an object which can be made
+     simpler by calling `(- X)'.
+
+ -- Function: integerp X
+     Returns true if X is an integer of any size.
+
+ -- Function: fixnump X
+     Returns true if X is a native Lisp integer.
+
+ -- Function: natnump X
+     Returns true if X is a nonnegative integer of any size.
+
+ -- Function: fixnatnump X
+     Returns true if X is a nonnegative Lisp integer.
+
+ -- Function: num-integerp X
+     Returns true if X is numerically an integer, i.e., either a true
+     integer or a float with no significant digits to the right of the
+     decimal point.
+
+ -- Function: messy-integerp X
+     Returns true if X is numerically, but not literally, an integer.
+     A value is `num-integerp' if it is `integerp' or
+     `messy-integerp' (but it is never both at once).
+
+ -- Function: num-natnump X
+     Returns true if X is numerically a nonnegative integer.
+
+ -- Function: evenp X
+     Returns true if X is an even integer.
+
+ -- Function: looks-evenp X
+     Returns true if X is an even integer, or a formula with a leading
+     multiplicative coefficient which is an even integer.
+
+ -- Function: oddp X
+     Returns true if X is an odd integer.
+
+ -- Function: ratp X
+     Returns true if X is a rational number, i.e., an integer or a
+     fraction.
+
+ -- Function: realp X
+     Returns true if X is a real number, i.e., an integer, fraction,
+     or floating-point number.
+
+ -- Function: anglep X
+     Returns true if X is a real number or HMS form.
+
+ -- Function: floatp X
+     Returns true if X is a float, or a complex number, error form,
+     interval, date form, or modulo form in which at least one
+     component is a float.
+
+ -- Function: complexp X
+     Returns true if X is a rectangular or polar complex number (but
+     not a real number).
+
+ -- Function: rect-complexp X
+     Returns true if X is a rectangular complex number.
+
+ -- Function: polar-complexp X
+     Returns true if X is a polar complex number.
+
+ -- Function: numberp X
+     Returns true if X is a real number or a complex number.
+
+ -- Function: scalarp X
+     Returns true if X is a real or complex number or an HMS form.
+
+ -- Function: vectorp X
+     Returns true if X is a vector (this simply checks if its argument
+     is a list whose first element is the symbol `vec').
+
+ -- Function: numvecp X
+     Returns true if X is a number or vector.
+
+ -- Function: matrixp X
+     Returns true if X is a matrix, i.e., a vector of one or more
+     vectors, all of the same size.
+
+ -- Function: square-matrixp X
+     Returns true if X is a square matrix.
+
+ -- Function: objectp X
+     Returns true if X is any numeric Calc object, including real and
+     complex numbers, HMS forms, date forms, error forms, intervals,
+     and modulo forms.  (Note that error forms and intervals may
+     include formulas as their components; see `constp' below.)
+
+ -- Function: objvecp X
+     Returns true if X is an object or a vector.  This also accepts
+     incomplete objects, but it rejects variables and formulas (except
+     as mentioned above for `objectp').
+
+ -- Function: primp X
+     Returns true if X is a "primitive" or "atomic" Calc object, i.e.,
+     one whose components cannot be regarded as sub-formulas.  This
+     includes variables, and all `objectp' types except error forms
+     and intervals.
+
+ -- Function: constp X
+     Returns true if X is constant, i.e., a real or complex number,
+     HMS form, date form, or error form, interval, or vector all of
+     whose components are `constp'.
+
+ -- Function: lessp X Y
+     Returns true if X is numerically less than Y.  Returns false if X
+     is greater than or equal to Y, or if the order is undefined or
+     cannot be determined.  Generally speaking, this works by checking
+     whether `X - Y' is `negp'.  In `defmath', the expression `(< x
+     y)' will automatically be converted to `(lessp x y)'; expressions
+     involving `>', `<=', and `>=' are similarly converted in terms of
+     `lessp'.
+
+ -- Function: beforep X Y
+     Returns true if X comes before Y in a canonical ordering of Calc
+     objects.  If X and Y are both real numbers, this will be the same
+     as `lessp'.  But whereas `lessp' considers other types of objects
+     to be unordered, `beforep' puts any two objects into a definite,
+     consistent order.  The `beforep' function is used by the `V S'
+     vector-sorting command, and also by `a s' to put the terms of a
+     product into canonical order: This allows `x y + y x' to be
+     simplified easily to `2 x y'.
+
+ -- Function: equal X Y
+     This is the standard Lisp `equal' predicate; it returns true if X
+     and Y are structurally identical.  This is the usual way to
+     compare numbers for equality, but note that `equal' will treat 0
+     and 0.0 as different.
+
+ -- Function: math-equal X Y
+     Returns true if X and Y are numerically equal, either because
+     they are `equal', or because their difference is `zerop'.  In
+     `defmath', the expression `(= x y)' will automatically be
+     converted to `(math-equal x y)'.
+
+ -- Function: equal-int X N
+     Returns true if X and N are numerically equal, where N is a
+     fixnum which is not a multiple of 10.  This will automatically be
+     used by `defmath' in place of the more general `math-equal'
+     whenever possible.
+
+ -- Function: nearly-equal X Y
+     Returns true if X and Y, as floating-point numbers, are equal
+     except possibly in the last decimal place.  For example, 314.159
+     and 314.166 are considered nearly equal if the current precision
+     is 6 (since they differ by 7 units), but not if the current
+     precision is 7 (since they differ by 70 units).  Most functions
+     which use series expansions use `with-extra-prec' to evaluate the
+     series with 2 extra digits of precision, then use `nearly-equal'
+     to decide when the series has converged; this guards against
+     cumulative error in the series evaluation without doing extra
+     work which would be lost when the result is rounded back down to
+     the current precision.  In `defmath', this can be written `(~= X
+     Y)'.  The X and Y can be numbers of any kind, including complex.
+
+ -- Function: nearly-zerop X Y
+     Returns true if X is nearly zero, compared to Y.  This
+     checks whether X plus Y would by be `nearly-equal'
+     to Y itself, to within the current precision, in other words,
+     if adding X to Y would have a negligible effect on Y
+     due to roundoff error.  X may be a real or complex number, but
+     Y must be real.
+
+ -- Function: is-true X
+     Return true if the formula X represents a true value in Calc, not
+     Lisp, terms.  It tests if X is a non-zero number or a provably
+     non-zero formula.
+
+ -- Function: reject-arg VAL PRED
+     Abort the current function evaluation due to unacceptable
+     argument values.  This calls `(calc-record-why PRED VAL)', then
+     signals a Lisp error which `normalize' will trap.  The net effect
+     is that the function call which led here will be left in symbolic
+     form.
+
+ -- Function: inexact-value
+     If Symbolic Mode is enabled, this will signal an error that
+     causes `normalize' to leave the formula in symbolic form, with
+     the message "Inexact result."  (This function has no effect when
+     not in Symbolic Mode.)  Note that if your function calls `(sin
+     5)' in Symbolic Mode, the `sin' function will call
+     `inexact-value', which will cause your function to be left
+     unsimplified.  You may instead wish to call `(normalize (list
+     'calcFunc-sin 5))', which in Symbolic Mode will return the
+     formula `sin(5)' to your function.
+
+ -- Function: overflow
+     This signals an error that will be reported as a floating-point
+     overflow.
+
+ -- Function: underflow
+     This signals a floating-point underflow.
+
+
+

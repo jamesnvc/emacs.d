@@ -1,0 +1,262 @@
+;; -*-Emacs-lisp-*- 
+(require 'cl)
+(load-file "~/emacs.d/fixing.el")
+(defvar emacs-root (expand-file-name "~/emacs.d/"))
+
+(add-to-list 'load-path "/home/james/src/factor/misc")
+
+(labels ((add-path (p)
+		   (add-to-list 'load-path
+			   (concat emacs-root p))))
+  (add-path "elib")
+  (add-path "modes") ;; For various major/minor modes and their setup
+  (add-path "modes/arorem") ;; For rails
+  (add-path "modes/cl-lookup")
+  (add-path "modes/distel") ;; Erlang
+  (add-path "modes/gnuplot-mode.0.6.0")
+  (add-path "modes/icicles")
+  (add-path "modes/ruby") ;; Fancy ruby stuff
+  (add-path "modes/muse")
+  (add-path "modes/nxml-mode")
+  (add-path "modes/haskell")
+  (add-path "modes/redshank")
+  (add-path "modes/remember-1.9")
+  (add-path "modes/slime")
+  (add-path "modes/slime/contrib")
+  (add-path "modes/sml-mode-4.0")
+  (add-path "modes/tuareg-mode-1.45.4")
+  (add-path "modes/jde/lisp")
+  (add-path "modes/ess-5.3.5/lisp") ;; R statistical language
+  (add-path "modes/org-5.13a")
+  (add-path "utilities/Pymacs-0.23")
+  (add-path "utilities/vm") ;; VM mailer
+  (add-path "utilities/bbdb/lisp")
+  (add-path "utilities/mailcrypt-3.5.8")
+  (add-path "utilities/planner")
+  (add-path "utilities/cedet-1.0pre4/cogre")
+  (add-path "utilities/cedet-1.0pre4/common")
+  (add-path "utilities/cedet-1.0pre4/contrib")
+  (add-path "utilities/cedet-1.0pre4/ede")
+  (add-path "utilities/cedet-1.0pre4/eieio")
+  (add-path "utilities/cedet-1.0pre4/semantic")
+  (add-path "utilities/cedet-1.0pre4/speedbar")
+  (add-path "utilities/calc-2.02f") ;; Awesome RPN calculator
+  (add-path "modes/mmm-mode-0.4.8")
+  (add-path "utilities/epg") ;; emacs interface to GnuPG
+  (add-path "utilities/emacs-w3m")
+  (add-path "utilities/g-client") ;; Google APIs
+  (add-path "other") ;; various stuff that doesn't fit elsewhere
+  (add-path "other/emacs-goodies-el")
+  (add-path "other/dvc/++build")
+  (add-path "other/git")
+  (add-path "other/yasnippet-0.5.3")
+  (add-path "other/mail")
+  (add-path "mymisc") ;; stuff that I'm fiddling with
+  (add-path "custom") ;; various customizations
+  )
+
+
+(require 'emacs-type)
+(load-library "mymisc")
+(load-library "mode-configs")
+(load-library "customizations") ;; Generic customizations
+(load-library "keys") ;; my key customizations
+
+(setq abbrev-file-name (concat emacs-root "mymisc/abbrevs.el"))
+(read-abbrev-file abbrev-file-name t)
+(load-library "skeletons")
+(add-hook 'find-file-hook 'auto-insert)
+
+(server-start)
+
+;;; --------------------------------------------------------------------------------
+(custom-set-variables
+  ;; custom-set-variables was added by Custom.
+  ;; If you edit it by hand, you could mess it up, so be careful.
+  ;; Your init file should contain only one such instance.
+  ;; If there is more than one, they won't work right.
+ '(Info-additional-directory-list (quote ("/usr/local/info" "/home/james/doc/info" "/home/james/doc/info/perl-5.6-info/info/")))
+ '(Man-width t)
+ '(abbrev-mode t)
+ '(all-bahai-calendar-holidays t)
+ '(all-christian-calendar-holidays t)
+ '(all-hebrew-calendar-holidays t)
+ '(all-islamic-calendar-holidays t)
+ '(c-syntactic-indentation t)
+ '(calendar-latitude 43.4)
+ '(calendar-location-name "Toronto, ON")
+ '(calendar-longitude -79.2)
+ '(calendar-today-marker (quote calendar-today))
+ '(case-fold-search t)
+ '(confirm-kill-emacs (quote y-or-n-p))
+ '(cperl-clobber-lisp-bindings (quote null))
+ '(current-language-environment "UTF-8")
+ '(dabbrev-case-distinction nil)
+ '(dabbrev-case-fold-search nil)
+ '(debug-on-error t)
+ '(debug-on-quit nil)
+ '(default-input-method "rfc1345")
+ '(describe-char-unidata-list (quote (name general-category decimal-digit-value digit-value numeric-value iso-10646-comment)))
+ '(desktop-clear-preserve-buffers (quote ("\\*scratch\\*" "\\*Messages\\*" "\\*server\\*" "\\*tramp/.+\\*" "\\*w3m\\*\\(?:<.*?>\\)?" "\\*info\\*")))
+ '(desktop-save t)
+ '(desktop-save-mode t nil (desktop))
+ '(enable-recursive-minibuffers t)
+ '(erc-nick "jamesnvc")
+ '(erc-user-full-name "James Cash")
+ '(eshell-glob-case-insensitive t)
+ '(flymake-buildfile-dirs (quote ("~/" "." ".." "../.." "../../.." "../../../.." "../../../../.." "../../../../../.." "../../../../../../.." "../../../../../../../.." "../../../../../../../../.." "../../../../../../../../../.." "../../../../../../../../../../..")))
+ '(flyspell-default-dictionary nil)
+ '(fortune-dir "~/misc/fortunes/")
+ '(fortune-file "/home/james/misc/fortunes/lambda.txt")
+ '(ftp-program "sftp")
+ '(g-xslt-debug nil)
+ '(gblogger-user-email "james.nvc@gmail.com")
+ '(global-font-lock-mode t nil (font-lock))
+ '(haskell-font-lock-symbols t)
+ '(haskell-ghci-program-args (quote ("-fglasgow-exts")))
+ '(icicle-TAB-shows-candidates-flag nil)
+ '(icicle-download-dir "~/emacs.d/modes/icicles")
+ '(icicle-reminder-prompt-flag 0)
+ '(icicle-word-completion-key [space])
+;;  '(ido-default-buffer-method (quote raise-frame))
+;;  '(ido-enable-flex-matching t)
+;;  '(ido-enable-regexp t)
+;;  '(ido-everywhere t)
+ '(indent-tabs-mode nil)
+ '(ipython-command "ipython2.5")
+ '(ispell-local-dictionary nil)
+ '(jit-lock-stealth-nice 0.5)
+ '(jit-lock-stealth-time 3)
+ '(js2-highlight-level 3)
+ '(mark-diary-entries-in-calendar t)
+ '(muse-latex2png-scale-factor 1.2)
+ '(muse-latex2png-template "\\documentclass{article}
+\\usepackage{fullpage}
+\\usepackage{amssymb}
+\\usepackage[usenames]{color}
+\\usepackage{amsmath}
+\\usepackage{latexsym}
+\\usepackage[mathscr]{eucal}
+%preamble%
+\\pagestyle{empty}
+\\begin{document}
+{%code%}
+\\end{document}
+")
+ '(nxml-outline-child-indent 8)
+ '(nxml-slash-auto-complete-flag t)
+ '(org-agenda-custom-commands (quote (("d" todo #("DELEGATED" 0 9 (face org-warning)) nil) ("c" todo #("DONE|DEFERRED|CANCELLED" 0 23 (face org-warning)) nil) ("w" todo #("WAITING" 0 7 (face org-warning)) nil) ("W" agenda "" ((org-agenda-ndays 21))) ("A" agenda "" ((org-agenda-skip-function (lambda nil (org-agenda-skip-entry-if (quote notregexp) "\\=.*\\[#A\\]"))) (org-agenda-ndays 1) (org-agenda-overriding-header "Today's Priority #A tasks: "))) ("u" agenda #("TODO" 0 4 (face org-warning)) ((org-agenda-skip-function (lambda nil (org-agenda-skip-entry-if (quote scheduled) (quote deadline) (quote regexp) "<[^>
+]+>"))) (org-agenda-overriding-header "Unscheduled TODO entries: "))))))
+ '(org-agenda-files (quote ("~/todo.org")))
+ '(org-agenda-ndays 7)
+ '(org-agenda-show-all-dates t)
+ '(org-agenda-skip-deadline-if-done t)
+ '(org-agenda-skip-scheduled-if-done t)
+ '(org-agenda-start-on-weekday nil)
+ '(org-deadline-warning-days 14)
+ '(org-default-notes-file "~/notes.org")
+ '(org-fast-tag-selection-single-key (quote expert))
+ '(org-link-mailto-program (quote (browse-url "mailto:%a?subject=%s")))
+ '(org-log-done t)
+ '(org-remember-store-without-prompt t)
+ '(org-remember-templates (quote ((116 "* TODO %?
+  %u" "~/todo.org" "Tasks") (110 "* %u %?" "~/notes.org" "Notes"))))
+ '(org-return-follows-link t)
+ '(org-reverse-note-order t)
+ '(org-tab-follows-link t)
+ '(org-todo-interpretation (quote type))
+ '(org-todo-keywords (quote ("TODO" "STARTED" "WAITING" "DEFERRED" "DELEGATED" "CANCELLED" "APPT" "DONE")))
+ '(power-macros-file "/home/james/emacs_stuff/other/macros-file.el")
+ '(predictive-auto-learn t)
+ '(predictive-dict-autosave nil)
+ '(predictive-dict-autosave-on-kill-buffer nil)
+ '(predictive-dict-autosave-on-mode-disable nil)
+ '(py-python-command "ipython2.5")
+ '(python-python-command "ipython2.5 -cl")
+ '(quack-default-program "gsi")
+ '(quack-manuals (quote ((r6rs "R6RS" "http://www.r6rs.org/" nil) (r5rs "R5RS" "http://www.schemers.org/Documents/Standards/R5RS/HTML/" nil) (bigloo "Bigloo" "http://www-sop.inria.fr/mimosa/fp/Bigloo/doc/bigloo.html" nil) (chez "Chez Scheme User's Guide" "http://www.scheme.com/csug/index.html" nil) (chicken "Chicken User's Manual" "http://www.call-with-current-continuation.org/manual/manual.html" nil) (gambit "Gambit-C documentation (local)" "file://home/james/doc/gambit-c.html" nil) (gauche "Gauche Reference Manual" "http://www.shiro.dreamhost.com/scheme/gauche/man/gauche-refe.html" nil) (mitgnu-ref "MIT/GNU Scheme Reference" "http://www.gnu.org/software/mit-scheme/documentation/scheme.html" nil) (mitgnu-user "MIT/GNU Scheme User's Manual" "http://www.gnu.org/software/mit-scheme/documentation/user.html" nil) (mitgnu-sos "MIT/GNU Scheme SOS Reference Manual" "http://www.gnu.org/software/mit-scheme/documentation/sos.html" nil) (plt-mzscheme "PLT MzScheme: Language Manual" plt t) (plt-mzlib "PLT MzLib: Libraries Manual" plt t) (plt-mred "PLT MrEd: Graphical Toolbox Manual" plt t) (plt-framework "PLT Framework: GUI Application Framework" plt t) (plt-drscheme "PLT DrScheme: Programming Environment Manual" plt nil) (plt-insidemz "PLT Inside PLT MzScheme" plt nil) (plt-tools "PLT Tools: DrScheme Extension Manual" plt nil) (plt-mzc "PLT mzc: MzScheme Compiler Manual" plt t) (plt-r5rs "PLT R5RS" plt t) (scsh "Scsh Reference Manual" "http://www.scsh.net/docu/html/man-Z-H-1.html" nil) (sisc "SISC for Seasoned Schemers" "http://sisc.sourceforge.net/manual/html/" nil) (htdp "How to Design Programs" "http://www.htdp.org/" nil) (htus "How to Use Scheme" "http://www.htus.org/" nil) (t-y-scheme "Teach Yourself Scheme in Fixnum Days" "http://www.ccs.neu.edu/home/dorai/t-y-scheme/t-y-scheme.html" nil) (tspl "Scheme Programming Language (Dybvig)" "http://www.scheme.com/tspl/" nil) (sicp "Structure and Interpretation of Computer Programs" "http://mitpress.mit.edu/sicp/full-text/book/book-Z-H-4.html" nil) (slib "SLIB" "http://swissnet.ai.mit.edu/~jaffer/SLIB.html" nil) (faq "Scheme Frequently Asked Questions" "http://www.schemers.org/Documents/FAQ/" nil) (gambit-online "Gambit online (by chapter)" "http://www.iro.umontreal.ca/~gambit/doc/gambit-c_toc.html" nil))))
+ '(quack-pltish-keywords-to-fontify (quote ("and" "begin" "begin0" "c-declare" "c-lambda" "case" "case-lambda" "class" "class*" "class*/names" "class100" "class100*" "compound-unit/sig" "cond" "cond-expand" "define" "define-class" "define-const-structure" "define-constant" "define-embedded" "define-entry-point" "define-external" "define-foreign-record" "define-foreign-type" "define-foreign-variable" "define-generic" "define-generic-procedure" "define-inline" "define-location" "define-macro" "define-method" "define-module" "define-opt" "define-public" "define-reader-ctor" "define-record" "define-record-printer" "define-record-type" "define-signature" "define-struct" "define-structure" "define-syntax" "define-syntax-set" "define-values" "define-values/invoke-unit/sig" "define/contract" "define/override" "define/private" "define/public" "delay" "do" "else" "exit-handler" "field" "if" "import" "inherit" "inherit-field" "init" "init-field" "init-rest" "instantiate" "interface" "lambda" "let" "let*" "let*-values" "let+" "let-syntax" "let-values" "let/ec" "letrec" "letrec-values" "letrec-syntax" "match-lambda" "match-lambda*" "match-let" "match-let*" "match-letrec" "match-define" "mixin" "module" "opt-lambda" "or" "override" "override*" "namespace-variable-bind/invoke-unit/sig" "parameterize" "private" "private*" "protect" "provide" "provide-signature-elements" "provide/contract" "public" "public*" "quasiquote" "quote" "receive" "rename" "require" "require-for-syntax" "send" "send*" "set!" "set!-values" "signature->symbols" "super-instantiate" "syntax-case" "syntax-case*" "syntax-error" "syntax-rules" "unit/sig" "unless" "unquote" "unquote-splicing" "when" "with-handlers" "with-method" "with-syntax" "not" "call/cc" "defadvice" "lets" "with" "def" "mac" "fn")))
+ '(quack-pretty-lambda-p t)
+ '(quack-programs (quote ("gsi" "/usr/local/Gambit-C/bin/gsi" "bigloo" "csi" "csi -hygienic" "gambit" "gosh" "gsi " "gsi ~~/syntax-case -" "gsi ~~/syntax-case.-" "gsi ~~/syntax-case.scm -" "gsi-script" "guile" "kawa" "mit-scheme" "mred -z" "mzscheme" "mzscheme -M errortrace" "petite" "rs" "scheme" "scheme48" "scsh" "sisc" "stklos" "sxi")))
+ '(quack-remap-find-file-bindings-p nil)
+ '(quack-smart-open-paren-p nil)
+ '(remember-annotation-functions (quote (org-remember-annotation)))
+ '(remember-handler-functions (quote (org-remember-handler)))
+ '(save-place t nil (saveplace))
+ '(scheme-mit-dialect nil)
+ '(server-window (quote switch-to-buffer-other-frame))
+ '(show-paren-mode t)
+ '(slime-complete-symbol-function (quote slime-fuzzy-complete-symbol))
+ '(slime-enable-evaluate-in-emacs t)
+ '(spell-command "aspell")
+ '(standard-indent 4)
+ '(tab-always-indent t)
+ '(tags-table-list (quote ("../TAGS" "/home/james/Programming/scheme/TAGS")))
+ '(text-mode-hook (quote (turn-on-auto-fill text-mode-hook-identify)))
+ '(thinks-extra-silliness t)
+ '(thinks-from (quote bottom-diagonal))
+ '(transient-mark-mode t)
+ '(view-calendar-holidays-initially nil)
+ '(view-diary-entries-initially t)
+ '(vm-primary-inbox "/var/mail/james")
+ '(w3m-fill-column 120)
+ '(w3m-use-mule-ucs t)
+ '(woman-default-indent 7)
+ '(woman-emulation (quote nroff))
+ '(woman-fill-frame t)
+ '(woman-preserve-ascii nil)
+ '(woman-use-own-frame nil))
+
+(custom-set-faces
+  ;; custom-set-faces was added by Custom.
+  ;; If you edit it by hand, you could mess it up, so be careful.
+  ;; Your init file should contain only one such instance.
+  ;; If there is more than one, they won't work right.
+ '(eshell-prompt ((t (:foreground "Blue" :weight bold))))
+ '(flymake-errline ((((class color)) (:underline "OrangeRed"))))
+ '(flymake-warnline ((((class color)) (:underline "yellow"))))
+ '(font-lock-builtin-face ((t (:foreground "SteelBlue"))))
+ '(font-lock-comment-delimiter-face ((default (:inherit font-lock-comment-face)) (((class color) (min-colors 16)) (:foreground "Grey" :weight extra-light))))
+ '(font-lock-comment-face ((t (:foreground "LightGreen"))))
+ '(font-lock-doc-face ((t (:foreground "LightBlue"))))
+ '(font-lock-function-name-face ((t (:foreground "DodgerBlue"))))
+ '(font-lock-keyword-face ((t (:foreground "LightBlue"))))
+ '(font-lock-negation-char-face ((t (:foreground "OrangeRed"))))
+ '(font-lock-preprocessor-face ((t (:inherit font-lock-builtin-face :foreground "medium purple"))))
+ '(font-lock-string-face ((t (:foreground "LightBlue"))))
+ '(font-lock-type-face ((t (:foreground "Violet"))))
+ '(js2-comment-face ((t (:foreground "LightGreen"))))
+ '(js2-keyword-face ((t (:foreground "LightBlue"))))
+ '(py-decorators-face ((t (:foreground "purple"))) t)
+ '(quack-pltish-keyword-face ((t (:foreground "DodgerBlue" :weight semi-bold))))
+ '(quack-pltish-paren-face ((((class color) (background dark)) (:foreground "#00AC00"))))
+ '(quack-pltish-selfeval-face ((((class color) (background dark)) (:foreground "red1")))))
+;;; Commands added by calc-private-autoloads on Sat Jan 20 23:59:20 2007.
+(autoload 'calc-dispatch	   "calc" "Calculator Options" t)
+(autoload 'full-calc		   "calc" "Full-screen Calculator" t)
+(autoload 'full-calc-keypad	   "calc" "Full-screen X Calculator" t)
+(autoload 'calc-eval		   "calc" "Use Calculator from Lisp")
+(autoload 'defmath		   "calc" nil t t)
+(autoload 'calc			   "calc" "Calculator Mode" t)
+(autoload 'quick-calc		   "calc" "Quick Calculator" t)
+(autoload 'calc-keypad		   "calc" "X windows Calculator" t)
+(autoload 'calc-embedded	   "calc" "Use Calc inside any buffer" t)
+(autoload 'calc-embedded-activate  "calc" "Activate =>'s in buffer" t)
+(autoload 'calc-grab-region	   "calc" "Grab region of Calc data" t)
+(autoload 'calc-grab-rectangle	   "calc" "Grab rectangle of data" t)
+(setq load-path (nconc load-path (list "~/emacs_stuff/calc-2.02f")))
+(global-set-key "\e#" 'calc-dispatch)
+;;; End of Calc autoloads.
+
+(put 'set-goal-column 'disabled nil)
+(put 'narrow-to-region 'disabled nil)
+
+;;; This was installed by package-install.el.
+;;; This provides support for the package system and
+;;; interfacing with ELPA, the package archive.
+;;; Move this code earlier if you want to reference
+;;; packages in your .emacs.
+(when
+    (load
+     (expand-file-name "~/.emacs.d/elpa/package.el"))
+  (package-initialize))

@@ -1,0 +1,251 @@
+Index: dotfiles/.emacs.d/arorem-abbrevs.el
+===================================================================
+--- dotfiles/.emacs.d/arorem-abbrevs.el (revision 168)
++++ dotfiles/.emacs.d/arorem-abbrevs.el (revision 170)
+@@ -1,69 +1,75 @@
+-(define-abbrev-table 'arorem-abbrev-table
+-  '(;; model
+-    ("bt" "" (lambda () (snippet-insert "belongs_to")))
+-    ("hm" "" (lambda () (snippet-insert "has_many")))
+-    ("ho" "" (lambda () (snippet-insert "has_one")))
++;;; arorem-abbrevs.el
++
++;; Part of arorem - Another Ruby on Rails Emacs Mode
++;; Uses snippet.el to set up auto-expanded abbreviations
++;; Thanks to TextMate, Pete Kazmier, and Galinsky Dmitry
++
++(snippet-with-abbrev-table arorem-abbrev-table
++    ;; model
++    ("bt" . "belongs_to")
++    ("hm" . "has_many")
++    ("ho" . "has_one")
+     ;; controller renders
+-    ("ra" "" (lambda () (snippet-insert "render :action => \"$${action}\"")))
+-    ("ral" "" (lambda () (snippet-insert "render :action => \"$${action}\", :layout => \"$${layoutname}\"")))
+-    ("rf" "" (lambda () (snippet-insert "render :file => \"$${filepath}\"")))
+-    ("rfu" "" (lambda () (snippet-insert "render :file => \"$${filepath}\", :use_full_path => $${false}")))
+-    ("ri" "" (lambda () (snippet-insert "render :inline => \"$${<%= 'hello' %>}\"")))
+-    ("ril" "" (lambda () (snippet-insert "render :inline => \"$${<%= 'hello' %>}\", :locals => { $${name} => \"$${value}\" }")))
+-    ("rit" "" (lambda () (snippet-insert "render :inline => \"$${<%= 'hello' %>}\", :type => :$${rxml})")))
+-    ("rl" "" (lambda () (snippet-insert "render :layout => \"$${layoutname}\"")))
+-    ("rn" "" (lambda () (snippet-insert "render :nothing => $${true}")))
+-    ("rns" "" (lambda () (snippet-insert "render :nothing => $${true}, :status => $${401}")))
+-    ("rp" "" (lambda () (snippet-insert "render :partial => \"$${item}\"")))
+-    ("rpc" "" (lambda () (snippet-insert "render :partial => \"$${item}\", :collection => $${items}")))
+-    ("rpl" "" (lambda () (snippet-insert "render :partial => \"$${item}\", :locals => { :$${name} => \"$${value}\"}")))
+-    ("rpo" "" (lambda () (snippet-insert "render :partial => \"$${item}\", :object => $${object}")))
+-    ("rps" "" (lambda () (snippet-insert "render :partial => \"$${item}\", :status => $${500}")))
+-    ("rt" "" (lambda () (snippet-insert "render :text => \"$${Text here...}\"")))
+-    ("rtl" "" (lambda () (snippet-insert "render :text => \"$${Text here...}\", :layout => \"$${layoutname}\"")))
+-    ("rtlt" "" (lambda () (snippet-insert "render :text => \"$${Text here...}\", :layout => $${true}")))
+-    ("rts" "" (lambda () (snippet-insert "render :text => \"$${Text here...}\", :status => $${401}")))
+-    ("rcea" "" (lambda () (snippet-insert "render_component :action => \"$${index}\"")))
+-    ("rcec" "" (lambda () (snippet-insert "render_component :controller => \"$${items}\"")))
+-    ("rceca" "" (lambda () (snippet-insert "render_component :controller => \"$${items}\", :action => \"$${index}\"")))
++    ("ra" . "render :action => \"$${action}\"")
++    ("ral" . "render :action => \"$${action}\", :layout => \"$${layoutname}\"")
++    ("rf" . "render :file => \"$${filepath}\"")
++    ("rfu" . "render :file => \"$${filepath}\", :use_full_path => $${false}")
++    ("ri" . "render :inline => \"$${<%= 'hello' %>}\"")
++    ("ril" . "render :inline => \"$${<%= 'hello' %>}\", :locals => { $${name} => \"$${value}\" }")
++    ("rit" . "render :inline => \"$${<%= 'hello' %>}\", :type => :$${rxml})")
++    ("rl" . "render :layout => \"$${layoutname}\"")
++    ("rn" . "render :nothing => $${true}")
++    ("rns" . "render :nothing => $${true}, :status => $${401}")
++    ("rp" . "render :partial => \"$${item}\"")
++    ("rpc" . "render :partial => \"$${item}\", :collection => $${items}")
++    ("rpl" . "render :partial => \"$${item}\", :locals => { :$${name} => \"$${value}\"}")
++    ("rpo" . "render :partial => \"$${item}\", :object => $${object}")
++    ("rps" . "render :partial => \"$${item}\", :status => $${500}")
++    ("rt" . "render :text => \"$${Text here...}\"")
++    ("rtl" . "render :text => \"$${Text here...}\", :layout => \"$${layoutname}\"")
++    ("rtlt" . "render :text => \"$${Text here...}\", :layout => $${true}")
++    ("rts" . "render :text => \"$${Text here...}\", :status => $${401}")
++    ("rcea" . "render_component :action => \"$${index}\"")
++    ("rcec" . "render_component :controller => \"$${items}\"")
++    ("rceca" . "render_component :controller => \"$${items}\", :action => \"$${index}\"")
+     ;; redirects
+-    ("rea" "" (lambda () (snippet-insert "redirect_to :action => \"$${index}\"")))
+-    ("reai" "" (lambda () (snippet-insert "redirect_to :action => \"$${show}\", :id => $${@item}")))
+-    ("rec" "" (lambda () (snippet-insert "redirect_to :controller => \"$${items}\"")))
+-    ("reca" "" (lambda () (snippet-insert "redirect_to :controller => \"$${items}\", :action => \"$${list}\"")))
+-    ("recai" "" (lambda () (snippet-insert "redirect_to :controller => \"$${items}\", :action => \"$${show}\", :id => $${@item}")))
++    ("rea" . "redirect_to :action => \"$${index}\"")
++    ("reai" . "redirect_to :action => \"$${show}\", :id => $${@item}")
++    ("rec" . "redirect_to :controller => \"$${items}\"")
++    ("reca" . "redirect_to :controller => \"$${items}\", :action => \"$${list}\"")
++    ("recai" . "redirect_to :controller => \"$${items}\", :action => \"$${show}\", :id => $${@item}")
+     ;; assertions
+-    ("ae" "" (lambda () (snippet-insert "assert_equal $${expected}, $${actual}")))
+-    ("ann" "" (lambda () (snippet-insert "assert_not_nil $${object}")))
+-    ("ako" "" (lambda () (snippet-insert "assert_kind_of $${class}, $${object}")))
+-    ("are" "" (lambda () (snippet-insert "assert_response :$${success}")))
+-    ("ar" "" (lambda () (snippet-insert "assert_raises $${Exception} { $. }")))
+-    ("art" "" (lambda () (snippet-insert "assert_redirected_to :controller => \"$${controller}\"")))
++    ("ae" . "assert_equal $${expected}, $${actual}")
++    ("ann" . "assert_not_nil $${object}")
++    ("ako" . "assert_kind_of $${class}, $${object}")
++    ("are" . "assert_response :$${success}")
++    ("ar" . "assert_raises $${Exception} { $. }")
++    ("art" . "assert_redirected_to :controller => \"$${controller}\"")
+     ;; validations
+-    ("va" "" (lambda () (snippet-insert "validates_associated :$${attr}")))
+-    ("vc" "" (lambda () (snippet-insert "validates_confirmation_of :$${attr}")))
+-    ("ve" "" (lambda () (snippet-insert "validates_exclusion_of :$${attr}")))
+-    ("vp" "" (lambda () (snippet-insert "validates_presence_of :$${attr}")))
+-    ("vu" "" (lambda () (snippet-insert "validates_uniqueness_of :$${attr}")))
+-    ("vn" "" (lambda () (snippet-insert "validates_numericality_of :$${attr}")))
+-    ("vf" "" (lambda () (snippet-insert "validates_format_of :$${attr}, :with => /$${regex}/")))
++    ("va" . "validates_associated :$${attr}")
++    ("vc" . "validates_confirmation_of :$${attr}")
++    ("ve" . "validates_exclusion_of :$${attr}")
++    ("vp" . "validates_presence_of :$${attr}")
++    ("vu" . "validates_uniqueness_of :$${attr}")
++    ("vn" . "validates_numericality_of :$${attr}")
++    ("vf" . "validates_format_of :$${attr}, :with => /$${regex}/")
+     ;; misc
+-    ("flash" "" (lambda () (snippet-insert "flash[:$${notice}] = \"$${Text here...}\"")))
+-    ("logi" "" (lambda () (snippet-insert "logger.info \"$${Text here...}\"")))
+-    ("par" "" (lambda () (snippet-insert "params[:$${id}]")))
+-    ("ses" "" (lambda () (snippet-insert "session[:$${user}]")))))
++    ("flash" . "flash[:$${notice}] = \"$${Text here...}\"")
++    ("logi" . "logger.info \"$${Text here...}\"")
++    ("par" . "params[:$${id}]")
++    ("ses" . "session[:$${user}]"))
+ 
+-(define-abbrev-table 'arorem-rhtml-abbrev-table
+-  '(;; view
+-    ("ft" "" (lambda () (snippet-insert "<%= form_tag :action => \"$${update}\" %>\n$.\n<%= end_form_tag %>")))
+-    ("lia" "" (lambda () (snippet-insert "<%= link_to \"$${title}\", :action => \"$${index}\" %>")))
+-    ("liai" "" (lambda () (snippet-insert "<%= link_to \"$${title}\", :action => \"$${edit}\", :id => $${@item} %>")))
+-    ("lic" "" (lambda () (snippet-insert "<%= link_to \"$${title}\", :controller => \"$${items}\" %>")))
+-    ("lica" "" (lambda () (snippet-insert "<%= link_to \"$${title}\", :controller => \"$${items}\", :action => \"$${index}\" %>")))
+-    ("licai" "" (lambda () (snippet-insert "<%= link_to \"$${title}\", :controller => \"$${items}\", :action => \"$${edit}\", :id => $${@item} %>")))
+-    ("h" "" (lambda () (snippet-insert "<% h $${@item} %>")))
+-    ("if" "" (lambda () (snippet-insert "<% if $${cond} -%>\n$.\n<% end -%>")))
+-    ("ifel" "" (lambda () (snippet-insert "<% if $${cond} -%>\n$.\n<% else -%>\n<% end -%>")))
+-    ("unless" "" (lambda () (snippet-insert "<% unless $${cond} -%>\n$.\n<% end -%>")))
+-    ("%" "" (lambda () (snippet-insert "<% $. -%>")))
+-    ("%%" "" (lambda () (snippet-insert "<%= $. %>")))))
++(snippet-with-abbrev-table arorem-rhtml-abbrev-table
++    ;; view
++    ("ft" . "<%= form_tag :action => \"$${update}\" %>\n$.\n<%= end_form_tag %>")
++    ("lia" . "<%= link_to \"$${title}\", :action => \"$${index}\" %>")
++    ("liai" . "<%= link_to \"$${title}\", :action => \"$${edit}\", :id => $${@item} %>")
++    ("lic" . "<%= link_to \"$${title}\", :controller => \"$${items}\" %>")
++    ("lica" . "<%= link_to \"$${title}\", :controller => \"$${items}\", :action => \"$${index}\" %>")
++    ("licai" . "<%= link_to \"$${title}\", :controller => \"$${items}\", :action => \"$${edit}\", :id => $${@item} %>")
++    ("h" . "<% h $${@item} %>")
++    ("if" . "<% if $${cond} -%>\n$.\n<% end -%>")
++    ("ifel" . "<% if $${cond} -%>\n$.\n<% else -%>\n<% end -%>")
++    ("unless" . "<% unless $${cond} -%>\n$.\n<% end -%>")
++    ("%" . "<% $. -%>")
++    ("%%" . "<%= $. %>"))
+Index: dotfiles/.emacs.d/arorem-rhtml.el
+===================================================================
+--- dotfiles/.emacs.d/arorem-rhtml.el (revision 168)
++++ dotfiles/.emacs.d/arorem-rhtml.el (revision 170)
+@@ -1,2 +1,7 @@
++;;; arorem-rhtml
++
++;; Part of arorem - Another Ruby on Rails Emacs Mode
++;; Sets up an rhtml mode
++;; (C) 2006 Phil Hagelberg
+ 
+ (add-to-list 'auto-mode-alist '("\\.rhtml$" . arorem-rhtml))
+@@ -10,4 +15,5 @@
+   "\C-x\C-v" 'arorem-switch-view)
+ 
++;; TODO: add ruby keywords to syntax table!
+ 
+ (provide 'arorem-rhtml)
+Index: dotfiles/.emacs.d/arorem.el
+===================================================================
+--- dotfiles/.emacs.d/arorem.el (revision 169)
++++ dotfiles/.emacs.d/arorem.el (revision 170)
+@@ -3,5 +3,8 @@
+ ;;;
+ ;;;  Another Ruby on Rails Emacs Mode
+-;;;  (C) 2006 Phil Hagelberg
++;;;  (C) 2006 Phil Hagelberg (http://technomancy.us)
++;;;  
++;;;  Latest version may be found at
++;;;  http://dev.technomancy.us/phil/wiki/arorem
+ ;;;
+ 
+@@ -12,8 +15,13 @@
+ ;; searches documentation, and other things, you might want to look at
+ ;; rails.el--https://opensvn.csie.org/mvision/emacs/.emacs.d/rails.el
++;;
+ ;; Arorem is opinionated against mmm-mode, which seems to be more
+ ;; trouble than it's worth. Rather than try to mix major modes on the
+ ;; fly, it comes with an rhtml mode that is derived from html-mode and
+-;; includes ruby syntax rules. (heh--not yet implemented!)
++;; includes ruby syntax rules. (heh--not yet finished!)
++;;
++;; Please note that this is my first nontrivial elisp. I have tried to
++;; follow examples set in other modes, but I am learning, and my style
++;; has yet to mature. Suggestions are welcomed with open arms.
+ 
+ ;;; License
+@@ -33,4 +41,14 @@
+ ;; Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ 
++;;; TODO
++
++;; set up rails-specific highlighting?
++;; extract helpers and partials?
++;; switch-to-helper?
++
++;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
++
++(defvar arorem-version "0.1")
++
+ (define-derived-mode arorem
+   ruby-mode "arorem"
+@@ -41,4 +59,9 @@
+   (if (not (rails-root))
+       (ruby-mode)))
++
++;; As you may have noticed, it would make more sense to do it the
++;; other way around and have ruby-mode-hook activate arorem if
++;; (rails-mode) is true. However, this causes an infinite loop, since
++;; activating arorem activates all the ruby-mode hooks. So it's backwards
+ 
+ (add-to-list 'auto-mode-alist '("\\.rb$" . arorem))
+@@ -54,6 +77,7 @@
+   "\C-x\C-v" 'arorem-switch-view)
+ 
++;;; action/view switching functions
++
+ (defun arorem-switch-view ()
+-  (interactive)
+   (cond ((arorem-controller-p (buffer-file-name)) (arorem-controller-to-view))
+ 	((arorem-view-p (buffer-file-name)) (arorem-view-to-controller))))
+@@ -102,8 +126,8 @@
+ 	    (expand-file-name (concat view "/..")))
+ 	  "_controller.rb"))
+-  
++
++;;; test-switching functions
+ 
+ (defun arorem-switch-test ()
+-  (interactive)
+   (cond ((arorem-controller-p (buffer-file-name)) (arorem-controller-to-functional))
+ 	((arorem-model-p (buffer-file-name)) (arorem-model-to-unit))
+@@ -135,4 +159,5 @@
+ 		     ".rb")))
+ 
++;;; Misc functions
+ 
+ (defun rails-root (&optional dir)
+@@ -148,9 +173,2 @@
+ 
+ (provide 'arorem)
+-
+-;;; TODO:
+-;; set up rails-specific highlighting?
+-
+-;;; To consider:
+-;; extract helpers and partials
+-;; arorem-switch-helper?

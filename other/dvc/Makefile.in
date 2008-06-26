@@ -1,0 +1,132 @@
+@SET_MAKE@
+
+# location of required programms
+TAR = @TAR@
+BZR = @BZR@
+RM   = @RM@
+XARGS = @XARGS@
+ARCH = @ARCH@
+prefix = @prefix@
+datadir= @datadir@
+datarootdir= @datarootdir@
+srcdir = @srcdir@
+lispdir= @lispdir@
+
+SUBDIRS = lisp texinfo
+
+EMACS_PROG = @EMACS_PROG@
+EMACS_FLAVOR = @EMACS_FLAVOR@
+EMACS_VERSION = @EMACS_VERSION@
+INSTALL = @INSTALL@
+
+##############################################################################
+all: dvc info dvc-load.el dvc-load-install.el
+
+maybe: dvc-maybe info dvc-load.el dvc-load-install.el
+
+Makefile: config.status @srcdir@/Makefile.in
+	./config.status $@
+
+dvc-load.el: config.status @srcdir@/dvc-load.el.in
+	./config.status $@
+
+dvc-load-install.el: config.status @srcdir@/dvc-load-install.el.in
+	./config.status $@
+
+@srcdir@/configure: @srcdir@/configure.ac
+	cd @srcdir@ ; autoconf
+	./config.status --recheck
+
+config.status: @srcdir@/configure
+	./config.status --recheck
+
+info:
+	$(MAKE) -C texinfo info
+pdf:
+	$(MAKE) -C texinfo pdf
+dvi:
+	$(MAKE) -C texinfo dvi
+html:
+	$(MAKE) -C texinfo html
+
+dvc: generated-files
+	cd lisp; $(MAKE)
+
+dvc-verbose: generated-files
+	cd lisp; $(MAKE) all-verbose
+
+install: dvc-load.el
+	@for i in $(SUBDIRS) ; do               \
+          $(MAKE) -C $$i install;               \
+        done
+	sed 's|$$(prefix)|$(prefix)|;s!$${datarootdir}!$(datarootdir)!' dvc-load-install.el \
+	> ${lispdir}/dvc-load.el
+
+uninstall:
+	@for i in $(SUBDIRS) ; do               \
+          $(MAKE) -C $$i uninstall;             \
+        done
+	rmdir $(lispdir) || true
+
+clean:
+	@for i in $(SUBDIRS) ; do               \
+          $(MAKE) -C $$i clean;                 \
+        done
+	-$(RM) -f dvc-load.el dvc-load-install.el
+
+distclean: clean
+	@for i in $(SUBDIRS) ; do               \
+          $(MAKE) -C $$i distclean;             \
+        done
+	-$(RM) -rf configure config.status config.log autom4te.cache/ Makefile
+
+##############################################################################
+TARFILES = configure $(shell cd @abs_top_srcdir@ && $(ARCH) inventory -s)
+
+lisp/dvc-version.el:
+	cd lisp; make dvc-version.el
+
+texinfo/dvc-version.texinfo:
+	cd texinfo; make dvc-version.texinfo
+
+generated-files: lisp/dvc-version.el \
+		 texinfo/dvc-version.texinfo
+
+ifeq ($(RELEASE_ID),)
+TARDIRNAME=dvc-snapshot
+else
+TARDIRNAME=dvc-$(RELEASE_ID)
+endif
+
+dist: tarball
+
+tarball: $(TARFILES:%=@abs_top_srcdir@/%)
+	scripts/make-tarball.sh $(TARDIRNAME).tar.gz
+	@echo "*** $(TARDIRNAME).tar.gz created ***"
+
+##############################################################################
+# for the creation of an XEmacs package
+PKGDIR =  $(shell pwd)/,,package/
+PKGINFO = $(PKGDIR)/lisp/xtla/_pkg.el
+xemacs-package:
+# 	cd @abs_top_srcdir@ && $(TLA) changes || \
+# 	(echo ERROR: There are changes in the tree, please commit before creating a tarball\!;\
+# 	 echo ERROR: since otherwise lisp/dvc-version.el is not correct\!; exit 1)
+	if [ "x@EMACS_FLAVOR@" != "xxemacs" ]; then \
+		echo "ERROR: Current build dir not configured for XEmacs,"; \
+		echo "ERROR: Please re-run configure with --with-emacs=xemacs."; \
+		exit 1; \
+	fi
+	-$(RM) -rf ,,package
+	cd lisp; make PACKAGEDIR=$(PKGDIR)/lisp/xtla install-pkg
+	cd texinfo; make info_dir=$(PKGDIR)/info install-pkg
+	(cd @srcdir@; $(TLA) changelog) > $(PKGDIR)/lisp/ChangeLog
+	echo ";;;###autoload" > $(PKGINFO)
+	echo "(package-provide 'xtla'" > $(PKGINFO)
+	echo "         :version 0.7" >> $(PKGINFO)
+	echo '         :author-version "'`$(TLA) logs -fr -d "@top_srcdir@" | head -1`'"' >> $(PKGINFO)
+	echo "         :type 'regular)" >> $(PKGINFO)
+	mkdir $(PKGDIR)/pkginfo;
+	touch $(PKGDIR)/pkginfo/MANIFEST.xtla;
+	cd $(PKGDIR); find -type f | cut -c3- > pkginfo/MANIFEST.xtla
+	cd ,,package; $(TAR) -cvzf ../xtla-pkg.tar.gz *

@@ -1,0 +1,15 @@
+;; Object contrib/
+;; SEMANTICDB Tags save file
+(semanticdb-project-database-file "contrib/"
+  :tables (list 
+   (semanticdb-table "Makefile"
+    :major-mode 'makefile-gmake-mode
+    :tags '(("top" variable nil nil [211 216]) ("ede_FILES" variable (:default-value ("Project.ede" "Makefile")) nil [216 247]) ("misc_AUX" variable (:default-value ("ChangeLog")) nil [248 267]) ("EMACS" variable (:default-value ("emacs")) nil [267 279]) ("LOADPATH" variable (:default-value ("../common/" "../semantic/" "../eieio/" "../semantic/bovine/" "../speedbar/" "../semantic/wisent/")) nil [279 382]) ("LOADDEFS" variable (:default-value ("contrib-loaddefs.el")) nil [382 411]) ("LOADDIRS" variable (:default-value (".")) nil [411 422]) ("init_LISP" variable (:default-value ("cedet-contrib-load.el")) nil [422 454]) ("EMACS" variable (:default-value ("emacs")) nil [454 466]) ("setup_LISP" variable (:default-value ("cedet-contrib.el")) nil [466 494]) ("wy_SEMANTIC_GRAMMAR" variable (:default-value ("wisent-csharp.wy" "wisent-javascript-jv.wy")) nil [494 555]) ("EMACS" variable (:default-value ("emacs")) nil [555 567]) ("wy_SEMANTIC_GRAMMAR_EL" variable (:default-value ("wisent-csharp-wy.el" "wisent-javascript-jv-wy.el")) nil [567 637]) ("lisp_LISP" variable (:default-value ("wisent-csharp.el" "wisent-javascript.el" "semantic-tag-folding.el" "semanticdb-javascript.el")) nil [637 734]) ("VERSION" variable (:default-value ("1.0pre4")) nil [734 750]) ("DISTDIR" variable (:default-value ("$(top)Contrib-$(VERSION)")) nil [750 783]) ("all" function (:arguments ("autoloads" "init" "setup" "wy" "lisp")) nil [786 821]) (".PHONY" function (:arguments ("autoloads")) nil [821 848]) ("autoloads" function nil nil [839 1195]) (".PHONY" function (:arguments ("init")) nil [1195 1212]) ("init" function (:arguments ("$(init_LISP)")) nil [1208 1539]) (".PHONY" function (:arguments ("setup")) nil [1539 1558]) ("setup" function (:arguments ("$(setup_LISP)")) nil [1553 1886]) (".PHONY" function (:arguments ("wy")) nil [1886 1899]) ("wy" function (:arguments ("$(wy_SEMANTIC_GRAMMAR)")) nil [1897 2325]) (".PHONY" function (:arguments ("lisp")) nil [2325 2342]) ("lisp" function (:arguments ("$(lisp_LISP)")) nil [2338 2669]) ("tags" function nil nil [2669 2677]) ("clean" function nil nil [2678 2699]) (".PHONY" function (:arguments ("dist")) nil [2699 2713]) ("dist" function (:arguments ("autoloads" "$(wy_SEMANTIC_GRAMMAR_EL)")) nil [2713 2923]) ("Makefile" function (:arguments ("Project.ede")) nil [2923 3122]))
+    :file "Makefile"
+    :pointmax 3142
+    )
+   )
+  :file "semantic.cache"
+  :semantic-tag-version "2.0pre4"
+  :semanticdb-version "2.0pre4"
+  )

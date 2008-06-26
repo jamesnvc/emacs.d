@@ -1,0 +1,1100 @@
+Info file: calc.info,    -*-Text-*-
+produced by `texinfo-format-buffer'
+from file `calc.texinfo'
+using `texinfmt.el' version 2.42 of  7 Jul 2006.
+
+This file documents Calc, the GNU Emacs calculator.
+
+Copyright (C) 1990, 1991 Free Software Foundation, Inc.
+
+Permission is granted to make and distribute verbatim copies of this
+manual provided the copyright notice and this permission notice are
+preserved on all copies.
+
+Permission is granted to copy and distribute modified versions of this
+manual under the conditions for verbatim copying, provided also that
+the section entitled "GNU General Public License" is included exactly
+as in the original, and provided that the entire resulting derived
+work is distributed under the terms of a permission notice identical
+to this one.
+
+Permission is granted to copy and distribute translations of this
+manual into another language, under the above conditions for modified
+versions, except that the section entitled "GNU General Public
+License" may be included in a translation approved by the author
+instead of in the original English.
+
+
+
+
+File: calc.info, Node: Depreciation Functions, Next: Definitions of Financial Functions, Prev: Related Financial Functions, Up: Financial Functions
+
+Depreciation Functions
+----------------------
+
+The functions in this section calculate "depreciation", which is the
+amount of value that a possession loses over time.  These functions
+are characterized by three parameters: COST, the original cost of the
+asset; SALVAGE, the value the asset will have at the end of its
+expected "useful life"; and LIFE, the number of years (or other
+periods) of the expected useful life.
+
+There are several methods for calculating depreciation that differ in
+the way they spread the depreciation over the lifetime of the asset.
+
+The `b S' (`calc-fin-sln') [`sln'] command computes the
+straight-line" depreciation.  In this method, the asset depreciates by
+the same amount every year (or period).  For example, `sln(12000,
+2000, 5)' returns 2000.  The asset costs $12000 initially and will be
+worth $2000 after five years; it loses $2000 per year.
+
+The `b Y' (`calc-fin-syd') [`syd'] command computes the accelerated
+sum-of-years'-digits" depreciation.  Here the depreciation is higher
+during the early years of the asset's life.  Since the depreciation is
+different each year, `b Y' takes a fourth PERIOD parameter which
+specifies which year is requested, from 1 to LIFE.  If PERIOD is
+outside this range, the `syd' function will return zero.
+
+The `b D' (`calc-fin-ddb') [`ddb'] command computes an accelerated
+depreciation using the double-declining balance method.  It also takes
+a fourth PERIOD parameter.
+
+For symmetry, the `sln' function will accept a PERIOD parameter as
+well, although it will ignore its value except that the return value
+will as usual be zero if PERIOD is out of range.
+
+For example, pushing the vector `[1,2,3,4,5]' (perhaps with `v x 5')
+and then mapping `V M ' [sln(12000,2000,5,$), syd(12000,2000,5,$),
+ddb(12000,2000,5,$)] RET' produces a matrix that allows us to compare
+the three depreciation methods:
+
+     [ [ 2000, 3333, 4800 ]
+       [ 2000, 2667, 2880 ]
+       [ 2000, 2000, 1728 ]
+       [ 2000, 1333,  592 ]
+       [ 2000,  667,   0  ] ]
+
+(Values have been rounded to nearest integers in this figure.)  We see
+that `sln' depreciates by the same amount each year, `syd' depreciates
+more at the beginning and less at the end, and `ddb' weights the
+depreciation even more toward the beginning.
+
+Summing columns with `V R : +' yields `[10000, 10000, 10000]'; the
+total depreciation in any method is (by definition) the difference
+between the cost and the salvage value.
+
+
+
+File: calc.info, Node: Definitions of Financial Functions, Prev: Depreciation Functions, Up: Financial Functions
+
+Definitions
+-----------
+
+For your reference, here are the actual formulas used to compute
+Calc's financial functions.
+
+Calc will not evaluate a financial function unless the RATE or N
+argument is known.  However, PAYMENT or AMOUNT can be a variable.
+Calc expands these functions according to the formulas below for
+symbolic arguments only when you use the `a "' (`calc-expand-formula')
+command, or when taking derivatives or integrals or solving equations
+involving the functions.
+
+These formulas are shown using the conventions of "Big" display mode
+(`d B'); for example, the formula for `fv' written linearly is `pmt *
+((1 + rate)^n) - 1) / rate'.
+
+					     n
+				   (1 + rate)  - 1
+     fv(rate, n, pmt) =      pmt * ---------------
+                                        rate
+
+					      n
+				   ((1 + rate)  - 1) (1 + rate)
+     fvb(rate, n, pmt) =     pmt * ----------------------------
+					      rate
+
+					     n
+     fvl(rate, n, pmt) =     pmt * (1 + rate)
+
+						 -n
+				   1 - (1 + rate)
+     pv(rate, n, pmt) =      pmt * ----------------
+					 rate
+
+						  -n
+				   (1 - (1 + rate)  ) (1 + rate)
+     pvb(rate, n, pmt) =     pmt * -----------------------------
+					      rate
+
+					     -n
+     pvl(rate, n, pmt) =     pmt * (1 + rate)
+
+					 -1               -2               -3
+     npv(rate, [a, b, c]) =  a*(1 + rate)   + b*(1 + rate)   + c*(1 + rate)
+
+					     -1               -2
+     npvb(rate, [a, b, c]) = a + b*(1 + rate)   + c*(1 + rate)
+
+						  -n
+			     (amt - x * (1 + rate)  ) * rate
+     pmt(rate, n, amt, x) =  -------------------------------
+						  -n
+				    1 - (1 + rate)
+
+						  -n
+			     (amt - x * (1 + rate)  ) * rate
+     pmtb(rate, n, amt, x) = -------------------------------
+					     -n
+			      (1 - (1 + rate)  ) (1 + rate)
+
+                                        amt * rate
+     nper(rate, pmt, amt) =  - log(1 - ------------, 1 + rate)
+					   pmt
+
+					 amt * rate
+     nperb(rate, pmt, amt) = - log(1 - ---------------, 1 + rate)
+				       pmt * (1 + rate)
+
+				   amt
+     nperl(rate, pmt, amt) = - log(---, 1 + rate)
+				   pmt
+
+                                1/n
+			     pmt
+     ratel(n, pmt, amt) =    ------ - 1
+                                1/n
+			     amt
+
+			     cost - salv
+     sln(cost, salv, life) = -----------
+                                life
+
+				  (cost - salv) * (life - per + 1)
+     syd(cost, salv, life, per) = --------------------------------
+				       life * (life + 1) / 2
+
+				  book * 2
+     ddb(cost, salv, life, per) = --------,  book = cost - depreciation so far
+				    life
+
+In `pmt' and `pmtb', `x=0' if omitted.
+
+These functions accept any numeric objects, including error forms,
+intervals, and even (though not very usefully) complex numbers.  The
+above formulas specify exactly the behavior of these functions with
+all sorts of inputs.
+
+Note that if the first argument to the `log' in `nper' is negative,
+`nper' leaves itself in symbolic form rather than returning a
+(financially meaningless) complex number.
+
+`rate(num, pmt, amt)' solves the equation `pv(rate, num, pmt) = amt'
+for `rate' using `H a R' (`calc-find-root'), with the interval
+`[.01% .. 100%]' for an initial guess.  The `rateb' function is the
+same except that it uses `pvb'.  Note that `ratel' can be solved
+directly; its formula is shown in the above list.
+
+Similarly, `irr(pmts)' solves the equation `npv(rate, pmts) = 0' for
+`rate'.
+
+If you give a fourth argument to `nper' or `nperb', Calc will also use
+`H a R' to solve the equation using an initial guess interval of
+`[0 .. 100]'.
+
+A fourth argument to `fv' simply sums the two components calculated
+from the above formulas for `fv' and `fvl'.  The same is true of
+`fvb', `pv', and `pvb'.
+
+The `ddb' function is computed iteratively; the "book" value starts
+out equal to COST, and decreases according to the above formula for
+the specified number of periods.  If the book value would decrease
+below SALVAGE, it only decreases to SALVAGE and the depreciation is
+zero for all subsequent periods.  The `ddb' function returns the
+amount the book value decreased in the specified period.
+
+The Calc financial function names were borrowed mostly from Microsoft
+Excel and Borland's Quattro.  The `ratel' function corresponds to
+`@CGR' in Borland's Reflex.  The `nper' and `nperl' functions
+correspond to `@TERM' and `@CTERM' in Quattro, respectively.  Beware
+that the Calc functions may take their arguments in a different order
+than the corresponding functions in your favorite spreadsheet.
+
+
+
+File: calc.info, Node: Binary Functions, Prev: Financial Functions, Up: Arithmetic
+
+Binary Number Functions
+=======================
+
+The commands in this chapter all use two-letter sequences beginning
+with the `b' prefix.
+
+The "binary" operations actually work regardless of the currently
+displayed radix, although their results make the most sense in a radix
+like 2, 8, or 16 (as obtained by the `d 2', `d 8', or `d 6'
+commands, respectively).  You may also wish to enable display of leading
+zeros with `d z'.  *Note Radix Modes::.
+
+The Calculator maintains a current "word size" `w', an arbitrary
+positive or negative integer.  For a positive word size, all of the
+binary operations described here operate modulo `2^w'.  In particular,
+negative arguments are converted to positive integers modulo `2^w' by
+all binary functions.
+
+If the word size is negative, binary operations produce 2's complement
+integers from `-(2^(-w-1))' to `2^(-w-1)-1' inclusive.  Either mode
+accepts inputs in any range; the sign of `w' affects only the results
+produced.
+
+The `b c' (`calc-clip') [`clip'] command can be used to clip a number
+by reducing it modulo `2^w'.  The commands described in this chapter
+automatically clip their results to the current word size.  Note that
+other operations like addition do not use the current word size, since
+integer addition generally is not "binary."  (However, *Note
+Simplification Modes::, `calc-bin-simplify-mode'.)  For example, with
+a word size of 8 bits `b c' converts a number to the range 0 to 255;
+with a word size of -8 `b c' converts to the range -128 to 127.
+
+The default word size is 32 bits.  All operations except the shifts
+and rotates allow you to specify a different word size for that one
+operation by giving a numeric prefix argument: `C-u 8 b c' clips the
+top of stack to the range 0 to 255 regardless of the current word
+size.  To set the word size permanently, use `b w' (`calc-word-size').
+This command displays a prompt with the current word size; press RET
+immediately to keep this word size, or type a new word size at the
+prompt.
+
+When the binary operations are written in symbolic form, they take an
+optional second (or third) word-size parameter.  When a formula like
+`and(a,b)' is finally evaluated, the word size current at that time
+will be used, but when `and(a,b,-8)' is evaluated, a word size of
+-8 will always be used.  A symbolic binary function will be left
+in symbolic form unless the all of its argument(s) are integers or
+integer-valued floats.
+
+If either or both arguments are modulo forms for which `M' is a power
+of two, that power of two is taken as the word size unless a numeric
+prefix argument overrides it.  The current word size is never
+consulted when modulo-power-of-two forms are involved.
+
+The `b a' (`calc-and') [`and'] command computes the bitwise
+AND of the two numbers on the top of the stack.  In other words, for each
+of the `w' binary digits of the two numbers (pairwise), the corresponding
+bit of the result is 1 if and only if both input bits are 1:
+`and(2#1100, 2#1010) = 2#1000'.
+
+The `b o' (`calc-or') [`or'] command computes the bitwise inclusive OR
+of two numbers.  A bit is 1 if either of the input bits, or both, are
+1: `or(2#1100, 2#1010) = 2#1110'.
+
+The `b x' (`calc-xor') [`xor'] command computes the bitwise exclusive
+OR of two numbers.  A bit is 1 if exactly one of the input bits is 1:
+`xor(2#1100, 2#1010) = 2#0110'.
+
+The `b d' (`calc-diff') [`diff'] command computes the bitwise
+difference of two numbers; this is defined by `diff(a,b) =
+and(a,not(b))', so that `diff(2#1100, 2#1010) = 2#0100'.
+
+The `b n' (`calc-not') [`not'] command computes the bitwise NOT of a
+number.  A bit is 1 if the input bit is 0 and vice-versa.
+
+The `b l' (`calc-lshift-binary') [`lsh'] command shifts a number left
+by one bit, or by the number of bits specified in the numeric prefix
+argument.  A negative prefix argument performs a logical right shift,
+in which zeros are shifted in on the left.  In symbolic form, `lsh(a)'
+is short for `lsh(a,1)', which in turn is short for `lsh(a,n,w)'.
+Bits shifted "off the end," according to the current word size, are
+lost.
+
+The `H b l' command also does a left shift, but it takes two arguments
+from the stack (the value to shift, and, at top-of-stack, the number
+of bits to shift).  This version interprets the prefix argument just
+like the regular binary operations, i.e., as a word size.  The
+Hyperbolic flag has a similar effect on the rest of the binary shift
+and rotate commands.
+
+The `b r' (`calc-rshift-binary') [`rsh'] command shifts a number right
+by one bit, or by the number of bits specified in the numeric prefix
+argument: `rsh(a,n) = lsh(a,-n)'.
+
+The `b L' (`calc-lshift-arith') [`ash'] command shifts a number left.
+It is analogous to `lsh', except that if the shift is rightward (the
+prefix argument is negative), an arithmetic shift is performed as
+described below.
+
+The `b R' (`calc-rshift-arith') [`rash'] command performs an
+arithmetic" shift to the right, in which the leftmost bit (according
+to the current word size) is duplicated rather than shifting in zeros.
+This corresponds to dividing by a power of two where the input is
+interpreted as a signed, twos-complement number.  (The distinction
+between the `rsh' and `rash' operations is totally independent from
+whether the word size is positive or negative.)  With a negative
+prefix argument, this performs a standard left shift.
+
+The `b t' (`calc-rotate-binary') [`rot'] command rotates a number one
+bit to the left.  The leftmost bit (according to the current word
+size) is dropped off the left and shifted in on the right.  With a
+numeric prefix argument, the number is rotated that many bits to the
+left or right.
+
+*Note Set Operations::, for the `b p' and `b u' commands that pack and
+unpack binary integers into sets.  (For example, `b u' unpacks the
+number `2#11001' to the set of bit-numbers `[0, 3, 4]'.)  Type `b u V
+#' to count the number of "1" bits in a binary integer.
+
+Another interesting use of the set representation of binary integers
+is to reverse the bits in, say, a 32-bit integer.  Type `b u' to
+unpack; type `31 TAB -' to replace each bit-number in the set with 31
+minus that bit-number; type `b p' to pack the set back into a binary
+integer.
+
+
+
+File: calc.info, Node: Scientific Functions, Next: Matrix Functions, Prev: Arithmetic, Up: Top
+
+Scientific Functions
+********************
+
+The functions described here perform trigonometric and other
+transcendental calculations.  They generally produce floating-point
+answers correct to the full current precision.  The `H' (Hyperbolic)
+and `I' (Inverse) flag keys must be used to get some of these
+functions from the keyboard.
+
+One miscellanous command is shift-`P' (`calc-pi'), which pushes the
+value of `pi' (at the current precision) onto the stack.  With the
+Hyperbolic flag, it pushes the value `e', the base of natural
+logarithms.  With the Inverse flag, it pushes Euler's constant `gamma'
+(about 0.5772).  With both Inverse and Hyperbolic, it pushes the
+golden ratio" `phi' (about 1.618).  (At present, Euler's constant is
+not available to unlimited precision; Calc knows only the first 100
+digits.)  In Symbolic mode, these commands push the actual variables
+`pi', `e', `gamma', and `phi', respectively, instead of their values;
+*Note Symbolic Mode::.
+
+The `Q' (`calc-sqrt') [`sqrt'] function is described elsewhere; *Note
+Basic Arithmetic::.  With the Inverse flag [`sqr'], this command
+computes the square of the argument.
+
+*Note Prefix Arguments::, for a discussion of the effect of numeric
+prefix arguments on commands in this chapter which do not otherwise
+interpret a prefix argument.
+
+* Menu:
+
+* Logarithmic Functions::
+* Trigonometric and Hyperbolic Functions::
+* Advanced Math Functions::
+* Branch Cuts::
+* Random Numbers::
+* Combinatorial Functions::
+* Probability Distribution Functions::
+
+
+
+File: calc.info, Node: Logarithmic Functions, Next: Trigonometric and Hyperbolic Functions, Prev: Scientific Functions, Up: Scientific Functions
+
+Logarithmic Functions
+=====================
+
+The shift-`L' (`calc-ln') [`ln'] command computes the natural
+logarithm of the real or complex number on the top of the stack.  With
+the Inverse flag it computes the exponential function instead,
+although this is redundant with the `E' command.
+
+The shift-`E' (`calc-exp') [`exp'] command computes the exponential,
+i.e., `e' raised to the power of the number on the stack.  The
+meanings of the Inverse and Hyperbolic flags follow from those for the
+`calc-ln' command.
+
+The `H L' (`calc-log10') [`log10'] command computes the common
+(base-10) logarithm of a number.  (With the Inverse flag [`exp10'],
+it raises ten to a given power.)  Note that the common logarithm of a
+complex number is computed by taking the natural logarithm and dividing
+by `ln(10)'.
+
+The `B' (`calc-log') [`log'] command computes a logarithm to any base.
+For example, `1024 RET 2 B' produces 10, since `2^10 = 1024'.  In
+certain cases like `log(3,9)', the result will be either `1:2' or
+`0.5' depending on the current Fraction Mode setting.  With the
+Inverse flag [`alog'], this command is similar to `^' except that the
+order of the arguments is reversed.
+
+The `f I' (`calc-ilog') [`ilog'] command computes the
+integer logarithm of a number to any base.  The number and the base must
+themselves be positive integers.  This is the true logarithm, rounded
+down to an integer.  Thus `ilog(x,10)' is 3 for all `x' in the
+range from 1000 to 9999.  If both arguments are positive integers, exact
+integer arithmetic is used; otherwise, this is equivalent to
+`floor(log(x,b))'.
+
+The `f E' (`calc-expm1') [`expm1'] command computes `exp(x)-1', but
+using an algorithm that produces a more accurate answer when the
+result is close to zero, i.e., when `exp(x)' is close to one.
+
+The `f L' (`calc-lnp1') [`lnp1'] command computes `ln(x+1)', producing
+a more accurate answer when `x' is close to zero.
+
+
+
+File: calc.info, Node: Trigonometric and Hyperbolic Functions, Next: Advanced Math Functions, Prev: Logarithmic Functions, Up: Scientific Functions
+
+Trigonometric/Hyperbolic Functions
+==================================
+
+The shift-`S' (`calc-sin') [`sin'] command computes the sine of an
+angle or complex number.  If the input is an HMS form, it is
+interpreted as degrees-minutes-seconds; otherwise, the input is
+interpreted according to the current angular mode.  It is best to use
+Radians mode when operating on complex numbers.
+
+Calc's "units" mechanism includes angular units like `deg', `rad', and
+`grad'.  While `sin(45 deg)' is not evaluated all the time, the `u s'
+(`calc-simplify-units') command will simplify `sin(45 deg)' by taking
+the sine of 45 degrees, regardless of the current angular mode.  *Note
+Basic Operations on Units::.
+
+Also, the symbolic variable `pi' is not ordinarily recognized in
+arguments to trigonometric functions, as in `sin(3 pi / 4)', but the
+`a s' (`calc-simplify') command recognizes many such formulas when the
+current angular mode is radians *and* symbolic mode is enabled; this
+example would be replaced by `sqrt(2) / 2'.  *Note Symbolic Mode::.
+Beware, this simplification occurs even if you have stored a different
+value in the variable `pi'; this is one reason why changing built-in
+variables is a bad idea.  Arguments of the form `x' plus a multiple of
+`pi/2' are also simplified.  Calc includes similar formulas for `cos'
+and `tan'.
+
+The `a s' command knows all angles which are integer multiples of
+`pi/12', `pi/10', or `pi/8' radians.  In degrees mode, analogous
+simplifications occur for integer multiples of 15 or 18 degrees, and
+for arguments plus multiples of 90 degrees.
+
+With the Inverse flag, `calc-sin' computes an arcsine.  This is also
+available as the `calc-arcsin' command or `arcsin' algebraic function.
+The returned argument is converted to degrees, radians, or HMS
+notation depending on the current angular mode.
+
+With the Hyperbolic flag, `calc-sin' computes the hyperbolic sine,
+also available as `calc-sinh' [`sinh'].  With the Hyperbolic and
+Inverse flags, it computes the hyperbolic arcsine (`calc-arcsinh')
+[`arcsinh'].
+
+The shift-`C' (`calc-cos') [`cos'] command computes the cosine of an
+angle or complex number, and shift-`T' (`calc-tan') [`tan'] computes
+the tangent, along with all the various inverse and hyperbolic
+variants of these functions.
+
+The `f T' (`calc-arctan2') [`arctan2'] command takes two
+numbers from the stack and computes the arc tangent of their ratio.  The
+result is in the full range from -180 (exclusive) to +180
+(inclusive) degrees, or the analogous range in radians.  A similar
+result would be obtained with `/' followed by `I T', but the
+value would only be in the range from -90 to +90 degrees
+since the division loses information about the signs of the two
+components, and an error might result from an explicit division by zero
+which `arctan2' would avoid.  By (arbitrary) definition,
+`arctan2(0,0)=0'.
+
+The `calc-sincos' [`sincos'] command computes the sine and cosine of a
+number, returning them as a vector of the form `[COS, SIN]'.  With the
+Inverse flag [`arcsincos'], this command takes a two-element vector as
+an argument and computes `arctan2' of the elements.  (This command
+does not accept the Hyperbolic flag.)
+
+
+
+File: calc.info, Node: Advanced Math Functions, Next: Branch Cuts, Prev: Trigonometric and Hyperbolic Functions, Up: Scientific Functions
+
+Advanced Mathematical Functions
+===============================
+
+Calc can compute a variety of less common functions that arise in
+various branches of mathematics.  All of the functions described in
+this section allow arbitrary complex arguments and, except as noted,
+will work to arbitrarily large precisions.  They can not at present
+handle error forms or intervals as arguments.
+
+NOTE: These functions are still experimental.  In particular, their
+accuracy is not guaranteed in all domains.  It is advisable to set the
+current precision comfortably higher than you actually need when using
+these functions.  Also, these functions may be impractically slow for
+some values of the arguments.
+
+The `f g' (`calc-gamma') [`gamma'] command computes the Euler gamma
+function.  For positive integer arguments, this is related to the
+factorial function: `gamma(n+1) = fact(n)'.  For general complex
+arguments the gamma function can be defined by the following definite
+integral: `gamma(a) = integ(t^(a-1) exp(t), t, 0, inf)'.  (The actual
+implementation uses far more efficient computational methods.)
+
+The `f G' (`calc-inc-gamma') [`gammaP'] command computes the
+incomplete gamma function, denoted `P(a,x)'.  This is defined by the
+integral, `gammaP(a,x) = integ(t^(a-1) exp(t), t, 0, x) / gamma(a)'.
+This implies that `gammaP(a,inf) = 1' for any `a' (see the definition
+of the normal gamma function).
+
+Several other varieties of incomplete gamma function are defined.
+The complement of `P(a,x)', called `Q(a,x) = 1-P(a,x)' by
+some authors, is computed by the `I f G' [`gammaQ'] command.
+You can think of this as taking the other half of the integral, from
+`x' to infinity.
+
+The functions corresponding to the integrals that define `P(a,x)' and
+`Q(a,x)' but without the normalizing `1/gamma(a)' factor are called
+`g(a,x)' and `G(a,x)', respectively (where `g' and `G' represent the
+lower- and upper-case Greek letter gamma).  You can obtain these using
+the `H f G' [`gammag'] and `H I f G' [`gammaG'] commands.
+
+The `f b' (`calc-beta') [`beta'] command computes the
+Euler beta function, which is defined in terms of the gamma function as
+`beta(a,b) = gamma(a) gamma(b) / gamma(a+b)', or by
+`beta(a,b) = integ(t^(a-1) (1-t)^(b-1), t, 0, 1)'.
+
+The `f B' (`calc-inc-beta') [`betaI'] command computes the incomplete
+beta function `I(x,a,b)'.  It is defined by `betaI(x,a,b) =
+integ(t^(a-1) (1-t)^(b-1), t, 0, x) / beta(a,b)'.  Once again, the `H'
+(hyperbolic) prefix gives the corresponding un-normalized version
+[`betaB'].
+
+The `f e' (`calc-erf') [`erf'] command computes the
+error function `erf(x) = 2 integ(exp(-(t^2)), t, 0, x) / sqrt(pi)'.
+The complementary error function `I f e' (`calc-erfc') [`erfc']
+is the corresponding integral from `x' to infinity; the sum
+`erf(x) + erfc(x) = 1'.
+
+The `f j' (`calc-bessel-J') [`besJ'] and `f y' (`calc-bessel-Y')
+[`besY'] commands compute the Bessel functions of the first and second
+kinds, respectively.  In `besJ(n,x)' and `besY(n,x)' the "order"
+parameter `n' is often an integer, but is not required to be one.
+Calc's implementation of the Bessel functions currently limits the
+precision to 8 digits, and may not be exact even to that precision.
+Use with care!
+
+
+
+File: calc.info, Node: Branch Cuts, Next: Random Numbers, Prev: Advanced Math Functions, Up: Scientific Functions
+
+Branch Cuts and Principal Values
+================================
+
+All of the logarithmic, trigonometric, and other scientific functions
+are defined for complex numbers as well as for reals.  This section
+describes the values returned in cases where the general result is a
+family of possible values.  Calc follows section 12.5.3 of Steele's
+Common Lisp, the Language", second edition, in these matters.  This
+section will describe each function briefly; for a more detailed
+discussion (including some nifty diagrams), consult Steele's book.
+
+Note that the branch cuts for `arctan' and `arctanh' were changed
+between the first and second editions of Steele.  Versions of Calc
+starting with 2.00 follow the second edition.
+
+The new branch cuts exactly match those of the HP-28/48 calculators.
+They also match those of Mathematica 1.2, except that Mathematica's
+`arctan' cut is always in the right half of the complex plane, and its
+`arctanh' cut is always in the top half of the plane.  Calc's cuts are
+continuous with quadrants I and III for `arctan', or II and IV for
+`arctanh'.
+
+Note: The current implementations of these functions with complex
+arguments are designed with proper behavior around the branch cuts in
+mind, *not* efficiency or accuracy.  You may need to increase the
+floating precision and wait a while to get suitable answers from them.
+
+For `sqrt(a+bi)': When `a<0' and `b' is small but positive or zero,
+the result is close to the `+i' axis.  For `b' small and negative, the
+result is close to the `-i' axis.  The result always lies in the right
+half of the complex plane.
+
+For `ln(a+bi)': The real part is defined as `ln(abs(a+bi))'.  The
+imaginary part is defined as `arg(a+bi) = arctan2(b,a)'.  Thus the
+branch cuts for `sqrt' and `ln' both lie on the negative real axis.
+
+The following table describes these branch cuts in another way.  If
+the real and imaginary parts of `z' are as shown, then the real and
+imaginary parts of `f(z)' will be as shown.  Here `eps' stands for a
+small positive value; each occurrence of `eps' may stand for a
+different small value.
+
+	  z           sqrt(z)       ln(z)
+     ----------------------------------------
+        +,   0         +,  0       any, 0
+        -,   0         0,  +       any, pi
+        -, +eps      +eps, +      +eps, +
+        -, -eps      +eps, -      +eps, -
+
+For `z1^z2': This is defined by `exp(ln(z1)*z2)'.  One interesting
+consequence of this is that `(-8)^1:3' does not evaluate to -2 as you
+might expect, but to the complex number `(1., 1.732)'.  Both of these
+are valid cube roots of -8 (as is `(1., -1.732)'); Calc chooses a
+perhaps less-obvious root for the sake of mathematical consistency.
+
+For `arcsin(z)': This is defined by `-i*ln(i*z + sqrt(1-z^2))'.  The
+branch cuts are on the real axis, less than -1 and greater than 1.
+
+For `arccos(z)': This is defined by `-i*ln(z + i*sqrt(1-z^2))', or
+equivalently by `pi/2 - arcsin(z)'.  The branch cuts are on the real
+axis, less than -1 and greater than 1.
+
+For `arctan(z)': This is defined by `(ln(1+i*z) - ln(1-i*z)) / (2*i)'.
+The branch cuts are on the imaginary axis, below `-i' and above `i'.
+
+For `arcsinh(z)': This is defined by `ln(z + sqrt(1+z^2))'.  The
+branch cuts are on the imaginary axis, below `-i' and above `i'.
+
+For `arccosh(z)': This is defined by `ln(z +
+(z+1)*sqrt((z-1)/(z+1)))'.  The branch cut is on the real axis less
+than 1.
+
+For `arctanh(z)': This is defined by `(ln(1+z) - ln(1-z)) / 2'.  The
+branch cuts are on the real axis, less than -1 and greater than 1.
+
+The following tables for `arcsin', `arccos', and `arctan' assume the
+current angular mode is radians.  The hyperbolic functions operate
+independently of the angular mode.
+
+	    z             arcsin(z)            arccos(z)
+     -------------------------------------------------------
+      (-1..1),  0      (-pi/2..pi/2), 0       (0..pi), 0
+      (-1..1), +eps    (-pi/2..pi/2), +eps    (0..pi), -eps
+      (-1..1), -eps    (-pi/2..pi/2), -eps    (0..pi), +eps
+        <-1,    0          -pi/2,     +         pi,    -
+        <-1,  +eps      -pi/2 + eps,  +      pi - eps, -
+        <-1,  -eps      -pi/2 + eps,  -      pi - eps, +
+	 >1,    0           pi/2,     -          0,    +
+	 >1,  +eps       pi/2 - eps,  +        +eps,   -
+	 >1,  -eps       pi/2 - eps,  -        +eps,   +
+
+	    z            arccosh(z)         arctanh(z)
+     -----------------------------------------------------
+      (-1..1),  0        0,  (0..pi)       any,     0
+      (-1..1), +eps    +eps, (0..pi)       any,    +eps
+      (-1..1), -eps    +eps, (-pi..0)      any,    -eps
+        <-1,    0        +,    pi           -,     pi/2
+        <-1,  +eps       +,  pi - eps       -,  pi/2 - eps
+        <-1,  -eps       +, -pi + eps       -, -pi/2 + eps
+	 >1,    0        +,     0           +,    -pi/2
+	 >1,  +eps       +,   +eps          +,  pi/2 - eps
+	 >1,  -eps       +,   -eps          +, -pi/2 + eps
+
+	    z           arcsinh(z)           arctan(z)
+     -----------------------------------------------------
+        0, (-1..1)    0, (-pi/2..pi/2)         0,     any
+        0,   <-1      -,    -pi/2            -pi/2,    -
+      +eps,  <-1      +, -pi/2 + eps       pi/2 - eps, -
+      -eps,  <-1      -, -pi/2 + eps      -pi/2 + eps, -
+        0,    >1      +,     pi/2             pi/2,    +
+      +eps,   >1      +,  pi/2 - eps       pi/2 - eps, +
+      -eps,   >1      -,  pi/2 - eps      -pi/2 + eps, +
+
+Finally, the following identities help to illustrate the relationship
+between the complex trigonometric and hyperbolic functions.  They are
+valid everywhere, including on the branch cuts.
+
+     sin(i*z)  = i*sinh(z)       arcsin(i*z)  = i*arcsinh(z)
+     cos(i*z)  =   cosh(z)       arcsinh(i*z) = i*arcsin(z)
+     tan(i*z)  = i*tanh(z)       arctan(i*z)  = i*arctanh(z)
+     sinh(i*z) = i*sin(z)        cosh(i*z)    =   cos(z)
+
+The "advanced math" functions (gamma, Bessel, etc.) are also defined
+for general complex arguments, but their branch cuts and principal
+values are not rigorously specified at present.
+
+
+
+File: calc.info, Node: Random Numbers, Next: Combinatorial Functions, Prev: Branch Cuts, Up: Scientific Functions
+
+Random Numbers
+==============
+
+The `k r' (`calc-random') [`random'] command produces random numbers
+of various sorts.
+
+Given a positive numeric prefix argument `M', it produces a random
+integer `N' in the range `0 <= N < M'.  Each of the `M' values appears
+with equal probability.
+
+With no numeric prefix argument, the `k r' command takes its argument
+from the stack instead.  Once again, if this is a positive integer `M'
+the result is a random integer less than `M'.  However, note that
+while numeric prefix arguments are limited to six digits or so, an `M'
+taken from the stack can be arbitrarily large.  If `M' is negative,
+the result is a random integer in the range `M < N <= 0'.
+
+If the value on the stack is a floating-point number `M', the result
+is a random floating-point number `N' in the range `0 <= N < M'
+or `M < N <= 0', according to the sign of `M'.
+
+If `M' is zero, the result is a Gaussian-distributed random real
+number; the distribution has a mean of zero and a standard deviation
+of one.  The algorithm used generates random numbers in pairs; thus,
+every other call to this function will be especially fast.
+
+If `M' is an error form `m +/- s' where m
+and s are both real numbers, the result uses a Gaussian
+distribution with mean m and standard deviation s.
+
+If `M' is an interval form, the lower and upper bounds specify the
+acceptable limits of the random numbers.  If both bounds are integers,
+the result is a random integer in the specified range.  If either
+bound is floating-point, the result is a random real number in the
+specified range.  If the interval is open at either end, the result
+will be sure not to equal that end value.  (This makes a big
+difference for integer intervals, but for floating-point intervals
+it's relatively minor: with a precision of 6, `random([1.0..2.0))'
+will return any of one million numbers from 1.00000 to 1.99999;
+`random([1.0..2.0])' may additionally return 2.00000, but the
+probability of this happening is extremely small.)
+
+If `M' is a vector, the result is one element taken at random from the
+vector.  All elements of the vector are given equal probabilities.
+
+The sequence of numbers produced by `k r' is completely random by
+default, i.e., the sequence is seeded each time you start Calc using
+the current time and other information.  You can get a reproducible
+sequence by storing a particular "seed value" in the Calc variable
+`RandSeed'.  Any integer will do for a seed; integers of from 1 to 12
+digits are good.  If you later store a different integer into
+`RandSeed', Calc will switch to a different pseudo-random sequence.
+If you "unstore" `RandSeed', Calc will re-seed itself from the current
+time.  If you store the same integer that you used before back into
+`RandSeed', you will get the exact same sequence of random numbers as
+before.
+
+The `calc-rrandom' command (not on any key) produces a random real
+number between zero and one.  It is equivalent to `random(1.0)'.
+
+The `k a' (`calc-random-again') command produces another random
+number, re-using the most recent value of `M'.  With a numeric prefix
+argument N, it produces N more random numbers using that value of `M'.
+
+The `k h' (`calc-shuffle') command produces a vector of several random
+values with no duplicates.  The value on the top of the stack
+specifies the set from which the random values are drawn, and may be
+any of the `M' formats described above.  The numeric prefix argument
+gives the length of the desired list.  (If you do not provide a
+numeric prefix argument, the length of the list is taken from the top
+of the stack, and `M' from second-to-top.)
+
+If `M' is a floating-point number, zero, or an error form (so that the
+random values are being drawn from the set of real numbers) there is
+little practical difference between using `k h' and using `k r'
+several times.  But if the set of possible values consists of just a
+few integers, or the elements of a vector, then there is a very real
+chance that multiple `k r''s will produce the same number more than
+once.  The `k h' command produces a vector whose elements are always
+distinct.  (Actually, there is a slight exception: If `M' is a vector,
+no given vector element will be drawn more than once, but if several
+elements of `M' are equal, they may each make it into the result
+vector.)
+
+One use of `k h' is to rearrange a list at random.  This happens if
+the prefix argument is equal to the number of values in the list: `[1,
+1.5, 2, 2.5, 3] 5 k h' might produce the permuted list `[2.5, 1, 1.5,
+3, 2]'.  As a convenient feature, if the argument N is negative it is
+replaced by the size of the set represented by `M'.  Naturally, this
+is allowed only when `M' specifies a small discrete set of
+possibilities.
+
+To do the equivalent of `k h' but with duplications allowed, given `M'
+on the stack and with N just entered as a numeric prefix, use `v b' to
+build a vector of copies of `M', then use `V M k r' to "map" the
+normal `k r' function over the elements of this vector.  *Note Matrix
+Functions::.
+
+* Menu:
+
+* Random Number Generator::     (Complete description of Calc's algorithm)
+
+
+
+File: calc.info, Node: Random Number Generator, Prev: Random Numbers, Up: Random Numbers
+
+Random Number Generator
+-----------------------
+
+Calc's random number generator uses several methods to ensure that the
+numbers it produces are highly random.  Knuth's *Art of Computer
+Programming*, Volume II, contains a thorough description of the theory
+of random number generators and their measurement and
+characterization.
+
+If `RandSeed' has no stored value, Calc calls Emacs' built-in `random'
+function to get a stream of random numbers, which it then treats in
+various ways to avoid problems inherent in the simple random number
+generators that many systems use to implement `random'.
+
+When Calc's random number generator is first invoked, it "seeds" the
+low-level random sequence using the time of day, so that the random
+number sequence will be different every time you use Calc.
+
+Since Emacs Lisp doesn't specify the range of values that will be
+returned by its `random' function, Calc exercises the function several
+times to estimate the range.  When Calc subsequently uses the `random'
+function, it takes only 10 bits of the result near the
+most-significant end.  (It avoids at least the bottom four bits,
+preferably more, and also tries to avoid the top two bits.)  This
+strategy works well with the linear congruential generators that are
+typically used to implement `random'.
+
+If `RandSeed' contains an integer, Calc uses this integer to seed an
+additive congruential" method (Knuth's algorithm 3.2.2A, computing
+`X_n-55 - X_n-24').  This method expands the seed value into a large
+table which is maintained internally; the variable `RandSeed' is
+changed from, e.g., 42 to the vector `[42]' to indicate that the seed
+has been absorbed into this table.  When `RandSeed' contains a vector,
+`k r' and related commands continue to use the same internal table as
+last time.  There is no way to extract the complete state of the
+random number generator so that you can restart it from any point; you
+can only restart it from the same initial seed value.  A simple way to
+restart from the same seed is to type `s r RandSeed' to get the seed
+vector, `v u' to unpack it back into a number, then `s t RandSeed' to
+reseed the generator with that number.
+
+Calc uses a "shuffling" method as described in algorithm 3.2.2B of
+Knuth.  It fills a table with 13 random 10-bit numbers.  Then, to
+generate a new random number, it uses the previous number to index
+into the table, picks the value it finds there as the new random
+number, then replaces that table entry with a new value obtained from
+a call to the base random number generator (either the additive
+congruential generator or the `random' function supplied by the
+system).  If there are any flaws in the base generator, shuffling will
+tend to even them out.  But if the system provides an excellent
+`random' function, shuffling will not damage its randomness.
+
+To create a random integer of a certain number of digits, Calc builds
+the integer three decimal digits at a time.  For each group of three
+digits, Calc calls its 10-bit shuffling random number generator (which
+returns a value from 0 to 1023); if the random value is 1000 or more,
+Calc throws it out and tries again until it gets a suitable value.
+
+To create a random floating-point number with precision P, Calc
+simply creates a random P-digit integer and multiplies by
+`10^-p'.  The resulting random numbers should be very clean, but note
+that relatively small numbers will have few significant random digits.
+In other words, with a precision of 12, you will occasionally get
+numbers on the order of `10^-9' or `10^-10', but those numbers
+will only have two or three random digits since they correspond to small
+integers times `10^-12'.
+
+To create a random integer in the interval `[0 .. M)', Calc counts the
+digits in M, creates a random integer with three additional digits,
+then reduces modulo M.  Unless M is a power of ten the resulting
+values will be very slightly biased toward the lower numbers, but this
+bias will be less than 0.1%.  (For example, if M is 42, Calc will
+reduce a random integer less than 100000 modulo 42 to get a result
+less than 42.  It is easy to show that the numbers 40 and 41 will be
+only 2380/2381 as likely to result from this modulo operation as
+numbers 39 and below.)  If M is a power of ten, however, the numbers
+should be completely unbiased.
+
+The Gaussian random numbers generated by `random(0.0)' use the "polar"
+method described in Knuth section 3.4.1C.  This method generates a
+pair of Gaussian random numbers at a time, so only every other call to
+`random(0.0)' will require significant calculations.
+
+
+
+File: calc.info, Node: Combinatorial Functions, Next: Probability Distribution Functions, Prev: Random Numbers, Up: Scientific Functions
+
+Combinatorial Functions
+=======================
+
+Commands relating to combinatorics and number theory begin with the
+`k' key prefix.
+
+The `k g' (`calc-gcd') [`gcd'] command computes the Greatest Common
+Divisor of two integers.  It also accepts fractions; the GCD of two
+fractions is defined by taking the GCD of the numerators, and the LCM
+of the denominators.  This definition is consistent with the idea that
+`a / gcd(a,x)' should yield an integer for any `a' and `x'.  For other
+types of arguments, the operation is left in symbolic form.
+
+The `k l' (`calc-lcm') [`lcm'] command computes the Least Common
+Multiple of two integers or fractions.  The product of the LCM and GCD
+of two numbers is equal to the product of the numbers.
+
+The `k E' (`calc-extended-gcd') [`egcd'] command computes
+the GCD of two integers `x' and `y' and returns a vector
+`[g, a, b]' where `g = gcd(x,y) = a x + b y'.
+
+The `!' (`calc-factorial') [`fact'] command computes the factorial of
+the number at the top of the stack.  If the number is an integer, the
+result is an exact integer.  If the number is an integer-valued float,
+the result is a floating-point approximation.  If the number is a
+non-integral real number, the generalized factorial is used, as
+defined by the Euler Gamma function.  Please note that computation of
+large factorials can be slow; using floating-point format will help
+since fewer digits must be maintained.  The same is true of many of
+the commands in this section.
+
+The `k d' (`calc-double-factorial') [`dfact'] command computes the
+double factorial" of an integer.  For an even integer, this is the
+product of even integers from 2 to `N'.  For an odd integer, this is
+the product of odd integers from 3 to `N'.  If the argument is an
+integer-valued float, the result is a floating-point approximation.
+This function is undefined for negative even integers.  The notation
+`N!!' is also recognized for double factorials.
+
+The `k c' (`calc-choose') [`choose'] command computes the
+binomial coefficient `N'-choose-`M', where `M' is the number
+on the top of the stack and `N' is second-to-top.  If both arguments
+are integers, the result is an exact integer.  Otherwise, the result is a
+floating-point approximation.  The binomial coefficient is defined for all
+real numbers by `N! / M! (N-M)!'.
+
+The `H k c' (`calc-perm') [`perm'] command computes the
+number-of-permutations function `N! / (N-M)!'.
+
+The `k b' (`calc-bernoulli-number') [`bern'] command computes a given
+Bernoulli number.  The value at the top of the stack is a nonnegative
+integer `n' that specifies which Bernoulli number is desired.  The `H
+k b' command computes a Bernoulli polynomial, taking `n' from the
+second-to-top position and `x' from the top of the stack.  If `x' is a
+variable or formula the result is a polynomial in `x'; if `x' is a
+number the result is a number.
+
+The `k e' (`calc-euler-number') [`euler'] command similarly
+computes an Euler number, and `H k e' computes an Euler polynomial.
+Bernoulli and Euler numbers occur in the Taylor expansions of several
+functions.
+
+The `k s' (`calc-stirling-number') [`stir1'] command computes a
+Stirling number of the first kind, given two integers `n' and `m' on
+the stack.  The `H k s' [`stir2'] command computes a Stirling number
+of the second kind.  These are the number of `m'-cycle permutations of
+`n' objects, and the number of ways to partition `n' objects into `m'
+non-empty sets, respectively.
+
+The `k p' (`calc-prime-test') command checks if the integer on the top
+of the stack is prime.  For integers less than eight million, the
+answer is always exact and reasonably fast.  For larger integers, a
+probabilistic method is used (see Knuth vol. II, section 4.5.4,
+algorithm P).  The number is first checked against small prime factors
+(up to 13).  Then, any number of iterations of the algorithm are
+performed.  Each step either discovers that the number is non-prime,
+or substantially increases the certainty that the number is prime.
+After a few steps, the chance that a number was mistakenly described
+as prime will be less than one percent.  (Indeed, this is a worst-case
+estimate of the probability; in practice even a single iteration is
+quite reliable.)  After the `k p' command, the number will be reported
+as definitely prime or non-prime if possible, or otherwise "probably"
+prime with a certain probability of error.
+
+The normal `k p' command performs one iteration of the primality test.
+Pressing `k p' repeatedly for the same integer will perform additional
+iterations.  Also, `k p' with a numeric prefix performs the specified
+number of iterations.  There is also an algebraic function `prime(n)'
+or `prime(n,iters)' which returns 1 if `n' is (probably) prime and 0
+if not.
+
+The `k f' (`calc-prime-factors') [`prfac'] command
+attempts to decompose an integer into its prime factors.  For numbers up
+to 25 million, the answer is exact although it may take some time.  The
+result is a vector of the prime factors in increasing order.  For larger
+inputs, prime factors above 5000 may not be found, in which case the
+last number in the vector will be an unfactored integer greater than 25
+million (with a warning message).  For negative integers, the first
+element of the list will be -1.  For inputs -1, 0, and
+1, the result is a list of the same number.
+
+The `k n' (`calc-next-prime') [`nextprime'] command finds the next
+prime above a given number.  Essentially, it searches by calling
+`calc-prime-test' on successive integers until it finds one that
+passes the test.  This is quite fast for integers less than eight
+million, but once the probabilistic test comes into play the search
+may be rather slow.  Ordinarily this command stops for any prime that
+passes one iteration of the primality test.  With a numeric prefix
+argument, a number must pass the specified number of iterations before
+the search stops.  (This only matters when searching above eight
+million.)  You can always use additional `k p' commands to increase
+your certainty that the number is indeed prime.
+
+The `I k n' (`calc-prev-prime') [`prevprime'] command analogously
+finds the next prime less than a given number.
+
+The `k t' (`calc-totient') [`totient'] command computes the Euler
+totient" function, the number of integers less than `n' which are
+relatively prime to `n'.
+
+The `k m' (`calc-moebius') [`moebius'] command computes the Moebius
+mu" function.  If the input number is a product of `k' distinct
+factors, this is `(-1)^k'.  If the input number has any duplicate
+factors (i.e., can be divided by the same prime more than once), the
+result is zero.
+
+
+
+File: calc.info, Node: Probability Distribution Functions, Prev: Combinatorial Functions, Up: Scientific Functions
+
+Probability Distribution Functions
+==================================
+
+The functions in this section compute various probability distributions.
+For continuous distributions, this is the integral of the probability
+density function from `x' to infinity.  (These are the "upper
+tail" distribution functions; there are also corresponding "lower
+tail" functions which integrate from minus infinity to `x'.)
+For discrete distributions, the upper tail function gives the sum
+from `x' to infinity; the lower tail function gives the sum
+from minus infinity up to, but not including, `x'.
+
+To integrate from `x' to `y', just use the distribution function twice
+and subtract.  For example, the probability that a Gaussian random
+variable with mean 2 and standard deviation 1 will lie in the range
+from 2.5 to 2.8 is `utpn(2.5,2,1) - utpn(2.8,2,1)' ("the probability
+that it is greater than 2.5, but not greater than 2.8"), or
+equivalently `ltpn(2.8,2,1) - ltpn(2.5,2,1)'.
+
+The `k B' (`calc-utpb') [`utpb'] function uses the binomial
+distribution.  Push the parameters N, P, and then X onto the stack;
+the result (`utpb(x,n,p)') is the probability that an event will occur
+X or more times out of N trials, if its probability of occurring in
+any given trial is P.  The `I k B' [`ltpb'] function is the
+probability that the event will occur fewer than X times.
+
+The other probability distribution functions similarly take the form
+`k X' (`calc-utpX') [`utpX'] and `I k X' [`ltpX'], for various letters
+X.  The arguments to the algebraic functions are the value of the
+random variable first, then whatever other parameters define the
+distribution.  Note these are among the few Calc functions where the
+order of the arguments in algebraic form differs from the order of
+arguments as found on the stack.  (The random variable comes last on
+the stack, so that you can type, e.g., `2 RET 1 RET 2.5 k N M-RET DEL
+2.8 k N -', using `M-RET DEL' to recover the original arguments but
+substitute a new value for `x'.)
+
+The `utpc(x,v)' function uses the chi-square distribution with `v'
+degrees of freedom.  It is the probability that a model is correct if
+its chi-square statistic is `x'.
+
+The `utpf(F,v1,v2)' function uses the F distribution, used in various
+statistical tests.  The parameters `v1' and `v2' are the degrees of
+freedom in the numerator and denominator, respectively, used in
+computing the statistic `F'.
+
+The `utpn(x,m,s)' function uses a normal (Gaussian) distribution with
+mean `m' and standard deviation `s'.  It is the probability that such
+a normal-distributed random variable would exceed `x'.
+
+The `utpp(n,x)' function uses a Poisson distribution with mean `x'.
+It is the probability that `n' or more such Poisson random events will
+occur.
+
+The `utpt(t,v)' function uses the Student's "t" distribution with `v'
+degrees of freedom.  It is the probability that a t-distributed random
+variable will be greater than `t'.  (Note: This computes the
+distribution function `A(t|v)' where `A(0|v) = 1' and `A(inf|v) -> 0'.
+The `UTPT' operation on the HP-48 uses a different definition which
+returns half of Calc's value: `UTPT(t,v) = .5*utpt(t,v)'.)
+
+While Calc does not provide inverses of the probability distribution
+functions, the `a R' command can be used to solve for the inverse.
+Since the distribution functions are monotonic, `a R' is guaranteed
+to be able to find a solution given any initial guess.
+*Note Numerical Solutions::.
+
+
+

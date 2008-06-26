@@ -1,0 +1,1455 @@
+Info file: calc.info,    -*-Text-*-
+produced by `texinfo-format-buffer'
+from file `calc.texinfo'
+using `texinfmt.el' version 2.42 of  7 Jul 2006.
+
+This file documents Calc, the GNU Emacs calculator.
+
+Copyright (C) 1990, 1991 Free Software Foundation, Inc.
+
+Permission is granted to make and distribute verbatim copies of this
+manual provided the copyright notice and this permission notice are
+preserved on all copies.
+
+Permission is granted to copy and distribute modified versions of this
+manual under the conditions for verbatim copying, provided also that
+the section entitled "GNU General Public License" is included exactly
+as in the original, and provided that the entire resulting derived
+work is distributed under the terms of a permission notice identical
+to this one.
+
+Permission is granted to copy and distribute translations of this
+manual into another language, under the above conditions for modified
+versions, except that the section entitled "GNU General Public
+License" may be included in a translation approved by the author
+instead of in the original English.
+
+
+
+
+File: calc.info, Node: Maple Language Mode, Next: Compositions, Prev: Mathematica Language Mode, Up: Language Modes
+
+Maple Language Mode
+-------------------
+
+The `d W' (`calc-maple-language') command selects the conventions of
+Maple, another mathematical tool from the University of Waterloo.
+
+Maple's language is much like C.  Underscores are allowed in symbol
+names; square brackets are used for subscripts; explicit `*'s for
+multiplications are required.  Use either `^' or `**' to denote
+powers.
+
+Maple uses square brackets for lists and curly braces for sets.  Calc
+interprets both notations as vectors, and displays vectors with square
+brackets.  This means Maple sets will be converted to lists when they
+pass through Calc.  As a special case, matrices are written as calls
+to the function `matrix', given a list of lists as the argument, and
+can be read in this form or with all-capitals `MATRIX'.
+
+The Maple interval notation `2 .. 3' has no surrounding brackets; Calc
+reads `2 .. 3' as the closed interval `[2 .. 3]', and writes any kind
+of interval as `2 .. 3'.  This means you cannot see the difference
+between an open and a closed interval while in Maple display mode.
+
+Maple writes complex numbers as `3 + 4*I'.  Its special constants are
+`Pi', `E', `I', and `infinity' (all three of `inf', `uinf', and `nan'
+display as `infinity').  Floating-point numbers are written
+`1.23*10.^3'.
+
+Among things not currently handled by Calc's Maple mode are the
+various quote symbols, procedures and functional operators, and inert
+(`&') operators.
+
+
+
+File: calc.info, Node: Compositions, Next: Syntax Tables, Prev: Maple Language Mode, Up: Language Modes
+
+Compositions
+------------
+
+There are several "composition functions" which allow you to get
+displays in a variety of formats similar to those in Big language
+mode.  Most of these functions do not evaluate to anything; they are
+placeholders which are left in symbolic form by Calc's evaluator but
+are recognized by Calc's display formatting routines.
+
+Two of these, `string' and `bstring', are described elsewhere.  *Note
+Strings::.  For example, `string("ABC")' is displayed as `ABC'.  When
+viewed on the stack it will be indistinguishable from the variable
+`ABC', but internally it will be stored as `string([65, 66, 67])' and
+can still be manipulated this way; for example, the selection and
+vector commands `j 1 v v j u' would select the vector portion of this
+object and reverse the elements, then deselect to reveal a string
+whose characters had been reversed.
+
+The composition functions do the same thing in all language modes
+(although their components will of course be formatted in the current
+language mode).  The one exception is Unformatted mode (`d U'), which
+does not give the composition functions any special treatment.  The
+functions are discussed here because of their relationship to the
+language modes.
+
+* Menu:
+
+* Composition Basics::
+* Horizontal Compositions::
+* Vertical Compositions::
+* Other Compositions::
+* Information about Compositions::
+* User-Defined Compositions::
+
+
+
+File: calc.info, Node: Composition Basics, Next: Horizontal Compositions, Prev: Compositions, Up: Compositions
+
+Composition Basics
+..................
+
+Compositions are generally formed by stacking formulas together
+horizontally or vertically in various ways.  Those formulas are
+themselves compositions.  TeX users will find this analogous to TeX's
+boxes."  Each multi-line composition has a "baseline"; horizontal
+compositions use the baselines to decide how formulas should be
+positioned relative to one another.  For example, in the Big mode
+formula
+
+	       2
+	  a + b
+     17 + ------
+	    c
+
+the second term of the sum is four lines tall and has line three as
+its baseline.  Thus when the term is combined with 17, line three is
+placed on the same level as the baseline of 17.
+
+
+Another important composition concept is "precedence".  This is an
+integer that represents the binding strength of various operators.
+For example, `*' has higher precedence (195) than `+' (180), which
+means that `(a * b) + c' will be formatted without the parentheses,
+but `a * (b + c)' will keep the parentheses.
+
+The operator table used by normal and Big language modes has the
+following precedences:
+
+     _     1200   (subscripts)
+     %     1100   (as in n%)
+     -     1000   (as in -n)
+     !     1000   (as in !n)
+     mod    400
+     +/-    300
+     !!     210    (as in n!!)
+     !      210    (as in n!)
+     ^      200
+     *      195    (or implicit multiplication)
+     / % \  190
+     + -    180    (as in a+b)
+     |      170
+     < =    160    (and other relations)
+     &&     110
+     ||     100
+     ? :     90
+     !!!     85
+     &&&     80
+     |||     75
+     :=      50
+     ::      45
+     =>      40
+
+The general rule is that if an operator with precedence `n' occurs as
+an argument to an operator with precedence `m', then the argument is
+enclosed in parentheses if `n < m'.  Top-level expressions and
+expressions which are function arguments, vector components, etc., are
+formatted with precedence zero (so that they normally never get
+additional parentheses).
+
+For binary left-associative operators like `+', the righthand argument
+is actually formatted with one-higher precedence than shown in the
+table.  This makes sure `(a + b) + c' omits the parentheses, but the
+unnatural form `a + (b + c)' keeps its parentheses.  Right-associative
+operators like `^' format the lefthand argument with one-higher
+precedence.
+
+The `cprec' function formats an expression with an arbitrary
+precedence.  For example, `cprec(abc, 185)' will combine into sums and
+products as follows: `7 + abc', `7 (abc)' (because this `cprec' form
+has higher precedence than addition, but lower precedence than
+multiplication).
+
+
+A final composition issue is "line breaking".  Calc uses two different
+strategies for "flat" and "non-flat" compositions.  A non-flat
+composition is anything that appears on multiple lines (not counting
+line breaking).  Examples would be matrices and Big mode powers and
+quotients.  Non-flat compositions are displayed exactly as specified.
+If they come out wider than the current window, you must use
+horizontal scrolling (`<' and `>') to view them.
+
+Flat compositions, on the other hand, will be broken across several
+lines if they are too wide to fit the window.  Certain points in a
+composition are noted internally as "break points".  Calc's general
+strategy is to fill each line as much as possible, then to move down
+to the next line starting at the first break point that didn't fit.
+However, the line breaker understands the hierarchical structure of
+formulas.  It will not break an "inner" formula if it can use an
+earlier break point from an "outer" formula instead.  For example, a
+vector of sums might be formatted as:
+
+     [ a + b + c, d + e + f,
+       g + h + i, j + k + l, m ]
+
+If the `m' can fit, then so, it seems, could the `g'.  But Calc
+prefers to break at the comma since the comma is part of a "more
+outer" formula.  Calc would break at a plus sign only if it had to,
+say, if the very first sum in the vector had itself been too large to
+fit.
+
+Of the composition functions described below, only `choriz' generates
+break points.  The `bstring' function (*Note Strings::) also generates
+breakable items: A break point is added after every space (or group of
+spaces) except for spaces at the very beginning or end of the string.
+
+Composition functions themselves count as levels in the formula
+hierarchy, so a `choriz' that is a component of a larger `choriz' will
+be less likely to be broken.  As a special case, if a `bstring' occurs
+as a component of a `choriz' or `choriz'-like object (such as a vector
+or a list of arguments in a function call), then the break points in
+that `bstring' will be on the same level as the break points of the
+surrounding object.
+
+
+
+File: calc.info, Node: Horizontal Compositions, Next: Vertical Compositions, Prev: Composition Basics, Up: Compositions
+
+Horizontal Compositions
+.......................
+
+The `choriz' function takes a vector of objects and composes
+them horizontally.  For example, `choriz([17, a b/c, d])' formats
+as `17a b / cd' in normal language mode, or as
+
+       a b
+     17--d
+        c
+
+in Big language mode.  This is actually one case of the general
+function `choriz(VEC, SEP, PREC)', where either or both of SEP and
+PREC may be omitted.  PREC gives the "precedence" to use when
+formatting each of the components of VEC.  The default precedence is
+the precedence from the surrounding environment.
+
+SEP is a string (i.e., a vector of character codes as might be entered
+with `" "' notation) which should separate components of the
+composition.  Also, if SEP is given, the line breaker will allow lines
+to be broken after each occurrence of SEP.  If SEP is omitted, the
+composition will not be breakable (unless any of its component
+compositions are breakable).
+
+For example, `2 choriz([a, b c, d = e], " + ", 180)' is formatted as
+`2 a + b c + (d = e)'.  To get the `choriz' to have precedence 180
+outwards" as well as "inwards," enclose it in a `cprec' form: `2
+cprec(choriz(...), 180)' formats as `2 (a + b c + (d = e))'.
+
+The baseline of a horizontal composition is the same as the baselines
+of the component compositions, which are all aligned.
+
+
+
+File: calc.info, Node: Vertical Compositions, Next: Other Compositions, Prev: Horizontal Compositions, Up: Compositions
+
+Vertical Compositions
+.....................
+
+The `cvert' function makes a vertical composition.  Each component of
+the vector is centered in a column.  The baseline of the result is by
+default the top line of the resulting composition.  For example,
+`f(cvert([a, bb, ccc]), cvert([a^2 + 1, b^2]))' formats in Big mode as
+
+     f( a ,  2    )
+       bb   a  + 1
+       ccc     2
+	      b
+
+There are several special composition functions that work only as
+components of a vertical composition.  The `cbase' function controls
+the baseline of the vertical composition; the baseline will be the
+same as the baseline of whatever component is enclosed in `cbase'.
+Thus `f(cvert([a, cbase(bb), ccc]), cvert([a^2 + 1, cbase(b^2)]))'
+displays as
+
+	     2
+	    a  + 1
+        a2
+     f(bb ,   b   )
+       ccc
+
+There are also `ctbase' and `cbbase' functions which make the baseline
+of the vertical composition equal to the top or bottom line (rather
+than the baseline) of that component.  Thus `cvert([cbase(a / b)]) +
+cvert([ctbase(a / b)]) + cvert([cbbase(a / b)])' gives
+
+	     a
+     a       -
+     - + a + b
+     b   -
+	 b
+
+There should be only one `cbase', `ctbase', or `cbbase' function in a
+given vertical composition.  These functions can also be written with
+no arguments: `ctbase()' is a zero-height object which means the
+baseline is the top line of the following item, and `cbbase()' means
+the baseline is the bottom line of the preceding item.
+
+The `crule' function builds a "rule," or horizontal line, across a
+vertical composition.  By itself `crule()' uses `-' characters to
+build the rule.  You can specify any other character, e.g.,
+`crule("=")'.  The argument must be a character code or vector of
+exactly one character code.  It is repeated to match the width of the
+widest item in the stack.  For example, a quotient with a thick line
+is `cvert([a + 1, cbase(crule("=")), b^2])':
+
+     a + 1
+     =====
+       2
+      b
+
+Finally, the functions `clvert' and `crvert' act exactly like `cvert'
+except that the items are left- or right-justified in the stack.  Thus
+`clvert([a, bb, ccc]) + crvert([a, bb, ccc])' gives:
+
+     a   +   a
+     bb     bb
+     ccc   ccc
+
+Like `choriz', the vertical compositions accept a second argument
+which gives the precedence to use when formatting the components.
+Vertical compositions do not support separator strings.
+
+
+
+File: calc.info, Node: Other Compositions, Next: Information about Compositions, Prev: Vertical Compositions, Up: Compositions
+
+Other Compositions
+..................
+
+The `csup' function builds a superscripted expression.  For example,
+`csup(a, b)' looks the same as `a^b' does in Big language mode.  This
+is essentially a horizontal composition of `a' and `b', where `b' is
+shifted up so that its bottom line is one above the baseline.
+
+Likewise, the `csub' function builds a subscripted expression.
+This shifts `b' down so that its top line is one below the
+bottom line of `a' (note that this is not quite analogous to
+`csup').  Other arrangements can be obtained by using
+`choriz' and `cvert' directly.
+
+The `cflat' function formats its argument in "flat" mode, as obtained
+by `d O', if the current language mode is normal or Big.  It has no
+effect in other language modes.  For example, `a^(b/c)' is formatted
+by Big mode like `csup(a, cflat(b/c))' to improve its readability.
+
+The `cspace' function creates horizontal space.  For example,
+`cspace(4)' is effectively the same as `string(" ")'.  A second string
+(i.e., vector of characters) argument is repeated instead of the space
+character.  For example, `cspace(4, "ab")' looks like `abababab'.  If
+the second argument is not a string, it is formatted in the normal way
+and then several copies of that are composed together: `cspace(4,
+a^2)' yields
+
+      2 2 2 2
+     a a a a
+
+If the number argument is zero, this is a zero-width object.
+
+The `cvspace' function creates vertical space, or a vertical stack of
+copies of a certain string or formatted object.  The baseline is the
+center line of the resulting stack.  A numerical argument of zero will
+produce an object which contributes zero height if used in a vertical
+composition.
+
+There are also `ctspace' and `cbspace' functions which create vertical
+space with the baseline the same as the baseline of the top or bottom
+copy, respectively, of the second argument.  Thus `cvspace(2, a/b) +
+ctspace(2, a/b) + cbspace(2, a/b)' displays as:
+
+	     a
+	     -
+     a       b
+     -   a   a
+     b + - + -
+     a   b   b
+     -   a
+     b   -
+	 b
+
+
+
+File: calc.info, Node: Information about Compositions, Next: User-Defined Compositions, Prev: Other Compositions, Up: Compositions
+
+Information about Compositions
+..............................
+
+The functions in this section are actual functions; they compose their
+arguments according to the current language and other display modes,
+then return a certain measurement of the composition as an integer.
+
+The `cwidth' function measures the width, in characters, of a
+composition.  For example, `cwidth(a + b)' is 5, and `cwidth(a / b)'
+is 5 in normal mode, 1 in Big mode, and 11 in TeX mode (for `{a \over
+b}').  The argument may involve the composition functions described in
+this section.
+
+The `cheight' function measures the height of a composition.  This is
+the total number of lines in the argument's printed form.
+
+The functions `cascent' and `cdescent' measure the amount of the
+height that is above (and including) the baseline, or below the
+baseline, respectively.  Thus `cascent(X) + cdescent(X)' always equals
+`cheight(X)'.  For a one-line formula like `a + b', `cascent' returns
+1 and `cdescent' returns 0.  For `a / b' in Big mode, `cascent'
+returns 2 and `cdescent' returns 1.  The only formula for which
+`cascent' will return zero is `cvspace(0)' or equivalents.
+
+
+
+File: calc.info, Node: User-Defined Compositions, Prev: Information about Compositions, Up: Compositions
+
+User-Defined Compositions
+.........................
+
+The `Z C' (`calc-user-define-composition') command lets you define the
+display format for any algebraic function.  You provide a formula
+containing a certain number of argument variables on the stack.  Any
+time Calc formats a call to the specified function in the current
+language mode and with that number of arguments, Calc effectively
+replaces the function call with that formula with the arguments
+replaced.
+
+Calc builds the default argument list by sorting all the variable
+names that appear in the formula into alphabetical order.  You can
+edit this argument list before pressing RET if you wish.  Any
+variables in the formula that do not appear in the argument list will
+be displayed literally; any arguments that do not appear in the
+formula will not affect the display at all.
+
+You can define formats for built-in functions, for functions you have
+defined with `Z F' (*Note Algebraic Definitions::), or for functions
+which have no definitions but are being used as purely syntactic
+objects.  You can define different formats for each language mode, and
+for each number of arguments, using a succession of `Z C' commands.
+When Calc formats a function call, it first searches for a format
+defined for the current language mode (and number of arguments); if
+there is none, it uses the format defined for the Normal language
+mode.  If neither format exists, Calc uses its built-in standard
+format for that function (usually just `FUNC(ARGS)').
+
+If you execute `Z C' with the number 0 on the stack instead of a
+formula, any defined formats for the function in the current language
+mode will be removed.  The function will revert to its standard
+format.
+
+For example, the default format for the binomial coefficient function
+`choose(n, m)' in the Big language mode is
+
+      n
+     ( )
+      m
+
+You might prefer the notation,
+
+      C
+     n m
+
+To define this notation, first make sure you are in Big mode, then put
+the formula
+
+     choriz([cvert([cvspace(1), n]), C, cvert([cvspace(1), m])])
+
+on the stack and type `Z C'.  Answer the first prompt with `choose'.
+The second prompt will be the default argument list of `(C m n)'.
+Edit this list to be `(n m)' and press RET.  Now, try it out: For
+example, turn simplification off with `m O' and enter `choose(a,b) +
+choose(7,3)' as an algebraic entry.
+
+      C  +  C
+     a b   7 3
+
+As another example, let's define the usual notation for Stirling
+numbers of the first kind, `stir1(n, m)'.  This is just like the
+regular format for binomial coefficients but with square brackets
+instead of parentheses.
+
+     choriz([string("["), cvert([n, cbase(cvspace(1)), m]), string("]")])
+
+Now type `Z C stir1 RET', edit the argument list to
+`(n m)', and type RET.
+
+The formula provided to `Z C' usually will involve composition
+functions, but it doesn't have to.  Putting the formula `a + b + c'
+onto the stack and typing `Z C foo RET RET' would define the function
+`foo(x,y,z)' to display like `x + y + z'.  This "sum" will act exactly
+like a real sum for all formatting purposes (it will be parenthesized
+the same, and so on).  However it will be computationally unrelated to
+a sum.  For example, the formula `2 * foo(1, 2, 3)' will display as `2
+(1 + 2 + 3)'.  Operator precedences have caused the "sum" to be
+written in parentheses, but the arguments have not actually been
+summed.  (Generally a display format like this would be undesirable,
+since it can easily be confused with a real sum.)
+
+The special function `eval' can be used inside a `Z C' composition
+formula to cause all or part of the formula to be evaluated at display
+time.  For example, if the formula is `a + eval(b + c)', then `foo(1,
+2, 3)' will be displayed as `1 + 5'.  Evaluation will use the default
+simplifications, regardless of the current simplification mode.  There
+are also `evalsimp' and `evalextsimp' which simplify as if by `a s'
+and `a e' (respectively).  Note that these "functions" operate only in
+the context of composition formulas (and also in rewrite rules, where
+they serve a similar purpose; *Note Rewrite Rules::).  On the stack, a
+call to `eval' will be left in symbolic form.
+
+It is not a good idea to use `eval' except as a last resort.  It can
+cause the display of formulas to be extremely slow.  For example,
+while `eval(a + b)' might seem quite fast and simple, there are
+several situations where it could be slow.  For example, `a' and/or
+`b' could be polar complex numbers, in which case doing the sum
+requires trigonometry.  Or, `a' could be the factorial `fact(100)'
+which is unevaluated because you have typed `m O'; `eval' will
+evaluate it anyway to produce a large, unwieldy integer.
+
+You can save your display formats permanently using the `Z P' command
+(*Note Creating User Keys::).
+
+
+
+File: calc.info, Node: Syntax Tables, Prev: Compositions, Up: Language Modes
+
+Syntax Tables
+-------------
+
+Syntax tables do for input what compositions do for output: They allow
+you to teach custom notations to Calc's formula parser.  Calc keeps a
+separate syntax table for each language mode.
+
+(Note that the Calc "syntax tables" discussed here are completely
+unrelated to the syntax tables described in the Emacs manual.)
+
+The `Z S' (`calc-edit-user-syntax') command edits the
+syntax table for the current language mode.  If you want your
+syntax to work in any language, define it in the normal language
+mode.  Type `M-# M-#' to finish editing the syntax table, or
+`M-# x' to cancel the edit.  The `m m' command saves all
+the syntax tables along with the other mode settings;
+*Note General Mode Commands::.
+
+* Menu:
+
+* Syntax Table Basics::
+* Precedence in Syntax Tables::
+* Advanced Syntax Patterns::
+* Conditional Syntax Rules::
+
+
+
+File: calc.info, Node: Syntax Table Basics, Next: Precedence in Syntax Tables, Prev: Syntax Tables, Up: Syntax Tables
+
+Syntax Table Basics
+...................
+
+"Parsing" is the process of converting a raw string of characters,
+such as you would type in during algebraic entry, into a Calc formula.
+Calc's parser works in two stages.  First, the input is broken down
+into "tokens", such as words, numbers, and punctuation symbols like
+`+', `:=', and `+/-'.  Space between tokens is ignored (except when it
+serves to separate adjacent words).  Next, the parser matches this
+string of tokens against various built-in syntactic patterns, such as
+an expression followed by `+' followed by another expression" or "a
+name followed by `(', zero or more expressions separated by commas,
+and `)'."
+
+A "syntax table" is a list of user-defined "syntax rules", which allow
+you to specify new patterns to define your own favorite input
+notations.  Calc's parser always checks the syntax table for the
+current language mode, then the table for the normal language mode,
+before it uses its built-in rules to parse an algebraic formula you
+have entered.  Each syntax rule should go on its own line; it consists
+of a "pattern", a `:=' symbol, and a Calc formula with an optional
+condition".  (Syntax rules resemble algebraic rewrite rules, but the
+notation for patterns is completely different.)
+
+A syntax pattern is a list of tokens, separated by spaces.  Except for
+a few special symbols, tokens in syntax patterns are matched
+literally, from left to right.  For example, the rule,
+
+     foo ( ) := 2+3
+
+would cause Calc to parse the formula `4+foo()*5' as if it
+were `4+(2+3)*5'.  Notice that the parentheses were written
+as two separate tokens in the rule.  As a result, the rule works
+for both `foo()' and `foo (  )'.  If we had written
+the rule as `foo () := 2+3', then Calc would treat `()'
+as a single, indivisible token, so that `foo( )' would
+not be recognized by the rule.  (It would be parsed as a regular
+zero-argument function call instead.)  In fact, this rule would
+also make trouble for the rest of Calc's parser:  An unrelated
+formula like `bar()' would now be tokenized into `bar ()'
+instead of `bar ( )', so that the standard parser for function
+calls would no longer recognize it!
+
+While it is possible to make a token with a mixture of letters and
+punctuation symbols, this is not recommended.  It is better to break
+it into several tokens, as we did with `foo()' above.
+
+The symbol `#' in a syntax pattern matches any Calc expression.  On
+the righthand side, the things that matched the `#'s can be referred
+to as `#1', `#2', and so on (where `#1' matches the leftmost `#' in
+the pattern).  For example, these rules match a user-defined function,
+prefix operator, infix operator, and postfix operator, respectively:
+
+     foo ( # ) := myfunc(#1)
+     foo # := myprefix(#1)
+     # foo # := myinfix(#1,#2)
+     # foo := mypostfix(#1)
+
+Thus `foo(3)' will parse as `myfunc(3)', and `2+3 foo' will parse as
+`mypostfix(2+3)'.
+
+It is important to write the first two rules in the order shown,
+because Calc tries rules in order from first to last.  If the
+pattern `foo #' came first, it would match anything that could
+match the `foo ( # )' rule, since an expression in parentheses
+is itself a valid expression.  Thus the `foo ( # )' rule would
+never get to match anything.  Likewise, the last two rules must be
+written in the order shown or else `3 foo 4' will be parsed as
+`mypostfix(3) * 4'.  (Of course, the best way to avoid these
+ambiguities is not to use the same symbol in more than one way at
+the same time!  In case you're not convinced, try the following
+exercise:  How will the above rules parse the input `foo(3,4)',
+if at all?  Work it out for yourself, then try it in Calc and see.)
+
+Calc is quite flexible about what sorts of patterns are allowed.  The
+only rule is that every pattern must begin with a literal token (like
+`foo' in the first two patterns above), or with a `#' followed by a
+literal token (as in the last two patterns).  After that, any mixture
+is allowed, although putting two `#'s in a row will not be very useful
+since two expressions with nothing between them will be parsed as one
+expression that uses implicit multiplication.
+
+As a more practical example, Maple uses the notation `sum(a(i),
+i=1..10)' for sums, which Calc's Maple mode doesn't recognize at
+present.  To handle this syntax, we simply add the rule,
+
+     sum ( # , # = # .. # ) := sum(#1,#2,#3,#4)
+
+to the Maple mode syntax table.  As another example, C mode can't read
+assignment operators like `++' and `*='.  We can define these
+operators quite easily:
+
+     # *= # := muleq(#1,#2)
+     # ++ := postinc(#1)
+     ++ # := preinc(#1)
+
+To complete the job, we would use corresponding composition functions
+and `Z C' to cause these functions to display in their respective
+Maple and C notations.  (Note that the C example ignores issues of
+operator precedence, which are discussed in the next section.)
+
+You can enclose any token in quotes to prevent its usual
+interpretation in syntax patterns:
+
+     # ":=" # := becomes(#1,#2)
+
+Quotes also allow you to include spaces in a token, although once
+again it is generally better to use two tokens than one token with an
+embedded space.  To include an actual quotation mark in a quoted
+token, precede it with a backslash.  (This also works to include
+backslashes in tokens.)
+
+     # "bad token" # "/\"\\" # := silly(#1,#2,#3)
+
+This will parse `3 bad token 4 /"\ 5' to `silly(3,4,5)'.
+
+The token `#' has a predefined meaning in Calc's formula parser; it is
+not legal to use `"#"' in a syntax rule.  However, longer tokens that
+include the `#' character are allowed.  Also, while `"$"' and `"\""'
+are allowed as tokens, their presence in the syntax table will prevent
+those characters from working in their usual ways (referring to stack
+entries and quoting strings, respectively).
+
+Finally, the notation `%%' anywhere in a syntax table causes the rest
+of the line to be ignored as a comment.
+
+
+
+File: calc.info, Node: Precedence in Syntax Tables, Next: Advanced Syntax Patterns, Prev: Syntax Table Basics, Up: Syntax Tables
+
+Precedence
+..........
+
+Different operators are generally assigned different "precedences".
+By default, an operator defined by a rule like
+
+     # foo # := foo(#1,#2)
+
+will have an extremely low precedence, so that `2*3+4 foo 5 == 6'
+will be parsed as `(2*3+4) foo (5 == 6)'.  To change the
+precedence of an operator, use the notation `#/P' in
+place of `#', where P is an integer precedence level.
+For example, 185 lies between the precedences for `+' and
+`*', so if we change this rule to
+
+     #/185 foo #/186 := foo(#1,#2)
+
+then `2+3 foo 4*5' will be parsed as `2+(3 foo (4*5))'.  Also, because
+we've given the righthand expression slightly higher precedence, our
+new operator will be left-associative: `1 foo 2 foo 3' will be parsed
+as `(1 foo 2) foo 3'.  By raising the precedence of the lefthand
+expression instead, we can create a right-associative operator.
+
+*Note Composition Basics::, for a table of precedences of the standard
+Calc operators.  For the precedences of operators in other language
+modes, look in the Calc source file `calc-lang.el'.
+
+
+
+File: calc.info, Node: Advanced Syntax Patterns, Next: Conditional Syntax Rules, Prev: Precedence in Syntax Tables, Up: Syntax Tables
+
+Advanced Syntax Patterns
+........................
+
+To match a function with a variable number of arguments, you could
+write
+
+     foo ( # ) := myfunc(#1)
+     foo ( # , # ) := myfunc(#1,#2)
+     foo ( # , # , # ) := myfunc(#1,#2,#3)
+
+but this isn't very elegant.  To match variable numbers of items, Calc
+uses some notations inspired regular expressions and the "extended
+BNF" style used by some language designers.
+
+     foo ( { # }*, ) := apply(myfunc,#1)
+
+The token `{' introduces a repeated or optional portion.  One of the
+three tokens `}*', `}+', or `}?'  ends the portion.  These will match
+zero or more, one or more, or zero or one copies of the enclosed
+pattern, respectively.  In addition, `}*' and `}+' can be followed by
+a separator token (with no space in between, as shown above).  Thus `{
+# }*,' matches nothing, or one expression, or several expressions
+separated by commas.
+
+A complete `{ ... }' item matches as a vector of the items that
+matched inside it.  For example, the above rule will match
+`foo(1,2,3)' to get `apply(myfunc,[1,2,3])'.  The Calc `apply'
+function takes a function name and a vector of arguments and builds a
+call to the function with those arguments, so the net result is the
+formula `myfunc(1,2,3)'.
+
+If the body of a `{ ... }' contains several `#'s (or nested `{ ... }'
+constructs), then the items will be strung together into the resulting
+vector.  If the body does not contain anything but literal tokens, the
+result will always be an empty vector.
+
+     foo ( { # , # }+, ) := bar(#1)
+     foo ( { { # }*, }*; ) := matrix(#1)
+
+will parse `foo(1,2,3,4)' as `bar([1,2,3,4])', and `foo(1,2;3,4)' as
+`matrix([[1,2],[3,4]])'.  Also, after some thought it's easy to see
+how this pair of rules will parse `foo(1,2,3)' as `matrix([[1,2,3]])',
+since the first rule will only match an even number of arguments.  The
+rule
+
+     foo ( # { , # , # }? ) := bar(#1,#2)
+
+will parse `foo(2,3,4)' as `bar(2,[3,4])', and
+`foo(2)' as `bar(2,[])'.
+
+The notation `{ ... }?.' (note the trailing period) works just the
+same as regular `{ ... }?', except that it does not count as an
+argument; the following two rules are equivalent:
+
+     foo ( # , { also }? # ) := bar(#1,#3)
+     foo ( # , { also }?. # ) := bar(#1,#2)
+
+Note that in the first case the optional text counts as `#2', which
+will always be an empty vector, but in the second case no empty vector
+is produced.
+
+Another variant is `{ ... }?$', which means the body is optional only
+at the end of the input formula.  All built-in syntax rules in Calc
+use this for closing delimiters, so that during algebraic entry you
+can type `[sqrt(2), sqrt(3 RET', omitting the closing parenthesis and
+bracket.  Calc does this automatically for trailing `)', `]', and `>'
+tokens in syntax rules, but you can use `{ ... }?$' explicitly to get
+this effect with any token (such as `"}"' or `end').  Like
+`{ ... }?.', this notation does not count as an argument.  Conversely,
+you can use quotes, as in `")"', to prevent a closing-delimiter token
+from being automatically treated as optional.
+
+Calc's parser does not have full backtracking, which means some
+patterns will not work as you might expect:
+
+     foo ( { # , }? # , # ) := bar(#1,#2,#3)
+
+Here we are trying to make the first argument optional, so that
+`foo(2,3)' parses as `bar([],2,3)'.  Unfortunately, Calc first tries
+to match `2,' against the optional part of the pattern, finds a match,
+and so goes ahead to match the rest of the pattern.  Later on it will
+fail to match the second comma, but it doesn't know how to go back and
+try the other alternative at that point.  One way to get around this
+would be to use two rules:
+
+     foo ( # , # , # ) := bar([#1],#2,#3)
+     foo ( # , # ) := bar([],#1,#2)
+
+More precisely, when Calc wants to match an optional or repeated part
+of a pattern, it scans forward attempting to match that part.  If it
+reaches the end of the optional part without failing, it "finalizes"
+its choice and proceeds.  If it fails, though, it backs up and tries
+the other alternative.  Thus Calc has "partial" backtracking.  A fully
+backtracking parser would go on to make sure the rest of the pattern
+matched before finalizing the choice.
+
+
+
+File: calc.info, Node: Conditional Syntax Rules, Prev: Advanced Syntax Patterns, Up: Syntax Tables
+
+Conditional Syntax Rules
+........................
+
+It is possible to attach a "condition" to a syntax rule.  For example,
+the rules
+
+     foo ( # ) := ifoo(#1) :: integer(#1)
+     foo ( # ) := gfoo(#1)
+
+will parse `foo(3)' as `ifoo(3)', but will parse `foo(3.5)' and
+`foo(x)' as calls to `gfoo'.  Any number of conditions may be
+attached; all must be true for the rule to succeed.  A condition is
+true" if it evaluates to a nonzero number.  *Note Logical
+Operations::, for a list of Calc functions like `integer' that perform
+logical tests.
+
+The exact sequence of events is as follows:  When Calc tries a
+rule, it first matches the pattern as usual.  It then substitutes
+`#1', `#2', etc., in the conditions, if any.  Next, the
+conditions are simplified and evaluated in order from left to right,
+as if by the `a s' algebra command (*Note Simplifying Formulas::).
+Each result is true if it is a nonzero number, or an expression
+that can be proven to be nonzero (*Note Declarations::).  If the
+results of all conditions are true, the expression (such as
+`ifoo(#1)') has its `#'s substituted, and that is the
+result of the parse.  If the result of any condition is false, Calc
+goes on to try the next rule in the syntax table.
+
+Syntax rules also support `let' conditions, which operate in exactly
+the same way as they do in algebraic rewrite rules.  *Note Other
+Features of Rewrite Rules::, for details.  A `let' condition is always
+true, but as a side effect it defines a variable which can be used in
+later conditions, and also in the expression after the `:=' sign:
+
+     foo ( # ) := hifoo(x) :: let(x := #1 + 0.5) :: dnumint(x)
+
+The `dnumint' function tests if a value is numerically an integer,
+i.e., either a true integer or an integer-valued float.  This rule
+will parse `foo' with a half-integer argument, like `foo(3.5)', to a
+call like `hifoo(4.)'.
+
+The lefthand side of a syntax rule `let' must be a simple variable,
+not the arbitrary pattern that is allowed in rewrite rules.
+
+The `matches' function is also treated specially in syntax
+rule conditions (again, in the same way as in rewrite rules).
+*Note Matching Commands::.  If the matching pattern contains
+meta-variables, then those meta-variables may be used in later
+conditions and in the result expression.  The arguments to
+`matches' are not evaluated in this situation.
+
+     sum ( # , # ) := sum(#1,a,b,c) :: matches(#2, a=[b..c])
+
+This is another way to implement the Maple mode `sum' notation.  In
+this approach, we allow `#2' to equal the whole expression `i=1..10'.
+Then, we use `matches' to break it apart into its components.  If the
+expression turns out not to match the pattern, the syntax rule will
+fail.  Note that `Z S' always uses Calc's normal language mode for
+editing expressions in syntax rules, so we must use regular Calc
+notation for the interval `[b..c]' that will correspond to the Maple
+mode interval `1..10'.
+
+
+
+File: calc.info, Node: Modes Variable, Next: Calc Mode Line, Prev: Language Modes, Up: Mode Settings
+
+The `Modes' Variable
+====================
+
+The `m g' (`calc-get-modes') command pushes onto the stack a vector of
+numbers that describes the various mode settings that are in effect.
+With a numeric prefix argument, it pushes only the Nth mode, i.e., the
+Nth element of this vector.  Keyboard macros can use the `m g' command
+to modify their behavior based on the current mode settings.
+
+The modes vector is also available in the special variable `Modes'.
+In other words, `m g' is like `s r Modes RET'.  It will not work to
+store into this variable; in fact, if you do, `Modes' will cease to
+track the current modes.  (The `m g' command will continue to work,
+however.)
+
+In general, each number in this vector is suitable as a numeric prefix
+argument to the associated mode-setting command.  (Recall that the `~'
+key takes a number from the stack and gives it as a numeric prefix to
+the next command.)
+
+The elements of the modes vector are as follows:
+
+  1. Current precision.  Default is 12; associated command is `p'.
+
+  2. Binary word size.  Default is 32; associated command is `b w'.
+
+  3. Stack size (not counting the value about to be pushed by `m g').
+     This is zero if `m g' is executed with an empty stack.
+
+  4. Number radix.  Default is 10; command is `d r'.
+
+  5. Floating-point format.  This is the number of digits, plus the
+     constant 0 for normal notation, 10000 for scientific notation,
+     20000 for engineering notation, or 30000 for fixed-point
+     notation.  These codes are acceptable as prefix arguments to the
+     `d n' command, but note that this may lose information: For
+     example, `d s' and `C-u 12 d s' have similar (but not quite
+     identical) effects if the current precision is 12, but they both
+     produce a code of 10012, which will be treated by `d n' as `C-u
+     12 d s'.  If the precision then changes, the float format will
+     still be frozen at 12 significant figures.
+
+  6. Angular mode.  Default is 1 (degrees).  Other values are 2
+     (radians) and 3 (HMS).  The `m d' command accepts these prefixes.
+
+  7. Symbolic mode.  Value is 0 or 1; default is 0.  Command is `m s'.
+
+  8. Fraction mode.  Value is 0 or 1; default is 0.  Command is `m f'.
+
+  9. Polar mode.  Value is 0 (rectangular) or 1 (polar); default is 0.
+     Command is `m p'.
+
+ 10. Matrix/scalar mode.  Default value is -1.  Value is 0 for scalar
+     mode, -2 for matrix mode, or N for NxN matrix mode.  Command is `m v'.
+
+ 11. Simplification mode.  Default is 1.  Value is -1 for off (`m O'),
+     0 for `m N', 2 for `m B', 3 for `m A', 4 for `m E',
+     or 5 for `m U'.  The `m D' command accepts these prefixes.
+
+ 12. Infinite mode.  Default is -1 (off).  Value is 1 if the mode is
+     on, or 0 if the mode is on with positive zeros.  Command is `m
+     i'.
+
+For example, the sequence `M-1 m g RET 2 + ~ p' increases the
+precision by two, leaving a copy of the old precision on the stack.
+Later, `~ p' will restore the original precision using that stack
+value.  (This sequence might be especially useful inside a keyboard
+macro.)
+
+As another example, `M-3 m g 1 - ~ DEL' deletes all but the oldest
+(bottommost) stack entry.
+
+Yet another example: The HP-48 "round" command rounds a number to the
+current displayed precision.  You could roughly emulate this in Calc
+with the sequence `M-5 m g 10000 % ~ c c'.  (This would not work for
+fixed-point mode, but it wouldn't be hard to do a full emulation with
+the help of the `Z [' and `Z ]' programming commands.  *Note
+Conditionals in Macros::.)
+
+
+
+File: calc.info, Node: Calc Mode Line, Prev: Modes Variable, Up: Mode Settings
+
+The Calc Mode Line
+==================
+
+This section is a summary of all symbols that can appear on the Calc
+mode line, the highlighted bar that appears under the Calc stack
+window (or under an editing window in Embedded Mode).
+
+The basic mode line format is:
+
+     --%%-Calc: 12 Deg OTHER MODES       (Calculator)
+
+The `%%' is the Emacs symbol for "read-only"; it shows that regular
+Emacs commands are not allowed to edit the stack buffer as if it were
+text.
+
+The word `Calc:' changes to `CalcEmbed:' if Embedded Mode is enabled.
+The words after this describe the various Calc modes that are in
+effect.
+
+The first mode is always the current precision, an integer.
+The second mode is always the angular mode, either `Deg',
+`Rad', or `Hms'.
+
+Here is a complete list of the remaining symbols that can appear on
+the mode line:
+
+`Alg'
+     Algebraic mode (`m a'; *Note Algebraic Entry::).
+
+`Alg[('
+     Incomplete algebraic mode (`C-u m a').
+
+`Alg*'
+     Total algebraic mode (`m t').
+
+`Symb'
+     Symbolic mode (`m s'; *Note Symbolic Mode::).
+
+`Matrix'
+     Matrix mode (`m v'; *Note Matrix Mode::).
+
+`MatrixN'
+     Dimensioned matrix mode (`C-u N m v').
+
+`Scalar'
+     Scalar mode (`m v'; *Note Matrix Mode::).
+
+`Polar'
+     Polar complex mode (`m p'; *Note Polar Mode::).
+
+`Frac'
+     Fraction mode (`m f'; *Note Fraction Mode::).
+
+`Inf'
+     Infinite mode (`m i'; *Note Infinite Mode::).
+
+`+Inf'
+     Positive infinite mode (`C-u 0 m i').
+
+`NoSimp'
+     Default simplifications off (`m O'; *Note Simplification
+     Modes::).
+
+`NumSimp'
+     Default simplifications for numeric arguments only (`m N').
+
+`BinSimpW'
+     Binary-integer simplification mode; word size W (`m B', `b w').
+
+`AlgSimp'
+     Algebraic simplification mode (`m A').
+
+`ExtSimp'
+     Extended algebraic simplification mode (`m E').
+
+`UnitSimp'
+     Units simplification mode (`m U').
+
+`Bin'
+     Current radix is 2 (`d 2'; *Note Radix Modes::).
+
+`Oct'
+     Current radix is 8 (`d 8').
+
+`Hex'
+     Current radix is 16 (`d 6').
+
+`RadixN'
+     Current radix is N (`d r').
+
+`Zero'
+     Leading zeros (`d z'; *Note Radix Modes::).
+
+`Big'
+     Big language mode (`d B'; *Note Normal Language Modes::).
+
+`Flat'
+     One-line normal language mode (`d O').
+
+`Unform'
+     Unformatted language mode (`d U').
+
+`C'
+     C language mode (`d C'; *Note C FORTRAN Pascal::).
+
+`Pascal'
+     Pascal language mode (`d P').
+
+`Fortran'
+     FORTRAN language mode (`d F').
+
+`TeX'
+     TeX language mode (`d T'; *Note TeX Language Mode::).
+
+`Eqn'
+     "Eqn" language mode (`d E'; *Note Eqn Language Mode::).
+
+`Math'
+     Mathematica language mode (`d M'; *Note Mathematica Language
+     Mode::).
+
+`Maple'
+     Maple language mode (`d W'; *Note Maple Language Mode::).
+
+`NormN'
+     Normal float mode with N digits (`d n'; *Note Float Formats::).
+
+`FixN'
+     Fixed point mode with N digits after the point (`d f').
+
+`Sci'
+     Scientific notation mode (`d s').
+
+`SciN'
+     Scientific notation with N digits (`d s').
+
+`Eng'
+     Engineering notation mode (`d e').
+
+`EngN'
+     Engineering notation with N digits (`d e').
+
+`LeftN'
+     Left-justified display indented by N (`d <'; *Note
+     Justification::).
+
+`Right'
+     Right-justified display (`d >').
+
+`RightN'
+     Right-justified display with width N (`d >').
+
+`Center'
+     Centered display (`d =').
+
+`CenterN'
+     Centered display with center column N (`d =').
+
+`WidN'
+     Line breaking with width N (`d b'; *Note Normal Language
+     Modes::).
+
+`Wide'
+     No line breaking (`d b').
+
+`Break'
+     Selections show deep structure (`j b'; *Note Making
+     Selections::).
+
+`Save'
+     Record modes in `~/.emacs' (`m R'; *Note General Mode
+     Commands::).
+
+`Local'
+     Record modes in Embedded buffer (`m R').
+
+`LocEdit'
+     Record modes as editing-only in Embedded buffer (`m R').
+
+`LocPerm'
+     Record modes as permanent-only in Embedded buffer (`m R').
+
+`Global'
+     Record modes as global in Embedded buffer (`m R').
+
+`Manual'
+     Automatic recomputation turned off (`m C'; *Note Automatic
+     Recomputation::).
+
+`Graph'
+     GNUPLOT process is alive in background (*Note Graphics::).
+
+`Sel'
+     Top-of-stack has a selection (Embedded only; *Note Making
+     Selections::).
+
+`Dirty'
+     The stack display may not be up-to-date (*Note Display Modes::).
+
+`Inv'
+     "Inverse" prefix was pressed (`I'; *Note Inverse and
+     Hyperbolic::).
+
+`Hyp'
+     "Hyperbolic" prefix was pressed (`H').
+
+`Keep'
+     "Keep-arguments" prefix was pressed (`K').
+
+`Narrow'
+     Stack is truncated (`d t'; *Note Truncating the Stack::).
+
+In addition, the symbols `Active' and `~Active' can appear as minor
+modes on an Embedded buffer's mode line.  *Note Embedded Mode::.
+
+
+
+File: calc.info, Node: Arithmetic, Next: Scientific Functions, Prev: Mode Settings, Up: Top
+
+Arithmetic Functions
+********************
+
+This chapter describes the Calc commands for doing simple calculations
+on numbers, such as addition, absolute value, and square roots.  These
+commands work by removing the top one or two values from the stack,
+performing the desired operation, and pushing the result back onto the
+stack.  If the operation cannot be performed, the result pushed is a
+formula instead of a number, such as `2/0' (because division by zero
+is illegal) or `sqrt(x)' (because the argument `x' is a formula).
+
+Most of the commands described here can be invoked by a single
+keystroke.  Some of the more obscure ones are two-letter sequences
+beginning with the `f' ("functions") prefix key.
+
+*Note Prefix Arguments::, for a discussion of the effect of numeric
+prefix arguments on commands in this chapter which do not otherwise
+interpret a prefix argument.
+
+* Menu:
+
+* Basic Arithmetic::
+* Integer Truncation::
+* Complex Number Functions::
+* Conversions::
+* Date Arithmetic::
+* Financial Functions::
+* Binary Functions::
+
+
+
+File: calc.info, Node: Basic Arithmetic, Next: Integer Truncation, Prev: Arithmetic, Up: Arithmetic
+
+Basic Arithmetic
+================
+
+The `+' (`calc-plus') command adds two numbers.  The numbers may be
+any of the standard Calc data types.  The resulting sum is pushed back
+onto the stack.
+
+If both arguments of `+' are vectors or matrices (of matching
+dimensions), the result is a vector or matrix sum.  If one argument is
+a vector and the other a scalar (i.e., a non-vector), the scalar is
+added to each of the elements of the vector to form a new vector.  If
+the scalar is not a number, the operation is left in symbolic form:
+Suppose you added `x' to the vector `[1,2]'.  You may want the result
+`[1+x,2+x]', or you may plan to substitute a 2-vector for `x' in the
+future.  Since the Calculator can't tell which interpretation you
+want, it makes the safest assumption.  *Note Reducing and Mapping::,
+for a way to add `x' to every element of a vector.
+
+If either argument of `+' is a complex number, the result will in
+general be complex.  If one argument is in rectangular form and the
+other polar, the current Polar Mode determines the form of the result.
+If Symbolic Mode is enabled, the sum may be left as a formula if the
+necessary conversions for polar addition are non-trivial.
+
+If both arguments of `+' are HMS forms, the forms are added according
+to the usual conventions of hours-minutes-seconds notation.  If one
+argument is an HMS form and the other is a number, that number is
+converted from degrees or radians (depending on the current Angular
+Mode) to HMS format and then the two HMS forms are added.
+
+If one argument of `+' is a date form, the other can be either a real
+number, which advances the date by a certain number of days, or an HMS
+form, which advances the date by a certain amount of time.
+Subtracting two date forms yields the number of days between them.
+Adding two date forms is meaningless, but Calc interprets it as the
+subtraction of one date form and the negative of the other.  (The
+negative of a date form can be understood by remembering that dates
+are stored as the number of days before or after Jan 1, 1 AD.)
+
+If both arguments of `+' are error forms, the result is an error form
+with an appropriately computed standard deviation.  If one argument is
+an error form and the other is a number, the number is taken to have
+zero error.  Error forms may have symbolic formulas as their mean
+and/or error parts; adding these will produce a symbolic error form
+result.  However, adding an error form to a plain symbolic formula (as
+in `(a +/- b) + c') will not work, for the same reasons just mentioned
+for vectors.  Instead you must write `(a +/- b) + (c +/- 0)'.
+
+If both arguments of `+' are modulo forms with equal values of `M', or
+if one argument is a modulo form and the other a plain number, the
+result is a modulo form which represents the sum, modulo `M', of the
+two values.
+
+If both arguments of `+' are intervals, the result is an interval
+which describes all possible sums of the possible input values.  If
+one argument is a plain number, it is treated as the interval
+`[x .. x]'.
+
+If one argument of `+' is an infinity and the other is not, the result
+is that same infinity.  If both arguments are infinite and in the same
+direction, the result is the same infinity, but if they are infinite
+in different directions the result is `nan'.
+
+The `-' (`calc-minus') command subtracts two values.  The top number
+on the stack is subtracted from the one behind it, so that the
+computation `5 RET 2 -' produces 3, not -3.  All options available for
+`+' are available for `-' as well.
+
+The `*' (`calc-times') command multiplies two numbers.  If one
+argument is a vector and the other a scalar, the scalar is multiplied
+by the elements of the vector to produce a new vector.  If both
+arguments are vectors, the interpretation depends on the dimensions of
+the vectors: If both arguments are matrices, a matrix multiplication
+is done.  If one argument is a matrix and the other a plain vector,
+the vector is interpreted as a row vector or column vector, whichever
+is dimensionally correct.  If both arguments are plain vectors, the
+result is a single scalar number which is the dot product of the two
+vectors.
+
+If one argument of `*' is an HMS form and the other a number, the
+HMS form is multiplied by that amount.  It is an error to multiply two
+HMS forms together, or to attempt any multiplication involving date
+forms.  Error forms, modulo forms, and intervals can be multiplied;
+see the comments for addition of those forms.  When two error forms
+or intervals are multiplied they are considered to be statistically
+independent; thus, `[-2 .. 3] * [-2 .. 3]' is `[-6 .. 9]',
+whereas `[-2 .. 3] ^ 2' is `[0 .. 9]'.
+
+The `/' (`calc-divide') command divides two numbers.  When
+dividing a scalar `B' by a square matrix `A', the computation
+performed is `B' times the inverse of `A'.  This also occurs
+if `B' is itself a vector or matrix, in which case the effect is
+to solve the set of linear equations represented by `B'.  If `B'
+is a matrix with the same number of rows as `A', or a plain vector
+(which is interpreted here as a column vector), then the equation
+`A X = B' is solved for the vector or matrix `X'.  Otherwise,
+if `B' is a non-square matrix with the same number of *columns*
+as `A', the equation `X A = B' is solved.  If you wish a vector
+`B' to be interpreted as a row vector to be solved as `X A = B',
+make it into a one-row matrix with `C-u 1 v p' first.  To force a
+left-handed solution with a square matrix `B', transpose `A' and
+`B' before dividing, then transpose the result.
+
+HMS forms can be divided by real numbers or by other HMS forms.  Error
+forms can be divided in any combination of ways.  Modulo forms where
+both values and the modulo are integers can be divided to get an
+integer modulo form result.  Intervals can be divided; dividing by an
+interval that encompasses zero or has zero as a limit will result in
+an infinite interval.
+
+The `^' (`calc-power') command raises a number to a power.  If the
+power is an integer, an exact result is computed using repeated
+multiplications.  For non-integer powers, Calc uses Newton's method or
+logarithms and exponentials.  Square matrices can be raised to integer
+powers.  If either argument is an error (or interval or modulo) form,
+the result is also an error (or interval or modulo) form.
+
+If you press the `I' (inverse) key first, the `I ^' command computes
+an Nth root: `125 RET 3 I ^' computes the number 5.  (This is entirely
+equivalent to `125 RET 1:3 ^'.)
+
+The `\' (`calc-idiv') command divides two numbers on the stack
+to produce an integer result.  It is equivalent to dividing with
+/, then rounding down with `F' (`calc-floor'), only a bit
+more convenient and efficient.  Also, since it is an all-integer
+operation when the arguments are integers, it avoids problems that
+`/ F' would have with floating-point roundoff.
+
+The `%' (`calc-mod') command performs a "modulo" (or "remainder")
+operation.  Mathematically, `a%b = a - (a\b)*b', and is defined for
+all real numbers `a' and `b' (except `b=0').  For positive `b', the
+result will always be between 0 (inclusive) and `b' (exclusive).
+Modulo does not work for HMS forms and error forms.  If `a' is a
+modulo form, its modulo is changed to `b', which must be positive real
+number.
+
+The `:' (`calc-fdiv') command [`fdiv' function in a formula] divides
+the two integers on the top of the stack to produce a fractional
+result.  This is a convenient shorthand for enabling Fraction Mode
+(with `m f') temporarily and using `/'.  Note that during numeric
+entry the `:' key is interpreted as a fraction separator, so to divide
+8 by 6 you would have to type `8 RET 6 RET :'.  (Of course, in this
+case, it would be much easier simply to enter the fraction directly as
+`8:6 RET'!)
+
+The `n' (`calc-change-sign') command negates the number on the top of
+the stack.  It works on numbers, vectors and matrices, HMS forms, date
+forms, error forms, intervals, and modulo forms.
+
+The `A' (`calc-abs') [`abs'] command computes the absolute value of a
+number.  The result of `abs' is always a nonnegative real number: With
+a complex argument, it computes the complex magnitude.  With a vector
+or matrix argument, it computes the Frobenius norm, i.e., the square
+root of the sum of the squares of the absolute values of the elements.
+The absolute value of an error form is defined by replacing the mean
+part with its absolute value and leaving the error part the same.  The
+absolute value of a modulo form is undefined.  The absolute value of
+an interval is defined in the obvious way.
+
+The `f A' (`calc-abssqr') [`abssqr'] command computes the absolute
+value squared of a number, vector or matrix, or error form.
+
+The `f s' (`calc-sign') [`sign'] command returns 1 if its argument is
+positive, -1 if its argument is negative, or 0 if its argument is
+zero.  In algebraic form, you can also write `sign(a,x)' which
+evaluates to `x * sign(a)', i.e., either `x', `-x', or zero depending
+on the sign of `a'.
+
+The `&' (`calc-inv') [`inv'] command computes the reciprocal of a
+number, i.e., `1 / x'.  Operating on a square matrix, it computes the
+inverse of that matrix.
+
+The `Q' (`calc-sqrt') [`sqrt'] command computes the square root of a
+number.  For a negative real argument, the result will be a complex
+number whose form is determined by the current Polar Mode.
+
+The `f h' (`calc-hypot') [`hypot'] command computes the square root of
+the sum of the squares of two numbers.  That is, `hypot(a,b)' is the
+length of the hypotenuse of a right triangle with sides `a' and `b'.
+If the arguments are complex numbers, their squared magnitudes are
+used.
+
+The `f Q' (`calc-isqrt') [`isqrt'] command computes the integer square
+root of an integer.  This is the true square root of the number,
+rounded down to an integer.  For example, `isqrt(10)' produces 3.
+Note that, like `\' [`idiv'], this uses exact integer arithmetic
+throughout to avoid roundoff problems.  If the input is a
+floating-point number or other non-integer value, this is exactly the
+same as `floor(sqrt(x))'.
+
+The `f n' (`calc-min') [`min'] and `f x' (`calc-max') [`max'] commands
+take the minimum or maximum of two real numbers, respectively.  These
+commands also work on HMS forms, date forms, intervals, and
+infinities.  (In algebraic expressions, these functions take any
+number of arguments and return the maximum or minimum among all the
+arguments.)
+
+The `f M' (`calc-mant-part') [`mant'] function extracts the "mantissa"
+part `m' of its floating-point argument; `f X' (`calc-xpon-part')
+[`xpon'] extracts the "exponent" part `e'.  The original number is
+equal to `m * 10^e', where `m' is in the interval `[1.0 .. 10.0)'
+except that `m=e=0' if the original number is zero.  For integers and
+fractions, `mant' returns the number unchanged and `xpon' returns
+zero.  The `v u' (`calc-unpack') command can also be used to "unpack"
+a floating-point number; this produces an integer mantissa and
+exponent, with the constraint that the mantissa is not a multiple of
+ten (again except for the `m=e=0' case).
+
+The `f S' (`calc-scale-float') [`scf'] function scales a number by a
+given power of ten.  Thus, `scf(mant(x), xpon(x)) = x' for any real
+`x'.  The second argument must be an integer, but the first may
+actually be any numeric value.  For example, `scf(5,-2) = 0.05' or
+`1:20' depending on the current Fraction Mode.
+
+The `f [' (`calc-decrement') [`decr'] and `f ]' (`calc-increment')
+[`incr'] functions decrease or increase a number by one unit.  For
+integers, the effect is obvious.  For floating-point numbers, the
+change is by one unit in the last place.  For example, incrementing
+`12.3456' when the current precision is 6 digits yields `12.3457'.  If
+the current precision had been 8 digits, the result would have been
+`12.345601'.  Incrementing `0.0' produces `10^-p', where `p' is the
+current precision.  These operations are defined only on integers and
+floats.  With numeric prefix arguments, they change the number by `n'
+units.
+
+Note that incrementing followed by decrementing, or vice-versa, will
+almost but not quite always cancel out.  Suppose the precision is 6
+digits and the number `9.99999' is on the stack.  Incrementing will
+produce `10.0000'; decrementing will produce `9.9999'.  One digit has
+been dropped.  This is an unavoidable consequence of the way
+floating-point numbers work.
+
+Incrementing a date/time form adjusts it by a certain number of
+seconds.  Incrementing a pure date form adjusts it by a certain number
+of days.
+
+
+
