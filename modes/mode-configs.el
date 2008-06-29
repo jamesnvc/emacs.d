@@ -151,12 +151,15 @@
  :ignore-case t
  :doc-spec '(("(ansicl)Symbol Index" nil nil nil)))
 ;;; Slime
+;; load slime:
+(let* ((core-file (expand-file-name "~/src/clbuild/monster.core")))
+  (setq inferior-lisp-program (concat "/home/james/src/clbuild/target/bin/sbcl --core " core-file)))
+(load "/home/james/src/clbuild/source/slime/slime")
 (setq slime-backend "/home/james/src/clbuild/.swank-loader.lisp")
-(setq slime-net-coding-system 'utf-8-unix)
+(setq slime-use-autodoc-mode nil)
+
 (setq slime-complete-symbol*-fancy t)
 (setq slime-complete-symbol-function 'slime-fuzzy-complete-symbol)
-(load "/home/james/src/clbuild/source/slime/slime")
-(setq inferior-lisp-program "/home/james/src/clbuild/clbuild lisp")
 (setq lisp-indent-function 'common-lisp-indent-function)
 (setq slime-complete-symbol 'slime-fuzzy-complete-symbol)
 (slime-setup '(slime-fancy slime-tramp slime-banner slime-asdf))
