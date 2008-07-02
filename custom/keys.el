@@ -131,6 +131,21 @@
 ;; (define-key perl-mode-map (kbd "C-h") 'backward-delete-char-untabify)
 ;; (define-key cperl-mode-map (kbd "C-h") 'backward-delete-char-untabify)
 
+;; Factor
+(defun maybe-insert-defn (arg)
+  (interactive "p")
+  (let ((pnt (point))
+        b-o-l)
+    (save-excursion
+      (setq b-o-l (progn (beginning-of-line) (point))))
+    (if (= b-o-l pnt)
+        (progn
+          (insert ":  (  --  )")
+          (beginning-of-line)
+          (forward-char 2))
+        (self-insert-command (or arg 1)))))
+(define-key factor-mode-map (kbd ":") 'maybe-insert-defn)
+
 ;; Miscelaneous
 (define-key isearch-mode-map (kbd "C-h") 'isearch-delete-char)
 (define-key muse-mode-map (kbd "C-c C-m") 'mathify-region)
