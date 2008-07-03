@@ -4,6 +4,8 @@
 (setq org-return-follows-link t
       org-tab-follows-link t)
 
+(load-library "auctex")
+(load-library "preview-latex")
 (require 'cc-mode)
 (require 'coq)
 (require 'cperl-mode)
