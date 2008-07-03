@@ -21,7 +21,7 @@
 ;; (require 'vm)
 (require 'w3m)
 
-(load-library "ido")
+;; (load-library "ido")
 (load-library "snippet-expands")
 (load-library "icicles")
 (load-library "fuzzy-match")
@@ -92,7 +92,7 @@
 ;; (setq ffap-url-fetcher 'w3m-browse-url)
 (iswitchb-mode t)
 (setq iswitchb-prompt-newbuffer nil)
-(ido-mode t)
+;; (ido-mode t)
 
 (load "dired-x")
 ;; (setq make-backup-files nil)
