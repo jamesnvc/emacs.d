@@ -1,6 +1,8 @@
 ;; -*-Emacs-lisp-*- 
+;; James' .emacs file - mostly loading libraries and custom-set stuff
 (require 'cl)
 (load-file "~/emacs.d/fixing.el")
+(setenv "SHELL" "bash")
 (defvar emacs-root (expand-file-name "~/emacs.d/"))
 
 (add-to-list 'load-path "/home/james/src/factor/misc")
@@ -10,6 +12,8 @@
 			   (concat emacs-root p))))
   (add-path "elib")
   (add-path "modes") ;; For various major/minor modes and their setup
+  (add-path "modes/auctex-11.85")
+  (add-path "modes/auctex-11.85/preview")
   (add-path "modes/arorem") ;; For rails
   (add-path "modes/cl-lookup")
   (add-path "modes/distel") ;; Erlang
