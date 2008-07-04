@@ -154,8 +154,7 @@
  :doc-spec '(("(ansicl)Symbol Index" nil nil nil)))
 ;;; Slime
 ;; load slime:
-(let* ((core-file (expand-file-name "~/src/clbuild/monster.core")))
-  (setq inferior-lisp-program (concat "/home/james/src/clbuild/target/bin/sbcl --core " core-file)))
+(setq inferior-lisp-program (concat "/home/james/bin/sbcl --core /home/james/lib/sbcl/sbcl.core"))
 (load "/home/james/src/clbuild/source/slime/slime")
 (setq slime-backend "/home/james/src/clbuild/.swank-loader.lisp")
 (setq slime-use-autodoc-mode nil)
