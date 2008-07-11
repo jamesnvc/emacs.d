@@ -52,14 +52,15 @@
 (global-set-key [C-tab] 'ibuffer)
 
 ;; C-c
-(global-set-key (kbd "C-c a") 'org-agenda)
 (global-set-key (kbd "C-c C-u") 'uncomment-region)
+(global-set-key (kbd "C-c N") 'winring-new-configuration)
+(global-set-key (kbd "C-c a") 'org-agenda)
 (global-set-key (kbd "C-c e") 'eval-and-replace)
 (global-set-key (kbd "C-c g") 'gnus)
 (global-set-key (kbd "C-c l") 'org-store-link)
-;; (global-set-key (kbd "C-c m") 'vm) ;; I don't really use this anymore
 (global-set-key (kbd "C-c o")  'occur)
 (global-set-key (kbd "C-c w")  'woman)
+;; (global-set-key (kbd "C-c m") 'vm) ;; I don't really use this anymore
 
 ;; C-x
 (global-set-key (kbd "C-x b") 'iswitchb-buffer)
