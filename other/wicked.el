@@ -114,3 +114,28 @@
 (defadvice gnus-summary-reply (after wicked/bbdb activate)
   "Insert nicknames or custom salutations."
   (wicked/gnus-add-nick-to-message))
+
+(defun wicked/bbdb-ping-bbdb-record (bbdb-record text &optional date regrind)
+  "Adds a note for today to the current BBDB record.
+Call with a prefix to specify date.
+BBDB-RECORD is the record to modify (default: current).
+TEXT is the note to add for DATE.
+If REGRIND is non-nil, redisplay the BBDB record."
+  (interactive (list (bbdb-current-record t)
+                     (read-string "Notes: ")
+                     ;; Reading date - more powerful with Planner, but we’ll make do if necessary
+                     (if (featurep 'planner)
+                         (if current-prefix-arg (planner-read-date) (planner-today))
+                       (if current-prefix-arg
+                           (read-string "Date (YYYY.MM.DD): ")
+                         (format-time-string "%Y.%m.%d")))
+                     t))
+  (bbdb-record-putprop bbdb-record
+                       'contact
+                       (concat date ": " text "\n"
+                               (or (bbdb-record-getprop bbdb-record 'contact))))
+  (if regrind
+      (save-excursion
+        (set-buffer bbdb-buffer-name)
+        (bbdb-redisplay-one-record bbdb-record)))
+  nil)
