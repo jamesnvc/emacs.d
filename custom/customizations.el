@@ -38,6 +38,7 @@
 (setq g-user-email "james.nvc@gmail.com")
 (setq g-html-handler 'w3m-buffer)
 (bbdb-initialize)
+(load-library "wicked") ;; Stuff from wicked cool emacs for bbdb
 
 (setenv "PYTHONPATH" "$HOME/Programming/python")
 
