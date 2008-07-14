@@ -154,6 +154,6 @@
 (define-key dired-mode-map (kbd "e") 'wdired-change-to-wdired-mode)
 (define-key nxml-mode-map (kbd "C-c C-w") 'wikify-link)
 (define-key icicle-mode-map (kbd "M-e") 'icicle-keep-only-past-inputs)
-
+(define-key gnus-group-mode-map (kbd "vo") (lambda () (interactive) (shell-command "offlineimap&" "*offlineimap*" nil)))
 ;; Miscellaneous key-related configs
 (defalias 'qrr 'query-replace-regexp)
