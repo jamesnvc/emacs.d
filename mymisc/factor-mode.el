@@ -22,7 +22,7 @@
 
 ;;; Commentary:
 
-;; 
+;;
 
 ;;; Code:
 
@@ -62,21 +62,21 @@
     map)
   "Key map for use in `factor-mode' buffers")
 
-(defvar factor-mode-syntax-table 
+(defvar factor-mode-syntax-table
   (let ((table (make-syntax-table)))
-    (modify-syntax-entry ?\" "\" " table)
-    (modify-syntax-entry ?  "    " table)
+    (modify-syntax-entry ?\" "\"  " table)
+    (modify-syntax-entry ?  "     " table)
     (modify-syntax-entry ?\t "    " table)
     (modify-syntax-entry ?\f "    " table)
     (modify-syntax-entry ?\n ">   " table)
     ;; Give CR the same syntax as newline, for selective-display.
-    (modify-syntax-entry ?\^m ">   " table)
-    (modify-syntax-entry ?! "<   " table)
-    (modify-syntax-entry ?` "'   " table)
-    (modify-syntax-entry ?' "'   " table)
-    (modify-syntax-entry ?, "'   " table)
-    (modify-syntax-entry ?\( "<)  " table)
-    (modify-syntax-entry ?\) ">(  " table)
+    (modify-syntax-entry ?\^m ">  " table)
+    (modify-syntax-entry ?! "<    " table)
+    (modify-syntax-entry ?` "'    " table)
+    (modify-syntax-entry ?' "'    " table)
+    (modify-syntax-entry ?, "'    " table)
+;;;     (modify-syntax-entry ?\( "<)  " table)
+;;;     (modify-syntax-entry ?\) ">(  " table)
     (modify-syntax-entry ?\[ "(]  " table)
     (modify-syntax-entry ?\] ")[  " table)
     table)
@@ -105,7 +105,7 @@
   "Regexp to match Factor defining words")
 
 (defconst factor-word-re
-  " \\([^ +\\) "
+  "\\s \\([^[:space:]]+\\)\\s "
   "Expression for matching a Factor word")
 
 (defconst factor-number-re
@@ -116,10 +116,10 @@
   (list
    (concat "^" (regexp-opt factor-begining-of-line-keywords t))
    factor-defining-words-re
-   (cons factor-number-re '(1 font-lock-constant-face))
-;;;    (list (concat factor-defining-words-re factor-word-re) '(2 factor-word-def))
-;;;    '("( .*? -- .*? )" 0 factor-stack-effect)
-;;;    (cons (concat "^TUPLE: " factor-word-re " \\(\\(?:" factor-word-re " \\)*\\);") '(2 font-lock-variable-name-face))
+;;;    (list (concat "^" (regexp-opt factor-defining-words t) factor-word-re)
+;;;          '(1 font-lock-keyword-face) '(2 factor-word-def))
+   (cons factor-number-re 'font-lock-constant-face)
+   (list "( \\(?:.*? \\)?-- \\(?:.*? \\)?)" 1 'factor-stack-effect)
    )
   "Highlighting rules for `factor-mode' buffers")
 
@@ -144,9 +144,9 @@
 
 \\{factor-mode-map}"
   (interactive)
-  
+
   (kill-all-local-variables)
-  
+
   (setq major-mode 'factor-mode
         mode-name "Factor"
         local-abbrev-table factor-mode-abbrev-table)
