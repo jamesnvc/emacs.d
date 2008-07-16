@@ -198,5 +198,5 @@
 ;; (add-hook 'c-mode-common-hook 'flymake-mode)
 
 ;; Other
-(add-hook 'text-mode-hook 'flyspell-mode)
-(add-hook 'mail-mode-hook 'flyspell-mode)
+;; (add-hook 'text-mode-hook 'flyspell-mode)
+;; (add-hook 'mail-mode-hook 'flyspell-mode)
