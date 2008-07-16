@@ -54,6 +54,7 @@
 ;; C-c
 (global-set-key (kbd "C-c C-u") 'uncomment-region)
 (global-set-key (kbd "C-c N") 'winring-new-configuration)
+(global-set-key (kbd "C-c R") 'winring-rename-configuration)
 (global-set-key (kbd "C-c a") 'org-agenda)
 (global-set-key (kbd "C-c e") 'eval-and-replace)
 (global-set-key (kbd "C-c g") 'gnus)
