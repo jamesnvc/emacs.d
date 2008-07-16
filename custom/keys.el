@@ -156,7 +156,8 @@
 (define-key nxml-mode-map (kbd "C-c C-w") 'wikify-link)
 (define-key icicle-mode-map (kbd "M-e") 'icicle-keep-only-past-inputs)
 ;; (define-key gnus-group-mode-map (kbd "vo") (lambda () (interactive) (shell-command "offlineimap&" "*offlineimap*" nil)))
-(define-key bbdb-mode-map "z" 'wicked/bbdb-ping-bbdb-record)
+(define-key bbdb-mode-map (kbd "z") 'wicked/bbdb-ping-bbdb-record)
+(add-hook 'mail-setup-hook (lambda () (local-set-key "\t" 'bbdb-complete-name)) t)
 
 ;; Miscellaneous key-related configs
 (defalias 'qrr 'query-replace-regexp)
