@@ -61,7 +61,7 @@
 (global-set-key (kbd "C-c l") 'org-store-link)
 (global-set-key (kbd "C-c o")  'occur)
 (global-set-key (kbd "C-c w")  'woman)
-;; (global-set-key (kbd "C-c m") 'vm) ;; I don't really use this anymore
+(global-set-key (kbd "C-c m") 'vm)
 
 ;; C-x
 (global-set-key (kbd "C-x b") 'iswitchb-buffer)
