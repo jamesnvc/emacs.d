@@ -25,6 +25,10 @@
             (message effect))))))
 
 (defun wikify-link (start end)
+  "Turn the word in region into a link to the wikipedia article of the same name
+
+Example: Foo bar => <a href=\"http://en.wikipedia.org/wiki/Foo_bar>Foo bar</a>
+"
   (interactive "r")
   (let ((word (copy-region-as-kill start end))
 	(tmp nil))
