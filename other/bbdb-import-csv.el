@@ -4,8 +4,8 @@
   '(("name" "Name")
     ("net" "E-mail Address")
     ("notes" "Notes")
-    ("phones" "Mobile Phone"
-     "Home Phone"
+    ("phones" "Mobile"
+     "Home"
      "Home Phone 2"
      "Home Fax"
      "Business Phone"
