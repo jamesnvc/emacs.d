@@ -18,7 +18,8 @@
 (require 'printing)
 (require 'snippet)
 (require 'smart-snippet)
-;; (require 'vm)
+(require 'vm)
+(require 'message)
 (require 'w3m)
 
 ;; (load-library "ido")
@@ -37,7 +38,9 @@
 (load-library "g")
 (setq g-user-email "james.nvc@gmail.com")
 (setq g-html-handler 'w3m-buffer)
-(bbdb-initialize)
+(bbdb-initialize 'gnus 'message 'sendmail 'vm 'w3)
+(add-hook 'mail-setup-hook 'bbdb-insinuate-sendmail)
+
 (load-library "wicked") ;; Stuff from wicked cool emacs for bbdb
 
 (setenv "PYTHONPATH" "$HOME/Programming/python")
