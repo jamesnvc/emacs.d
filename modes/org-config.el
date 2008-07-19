@@ -16,10 +16,12 @@
        #'(lambda nil (interactive) (org-todo "STARTED")))
      (define-key org-todo-state-map "w"
        #'(lambda nil (interactive) (org-todo "WAITING")))
-     (define-key org-agenda-mode-map "\C-n" 'next-line)
-     (define-key org-agenda-keymap "\C-n" 'next-line)
-     (define-key org-agenda-mode-map "\C-p" 'previous-line)
-     (define-key org-agenda-keymap "\C-p" 'previous-line)))
+;;;      (define-key org-agenda-mode-map "\C-n" 'next-line)
+;;;      (define-key org-agenda-keymap "\C-n" 'next-line)
+;;;      (define-key org-agenda-mode-map "\C-p" 'previous-line)
+;;;      (define-key org-agenda-keymap "\C-p" 'previous-line)))
+))
+
 
 (add-hook 'remember-mode-hook 'org-remember-apply-template)
 
