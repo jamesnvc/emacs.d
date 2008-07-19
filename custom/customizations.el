@@ -24,7 +24,7 @@
 
 ;; (load-library "ido")
 (load-library "snippet-expands")
-(load-library "icicles")
+;; (load-library "icicles")
 (load-library "fuzzy-match")
 
 ;; (load-library "vm-config")
@@ -252,7 +252,7 @@ MANDATORY_MANPATH" "/usr/share/man" "/usr/local/man")))
 (defadvice ibuffer-generate-filter-groups (after reverse-ibuffer-groups () activate)
   (setq ad-return-value (nreverse ad-return-value)))
 
-(icy-mode t)
+;; (icy-mode t)
 
 (setq abbrev-file-name (concat emacs-root "mymisc/abbrevs.el"))
 (read-abbrev-file abbrev-file-name t)
