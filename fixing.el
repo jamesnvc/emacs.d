@@ -11,3 +11,22 @@
     (if (fboundp 'track-mouse)
 	(setq tem (cons 'track-mouse tem)))
     (mapcar 'symbol-function tem)))
+
+;; alist/plist functions
+(defun plist-to-alist (plist)
+  "Convert property list PLIST into the equivalent association-list form.
+The alist is returned.  This converts from
+
+\(a 1 b 2 c 3)
+
+into
+
+\((a . 1) (b . 2) (c . 3))
+
+The original plist is not modified.  See also `destructive-plist-to-alist'."
+  (let (alist)
+    (while plist
+      (setq alist (cons (cons (car plist) (cadr plist)) alist))
+      (setq plist (cddr plist)))
+    (nreverse alist)))
+
