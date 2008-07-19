@@ -29,6 +29,8 @@
 
 ;; (load-library "vm-config")
 
+(setq split-width-threshold 400)
+
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'reverse)
 (setq uniquify-separator "|")
