@@ -7,5 +7,8 @@
         ("Book"  ?b "*** TODO %?\n  %u" "~/todo.org" "Books"))
       )
 
+(setq org-link-abbrev-alist
+      '(("wiki" . "http://en.wikipedia.org/wiki/")))
+
 (setq org-agenda-include-diary t)
 
