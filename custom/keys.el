@@ -13,9 +13,6 @@
 (global-set-key [f4] 'replace-regexp)
 (global-set-key [f9] 'slime-selector)
 (global-set-key (kbd "<f8> t") 'planner-create-task-from-buffer)
-;; (global-set-key [f21] 'next-buffer) ;; Thinkpad <- key
-;; (global-set-key [f22] 'previous-buffer) ;; Thinknpad -> key
-;; Super
 (global-set-key (kbd "s-h") 'help-command)
 (global-set-key (kbd "s-SPC") 'hippie-expand)
 
@@ -55,6 +52,7 @@
 (global-set-key (kbd "C-c C-u") 'uncomment-region)
 (global-set-key (kbd "C-c N") 'winring-new-configuration)
 (global-set-key (kbd "C-c R") 'winring-rename-configuration)
+(global-set-key (kbd "C-c J") 'winring-jump-to-configuration)
 (global-set-key (kbd "C-c a") 'org-agenda)
 (global-set-key (kbd "C-c e") 'eval-and-replace)
 (global-set-key (kbd "C-c g") 'gnus)
@@ -77,6 +75,9 @@
 (global-set-key (kbd "C-x r RET") 'register-to-point) ; Use in conjunction with C-x r SPC (point-to-register)
 (global-set-key (kbd "C-x /") 'point-to-register)
 (global-set-key (kbd "C-x ?") 'register-to-point)
+
+;; C-M-
+(global-set-key (kbd "C-M-r") 'remember)
 
 ;; Misc
 (setq skeleton-pair t)
@@ -124,7 +125,7 @@
 (define-key smalltalk-mode-map (kbd "C-c t s") 'smalltalk-subclass-template)
 
 ;; w3m
-(define-key w3m-mode-map (kbd "C-S-n") 'w3m-goto-new-session-url)
+(define-key w3m-mode-map (kbd "C-S-t") 'w3m-goto-new-session-url)
 (define-key w3m-mode-map [(control XF86Back)] 'w3m-previous-buffer)
 (define-key w3m-mode-map [(control XF86Forward)] 'w3m-next-buffer)
 
@@ -147,6 +148,20 @@
           (forward-char 2))
         (self-insert-command (or arg 1)))))
 (define-key factor-mode-map (kbd ":") 'maybe-insert-defn)
+
+;; Org
+(define-key mode-specific-map [?a] 'org-agenda)
+(define-prefix-command 'org-todo-state-map)
+(define-key org-mode-map (kbd "C-c x") 'org-todo-state-map)
+(define-key org-todo-state-map "x" #'(lambda nil (interactive) (org-todo "CANCELLED")))
+(define-key org-todo-state-map "d" #'(lambda nil (interactive) (org-todo "DONE")))
+(define-key org-todo-state-map "f" #'(lambda nil (interactive) (org-todo "DEFERRED")))
+(define-key org-todo-state-map "l" #'(lambda nil (interactive) (org-todo "DELEGATED")))
+(define-key org-todo-state-map "s" #'(lambda nil (interactive) (org-todo "STARTED")))
+(define-key org-todo-state-map "w" #'(lambda nil (interactive) (org-todo "WAITING")))
+(define-key org-todo-state-map "a" #'(lambda nil (interactive) (org-todo "APPT")))
+
+
 
 ;; Miscelaneous
 (define-key isearch-mode-map (kbd "C-h") 'isearch-delete-char)
