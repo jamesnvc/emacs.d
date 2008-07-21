@@ -60,6 +60,7 @@
 (global-set-key (kbd "C-c o")  'occur)
 (global-set-key (kbd "C-c w")  'woman)
 (global-set-key (kbd "C-c m") 'vm)
+(global-set-key (kbd "C-c r") 'remember)
 
 ;; C-x
 (global-set-key (kbd "C-x b") 'iswitchb-buffer)
@@ -70,7 +71,6 @@
 (global-set-key (kbd "C-x C-k") 'kill-region)
 (global-set-key (kbd "C-x C-m") 'execute-extended-command)
 (global-set-key (kbd "C-x C-n") 'other-window)
-;; (global-set-key (kbd "C-x h") 'help-command)
 (global-set-key (kbd "C-x m") 'vm-compose-mail)
 (global-set-key (kbd "C-x r RET") 'register-to-point) ; Use in conjunction with C-x r SPC (point-to-register)
 (global-set-key (kbd "C-x /") 'point-to-register)
