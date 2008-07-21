@@ -1,27 +1,33 @@
+(defadvice bbdb-read-new-record (after wicked activate)
+  "Prompt for the birthdate as well."
+  (bbdb-record-putprop ad-return-value 'birthdate
+		       (bbdb-read-string "Birthdate (YYYY.MM.DD): ")))
+
+
 (defun wicked/bbdb-find-people-with-addresses (&optional regexp records)
   "Filter the displayed BBDB records to those with addresses."
   (interactive "MRegexp: ")
   (let ((records (if current-prefix-arg (bbdb-records)
-           (or records bbdb-records (bbdb-records))))
+                     (or records bbdb-records (bbdb-records))))
         filtered
         cons next)
     (while records
       (when (and (bbdb-record-get-field-internal (if (arrayp (car records))
-                            (car records)
-                                                 (caar records)) 'address)
-         (or (null regexp)
-             (string= regexp "")
-             (delq nil
-               (mapcar
-                (lambda (address)
-                  (string-match regexp (wicked/bbdb-address-string address)))
-                (bbdb-record-get-field-internal
-                 (if (arrayp (car records))
-                 (car records)
-                   (caar records)) 'address)))))
+                                                     (car records)
+                                                     (caar records)) 'address)
+                 (or (null regexp)
+                     (string= regexp "")
+                     (delq nil
+                           (mapcar
+                            (lambda (address)
+                              (string-match regexp (wicked/bbdb-address-string address)))
+                            (bbdb-record-get-field-internal
+                             (if (arrayp (car records))
+                                 (car records)
+                                 (caar records)) 'address)))))
         (setq filtered (cons (if (arrayp (car records))
                                  (car records)
-                               (caar records)) filtered)))
+                                 (caar records)) filtered)))
       (setq records (cdr records)))
     (bbdb-display-records (nreverse filtered))))
 
