@@ -61,6 +61,8 @@
 (global-set-key (kbd "C-c w")  'woman)
 (global-set-key (kbd "C-c m") 'vm)
 (global-set-key (kbd "C-c r") 'remember)
+(global-set-key (kbd "C-c d") 'insert-date)
+
 
 ;; C-x
 (global-set-key (kbd "C-x b") 'iswitchb-buffer)
@@ -161,6 +163,9 @@
 (define-key org-todo-state-map "w" #'(lambda nil (interactive) (org-todo "WAITING")))
 (define-key org-todo-state-map "a" #'(lambda nil (interactive) (org-todo "APPT")))
 
+;; VM
+(define-key vm-summary-mode-map (kbd "v") 'vm-visit-imap-folder)
+(define-key vm-summary-mode-map (kbd "S") 'vm-save-and-expunge-folder)
 
 
 ;; Miscelaneous
