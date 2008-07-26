@@ -1,5 +1,26 @@
 ;; Some things that I'm working on here...
 
+(defun james/org-todo-this-week ()
+  (interactive)
+  (save-excursion
+    (save-selected-window
+      (let ((agenda-str
+             (with-output-to-string
+                 (org-batch-agenda "a" org-agenda-include-diary nil))))
+        (message (replace-regexp-in-string "^\\([^ ]+.*?$\\)" "" agenda-str))
+        ))))
+
+(defun insert-date (prefix)
+  "Insert the current date. With prefix-argument, use ISO format. With
+   two prefix arguments, write out the day and month name."
+  (interactive "P")
+  (let ((format (cond
+                  ((not prefix) "%d.%m.%Y")
+                  ((equal prefix '(4)) "%Y-%m-%d")
+                  ((equal prefix '(16)) "%A, %d %B %Y")))
+        (system-time-locale "en_CA"))
+    (insert (format-time-string format))))
+
 (defun write-new-blog ()
   (interactive)
   (gblogger-new-entry "http://www.blogger.com/feeds/36560580/posts/default"))
