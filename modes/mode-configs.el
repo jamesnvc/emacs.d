@@ -31,6 +31,7 @@
 (require 'muse-latex2png)
 (require 'muse-project)
 (require 'muse-texinfo)
+(require 'moz)
 (load-library "rng-auto")
 (require 'nxml-mode)
 (require 'paredit)
@@ -55,8 +56,8 @@
 (load-library "quack")
 (load-library "scheme-configs")
 (load-library "factor.el")
-
-(autoload 'js2-mode "js2" nil t)
+(load-library "js2")
+;; (autoload 'js2-mode "js2" nil t)
 
 (load-library "cedet")
 (autoload 'jde-mode "jde" nil t)
@@ -82,7 +83,12 @@
 ;; (ido-mode t)
 
 ;; Javascript
-(defalias 'javascript-mode 'js2-mode)
+;; (defalias 'javascript-mode 'js2-mode)
+(require 'javascript-mode)
+(autoload 'moz-minor-mode "moz" "Mozilla Minor and Inferior Mozilla Modes" t)
+(defun javascript-custom-setup ()
+  (moz-minor-mode 1))
+(add-hook 'javascript-mode-hook 'javascript-custom-setup)
 
 ;; Perl
 (defalias 'perl-mode 'cperl-mode)
@@ -101,6 +107,8 @@
 (add-hook 'cperl-mode-hook (lambda () (eldoc-mode t)))
 
 ;; XML and HTML
+;; (load (concat emacs-root "modes/nxml/autostart.el"))
+;; (require 'nxhtml)
 (defalias 'xml-mode 'nxml-mode)
 (defalias 'html-mode 'nxml-mode)
 
