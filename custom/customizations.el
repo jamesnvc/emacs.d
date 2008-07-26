@@ -6,13 +6,15 @@
 (require 'color-theme)
 ;; (require 'desktop)
 (require 'doc-view)
-(require 'epa-setup) ;; GPG integeration!
+(require 'epa) ;; GPG integeration!
+(epa-file-enable)
 (require 'emacs-goodies-el)
 (require 'ffap)
 (require 'highlight-parentheses)
 (require 'hippie-exp)
 (require 'htmlize)
 (require 'planner)
+(require 'pabbrev)
 (require 'ibuffer)
 (require 'ibuf-ext)
 (require 'printing)
@@ -30,6 +32,9 @@
 ;; (load-library "vm-config")
 
 (setq split-width-threshold 400)
+;; (global-pabbrev-mode)
+;; (add-hook 'text-mode-hook 'pabbrev-mode-on)
+;; (add-hook 'latex-mode-hook 'pabbrev-mode-on)
 
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'reverse)
@@ -40,8 +45,13 @@
 (load-library "g")
 (setq g-user-email "james.nvc@gmail.com")
 (setq g-html-handler 'w3m-buffer)
+
+;; BBDB
 (bbdb-initialize 'gnus 'message 'sendmail 'vm 'w3)
 (add-hook 'mail-setup-hook 'bbdb-insinuate-sendmail)
+(add-hook 'bbdb-create-hook 'bbdb-creation-date-hook)
+(add-hook 'bbdb-change-hook 'bbdb-timestamp-hook)
+(add-hook 'bbdb-after-change-hook (lambda (&rest ignore) (bbdb-resort-database) (bbdb-save-db)))
 
 (load-library "wicked") ;; Stuff from wicked cool emacs for bbdb
 
