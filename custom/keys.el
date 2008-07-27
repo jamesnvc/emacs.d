@@ -47,6 +47,8 @@
 (global-set-key (kbd "C-s") 'isearch-forward-regexp)
 (global-set-key (kbd "C-w") 'kill-syntax-backward)
 (global-set-key [C-tab] 'ibuffer)
+;; (global-set-key (kbd "C-+") 'sacha/increase-font-size)
+;; (global-set-key (kbd "C--") 'sacha/decrease-font-size)
 
 ;; C-c
 (global-set-key (kbd "C-c C-u") 'uncomment-region)
@@ -80,6 +82,10 @@
 
 ;; C-M-
 (global-set-key (kbd "C-M-r") 'remember)
+
+;; C-S-
+(global-set-key (kbd "C-S-s") 'sacha/search-word-forward)
+(global-set-key (kbd "C-S-r") 'sacha/search-word-backward)
 
 ;; Misc
 (setq skeleton-pair t)
@@ -178,6 +184,7 @@
 ;; (define-key gnus-group-mode-map (kbd "vo") (lambda () (interactive) (shell-command "offlineimap&" "*offlineimap*" nil)))
 (define-key bbdb-mode-map (kbd "z") 'wicked/bbdb-ping-bbdb-record)
 (add-hook 'mail-setup-hook (lambda () (local-set-key "\t" 'bbdb-complete-name)) t)
+(define-key isearch-mode-map (kbd "C-x") 'sacha/isearch-yank-current-word)
 
 ;; Miscellaneous key-related configs
 (defalias 'qrr 'query-replace-regexp)

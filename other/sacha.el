@@ -152,5 +152,32 @@ For best effect, dates should be of the form yyyy.mm.dd."
                       (floor (* 0.9
                                   (face-attribute 'default :height)))))
 
-(global-set-key (kbd "C-+") 'sacha/increase-font-size)
-(global-set-key (kbd "C--") 'sacha/decrease-font-size)
+(defun sacha/isearch-yank-current-word ()
+  "Pull current word from buffer into search string."
+  (interactive)
+  (save-excursion
+    (skip-syntax-backward "w_")
+    (isearch-yank-internal
+     (lambda ()
+       (skip-syntax-forward "w_")
+       (point)))))
+
+(defun sacha/search-word-backward ()
+  "Find the previous occurrence of the current word."
+  (interactive)
+  (let ((cur (point)))
+    (skip-syntax-backward "w_")
+    (goto-char
+     (if (re-search-backward (concat "\\_<" (current-word) "\\_>") nil t)
+	 (match-beginning 0)
+         cur))))
+
+(defun sacha/search-word-forward ()
+  "Find the next occurrance of the current word."
+  (interactive)
+  (let ((cur (point)))
+    (skip-syntax-forward "w_")
+    (goto-char
+     (if (re-search-forward (concat "\\_<" (current-word) "\\_>") nil t)
+	 (match-beginning 0)
+       cur))))
