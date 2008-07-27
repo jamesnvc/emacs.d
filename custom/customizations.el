@@ -52,6 +52,7 @@
 (add-hook 'bbdb-create-hook 'bbdb-creation-date-hook)
 (add-hook 'bbdb-change-hook 'bbdb-timestamp-hook)
 (add-hook 'bbdb-after-change-hook (lambda (&rest ignore) (bbdb-resort-database) (bbdb-save-db)))
+(require 'bbdb-human-names)
 
 (load-library "wicked") ;; Stuff from wicked cool emacs for bbdb
 
@@ -285,3 +286,4 @@ MANDATORY_MANPATH" "/usr/share/man" "/usr/local/man")))
 (winring-prev-configuration)
 
 (setq x-select-enable-clipboard t)
+(load-library "sacha")
