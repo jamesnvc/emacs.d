@@ -1680,9 +1680,9 @@ next one.")
     (comint-check-source file-name) ; Check to see if buffer needs saved.
     (setq forth-prev-l/c-dir/file (cons (file-name-directory    file-name)
 					(file-name-nondirectory file-name)))
-    (comint-send-string (forth-proc) (concat "(load \""
+    (comint-send-string (forth-proc) (concat "s\" "
 					     file-name
-					     "\"\)\n")))
+					     "\" included\n")))
 
 
   
