@@ -155,7 +155,7 @@
           (beginning-of-line)
           (forward-char 2))
         (self-insert-command (or arg 1)))))
-(define-key factor-mode-map (kbd ":") 'maybe-insert-defn)
+;; (define-key factor-mode-map (kbd ":") 'maybe-insert-defn)
 
 ;; Org
 (define-key mode-specific-map [?a] 'org-agenda)
@@ -173,6 +173,9 @@
 (define-key vm-summary-mode-map (kbd "v") 'vm-visit-imap-folder)
 (define-key vm-summary-mode-map (kbd "S") 'vm-save-and-expunge-folder)
 
+;; Forth
+(define-key forth-mode-map (kbd "C-h") 'backward-delete-char-untabify)
+(define-key forth-mode-map (kbd "C-x C-n") 'other-window)
 
 ;; Miscelaneous
 (define-key isearch-mode-map (kbd "C-h") 'isearch-delete-char)
