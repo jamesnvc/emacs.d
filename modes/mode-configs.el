@@ -19,7 +19,6 @@
 (require 'haskell-doc)
 (require 'haskell-indent)
 (require 'haskell-mode)
-;; (require 'ido)
 (require 'inf-ruby)
 ;; (require 'inferior-coq)
 (require 'lua-mode)
@@ -80,11 +79,19 @@
 
 ;; (add-hook 'text-mode-hook 'flyspell-mode-on)
 
-;; (ido-mode t)
+;; Forth
+(load-library "gforth")
+;; (require 'forth-mode)
+(setq auto-mode-alist (cons '("\\.fs\\'" . forth-mode) auto-mode-alist))
+(setq auto-mode-alist (cons '("\\.fb\\'" . forth-block-mode) auto-mode-alist))
+(add-hook 'forth-mode-hook (function (lambda ()
+                             (setq forth-indent-level 4)
+                             (setq forth-minor-indent-level 2)
+                             (setq forth-hilight-level 3))))
 
 ;; Javascript
-;; (defalias 'javascript-mode 'js2-mode)
-(require 'javascript-mode)
+(defalias 'javascript-mode 'js2-mode)
+;; (require 'javascript-mode)
 (autoload 'moz-minor-mode "moz" "Mozilla Minor and Inferior Mozilla Modes" t)
 (defun javascript-custom-setup ()
   (moz-minor-mode 1))
@@ -196,6 +203,8 @@
           (lambda ()
             (set (make-local-variable 'eldoc-documentation-function)
                  'factor-get-effect)))
+(add-hook 'factor-mode-hook 'yas/minor-mode-on)
+
 ;; flymake
 (defun my-flymake-show-next-error()
   (interactive)
