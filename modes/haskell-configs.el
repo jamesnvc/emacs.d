@@ -18,6 +18,7 @@
 	 (cons " \\<\\(beta\\)\\> " 'beta)
 	 (cons " \\<\\(gamma\\)\\> " 'gamma)
 	 (cons " \\<\\(delta\\)\\> " 'delta)
+         (cons " \\<\\(Delta\\)\\> " 'Delta)
 	 (cons "[ (]\\(\\\\\\)" 'lambda)
 	 ;; (cons "\\(''\\) " 'double-prime)
 	 ;; (cons "\\('\\) [^p']" 'prime)

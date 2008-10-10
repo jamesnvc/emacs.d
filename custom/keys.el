@@ -31,11 +31,12 @@
 (global-unset-key (kbd "M-k"))
 (global-set-key (kbd "M-k .") 'kill-sentence)
 (global-set-key (kbd "M-k ;") 'kill-comment)
-(global-set-key (kbd "M-k }") 'kill-paragraph)
+(global-set-key (kbd "M-k {") 'kill-paragraph)
 (global-set-key (kbd "M-n") 'other-window)
 (global-set-key (kbd "M-p") '(lambda () (interactive) (other-window -1)))
 (global-set-key (kbd "M-r") 'isearch-backward)
 (global-set-key (kbd "M-s") 'isearch-forward)
+(global-set-key (kbd "M-X") 'anything)
 (global-set-key (kbd "M-Z") 'zap-to-char-back)
 (global-set-key [(meta down)] 'move-line-down)
 (global-set-key [(meta up)] 'move-line-up)
@@ -136,6 +137,9 @@
 (define-key w3m-mode-map (kbd "C-S-t") 'w3m-goto-new-session-url)
 (define-key w3m-mode-map [(control XF86Back)] 'w3m-previous-buffer)
 (define-key w3m-mode-map [(control XF86Forward)] 'w3m-next-buffer)
+(define-key w3m-mode-map "," 'w3m-previous-buffer)
+(define-key w3m-mode-map "." 'w3m-next-buffer)
+(define-key w3m-mode-map "'" 'w3m-close-window)
 
 ;; Perl
 (define-key cperl-mode-map (kbd "C-j") 'newline-and-indent)

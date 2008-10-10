@@ -45,6 +45,7 @@
 (require 'tuareg)
 
 (load-library "auto-modes")
+(load-library "clojure-config")
 (load-library "d-mode")
 (load-library "haskell-configs")
 ;; (load-library "icicles")

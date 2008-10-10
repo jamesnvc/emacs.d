@@ -145,3 +145,126 @@ If REGRIND is non-nil, redisplay the BBDB record."
         (set-buffer bbdb-buffer-name)
         (bbdb-redisplay-one-record bbdb-record)))
   nil)
+
+(defvar wicked/w3m-fake-user-agents ;; (1)
+  `(("w3m" . ,(concat "Emacs-w3m/" emacs-w3m-version " " w3m-version))
+    ("ie6" . "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)")
+    ("ff3" . "Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.1) Gecko/2008070206 Firefox/3.0.1")
+    ("ff2" . "Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.8.1.13) Gecko/20080208 Firefox/2.0.0.13")
+    ("ie7" . "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1; .NET CLR 2.0.50727)")
+    ("ie5.5" . "Mozilla/4.0 (compatible; MSIE 5.5; Windows 98)")
+    ("iphone" . "Mozilla/5.0 (iPhone; U; CPU iPhone OS 2_0 like Mac OS X; en-us) AppleWebKit/525.18.1 (KHTML, like Gecko) Version/3.1.1 Mobile/5A347 Safari/525.20")
+    ("safari" . "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_5_2; en-us) AppleWebKit/525.13 (KHTML, like Gecko) Version/3.1 Safari/525.13")
+    ("google" . "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"))
+  "*Associative list of user agent names and strings.")
+
+ (defvar wicked/w3m-fake-user-agent-sites ;; (2)
+   '(("^https?://www\\.useragentstring\\.com" . "ff2"))
+   "*Associative list of regular expressions matching URLs and the agent keyword or value.
+ The first matching entry will be used.")
+
+ (defun wicked/w3m-set-user-agent (agent)
+   "Set the user agent to AGENT based on `wicked/w3m-fake-user-agents'.
+ If AGENT is not defined in `wicked/w3m-fake-user-agents', it is used as the user agent.
+ If AGENT is empty, the default w3m user agent will be used."
+   (interactive
+    (list
+     (completing-read "User-agent [w3m]: "
+                    (mapcar 'car wicked/w3m-fake-user-agents)
+                    nil nil nil nil "w3m"))) ;; (3)
+   (if agent
+       (progn
+        (setq w3m-user-agent
+              (or
+               (and (string= agent "") (assoc "w3m" wicked/w3m-fake-user-agents)) ;; (4)
+               (cdr (assoc agent wicked/w3m-fake-user-agents)) ;; (5)
+               agent)) ;; (6)
+        (setq w3m-add-user-agent t))
+     (setq w3m-add-user-agent nil)))
+
+ (defun wicked/w3m-reload-this-page-with-user-agent (agent)
+   "Browse this page using AGENT based on `wicked/w3m-fake-user-agents'.
+ If AGENT is not defined in `wicked/w3m-fake-user-agents', it is used as the user agent.
+ If AGENT is empty, the default w3m user agent will be used."
+   (interactive (list (completing-read "User-agent [w3m]: "
+                    (mapcar 'car wicked/w3m-fake-user-agents)
+                    nil nil nil nil "w3m")))
+   (let ((w3m-user-agent w3m-user-agent)
+       (w3m-add-user-agent w3m-add-user-agent))
+     (wicked/w3m-set-user-agent agent) ;; (7)
+     (w3m-reload-this-page)))
+
+ (defadvice w3m-header-arguments (around wicked activate) ;; (8)
+   "Check `wicked/w3m-fake-user-agent-sites' for fake user agent definitions."
+   (let ((w3m-user-agent w3m-user-agent)
+         (w3m-add-user-agent w3m-add-user-agent)
+         (sites wicked/w3m-fake-user-agent-sites))
+     (while sites
+       (if (string-match (caar sites) (ad-get-arg 1))
+         (progn
+           (wicked/w3m-set-user-agent (cdar sites))
+           (setq sites nil))
+       (setq sites (cdr sites))))
+     ad-do-it))
+
+;; Emacs and w3m: Quick searches
+;; http://sachachua.com/wp/2008/08/18/emacs-and-w3m-quick-searches/
+(setq wicked/quick-search-alist
+      '(("^g?:? +\\(.*\\)" . ;; Google Web
+         "http://www.google.com/search?q=\\1")
+
+        ("^g!:? +\\(.*\\)" . ;; Google Lucky
+         "http://www.google.com/search?btnI=I%27m+Feeling+Lucky&q=\\1")
+
+	("^dict:? +\\(.*\\)" . ;; Dictionary
+	 "http://dictionary.reference.com/search?q=\\1")))
+
+;; (require 'cl-seq)
+;; (defadvice w3m-goto-url (before wicked activate)
+;;   "Use the quick searches defined in `wicked/quick-search-alist'."
+;;   (let* ((my-url (replace-regexp-in-string
+;; 		  "^ *\\| *$" ""
+;; 		  (replace-regexp-in-string "[ \t\n]+" " " (ad-get-arg 0))))
+;; 	 (match (assoc-if
+;; 		 (lambda (a) (string-match a my-url))
+;; 		 wicked/quick-search-alist)))
+;;     (if match
+;; 	(ad-set-arg 0 (replace-regexp-in-string
+;; 		       (car match) (cdr match) my-url)))))
+
+;; (defadvice browse-url (before wicked activate)
+;;   "Use the quick searches defined in `wicked/quick-search-alist'."
+;;   (let* ((my-url (replace-regexp-in-string
+;; 		  "^ *\\| *$" ""
+;; 		  (replace-regexp-in-string "[ \t\n]+" " " (ad-get-arg 0))))
+;; 	 (match (assoc-if
+;; 		 (lambda (a) (string-match a my-url))
+;; 		 wicked/quick-search-alist)))
+;;     (if match
+;; 	(ad-set-arg 0 (replace-regexp-in-string
+;; 		       (car match) (cdr match) my-url)))))
+
+;; (add-to-list 'wicked/quick-search-alist
+;;           '("^ew:? *?\\(.*\\)" . ;; Emacs Wiki Search
+;;             "http://www.emacswiki.org/cgi-bin/wiki?search=\\1"))
+
+(defun wicked/toggle-w3m ()
+  "Switch to a w3m buffer or return to the previous buffer."
+  (interactive)
+  (if (derived-mode-p 'w3m-mode)
+      ;; Currently in a w3m buffer
+      ;; Bury buffers until you reach a non-w3m one
+      (while (derived-mode-p 'w3m-mode)
+	(bury-buffer))
+    ;; Not in w3m
+    ;; Find the first w3m buffer
+    (let ((list (buffer-list)))
+      (while list
+	(if (with-current-buffer (car list)
+	      (derived-mode-p 'w3m-mode))
+	    (progn
+	      (switch-to-buffer (car list))
+	      (setq list nil))
+	  (setq list (cdr list))))
+      (unless (derived-mode-p 'w3m-mode)
+	(call-interactively 'w3m)))))

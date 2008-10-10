@@ -62,21 +62,21 @@
 (yas/initialize)
 (yas/load-directory (concat emacs-root "other/yasnippet-0.5.3/snippets"))
 
-(load-library "mailcrypt")
-(mc-setversion "gpg")
-(autoload 'mc-install-write-mode "mailcrypt" nil t)
-(autoload 'mc-install-read-mode "mailcrypt" nil t)
-(add-hook 'gnus-summary-mode-hook 'mc-install-read-mode)
-(add-hook 'message-mode-hook 'mc-install-write-mode)
-(add-hook 'news-reply-mode-hook 'mc-install-write-mode)
-;; Always sign encrypted messages
-(setq mc-pgp-always-sign t)
-;; How long should mailcrypt remember your passphrase
-(setq mc-passwd-timeout 600)
-(defun my-sign-message ()
-  (if (y-or-n-p "Sign message? ")
-      (mc-sign-message)))
-(add-hook 'message-send-hook 'my-sign-message)
+;; (load-library "mailcrypt")
+;; (mc-setversion "gpg")
+;; (autoload 'mc-install-write-mode "mailcrypt" nil t)
+;; (autoload 'mc-install-read-mode "mailcrypt" nil t)
+;; (add-hook 'gnus-summary-mode-hook 'mc-install-read-mode)
+;; (add-hook 'message-mode-hook 'mc-install-write-mode)
+;; (add-hook 'news-reply-mode-hook 'mc-install-write-mode)
+;; ;; Always sign encrypted messages
+;; (setq mc-pgp-always-sign t)
+;; ;; How long should mailcrypt remember your passphrase
+;; (setq mc-passwd-timeout 600)
+;; (defun my-sign-message ()
+;;   (if (y-or-n-p "Sign message? ")
+;;       (mc-sign-message)))
+;; (add-hook 'message-send-hook 'my-sign-message)
 
 (setenv "PYMACS_PYTHON" "python2.5")
 (autoload 'pymacs-apply "pymacs")
@@ -287,3 +287,14 @@ MANDATORY_MANPATH" "/usr/share/man" "/usr/local/man")))
 
 (setq x-select-enable-clipboard t)
 (load-library "sacha")
+
+(require 'filecache)
+(require 'anything)
+(require 'anything-config)
+(setq anything-sources
+      (list anything-c-source-buffers
+            anything-c-source-file-name-history
+            anything-c-source-info-pages
+            anything-c-source-man-pages
+	    anything-c-source-file-cache
+            anything-c-source-emacs-commands))

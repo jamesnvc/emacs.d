@@ -258,7 +258,7 @@ buffer. Error if CHAR not found."
 	  patterns))
 
 (defun pretty-greek ()
-  (let ((greek '("alpha" "beta" "gamma" "delta" "epsilon" "zeta" "eta" "theta" "iota" "kappa" "lambda" "mu" "nu" "xi" "omicron" "pi" "rho" "sigma_final" "sigma" "tau" "upsilon" "phi" "chi" "psi" "omega" "Delta")))
+  (let ((greek '("alpha" "beta" "gamma" "delta" "epsilon" "zeta" "eta" "theta" "iota" "kappa" "lambda" "mu" "nu" "xi" "omicron" "pi" "rho" "sigma_final" "sigma" "tau" "upsilon" "phi" "chi" "psi" "omega")))
     (loop for word in greek
           for code = 97 then (+ 1 code)
           do  (let ((greek-char (make-char 'greek-iso8859-7 code))) 
