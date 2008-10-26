@@ -3,7 +3,7 @@
   "Module name: "
   "! Copyright (C) 2008 James Cash" ?\n
   "! See http://factorcode.org/license.txt for BSD license." ?\n
-  "USING: kernel ;" ?\n
+  "USING: kernel sequences ;" ?\n
   "IN: " str | (file-name-sans-extension (buffer-name)) ?\n ?\n
   _
 )
