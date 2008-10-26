@@ -4,6 +4,7 @@
 		       ("\\.\\(xml\\|xsl\\|rng\\|x?html\\)\\'" . nxml-mode)
 		       ("\\.arc$" . scheme-mode)
 		       ("\\.cl$" . lisp-mode)
+                       ("\\.clj" . clojure-mode)
 		       ("\\.css$" . css-mode)
 		       ("\\.d$" . d-mode)
 		       ("\\.erl$" . erlang-mode)
@@ -22,8 +23,8 @@
 		       ("\\.rhtml$" . arorem-rhtml)
 		       ("\\.ses$" . ses-mode)
 		       ("\\.st$" . smalltalk-mode)
+                       ("\\.tac$" . python-mode) ;; twisted application
 		       ;; ("\\.tex$" . yatex-mode)
-                       ("\\.clj" . clojure-mode)
                        ("\\.verilog$" . verilog-mode)
 		       )
 		     auto-mode-alist))
