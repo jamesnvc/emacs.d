@@ -160,6 +160,7 @@
           (forward-char 2))
         (self-insert-command (or arg 1)))))
 ;; (define-key factor-mode-map (kbd ":") 'maybe-insert-defn)
+(define-key factor-mode-map [tab] 'yas/expand)
 
 ;; Org
 (define-key mode-specific-map [?a] 'org-agenda)
