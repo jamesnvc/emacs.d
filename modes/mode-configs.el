@@ -35,8 +35,8 @@
 (require 'nxml-mode)
 (require 'paredit)
 (require 'php-mode)
-(autoload 'python-mode "python-mode" "Python mode" t)
 (require 'ipython)
+(require 'pymacs)
 (require 'remember)
 (require 'ruby-electric)
 (require 'ruby-mode)
@@ -44,6 +44,7 @@
 (require 'stumpwm-mode)
 (require 'tuareg)
 
+(load-library "python")
 (load-library "auto-modes")
 (load-library "clojure-config")
 (load-library "d-mode")
@@ -62,6 +63,8 @@
 (load-library "cedet")
 (autoload 'jde-mode "jde" nil t)
 
+(pymacs-load "ropemacs" "rope-")
+
 (display-battery-mode 1)
 (setq battery-update-interval 30)
 
@@ -76,19 +79,12 @@
 
 (setq forth-program-name "gforth")
 
-;; Flyspell
-
-;; (add-hook 'text-mode-hook 'flyspell-mode-on)
-
 ;; Forth
 (load-library "gforth")
 ;; (require 'forth-mode)
 (setq auto-mode-alist (cons '("\\.fs\\'" . forth-mode) auto-mode-alist))
 (setq auto-mode-alist (cons '("\\.fb\\'" . forth-block-mode) auto-mode-alist))
-(add-hook 'forth-mode-hook (function (lambda ()
-                             (setq forth-indent-level 4)
-                             (setq forth-minor-indent-level 2)
-                             (setq forth-hilight-level 3))))
+
 
 ;; Javascript
 (defalias 'javascript-mode 'js2-mode)
@@ -96,7 +92,6 @@
 (autoload 'moz-minor-mode "moz" "Mozilla Minor and Inferior Mozilla Modes" t)
 (defun javascript-custom-setup ()
   (moz-minor-mode 1))
-(add-hook 'javascript-mode-hook 'javascript-custom-setup)
 
 ;; Perl
 (defalias 'perl-mode 'cperl-mode)
@@ -108,11 +103,7 @@
   (car
    (let ((cperl-message-on-help-error nil))
      (cperl-get-help))))
-(add-hook 'cperl-mode-hook
-	  (lambda ()
-	    (set (make-local-variable 'eldoc-documentation-function)
-		 'my-cperl-eldoc-documentation-function)))
-(add-hook 'cperl-mode-hook (lambda () (eldoc-mode t)))
+
 
 ;; XML and HTML
 ;; (load (concat emacs-root "modes/nxml/autostart.el"))
@@ -122,46 +113,19 @@
 
 (require 'flyspell)
 (setq flyspell-prog-text-faces (append '(nxml-text-face) flyspell-prog-text-faces))
-(add-hook 'nxml-mode-hook (lambda () (rng-validate-mode t)))
+
 
 ;; Erlang
 (setq erlang-root-dir "/usr/lib/erlang")
 (distel-setup)
-;; Some Erlang customizations
-(add-hook 'erlang-mode-hook
-	  (lambda ()
-	    ;; when starting an Erlang shell in Emacs, default in the node name
-	    (setq inferior-erlang-machine-options '("-sname" "emacs"))))
+
 ;; For debugging
 (setq fsm-use-debug-buffer t)
 
-;; Ruby
-(add-hook 'ruby-mode-hook 'ruby-electric-mode)
-
-;; Latex
-;; (if (equal (emacs-type) 'emacs-window) (require 'yatex))
-(add-hook 'latex-mode-hook 'flyspell-mode)
-(add-hook 'yatex-mode-hook 'flyspell-mode)
-(add-hook 'latex-mode-hook 'pretty-greek)
-
-;; Eshell
-(add-hook 'eshell-mode-hook
-	  '(lambda ()
-	    (define-key eshell-mode-map "\C-a" 'eshell-bol)))
 
 ;; Lisp
-(add-hook 'inferior-lisp-mode-hook (lambda () (inferior-slime-mode t)))
-(add-hook 'lisp-mode-hook 'pretty-greek)
-(add-hook 'lisp-mode-hook (lambda () (paredit-mode t)))
-(add-hook 'emacs-lisp-mode-hook (lambda () (paredit-mode t)))
-(add-hook 'emacs-lisp-mode-hook 'pretty-greek)
-(add-hook 'emacs-lisp-mode-hook 'eldoc-mode)
-(add-hook 'lisp-mode-hook (lambda () (slime-mode t)))
 (if (file-exists-p "/usr/share/doc/hyperspec/")
     (setq common-lisp-hyperspec-root "file:/usr/share/doc/hyperspec/"))
-(dolist (hook '(lisp-mode-hook
-		slime-repl-mode-hook))
-  (add-hook hook #'(lambda nil (cldoc-mode 1))))
 (require 'info-look)
 (info-lookup-add-help
  :mode 'lisp-mode
@@ -184,37 +148,20 @@
 (autoload 'cl-lookup "cl-lookup" "View the documentation on ENTRY from the Common Lisp HyperSpec, et al.")
 ;;; Paredit
 (autoload 'paredit-mode "paredit" "Minor mode for pseudo-structurally editing Lisp code." t)
-(dolist (hook '(lisp-mode-hook
-                slime-repl-mode-hook))
-  (add-hook hook #'(lambda nil (paredit-mode 1))))
+
 
 (define-key paredit-mode-map [?\)] 'paredit-close-parenthesis)
 (define-key paredit-mode-map [(meta ?\))] 'paredit-close-parenthesis-and-newline)
 ;;; Redshank
 (autoload 'redshank-mode "redshank" "Minor mode for editing and refactoring (Common) Lisp code." t)
 (autoload 'turn-on-redshank-mode "redshank" "Turn on Redshank mode.  Please see function `redshank-mode'." t)
-(add-hook 'lisp-mode-hook 'turn-on-redshank-mode)
 
 
 ;; CSS
 (autoload 'css-mode "css-mode" "Mode for editing CSS files" t)
-
-;; Factor
-(add-hook 'factor-mode-hook
-          (lambda ()
-            (set (make-local-variable 'eldoc-documentation-function)
-                 'factor-get-effect)))
-(add-hook 'factor-mode-hook 'yas/minor-mode-on)
 
 ;; flymake
 (defun my-flymake-show-next-error()
   (interactive)
   (flymake-goto-next-error)
   (flymake-display-err-menu-for-current-line))
-
-;; C
-;; (add-hook 'c-mode-common-hook 'flymake-mode)
-
-;; Other
-;; (add-hook 'text-mode-hook 'flyspell-mode)
-;; (add-hook 'mail-mode-hook 'flyspell-mode)

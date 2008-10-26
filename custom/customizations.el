@@ -48,10 +48,6 @@
 
 ;; BBDB
 (bbdb-initialize 'gnus 'message 'sendmail 'vm 'w3)
-(add-hook 'mail-setup-hook 'bbdb-insinuate-sendmail)
-(add-hook 'bbdb-create-hook 'bbdb-creation-date-hook)
-(add-hook 'bbdb-change-hook 'bbdb-timestamp-hook)
-(add-hook 'bbdb-after-change-hook (lambda (&rest ignore) (bbdb-resort-database) (bbdb-save-db)))
 (require 'bbdb-human-names)
 
 (load-library "wicked") ;; Stuff from wicked cool emacs for bbdb
@@ -60,7 +56,7 @@
 
 (require 'yasnippet)
 (yas/initialize)
-(yas/load-directory (concat emacs-root "other/yasnippet-0.5.3/snippets"))
+(yas/load-directory (concat emacs-root "utilities/yasnippet-0.5.3/snippets"))
 
 ;; (load-library "mailcrypt")
 ;; (mc-setversion "gpg")
@@ -196,19 +192,7 @@ MANDATORY_MANPATH" "/usr/share/man" "/usr/local/man")))
 (global-font-lock-mode 1)
 (put 'downcase-region 'disabled nil)
 (put 'upcase-region 'disabled nil)
-(add-hook 'diary-display-hook 'fancy-diary-display)
 
-(add-hook 'after-save-hook
-          '(lambda ()
-             (progn
-               (and (save-excursion
-                      (save-restriction
-                        (widen)
-                        (goto-char (point-min))
-                        (save-match-data
-                          (looking-at "^#!"))))
-                    (shell-command (concat "chmod u+x " buffer-file-name))
-                    (message (concat "Saved as script: " buffer-file-name))))))
 
 ;; show char name, used by C-u C-x =
 (let ((x "~/emacs.d/mymisc/UnicodeData.txt"))
@@ -255,23 +239,16 @@ MANDATORY_MANPATH" "/usr/share/man" "/usr/local/man")))
 	 )))
 
 
-;; ibuffer, I like my buffers to be grouped
-(add-hook 'ibuffer-mode-hook
-          (lambda ()
-            (ibuffer-switch-to-saved-filter-groups
-             "default")))
-
 ;; Reverse the order of the groups
 (defadvice ibuffer-generate-filter-groups (after reverse-ibuffer-groups () activate)
   (setq ad-return-value (nreverse ad-return-value)))
 
 ;; (icy-mode t)
 
-(setq abbrev-file-name (concat emacs-root "mymisc/abbrevs.el"))
-(read-abbrev-file abbrev-file-name t)
+;; (setq abbrev-file-name (concat emacs-root "mymisc/abbrevs.el"))
+;; (read-abbrev-file abbrev-file-name t)
 (load-library "skeletons")
 
-(add-hook 'find-file-hook 'auto-insert)
 (define-auto-insert '("\\.factor\\'" . "Factor module") 'factor-skeleton)
 
 ;; (add-hook 'find-file-hook (lambda () (desktop-save "/home/james")))
