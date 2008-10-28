@@ -57,7 +57,10 @@
 		slime-repl-mode-hook))
   (add-hook hook #'(lambda nil (cldoc-mode 1)))
   (add-hook hook #'(lambda nil (paredit-mode 1))))
-(add-hook 'lisp-mode-hook 'turn-on-redshank-mode)
+;; (add-hook 'lisp-mode-hook 'turn-on-redshank-mode)
+
+;; Clojure
+(add-hook 'clojure-mode-hook 'paredit-mode)
 
 ;; Factor
 (add-hook 'factor-mode-hook
