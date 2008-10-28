@@ -21,6 +21,7 @@
 		       ("\\.pyw" . python-mode)
 		       ("\\.rb$" . ruby-mode)
 		       ("\\.rhtml$" . arorem-rhtml)
+                       ("\\.\\(s\\|S\\)$" . asm-mode)
 		       ("\\.ses$" . ses-mode)
 		       ("\\.st$" . smalltalk-mode)
                        ("\\.tac$" . python-mode) ;; twisted application
