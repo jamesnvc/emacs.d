@@ -134,11 +134,10 @@
  :doc-spec '(("(ansicl)Symbol Index" nil nil nil)))
 ;;; Slime
 ;; load slime:
-(setq inferior-lisp-program (concat "/home/james/bin/sbcl --core /home/james/lib/sbcl/sbcl.core"))
+(setq inferior-lisp-program "/home/james/bin/sbcl --core /home/james/lib/sbcl/sbcl.core")
 (load "/home/james/src/clbuild/source/slime/slime")
 (setq slime-backend "/home/james/src/clbuild/.swank-loader.lisp")
 (setq slime-use-autodoc-mode nil)
-
 (setq slime-complete-symbol*-fancy t)
 (setq slime-complete-symbol-function 'slime-fuzzy-complete-symbol)
 (setq lisp-indent-function 'common-lisp-indent-function)
@@ -153,9 +152,8 @@
 (define-key paredit-mode-map [?\)] 'paredit-close-parenthesis)
 (define-key paredit-mode-map [(meta ?\))] 'paredit-close-parenthesis-and-newline)
 ;;; Redshank
-(autoload 'redshank-mode "redshank" "Minor mode for editing and refactoring (Common) Lisp code." t)
-(autoload 'turn-on-redshank-mode "redshank" "Turn on Redshank mode.  Please see function `redshank-mode'." t)
-
+;; (autoload 'redshank-mode "redshank" "Minor mode for editing and refactoring (Common) Lisp code." t)
+;; (autoload 'turn-on-redshank-mode "redshank" "Turn on Redshank mode.  Please see function `redshank-mode'." t)
 
 ;; CSS
 (autoload 'css-mode "css-mode" "Mode for editing CSS files" t)
