@@ -68,6 +68,7 @@
             (set (make-local-variable 'eldoc-documentation-function)
                  'factor-get-effect)))
 (add-hook 'factor-mode-hook 'yas/minor-mode-on)
+(add-hook 'factor-mode-hook (lambda () (setf tab-width 4)))
 
 ;; C
 ;; (add-hook 'c-mode-common-hook 'flymake-mode)
