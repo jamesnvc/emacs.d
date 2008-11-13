@@ -1,0 +1,7 @@
+# -*- coding: utf-8 -*-
+# name: macro-definition
+# --
+.macro $1 $2
+        $0
+.endm       
+       
