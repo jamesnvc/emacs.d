@@ -24,7 +24,6 @@
 (require 'message)
 (require 'w3m)
 
-;; (load-library "ido")
 (load-library "snippet-expands")
 ;; (load-library "icicles")
 (load-library "fuzzy-match")
@@ -105,7 +104,11 @@
 ;; (setq ffap-url-fetcher 'w3m-browse-url)
 (iswitchb-mode t)
 (setq iswitchb-prompt-newbuffer nil)
-;; (ido-mode t)
+
+;; Ido
+(load-file (concat emacs-root "utilities/ido.el"))
+(ido-mode t)
+(setq ido-enable-flex-matching t)
 
 (load "dired-x")
 ;; (setq make-backup-files nil)
@@ -173,6 +176,7 @@ MANDATORY_MANPATH" "/usr/share/man" "/usr/local/man")))
       '(try-expand-dabbrev
         try-expand-dabbrev-all-buffers
         try-expand-dabbrev-from-kill
+        ;; yas/expand
         try-complete-lisp-symbol-partially
         try-complete-lisp-symbol
         try-complete-file-name-partially
@@ -244,6 +248,7 @@ MANDATORY_MANPATH" "/usr/share/man" "/usr/local/man")))
   (setq ad-return-value (nreverse ad-return-value)))
 
 ;; (icy-mode t)
+
 
 ;; (setq abbrev-file-name (concat emacs-root "mymisc/abbrevs.el"))
 ;; (read-abbrev-file abbrev-file-name t)
