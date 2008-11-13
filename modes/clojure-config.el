@@ -10,6 +10,9 @@
 ;; (slime-setup '(slime-scratch slime-editing-commands))
 (setf slime-lisp-implementations `((sbcl ("/home/james/bin/sbcl --core /home/james/lib/sbcl/sbcl.core" ""))))
 (setq swank-clojure-jar-path "/home/james/src/clojure/target/clojure-lang-1.0-SNAPSHOT.jar")
+(setq swank-clojure-binary "clj-emacs")
+
+(require 'clojure-auto)
 (require 'swank-clojure-autoload)
 
 ;; (require 'swank-clojure)
