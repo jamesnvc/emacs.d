@@ -1,1 +1,4 @@
 archives
+*.elc
+*.pyc
+*~
