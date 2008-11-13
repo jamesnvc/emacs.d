@@ -22,7 +22,7 @@
 (require 'inf-ruby)
 ;; (require 'inferior-coq)
 (require 'lua-mode)
-(require 'mmm-mode)
+(autoload 'mmm-mode "mmm-mode" "Multiple Major Modes" t)
 (require 'muse-mode)
 (require 'muse-docbook)
 (require 'muse-html)
@@ -70,8 +70,9 @@
 
 ;; (require 'vc-git)
 ;; (when (featurep 'vc-git) (add-to-list 'vc-handled-backends 'git))
-(require 'git)
-(autoload 'git-blame-mode "git-blame" "Minor mode for incremental blame for Git." t)
+;; (require 'git)
+;; (autoload 'git-blame-mode "git-blame" "Minor mode for incremental blame for Git." t)
+(require 'magit)
 
 ;;mode-compile
 ;; (autoload 'mode-compile "mode-compile" "Command to compile current buffer file based on the major mode" t)
