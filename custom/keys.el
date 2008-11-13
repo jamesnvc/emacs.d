@@ -42,6 +42,7 @@
 (global-set-key [(meta up)] 'move-line-up)
 
 ;; C-
+(global-unset-key (kbd "C-z"))
 (global-set-key (kbd "C-h") 'backward-delete-char-untabify)
 (global-set-key (kbd "C-o") 'vi-open-next-line)
 (global-set-key (kbd "C-r") 'isearch-backward-regexp)
@@ -65,10 +66,10 @@
 (global-set-key (kbd "C-c m") 'vm)
 (global-set-key (kbd "C-c r") 'remember)
 (global-set-key (kbd "C-c d") 'insert-date)
+(global-set-key (kbd "C-c s") 'magit-status)
 
 
 ;; C-x
-(global-set-key (kbd "C-x b") 'iswitchb-buffer)
 (global-set-key (kbd "C-x c") 'delete-trailing-whitespace)
 (global-set-key (kbd "C-x C-p") '(lambda () (interactive) (other-window -1)))
 (global-set-key (kbd "C-x C-b") 'ibuffer)
