@@ -66,7 +66,7 @@
 (global-set-key (kbd "C-c m") 'vm)
 (global-set-key (kbd "C-c r") 'remember)
 (global-set-key (kbd "C-c d") 'insert-date)
-(global-set-key (kbd "C-c s") 'magit-status)
+(global-set-key (kbd "C-c s") 'git-status)
 
 
 ;; C-x
