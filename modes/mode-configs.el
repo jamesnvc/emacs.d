@@ -70,9 +70,9 @@
 
 ;; (require 'vc-git)
 ;; (when (featurep 'vc-git) (add-to-list 'vc-handled-backends 'git))
-;; (require 'git)
+(require 'git)
 ;; (autoload 'git-blame-mode "git-blame" "Minor mode for incremental blame for Git." t)
-(require 'magit)
+;; (require 'magit)
 
 ;;mode-compile
 ;; (autoload 'mode-compile "mode-compile" "Command to compile current buffer file based on the major mode" t)
