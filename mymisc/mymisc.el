@@ -30,20 +30,20 @@
 
 (load-library "email") ;; Some email-stuff I'm working on
 
-(defun factor-get-effect ()
-  "Get the stack effect for the factor word at point"
-  (interactive)
-  (save-match-data
-    (let ((word (word-at-point)))
-      (if word
-          (let ((effect (save-excursion (progn (factor-see)
-                                               (switch-to-buffer "*factor*")
-                                               (goto-char (point-max))
-                                               (search-backward "( scratchpad )" (point-min) t 2)
-                                               (next-line) (beginning-of-line)
-                                               (prog1 (buffer-substring (point) (progn (end-of-line) (point)))
-                                                 (goto-char (point-max)))))))
-            (message effect))))))
+;; (defun factor-get-effect ()
+;;   "Get the stack effect for the factor word at point"
+;;   (interactive)
+;;   (save-match-data
+;;     (let ((word (word-at-point)))
+;;       (if word
+;;           (let ((effect (save-excursion (progn (factor-see)
+;;                                                (switch-to-buffer "*factor*")
+;;                                                (goto-char (point-max))
+;;                                                (search-backward "( scratchpad )" (point-min) t 2)
+;;                                                (next-line) (beginning-of-line)
+;;                                                (prog1 (buffer-substring (point) (progn (end-of-line) (point)))
+;;                                                  (goto-char (point-max)))))))
+;;             (message effect))))))
 
 (defun wikify-link (start end)
   "Turn the word in region into a link to the wikipedia article of the same name
