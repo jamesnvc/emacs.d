@@ -12,7 +12,7 @@
 (global-set-key [f3] 'eshell)
 (global-set-key [f4] 'replace-regexp)
 (global-set-key [f9] 'slime-selector)
-(global-set-key (kbd "<f8> t") 'planner-create-task-from-buffer)
+(global-set-key (kbd "<f7> t") 'planner-create-task-from-buffer)
 (global-set-key (kbd "s-h") 'help-command)
 (global-set-key (kbd "s-SPC") 'hippie-expand)
 
