@@ -1,0 +1,6 @@
+# -*- coding: utf-8 -*-
+# name: begin-env
+# --
+\begin{$1}
+  $0
+\end{$1}

@@ -1,0 +1,6 @@
+# -*- coding: utf-8 -*-
+# name: begin-frame
+# --
+\begin{block}{$1}
+  $0
+\end{block}

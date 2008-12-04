@@ -1,0 +1,7 @@
+# -*- coding: utf-8 -*-
+# name: begin-frame
+# --
+\begin{frame}
+  \frametitle{$1}
+  $0
+\end{frame}
