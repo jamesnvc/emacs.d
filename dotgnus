@@ -1,0 +1,115 @@
+(load-library "starttls")
+(load-library "smtpmail")
+(load-library "imap")
+(require 'nnir)
+
+;; (setq gnus-select-method '(nntp "news.gmane.org"))
+
+;; (setq gnus-invalid-group-regexp "^$")
+
+(setq mail-user-agent 'gnus-user-agent)
+
+(setq mail-sources nil)
+
+(setq gnus-nntp-server nil
+      gnus-read-active-file nil
+      gnus-save-newsrc-file nil
+      gnus-read-newsrc-file nil
+      gnus-check-new-newsgroups nil)
+
+(setq gnus-select-method '(nnnil "")
+      gnus-secondary-select-methods
+      '((nnimap "localhost" (nnimap-address "localhost"))))
+
+(setq message-send-mail-partially-limit nil)
+(setq gnus-message-archive-method '(nnimap "localhost"))
+(setq gnus-message-archive-group "nnimap+localhost:Sent")
+(setq gnus-gcc-mark-as-read t)
+
+(setq gnus-thread-sort-functions
+      '(gnus-thread-sort-by-number
+        gnus-thread-sort-by-date
+        gnus-thread-sort-by-total-score))
+(setq gnus-summary-line-format
+      "%U%R%z %d %I%(%[%-25,25n%]%) %s\n")
+
+(gnus-add-configuration
+ '(article
+   (horizontal 1.0
+    (vertical 60 (group 1.0))
+    (vertical 1.0
+     (summary 0.20 point)
+     (article 1.0)))))
+
+(gnus-add-configuration
+ '(summary
+   (horizontal 1.0
+    (vertical 60 (group 1.0))
+    (vertical 1.0 (summary 1.0 point)))))
+
+(setq message-send-mail-function 'smtpmail-send-it
+      smtpmail-starttls-credentials '(("smtp.gmail.com" 587 nil nil))
+      smtpmail-auth-credentials `(("smtp.gmail.com" 587 ,user-mail-address ,user-mail-password))
+      smtpmail-default-smtp-server "smtp.gmail.com"
+      smtpmail-smtp-server "smtp.gmail.com"
+      smtpmail-smtp-service 587
+      smtpmail-local-domain nil
+      send-mail-function 'smtpmail-send-it
+      gnus-permanently-visible-groups "gmail"
+      smtpmail-debug-info t
+      smtpmail-debug-verb t
+      )
+
+(executable-find starttls-program)
+
+(setq gnus-face-9 'font-lock-warning-face)
+(setq gnus-face-10 'shadow)
+
+;; (setq gnus-summary-line-format
+;;       (concat
+;;        "%0{%U%R%z%}" "%10{│%}" "%1{%d%}" "%10{│%}"
+;;        "%(%-15,15f %)" "%10{│%}" "%4k" "%10{│%}"
+;;        "%10{│%}" "%10{%B%}" "%s\n"))
+
+(setq gnus-sum-thread-tree-single-indent   "◎ "
+      gnus-sum-thread-tree-false-root      "  "
+      gnus-sum-thread-tree-root            "┌ "
+      gnus-sum-thread-tree-vertical        "│"
+      gnus-sum-thread-tree-leaf-with-other "├─>"
+      gnus-sum-thread-tree-single-leaf     "└─>"
+      gnus-sum-thread-tree-indent          "  "
+      )
+
+(cond (window-system
+       (setq custom-background-mode 'light)
+       (defface my-group-face-1
+           '((t (:foreground "Red" :bold t))) "First group face")
+       (defface my-group-face-2
+           '((t (:foreground "DarkSeaGreen4" :bold t)))
+         "Second group face")
+       (defface my-group-face-3
+           '((t (:foreground "Green4" :bold t))) "Third group face")
+       (defface my-group-face-4
+           '((t (:foreground "SteelBlue" :bold t))) "Fourth group face")
+       (defface my-group-face-5
+           '((t (:foreground "Blue" :bold t))) "Fifth group face")))
+
+(setq gnus-group-highlight
+      '(((> unread 200) . my-group-face-1)
+        ((and (< level 3) (zerop unread)) . my-group-face-2)
+        ((< level 3) . my-group-face-3)
+        ((zerop unread) . my-group-face-4)
+        (t . my-group-face-5)))
+
+(setq message-signature t)
+(add-hook 'message-send-hook 'ispell-message)
+
+(setq mm-text-html-renderer 'w3m)
+
+;; (defun wicked/gnus-article-show-html ()
+;;   "Show the current message as HTML mail."
+;;   (interactive)
+;;   (let ((mm-automatic-display (cons "text/html" mm-automatic-display)))
+;;     (gnus-summary-show-article)))
+
+;; (define-key gnus-article-mode-map "WH" 'wicked/gnus-article-show-html)
