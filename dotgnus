@@ -1,3 +1,4 @@
+;; -*- mode: emacs-lisp -*-
 (load-library "starttls")
 (load-library "smtpmail")
 (load-library "imap")
@@ -6,6 +7,7 @@
 ;; (setq gnus-select-method '(nntp "news.gmane.org"))
 
 ;; (setq gnus-invalid-group-regexp "^$")
+(load-file (concat emacs-root "private"))
 
 (setq mail-user-agent 'gnus-user-agent)
 
