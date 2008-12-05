@@ -1,0 +1,95 @@
+;; -*- mode: emacs-lisp -*-
+;; (autoload 'vm "vm" "Start VM on your primary inbox." t)
+;; (autoload 'vm-other-frame "vm" "Like `vm' but starts in another frame." t)
+;; (autoload 'vm-visit-folder "vm" "Start VM on an arbitrary folder." t)
+;; (autoload 'vm-visit-virtual-folder "vm" "Visit a VM virtual folder." t)
+;; (autoload 'vm-mode "vm" "Run VM major mode on a buffer" t)
+;; (autoload 'vm-mail "vm" "Send a mail message using VM." t)
+;; (autoload 'vm-window "vm" "Window management code for VM" t)
+;; (autoload 'vm-submit-bug-report "vm" "Send a bug report about VM." t)
+
+;; (setq vm-toolbar-pixmap-directory (concat emacs-root "utilities/vm/pixmaps"))
+;; (setq vm-image-directory (concat emacs-root "utilities/vm/pixmaps"))
+
+;; (setq vm-spool-files
+;;       '(("~/INBOX" "imap-ssl:imap.gmail.com:993:inbox:login:james.nvc:*" "~/INBOX.CRASH")))
+
+(load-file (concat emacs-root "private"))
+
+(setq vm-imap-expunge-after-retrieving nil)
+
+;; Use W3M to read HTML email
+(if (equal (emacs-type) 'emacs-window)
+    (progn
+      (require 'w3m-load)
+      (setq vm-mime-use-w3-for-text/html nil)
+      (setq vm-url-browser 'w3m)
+      (load "vm-w3m")
+      (setq w3m-input-coding-system 'utf-8
+	    w3m-output-coding-system 'utf-8)
+      ))
+
+;; Configure outbound mail (SMTP)
+(setq smtpmail-starttls-credentials '(("smtp.gmail.com" 587 nil nil))
+      smtpmail-smtp-server "smtp.gmail.com"
+      smtpmail-default-smtp-server "smtp.gmail.com"
+      send-mail-function 'smtpmail-send-it
+      message-send-mail-function 'smtpmail-send-it
+      smtpmail-smtp-service 587
+      smtpmail-auth-credentials `(("smtp.gmail.com"
+				   587
+                                   ,user-mail-address
+				   ,user-mail-password)))
+
+;; Getting BBDB working with vm
+(add-hook 'vm-mail-mode-hook 'bbdb-define-all-aliases)
+;; (bbdb-insinuate-vm)
+;; (bbdb-insinuate-message)
+;; (bbdb-insinuate-sendmail)
+
+(defun ff/prepare-mail-mode ()
+  (bbdb-define-all-aliases)
+  (flyspell-mode)
+  (auto-fill-mode)
+  (mail-abbrevs-setup)
+  (when message-yank-prefix
+    (set (make-local-variable 'comment-start) vm-included-text-prefix)
+    (set (make-local-variable 'comment-start-skip) (concat "^\\" (regexp-quote vm-included-text-prefix) "\\)"))))
+
+(add-hook 'mail-mode-hook 'ff/prepare-mail-mode)
+
+;; Saving and reading drafts
+(defcustom ff/vm-mail-draft-directory
+  "~/Drafts"
+  "Where to save mail drafts with VM")
+
+(defun ff/associate-file-to-vm-mail-buffer ()
+  (unless (buffer-file-name)
+    (set-visited-file-name (format "%s/mail-%s" ff/vm-mail-draft-directory (format-time-string "%04Y%02m%02d-%02H%02M%02S" (current-time))))
+    (set-buffer-modified-p nil)))
+
+(add-hook 'mail-setup-hook 'ff/associate-file-to-vm-mail-buffer)
+
+(defun ff/disassociate-file-to-vm-mail-buffer ()
+  (when (buffer-file-name)
+    (save-buffer)
+    (set-visited-file-name nil)))
+
+(add-hook 'vm-mail-send-hook 'ff/disassociate-file-to-vm-mail-buffer)
+
+(defadvice find-file (around ff/find-file-or-mail (filename &optional wildcards) activate)
+  (interactive "FFind file: \np")
+  (if (not (string-match "mail-[^/]+$" filename))
+      ad-do-it
+      (vm-compose-mail)
+      (when (file-exists-p filename)
+        (erase-buffer)
+        (insert-file-contents filename))
+      (set-visited-file-name filename)
+      (set-buffer-modified-p nil)
+      (when (re-search-forward (concat "^" mail-header-separator "$") nil t)
+        (if (re-search-forward "^-- $" nil t)
+            (forward-line -1)
+            (forward-line 1))
+        (end-of-line))
+      ))
