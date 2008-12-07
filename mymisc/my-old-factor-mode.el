@@ -160,5 +160,5 @@
 
   (run-hooks 'factor-mode-hook))
 
-(provide 'factor-mode)
+(provide 'my-old-factor-mode)
 ;;; factor-mode.el ends here
