@@ -56,7 +56,8 @@
 (load-library "org-config")
 (load-library "quack")
 (load-library "scheme-configs")
-(load-library "factor.el")
+(setq factor-mode-use-fuel nil)
+(require 'fuel-mode)
 (load-library "js2")
 ;; (autoload 'js2-mode "js2" nil t)
 
