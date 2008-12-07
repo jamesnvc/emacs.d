@@ -5,7 +5,7 @@
 (setenv "SHELL" "bash")
 (defvar emacs-root (expand-file-name "~/emacs.d/"))
 
-(add-to-list 'load-path "/home/james/src/factor/misc")
+(add-to-list 'load-path "/home/james/src/factor/misc/fuel")
 
 (labels ((add-path (p)
 		   (add-to-list 'load-path
@@ -16,6 +16,8 @@
   (add-path "modes/auctex-11.85/preview")
   (add-path "modes/arorem") ;; For rails
   (add-path "modes/cl-lookup")
+  (add-path "modes/clojure-mode")
+  (add-path "modes/swank-clojure")
   (add-path "modes/distel") ;; Erlang
   (add-path "modes/gnuplot-mode.0.6.0")
   (add-path "modes/icicles")
@@ -31,10 +33,11 @@
   (add-path "modes/tuareg-mode-1.45.4")
   (add-path "modes/jde/lisp")
   (add-path "modes/ess-5.3.5/lisp") ;; R statistical language
-  (add-path "modes/org-5.13a")
+  (add-path "utilities")
   (add-path "utilities/Pymacs-0.23")
   (add-path "utilities/vm") ;; VM mailer
   (add-path "utilities/bbdb/lisp")
+  (add-path "utilities/magit")
   (add-path "utilities/mailcrypt-3.5.8")
   (add-path "utilities/planner")
   (add-path "utilities/cedet-1.0pre4/cogre")
@@ -44,16 +47,14 @@
   (add-path "utilities/cedet-1.0pre4/eieio")
   (add-path "utilities/cedet-1.0pre4/semantic")
   (add-path "utilities/cedet-1.0pre4/speedbar")
-  (add-path "utilities/calc-2.02f") ;; Awesome RPN calculator
+  (add-path "utilities/yasnippet-0.5.3")
   (add-path "modes/mmm-mode-0.4.8")
-  (add-path "utilities/epg") ;; emacs interface to GnuPG
   (add-path "utilities/emacs-w3m")
   (add-path "utilities/g-client") ;; Google APIs
   (add-path "other") ;; various stuff that doesn't fit elsewhere
   (add-path "other/emacs-goodies-el")
   (add-path "other/dvc/++build")
   (add-path "other/git")
-  (add-path "other/yasnippet-0.5.3")
   (add-path "other/mail")
   (add-path "mymisc") ;; stuff that I'm fiddling with
   (add-path "custom") ;; various customizations
@@ -65,11 +66,7 @@
 (load-library "mode-configs")
 (load-library "customizations") ;; Generic customizations
 (load-library "keys") ;; my key customizations
-
-(setq abbrev-file-name (concat emacs-root "mymisc/abbrevs.el"))
-(read-abbrev-file abbrev-file-name t)
-(load-library "skeletons")
-(add-hook 'find-file-hook 'auto-insert)
+(load-library "hooks") ;; Various hooks
 
 (server-start)
 
@@ -81,16 +78,43 @@
   ;; If there is more than one, they won't work right.
  '(Info-additional-directory-list (quote ("/usr/local/info" "/home/james/doc/info" "/home/james/doc/info/perl-5.6-info/info/")))
  '(Man-width t)
- '(abbrev-mode t)
- '(all-bahai-calendar-holidays t)
- '(all-christian-calendar-holidays t)
- '(all-hebrew-calendar-holidays t)
- '(all-islamic-calendar-holidays t)
+ '(abbrev-mode nil)
+ '(bbdb-continental-zip-regexp "^\\s *[A-Z0-9]\\{3,3\\} *[A-Z0-9]\\{3,3\\}")
+ '(bbdb-default-area-code nil)
+ '(bbdb-default-country "Canada")
+ '(bbdb-lastname-prefixes (quote ("von" "Von" "de" "De" "dos" "Dos")))
+ '(bbdb-legal-zip-codes (quote ("^$" "^[ 	
+]*[0-9][0-9]?[0-9]?[0-9]?[0-9]?[0-9]?[ 	
+]*$" "^[ 	
+]*\\([0-9][0-9][0-9][0-9][0-9]\\)[ 	
+]*-?[ 	
+]*\\([0-9][0-9][0-9][0-9]?\\)[ 	
+]*$" "^[ 	
+]*\\([A-Za-z0-9]+\\)[ 	
+]+\\([A-Za-z0-9]+\\)[ 	
+]*$" "^[ 	
+]*\\([A-Z]+\\)[ 	
+]*-?[ 	
+]*\\([0-9]+ ?[A-Z]*\\)[ 	
+]*$" "^[ 	
+]*\\([A-Z]+\\)[ 	
+]*-?[ 	
+]*\\([0-9]+\\)[ 	
+]+\\([0-9]+\\)[ 	
+]*$" "^\\s *[A-Z0-9]\\{3,3\\} *[A-Z0-9]\\{3,3\\}")))
+ '(bbdb-send-mail-style (quote vm))
  '(c-syntactic-indentation t)
+ '(calendar-bahai-all-holidays-flag t)
+ '(calendar-christian-all-holidays-flag t)
+ '(calendar-hebrew-all-holidays-flag t)
+ '(calendar-islamic-all-holidays-flag t)
  '(calendar-latitude 43.4)
  '(calendar-location-name "Toronto, ON")
  '(calendar-longitude -79.2)
+ '(calendar-mark-diary-entries-flag t)
  '(calendar-today-marker (quote calendar-today))
+ '(calendar-view-diary-initially-flag t)
+ '(calendar-view-holidays-initially-flag nil)
  '(case-fold-search t)
  '(confirm-kill-emacs (quote y-or-n-p))
  '(cperl-clobber-lisp-bindings (quote null))
@@ -105,30 +129,32 @@
  '(desktop-save t)
  '(desktop-save-mode t nil (desktop))
  '(enable-recursive-minibuffers t)
+ '(erc-input-line-position -1)
  '(erc-nick "jamesnvc")
  '(erc-user-full-name "James Cash")
  '(eshell-glob-case-insensitive t)
+ '(factor-binary "~/src/factor/factor")
+ '(factor-image "~/src/factor/factor.image")
  '(flymake-buildfile-dirs (quote ("~/" "." ".." "../.." "../../.." "../../../.." "../../../../.." "../../../../../.." "../../../../../../.." "../../../../../../../.." "../../../../../../../../.." "../../../../../../../../../.." "../../../../../../../../../../..")))
  '(flyspell-default-dictionary nil)
+ '(flyspell-use-meta-tab nil)
  '(fortune-dir "~/misc/fortunes/")
  '(fortune-file "/home/james/misc/fortunes/lambda.txt")
  '(ftp-program "sftp")
+ '(fuel-listener-factor-binary "~/src/factor/factor")
+ '(fuel-listener-factor-image "~/src/factor/factor.image")
  '(g-xslt-debug nil)
  '(gblogger-user-email "james.nvc@gmail.com")
  '(global-font-lock-mode t nil (font-lock))
  '(haskell-font-lock-symbols t)
  '(haskell-ghci-program-args (quote ("-fglasgow-exts")))
- '(icicle-TAB-shows-candidates-flag nil)
- '(icicle-download-dir "~/emacs.d/modes/icicles")
- '(icicle-reminder-prompt-flag 0)
- '(icicle-word-completion-key [space])
  '(indent-tabs-mode nil)
- '(ipython-command "ipython2.5")
+ '(ipython-command "ipython2.5 -cl -pylab")
  '(ispell-local-dictionary nil)
  '(jit-lock-stealth-nice 0.5)
  '(jit-lock-stealth-time 3)
  '(js2-highlight-level 3)
- '(mark-diary-entries-in-calendar t)
+ '(mumamo-major-modes (quote ((asp-js-mode javascript-mode) (asp-vb-mode visual-basic-mode) (javascript-mode javascript-mode js2-mode ecmascript-mode))))
  '(muse-latex2png-scale-factor 1.2)
  '(muse-latex2png-template "\\documentclass{article}
 \\usepackage{fullpage}
@@ -143,11 +169,13 @@
 {%code%}
 \\end{document}
 ")
+ '(nxhtml-minor-mode-modes (quote (nxhtml-mode nxml-mode html-mode sgml-mode xml-mode php-mode css-mode java-mode image-mode dired-mode)))
+ '(nxhtml-skip-welcome t)
  '(nxml-outline-child-indent 8)
  '(nxml-slash-auto-complete-flag t)
  '(org-agenda-custom-commands (quote (("d" todo #("DELEGATED" 0 9 (face org-warning)) nil) ("c" todo #("DONE|DEFERRED|CANCELLED" 0 23 (face org-warning)) nil) ("w" todo #("WAITING" 0 7 (face org-warning)) nil) ("W" agenda "" ((org-agenda-ndays 21))) ("A" agenda "" ((org-agenda-skip-function (lambda nil (org-agenda-skip-entry-if (quote notregexp) "\\=.*\\[#A\\]"))) (org-agenda-ndays 1) (org-agenda-overriding-header "Today's Priority #A tasks: "))) ("u" agenda #("TODO" 0 4 (face org-warning)) ((org-agenda-skip-function (lambda nil (org-agenda-skip-entry-if (quote scheduled) (quote deadline) (quote regexp) "<[^>
 ]+>"))) (org-agenda-overriding-header "Unscheduled TODO entries: "))))))
- '(org-agenda-files (quote ("~/todo.org")))
+ '(org-agenda-files (quote ("~/org/todo.org")))
  '(org-agenda-ndays 7)
  '(org-agenda-show-all-dates t)
  '(org-agenda-skip-deadline-if-done t)
@@ -156,22 +184,33 @@
  '(org-deadline-warning-days 14)
  '(org-default-notes-file "~/notes.org")
  '(org-fast-tag-selection-single-key (quote expert))
+ '(org-link-abbrev-alist (quote (("wiki" . "http://en.wikipedia.org/wiki/"))))
  '(org-link-mailto-program (quote (browse-url "mailto:%a?subject=%s")))
  '(org-log-done t)
+ '(org-refile-targets (quote ((org-agenda-files :maxlevel . 2))))
  '(org-remember-store-without-prompt t)
- '(org-remember-templates (quote ((116 "* TODO %?
-  %u" "~/todo.org" "Tasks") (110 "* %u %?" "~/notes.org" "Notes"))))
+ '(org-remember-templates (quote (("Todo" 116 "** TODO %?
+  %u" "todo.org" "Tasks" nil) ("Notes" 110 "* %u %?" "notes.org" "Notes" nil) ("Appts" 97 "** APPT %?
+   %^T
+%i
+" "todo.org" "Appointments" nil) ("Book" 98 "*** TODO %?
+  %u" "todo.org" "Books" nil))))
  '(org-return-follows-link t)
  '(org-reverse-note-order t)
+ '(org-startup-folded (quote content))
  '(org-tab-follows-link t)
  '(org-todo-interpretation (quote type))
- '(org-todo-keyword-faces (quote (("TODO" :foreground "blue" :weight bold :underline t))))
+ '(org-todo-keyword-faces (quote (("TODO" :foreground "blue" :weight bold :underline t) ("STARTED" :foreground "pink") ("DONE" :foreground "green"))))
  '(org-todo-keywords (quote ("TODO" "STARTED" "WAITING" "DEFERRED" "DELEGATED" "CANCELLED" "APPT" "DONE")))
+ '(power-macros-file "/home/james/emacs_stuff/other/macros-file.el")
  '(predictive-auto-learn t)
  '(predictive-dict-autosave nil)
  '(predictive-dict-autosave-on-kill-buffer nil)
  '(predictive-dict-autosave-on-mode-disable nil)
- '(py-python-command "ipython2.5")
+ '(preview-TeX-style-dir "/home/james/emacs.d/modes/auctex-11.85/preview/latex/preview.sty")
+ '(py-default-interpreter (quote cpython))
+ '(py-python-command "python2.5")
+ '(python-mode-hook (quote (turn-on-eldoc-mode wisent-python-default-setup)))
  '(python-python-command "ipython2.5 -cl")
  '(quack-default-program "gsi")
  '(quack-manuals (quote ((r6rs "R6RS" "http://www.r6rs.org/" nil) (r5rs "R5RS" "http://www.schemers.org/Documents/Standards/R5RS/HTML/" nil) (bigloo "Bigloo" "http://www-sop.inria.fr/mimosa/fp/Bigloo/doc/bigloo.html" nil) (chez "Chez Scheme User's Guide" "http://www.scheme.com/csug/index.html" nil) (chicken "Chicken User's Manual" "http://www.call-with-current-continuation.org/manual/manual.html" nil) (gambit "Gambit-C documentation (local)" "file://home/james/doc/gambit-c.html" nil) (gauche "Gauche Reference Manual" "http://www.shiro.dreamhost.com/scheme/gauche/man/gauche-refe.html" nil) (mitgnu-ref "MIT/GNU Scheme Reference" "http://www.gnu.org/software/mit-scheme/documentation/scheme.html" nil) (mitgnu-user "MIT/GNU Scheme User's Manual" "http://www.gnu.org/software/mit-scheme/documentation/user.html" nil) (mitgnu-sos "MIT/GNU Scheme SOS Reference Manual" "http://www.gnu.org/software/mit-scheme/documentation/sos.html" nil) (plt-mzscheme "PLT MzScheme: Language Manual" plt t) (plt-mzlib "PLT MzLib: Libraries Manual" plt t) (plt-mred "PLT MrEd: Graphical Toolbox Manual" plt t) (plt-framework "PLT Framework: GUI Application Framework" plt t) (plt-drscheme "PLT DrScheme: Programming Environment Manual" plt nil) (plt-insidemz "PLT Inside PLT MzScheme" plt nil) (plt-tools "PLT Tools: DrScheme Extension Manual" plt nil) (plt-mzc "PLT mzc: MzScheme Compiler Manual" plt t) (plt-r5rs "PLT R5RS" plt t) (scsh "Scsh Reference Manual" "http://www.scsh.net/docu/html/man-Z-H-1.html" nil) (sisc "SISC for Seasoned Schemers" "http://sisc.sourceforge.net/manual/html/" nil) (htdp "How to Design Programs" "http://www.htdp.org/" nil) (htus "How to Use Scheme" "http://www.htus.org/" nil) (t-y-scheme "Teach Yourself Scheme in Fixnum Days" "http://www.ccs.neu.edu/home/dorai/t-y-scheme/t-y-scheme.html" nil) (tspl "Scheme Programming Language (Dybvig)" "http://www.scheme.com/tspl/" nil) (sicp "Structure and Interpretation of Computer Programs" "http://mitpress.mit.edu/sicp/full-text/book/book-Z-H-4.html" nil) (slib "SLIB" "http://swissnet.ai.mit.edu/~jaffer/SLIB.html" nil) (faq "Scheme Frequently Asked Questions" "http://www.schemers.org/Documents/FAQ/" nil) (gambit-online "Gambit online (by chapter)" "http://www.iro.umontreal.ca/~gambit/doc/gambit-c_toc.html" nil))))
@@ -191,15 +230,21 @@
  '(spell-command "aspell")
  '(standard-indent 4)
  '(tab-always-indent t)
+ '(tab-width 4)
  '(tags-table-list (quote ("../TAGS" "/home/james/Programming/scheme/TAGS")))
  '(text-mode-hook (quote (turn-on-auto-fill text-mode-hook-identify)))
  '(thinks-extra-silliness t)
  '(thinks-from (quote bottom-diagonal))
  '(transient-mark-mode t)
- '(view-calendar-holidays-initially nil)
- '(view-diary-entries-initially t)
+ '(view-read-only t)
+ '(vm-folder-directory "~/Maildir")
  '(vm-primary-inbox "/var/mail/james")
+ '(vm-subject-ignored-prefix "^\\(re: *\\)+")
+ '(vm-summary-show-threads t)
  '(w3m-fill-column 120)
+ '(w3m-search-engine-alist (quote (("yahoo" "http://search.yahoo.com/bin/search?p=%s" nil) ("yahoo-ja" "http://search.yahoo.co.jp/bin/search?p=%s" euc-japan) ("alc" "http://eow.alc.co.jp/%s/UTF-8/" utf-8) ("blog" "http://blogsearch.google.com/blogsearch?q=%s&oe=utf-8&ie=utf-8" utf-8) ("blog-en" "http://blogsearch.google.com/blogsearch?q=%s&hl=en&oe=utf-8&ie=utf-8" utf-8) ("google" "http://www.google.com/search?q=%s&ie=utf-8&oe=utf-8" utf-8) ("google-en" "http://www.google.com/search?q=%s&hl=en&ie=utf-8&oe=utf-8" utf-8) ("google news" "http://news.google.co.jp/news?hl=ja&ie=utf-8&q=%s&oe=utf-8" utf-8) ("google news-en" "http://news.google.com/news?hl=en&q=%s" nil) ("google groups" "http://groups.google.com/groups?q=%s" nil) ("All the Web" "http://www.alltheweb.com/search?web&_sb_lang=en&q=%s" nil) ("All the Web-ja" "http://www.alltheweb.com/search?web&_sb_lang=ja&cs=euc-jp&q=%s" euc-japan) ("technorati" "http://www.technorati.com/search/%s" utf-8) ("technorati-ja" "http://www.technorati.jp/search/search.html?query=%s&language=ja" utf-8) ("technorati-tag" "http://www.technorati.com/tag/%s" utf-8) ("goo-ja" "http://search.goo.ne.jp/web.jsp?MT=%s" euc-japan) ("excite-ja" "http://www.excite.co.jp/search.gw?target=combined&look=excite_jp&lang=jp&tsug=-1&csug=-1&search=%s" shift_jis) ("altavista" "http://altavista.com/sites/search/web?q=\"%s\"&kl=ja&search=Search" nil) ("rpmfind" "http://rpmfind.net/linux/rpm2html/search.php?query=%s" nil) ("debian-pkg" "http://packages.debian.org/cgi-bin/search_contents.pl?directories=yes&arch=i386&version=unstable&case=insensitive&word=%s" nil) ("debian-bts" "http://bugs.debian.org/cgi-bin/pkgreport.cgi?archive=yes&pkg=%s" nil) ("freebsd-users-jp" "http://home.jp.FreeBSD.org/cgi-bin/namazu.cgi?key=\"%s\"&whence=0&max=50&format=long&sort=score&dbname=FreeBSD-users-jp" euc-japan) ("iij-archie" "http://www.iij.ad.jp/cgi-bin/archieplexform?query=%s&type=Case+Insensitive+Substring+Match&order=host&server=archie1.iij.ad.jp&hits=95&nice=Nice" nil) ("waei" "http://dictionary.goo.ne.jp/search.php?MT=%s&kind=je" euc-japan) ("eiwa" "http://dictionary.goo.ne.jp/search.php?MT=%s&kind=ej" nil) ("kokugo" "http://dictionary.goo.ne.jp/search.php?MT=%s&kind=jn" euc-japan) ("eiei" "http://www.dictionary.com/cgi-bin/dict.pl?term=%s&r=67" nil) ("amazon" "http://www.amazon.com/exec/obidos/search-handle-form/250-7496892-7797857" iso-8859-1 "url=index=blended&field-keywords=%s") ("amazon-ja" "http://www.amazon.co.jp/gp/search?__mk_ja_JP=%%83J%%83%%5E%%83J%%83i&url=search-alias%%3Daps&field-keywords=%s" shift_jis) ("emacswiki" "http://www.emacswiki.org/cgi-bin/wiki?search=%s" nil) ("en.wikipedia" "http://en.wikipedia.org/wiki/Special:Search?search=%s" nil) ("de.wikipedia" "http://de.wikipedia.org/wiki/Spezial:Search?search=%s" utf-8) ("ja.wikipedia" "http://ja.wikipedia.org/wiki/Special:Search?search=%s" utf-8) ("msdn" "http://search.msdn.microsoft.com/search/default.aspx?query=%s" nil) ("freshmeat" "http://freshmeat.net/search/?q=%s&section=projects" nil) ("google-wikipedia" "http://www.google.com/search?source=ig&hl=en&rlz=&q=%s+site:Aen.wikipedia.org&meta=&btnI" utf-8))))
+ '(w3m-uri-replace-alist (quote (("\\`gg:" w3m-search-uri-replace "google") ("\\`ggg:" w3m-search-uri-replace "google groups") ("\\`ya:" w3m-search-uri-replace "yahoo") ("\\`al:" w3m-search-uri-replace "altavista") ("\\`bts:" w3m-search-uri-replace "debian-bts") ("\\`dpkg:" w3m-search-uri-replace "debian-pkg") ("\\`archie:" w3m-search-uri-replace "iij-archie") ("\\`alc:" w3m-search-uri-replace "alc") ("\\`urn:ietf:rfc:\\([0-9]+\\)" w3m-pattern-uri-replace "http://www.ietf.org/rfc/rfc\\1.txt") ("\\`gw:" w3m-search-uri-replace "google-wikipedia"))))
+ '(w3m-use-cookies t)
  '(w3m-use-mule-ucs t)
  '(woman-default-indent 7)
  '(woman-emulation (quote nroff))
@@ -213,6 +258,13 @@
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
  '(eshell-prompt ((t (:foreground "Blue" :weight bold))))
+ '(factor-font-lock-comment ((t (:foreground "light green"))))
+ '(factor-font-lock-constructor ((t (:foreground "medium slate blue"))))
+ '(factor-font-lock-parsing-word ((t (:foreground "dodger blue"))))
+ '(factor-font-lock-stack-effect ((t (:foreground "light green"))))
+ '(factor-font-lock-string ((t (:foreground "light blue"))))
+ '(factor-font-lock-type-definition ((t (:foreground "light slate blue"))))
+ '(factor-font-lock-vocabulary-name ((t (:foreground "SkyBlue3"))))
  '(flymake-errline ((((class color)) (:underline "OrangeRed"))))
  '(flymake-warnline ((((class color)) (:underline "yellow"))))
  '(font-lock-builtin-face ((t (:foreground "SteelBlue"))))
@@ -230,7 +282,8 @@
  '(py-decorators-face ((t (:foreground "purple"))) t)
  '(quack-pltish-keyword-face ((t (:foreground "DodgerBlue" :weight semi-bold))))
  '(quack-pltish-paren-face ((((class color) (background dark)) (:foreground "#00AC00"))))
- '(quack-pltish-selfeval-face ((((class color) (background dark)) (:foreground "red1")))))
+ '(quack-pltish-selfeval-face ((((class color) (background dark)) (:foreground "red1"))))
+ '(show-paren-match ((((class color) (background dark)) (:background "SeaGreen4" :slant oblique :weight extra-bold)))))
 ;;; Commands added by calc-private-autoloads on Sat Jan 20 23:59:20 2007.
 (autoload 'calc-dispatch	   "calc" "Calculator Options" t)
 (autoload 'full-calc		   "calc" "Full-screen Calculator" t)
