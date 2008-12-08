@@ -154,7 +154,7 @@
 (setq inhibit-startup-message t)
 (setq set-mark-command-repeat-pop t)
 (setq delete-auto-save-files t)
-(set-background-color "black")
+(set-background-color "grey6")
 (set-foreground-color "white")
 ;; (set-default-font "7x13")
 (setq-default fill-column 100)
