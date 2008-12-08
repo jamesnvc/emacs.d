@@ -13,6 +13,7 @@
 
 ;; Javascript
 (add-hook 'javascript-mode-hook 'javascript-custom-setup)
+(add-hook 'js2-mode-hook 'yas/minor-mode-on)
 
 ;; Perl
 (add-hook 'cperl-mode-hook
