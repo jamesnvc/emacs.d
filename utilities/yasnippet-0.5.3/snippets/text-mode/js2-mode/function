@@ -1,0 +1,6 @@
+# -*- coding: utf-8 -*-
+# name: function
+# --
+function ($1) {
+  $0
+};
