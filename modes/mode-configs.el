@@ -7,7 +7,6 @@
 (load-library "auctex")
 (load-library "preview-latex")
 (require 'cc-mode)
-;; (require 'coq)
 (require 'cperl-mode)
 (require 'css-mode)
 (require 'distel)
@@ -20,7 +19,6 @@
 (require 'haskell-indent)
 (require 'haskell-mode)
 (require 'inf-ruby)
-;; (require 'inferior-coq)
 (require 'lua-mode)
 (autoload 'mmm-mode "mmm-mode" "Multiple Major Modes" t)
 (require 'muse-mode)
@@ -49,9 +47,7 @@
 (load-library "clojure-config")
 (load-library "d-mode")
 (load-library "haskell-configs")
-;; (load-library "icicles")
 (load-library "light-symbol-mode")
-;; (load-library "muse-configs")
 (load-library "org")
 (load-library "org-config")
 (load-library "quack")
@@ -59,7 +55,6 @@
 (setq factor-mode-use-fuel nil)
 (require 'fuel-mode)
 (load-library "js2")
-;; (autoload 'js2-mode "js2" nil t)
 
 (load-library "cedet")
 (autoload 'jde-mode "jde" nil t)
@@ -69,28 +64,18 @@
 (display-battery-mode 1)
 (setq battery-update-interval 30)
 
-;; (require 'vc-git)
-;; (when (featurep 'vc-git) (add-to-list 'vc-handled-backends 'git))
 (require 'git)
-;; (autoload 'git-blame-mode "git-blame" "Minor mode for incremental blame for Git." t)
-;; (require 'magit)
-
-;;mode-compile
-;; (autoload 'mode-compile "mode-compile" "Command to compile current buffer file based on the major mode" t)
-;; (autoload 'mode-compile-kill "mode-compile" "Command to kill a compilation launched by `mode-compile'" t)
 
 (setq forth-program-name "gforth")
 
 ;; Forth
 (load-library "gforth")
-;; (require 'forth-mode)
 (setq auto-mode-alist (cons '("\\.fs\\'" . forth-mode) auto-mode-alist))
 (setq auto-mode-alist (cons '("\\.fb\\'" . forth-block-mode) auto-mode-alist))
 
 
 ;; Javascript
 (defalias 'javascript-mode 'js2-mode)
-;; (require 'javascript-mode)
 (autoload 'moz-minor-mode "moz" "Mozilla Minor and Inferior Mozilla Modes" t)
 (defun javascript-custom-setup ()
   (moz-minor-mode 1))
@@ -108,8 +93,6 @@
 
 
 ;; XML and HTML
-;; (load (concat emacs-root "modes/nxml/autostart.el"))
-;; (require 'nxhtml)
 (defalias 'xml-mode 'nxml-mode)
 (defalias 'html-mode 'nxml-mode)
 
@@ -153,9 +136,6 @@
 
 (define-key paredit-mode-map [?\)] 'paredit-close-parenthesis)
 (define-key paredit-mode-map [(meta ?\))] 'paredit-close-parenthesis-and-newline)
-;;; Redshank
-;; (autoload 'redshank-mode "redshank" "Minor mode for editing and refactoring (Common) Lisp code." t)
-;; (autoload 'turn-on-redshank-mode "redshank" "Turn on Redshank mode.  Please see function `redshank-mode'." t)
 
 ;; CSS
 (autoload 'css-mode "css-mode" "Mode for editing CSS files" t)
