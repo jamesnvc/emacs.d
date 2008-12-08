@@ -4,7 +4,6 @@
 (require 'browse-kill-ring)
 (require 'cldoc)
 (require 'color-theme)
-;; (require 'desktop)
 (require 'doc-view)
 (require 'epa) ;; GPG integeration!
 (epa-file-enable)
@@ -25,15 +24,9 @@
 (require 'w3m)
 
 (load-library "snippet-expands")
-;; (load-library "icicles")
 (load-library "fuzzy-match")
 
-;; (load-library "vm-config")
-
 (setq split-width-threshold 400)
-;; (global-pabbrev-mode)
-;; (add-hook 'text-mode-hook 'pabbrev-mode-on)
-;; (add-hook 'latex-mode-hook 'pabbrev-mode-on)
 
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'reverse)
@@ -57,30 +50,12 @@
 (yas/initialize)
 (yas/load-directory (concat emacs-root "utilities/yasnippet-0.5.3/snippets"))
 
-;; (load-library "mailcrypt")
-;; (mc-setversion "gpg")
-;; (autoload 'mc-install-write-mode "mailcrypt" nil t)
-;; (autoload 'mc-install-read-mode "mailcrypt" nil t)
-;; (add-hook 'gnus-summary-mode-hook 'mc-install-read-mode)
-;; (add-hook 'message-mode-hook 'mc-install-write-mode)
-;; (add-hook 'news-reply-mode-hook 'mc-install-write-mode)
-;; ;; Always sign encrypted messages
-;; (setq mc-pgp-always-sign t)
-;; ;; How long should mailcrypt remember your passphrase
-;; (setq mc-passwd-timeout 600)
-;; (defun my-sign-message ()
-;;   (if (y-or-n-p "Sign message? ")
-;;       (mc-sign-message)))
-;; (add-hook 'message-send-hook 'my-sign-message)
-
 (setenv "PYMACS_PYTHON" "python2.5")
 (autoload 'pymacs-apply "pymacs")
 (autoload 'pymacs-call "pymacs")
 (autoload 'pymacs-eval "pymacs" nil t)
 (autoload 'pymacs-exec "pymacs" nil t)
 (autoload 'pymacs-load "pymacs" nil t)
-
-;; (pymacs-load "ropemacs" "rope-")
 
 (setq planner-project "MyPlans")
 (setq muse-project-alist
@@ -90,18 +65,10 @@
 	  :major-mode planner-mode
 	  :visit-link planner-visit-link))))
 
-;; (require 'darcsum)
 (require 'emacs-goodies-el)
-;; (require 'maxframe)
-;; (require 'point)
-
-;; (add-hook 'window-setup-hook 'maximize-frame t)
 
 (color-theme-clarity)
 
-;; (ffap-bindings)
-;; (setq ffap-require-prefix t)
-;; (setq ffap-url-fetcher 'w3m-browse-url)
 (iswitchb-mode t)
 (setq iswitchb-prompt-newbuffer nil)
 
@@ -111,10 +78,8 @@
 (setq ido-enable-flex-matching t)
 
 (load "dired-x")
-;; (setq make-backup-files nil)
 (prefer-coding-system 'utf-8)
 (add-to-list 'auto-coding-alist '("." . utf-8))
-;; (desktop-save-mode 1)
 (server-start)
 (setq server-window nil)
 (display-time)
@@ -156,7 +121,6 @@
 (setq delete-auto-save-files t)
 (set-background-color "grey6")
 (set-foreground-color "white")
-;; (set-default-font "7x13")
 (setq-default fill-column 100)
 (setq-default ispell-program-name "aspell")
 (setq case-fold-search nil)
@@ -176,7 +140,6 @@ MANDATORY_MANPATH" "/usr/share/man" "/usr/local/man")))
       '(try-expand-dabbrev
         try-expand-dabbrev-all-buffers
         try-expand-dabbrev-from-kill
-        ;; yas/expand
         try-complete-lisp-symbol-partially
         try-complete-lisp-symbol
         try-complete-file-name-partially
@@ -247,17 +210,9 @@ MANDATORY_MANPATH" "/usr/share/man" "/usr/local/man")))
 (defadvice ibuffer-generate-filter-groups (after reverse-ibuffer-groups () activate)
   (setq ad-return-value (nreverse ad-return-value)))
 
-;; (icy-mode t)
-
-
-;; (setq abbrev-file-name (concat emacs-root "mymisc/abbrevs.el"))
-;; (read-abbrev-file abbrev-file-name t)
 (load-library "skeletons")
 
 (define-auto-insert '("\\.factor\\'" . "Factor module") 'factor-skeleton)
-
-;; (add-hook 'find-file-hook (lambda () (desktop-save "/home/james")))
-;; (add-hook 'kill-buffer-hook (lambda () (desktop-save "/home/james")))
 
 (require 'winring)
 (setq winring-show-names t)
