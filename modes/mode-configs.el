@@ -38,13 +38,13 @@
 (require 'remember)
 (require 'ruby-electric)
 (require 'ruby-mode)
+(require 'slime)
 (require 'smalltalk-mode)
 (require 'stumpwm-mode)
 (require 'tuareg)
 
 (load-library "python")
 (load-library "auto-modes")
-(load-library "clojure-config")
 (load-library "d-mode")
 (load-library "haskell-configs")
 (load-library "light-symbol-mode")
@@ -118,24 +118,26 @@
  :ignore-case t
  :doc-spec '(("(ansicl)Symbol Index" nil nil nil)))
 ;;; Slime
-;; load slime:
-(setq inferior-lisp-program "/home/james/bin/sbcl --core /home/james/lib/sbcl/sbcl.core")
-(load "/home/james/src/clbuild/source/slime/slime")
+(setq sbcl-program "/home/james/bin/sbcl")
+(setq slime-lisp-implementations
+      `((sbcl (,sbcl-program  "--core" "/home/james/lib/sbcl/sbcl.core") :coding-system utf-8-unix)))
 (setq slime-backend "/home/james/src/clbuild/.swank-loader.lisp")
-(setq slime-use-autodoc-mode nil)
+(setq slime-use-autodoc-mode t)
 (setq slime-complete-symbol*-fancy t)
-(setq slime-complete-symbol-function 'slime-fuzzy-complete-symbol)
 (setq lisp-indent-function 'common-lisp-indent-function)
+(setq slime-complete-symbol-function 'slime-simple-complete-symbol)
 (setq slime-complete-symbol 'slime-fuzzy-complete-symbol)
 (slime-setup '(slime-fancy slime-tramp slime-banner slime-asdf))
-
+(autoload 'redshank-mode "redshank" "Minor mode for editing and refactoring (Common) Lisp code." t)
+(autoload 'turn-on-redshank-mode "redshank" "Turn on Redshank mode.  Please see function `redshank-mode'." t)
 (autoload 'cl-lookup "cl-lookup" "View the documentation on ENTRY from the Common Lisp HyperSpec, et al.")
 ;;; Paredit
 (autoload 'paredit-mode "paredit" "Minor mode for pseudo-structurally editing Lisp code." t)
-
-
 (define-key paredit-mode-map [?\)] 'paredit-close-parenthesis)
 (define-key paredit-mode-map [(meta ?\))] 'paredit-close-parenthesis-and-newline)
+
+;; Clojrue
+(load-library "clojure-config")
 
 ;; CSS
 (autoload 'css-mode "css-mode" "Mode for editing CSS files" t)
