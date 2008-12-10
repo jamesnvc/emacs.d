@@ -64,7 +64,7 @@
 (display-battery-mode 1)
 (setq battery-update-interval 30)
 
-(require 'git)
+(require 'magit)
 
 (setq forth-program-name "gforth")
 
