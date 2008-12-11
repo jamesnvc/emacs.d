@@ -56,6 +56,7 @@
 
 (load-library "cedet")
 (semantic-load-enable-excessive-code-helpers)
+(require 'semantic-load)
 (autoload 'jde-mode "jde" nil t)
 
 (pymacs-load "ropemacs" "rope-")
