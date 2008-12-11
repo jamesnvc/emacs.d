@@ -148,6 +148,12 @@
 ;; Perl
 (define-key cperl-mode-map (kbd "C-j") 'newline-and-indent)
 
+;; Ruby
+(define-key ruby-mode-map (kbd "C-c C-l") 'ruby-load-file)
+(define-key ruby-mode-map (kbd "C-c C-z") 'switch-to-ruby)
+(define-key ruby-mode-map (kbd "C-c C-r") 'ruby-send-region)
+(define-key ruby-mode-map (kbd "C-c C-d") 'ruby-send-definition)
+
 ;; Factor
 (define-key factor-mode-map [tab] 'yas/expand)
 
