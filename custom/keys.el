@@ -144,8 +144,6 @@
 
 ;; Perl
 (define-key cperl-mode-map (kbd "C-j") 'newline-and-indent)
-;; (define-key perl-mode-map (kbd "C-h") 'backward-delete-char-untabify)
-;; (define-key cperl-mode-map (kbd "C-h") 'backward-delete-char-untabify)
 
 ;; Factor
 (defun maybe-insert-defn (arg)
