@@ -2,4 +2,4 @@
 # name: colon-definition
 # --
 : ${1:word} ( $2 -- $3 )
-    $0
+    $0 ;
