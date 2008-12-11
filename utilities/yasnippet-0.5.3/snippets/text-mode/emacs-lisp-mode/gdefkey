@@ -1,0 +1,4 @@
+# -*- coding: utf-8 -*-
+# name: define-key 
+# --
+(global-set-key (kbd "${1:C-}") '$0)
