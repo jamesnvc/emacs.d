@@ -40,6 +40,7 @@
 (add-hook 'latex-mode-hook 'flyspell-mode)
 (add-hook 'yatex-mode-hook 'flyspell-mode)
 (add-hook 'latex-mode-hook 'pretty-greek)
+(add-hook 'doc-view-mode-hook 'auto-revert-mode)
 
 ;; Eshell
 (add-hook 'eshell-mode-hook
