@@ -11,7 +11,10 @@
 ;; F keys
 (global-set-key [f3] 'eshell)
 (global-set-key [f4] 'replace-regexp)
+(global-set-key [f5]
+                (lambda () (interactive) (yas/load-directory (concat emacs-root "utilities/yasnippet-0.5.3/snippets"))))
 (global-set-key [f9] 'slime-selector)
+(global-set-key [f10] 'run-clojure)
 (global-set-key (kbd "<f7> t") 'planner-create-task-from-buffer)
 (global-set-key (kbd "s-h") 'help-command)
 (global-set-key (kbd "s-SPC") 'hippie-expand)

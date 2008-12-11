@@ -19,5 +19,3 @@
   "Starts clojure in Slime"
   (interactive)
   (slime 'clojure))
-
-(global-set-key [f5] 'run-clojure)
