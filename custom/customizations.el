@@ -67,7 +67,10 @@
 
 (require 'emacs-goodies-el)
 
+;; Set colours
 (color-theme-clarity)
+(set-background-color "grey6")
+(set-foreground-color "white")
 
 (iswitchb-mode t)
 (setq iswitchb-prompt-newbuffer nil)
@@ -119,8 +122,6 @@
 (setq inhibit-startup-message t)
 (setq set-mark-command-repeat-pop t)
 (setq delete-auto-save-files t)
-(set-background-color "grey6")
-(set-foreground-color "white")
 (setq-default fill-column 100)
 (setq-default ispell-program-name "aspell")
 (setq case-fold-search nil)
