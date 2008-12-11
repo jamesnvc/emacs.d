@@ -38,6 +38,8 @@
 (setq g-user-email "james.nvc@gmail.com")
 (setq g-html-handler 'w3m-buffer)
 
+(require 'ecb)
+
 ;; BBDB
 (bbdb-initialize 'gnus 'message 'sendmail 'vm 'w3)
 (require 'bbdb-human-names)
