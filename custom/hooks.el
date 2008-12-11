@@ -47,13 +47,16 @@
 	  '(lambda ()
 	    (define-key eshell-mode-map "\C-a" 'eshell-bol)))
 
+;; Emacs lisp
+(add-hook 'emacs-lisp-mode-hook (lambda () (paredit-mode t)))
+(add-hook 'emacs-lisp-mode-hook 'pretty-greek)
+(add-hook 'emacs-lisp-mode-hook 'eldoc-mode)
+(add-hook 'emacs-lisp-mode-hook 'yas/minor-mode-on)
+
 ;; Lisp
 (add-hook 'inferior-lisp-mode-hook (lambda () (inferior-slime-mode t)))
 (add-hook 'lisp-mode-hook 'pretty-greek)
 (add-hook 'lisp-mode-hook (lambda () (paredit-mode t)))
-(add-hook 'emacs-lisp-mode-hook (lambda () (paredit-mode t)))
-(add-hook 'emacs-lisp-mode-hook 'pretty-greek)
-(add-hook 'emacs-lisp-mode-hook 'eldoc-mode)
 (add-hook 'lisp-mode-hook (lambda () (slime-mode t)))
 (dolist (hook '(lisp-mode-hook
 		slime-repl-mode-hook))
