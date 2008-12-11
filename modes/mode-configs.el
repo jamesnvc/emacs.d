@@ -57,6 +57,7 @@
 (load-library "js2")
 
 (load-library "cedet")
+(semantic-load-enable-excessive-code-helpers)
 (autoload 'jde-mode "jde" nil t)
 
 (pymacs-load "ropemacs" "rope-")
