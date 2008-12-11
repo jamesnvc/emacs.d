@@ -146,19 +146,6 @@
 (define-key cperl-mode-map (kbd "C-j") 'newline-and-indent)
 
 ;; Factor
-(defun maybe-insert-defn (arg)
-  (interactive "p")
-  (let ((pnt (point))
-        b-o-l)
-    (save-excursion
-      (setq b-o-l (progn (beginning-of-line) (point))))
-    (if (= b-o-l pnt)
-        (progn
-          (insert ":  (  --  )")
-          (beginning-of-line)
-          (forward-char 2))
-        (self-insert-command (or arg 1)))))
-;; (define-key factor-mode-map (kbd ":") 'maybe-insert-defn)
 (define-key factor-mode-map [tab] 'yas/expand)
 
 ;; Org
