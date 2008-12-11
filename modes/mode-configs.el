@@ -52,8 +52,6 @@
 (load-library "org-config")
 (load-library "quack")
 (load-library "scheme-configs")
-(setq factor-mode-use-fuel nil)
-(require 'fuel-mode)
 (load-library "js2")
 
 (load-library "cedet")
@@ -68,6 +66,10 @@
 (require 'magit)
 
 (setq forth-program-name "gforth")
+
+;; Factor
+(setq factor-mode-use-fuel nil)
+(require 'fuel-mode)
 
 ;; Forth
 (load-library "gforth")
