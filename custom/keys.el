@@ -52,8 +52,6 @@
 (global-set-key (kbd "C-s") 'isearch-forward-regexp)
 (global-set-key (kbd "C-w") 'kill-syntax-backward)
 (global-set-key [C-tab] 'ibuffer)
-;; (global-set-key (kbd "C-+") 'sacha/increase-font-size)
-;; (global-set-key (kbd "C--") 'sacha/decrease-font-size)
 
 ;; C-c
 (global-set-key (kbd "C-c C-u") 'uncomment-region)
@@ -183,8 +181,6 @@
 (define-key org-mode-map [C-tab] 'ibuffer)
 (define-key dired-mode-map (kbd "e") 'wdired-change-to-wdired-mode)
 (define-key nxml-mode-map (kbd "C-c C-w") 'wikify-link)
-;; (define-key icicle-mode-map (kbd "M-e") 'icicle-keep-only-past-inputs)
-;; (define-key gnus-group-mode-map (kbd "vo") (lambda () (interactive) (shell-command "offlineimap&" "*offlineimap*" nil)))
 (define-key bbdb-mode-map (kbd "z") 'wicked/bbdb-ping-bbdb-record)
 (add-hook 'mail-setup-hook (lambda () (local-set-key "\t" 'bbdb-complete-name)) t)
 (define-key isearch-mode-map (kbd "C-x") 'sacha/isearch-yank-current-word)
