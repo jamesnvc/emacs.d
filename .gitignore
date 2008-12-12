@@ -1,5 +1,6 @@
 private
 archives
+semantic.cache
 *.elc
 *.pyc
 *~
