@@ -74,6 +74,8 @@
                  'factor-get-effect)))
 (add-hook 'factor-mode-hook 'yas/minor-mode-on)
 (add-hook 'factor-mode-hook (lambda () (setf tab-width 4)))
+(add-hook 'factor-mode-hook (lambda () (setf tags-file-name (concat src-root "factor/misc/ETAGS"))))
+
 
 ;; C
 ;; (add-hook 'c-mode-common-hook 'flymake-mode)
