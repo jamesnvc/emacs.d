@@ -72,9 +72,6 @@
 ;; Forth
 (setq forth-program-name "gforth")
 (load-library "gforth")
-(setq auto-mode-alist (cons '("\\.fs\\'" . forth-mode) auto-mode-alist))
-(setq auto-mode-alist (cons '("\\.fb\\'" . forth-block-mode) auto-mode-alist))
-
 
 ;; Javascript
 (defalias 'javascript-mode 'js2-mode)

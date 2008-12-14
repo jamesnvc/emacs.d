@@ -9,6 +9,8 @@
                        ("\\.d$" . d-mode)
                        ("\\.erl$" . erlang-mode)
                        ("\\.factor$" . factor-mode)
+                       ("\\.fb\\'" . forth-block-mode)
+                       ("\\.fs\\'" . forth-mode)
                        ("\\.hs$" . haskell-mode)
                        ("\\.html$" . nxml-mode)
                        ("\\.java$" . java-mode)
