@@ -69,7 +69,6 @@
 (setq forth-program-name "gforth")
 
 ;; Factor
-(setq factor-mode-use-fuel nil)
 (require 'fuel-mode)
 
 ;; Forth
