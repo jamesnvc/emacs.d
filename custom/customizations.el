@@ -62,10 +62,10 @@
 (setq planner-project "MyPlans")
 (setq muse-project-alist
       '(("MyPlans"
-	 ("~/plans" ;; Or wherever you want your planner files to be
-	  :default "index"
-	  :major-mode planner-mode
-	  :visit-link planner-visit-link))))
+         ("~/plans" ;; Or wherever you want your planner files to be
+          :default "index"
+          :major-mode planner-mode
+          :visit-link planner-visit-link))))
 
 (require 'emacs-goodies-el)
 
