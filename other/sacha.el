@@ -1,5 +1,74 @@
 ;; Stuff from sacha chua's blog: <http://sachachua.com>
 
+
+;; BBDB + completion stuff
+ (defun sacha/org-bbdb-get (path)
+   "Return BBDB record for PATH."
+   (car (bbdb-search (bbdb-records) path path path)))
+
+ (defun sacha/org-bbdb-export (path desc format)
+   "Create the export version of a BBDB link specified by PATH or DESC.
+ If exporting to HTML, it will be linked to the person's blog,
+ www, or web address. If exporting to LaTeX FORMAT the link will be
+ italicised. In all other cases, it is left unchanged."
+     (cond
+      ((eq format 'html)
+       (let* ((record
+             (sacha/org-bbdb-get path))
+            url)
+       (setq url (and record
+                      (or (bbdb-record-getprop record 'blog)
+                          (bbdb-record-getprop record 'www)
+                          (bbdb-record-getprop record 'web))))
+       (if url
+           (format "<a href=\"%s\">%s</a>"
+                   url (or desc path))
+         (format "<em>%s</em>"
+                 (or desc path)))))
+      ((eq format 'latex) (format "\\textit{%s}" (or desc path)))
+      (t (or desc path))))
+
+ (defadvice org-bbdb-export (around sacha activate)
+   "Override org-bbdb-export."
+   (setq ad-return-value (sacha/org-bbdb-export path desc format)))
+
+ ;;;_+ Hippie expansion for BBDB; map M-/ to hippie-expand for most fun
+ (add-to-list 'hippie-expand-try-functions-list 'sacha/try-expand-bbdb-annotation)
+ (defun sacha/try-expand-bbdb-annotation (old)
+   "Expand from BBDB. If OLD is non-nil, cycle through other possibilities."
+   (unless old
+     ;; First time, so search through BBDB records for the name
+     (he-init-string (he-dabbrev-beg) (point))
+     (when (> (length he-search-string) 0)
+       (setq he-expand-list nil)
+       (mapcar
+        (lambda (item)
+        (let ((name (bbdb-record-name item)))
+          (when name
+            (setq he-expand-list
+                  (cons (org-make-link-string
+                       (org-make-link "bbdb:" name)
+                       name)
+                        he-expand-list)))))
+        (bbdb-search (bbdb-records)
+                     he-search-string
+                     he-search-string
+                     he-search-string
+                     nil nil))))
+   (while (and he-expand-list
+               (or (not (car he-expand-list))
+                   (he-string-member (car he-expand-list) he-tried-table t)))
+     (setq he-expand-list (cdr he-expand-list)))
+   (if (null he-expand-list)
+       (progn
+         (if old (he-reset-string))
+         nil)
+     (progn
+       (he-substitute-string (car he-expand-list) t)
+       (setq he-expand-list (cdr he-expand-list))
+       t)))
+
+
 (defun sacha/org-show-load ()
   "Show my unscheduled time and free time for the day."
   (interactive)
