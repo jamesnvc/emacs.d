@@ -68,6 +68,7 @@
 
 ;; Factor
 (require 'fuel-mode)
+(require 'factor-mode)
 
 ;; Forth
 (setq forth-program-name "gforth")
