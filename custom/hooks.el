@@ -58,11 +58,11 @@
 (add-hook 'lisp-mode-hook 'pretty-greek)
 (add-hook 'lisp-mode-hook (lambda () (paredit-mode t)))
 (add-hook 'lisp-mode-hook (lambda () (slime-mode t)))
-(dolist (hook '(lisp-mode-hook
-		slime-repl-mode-hook))
-  (add-hook hook #'(lambda nil (cldoc-mode 1)))
-  (add-hook hook #'(lambda nil (paredit-mode 1))))
+(dolist (hook '(lisp-mode-hook slime-repl-mode-hook))
+  (add-hook hook #'(lambda () (cldoc-mode 1)))
+  (add-hook hook #'(lambda () (paredit-mode 1))))
 ;; (add-hook 'lisp-mode-hook 'turn-on-redshank-mode)
+
 
 ;; Clojure
 (add-hook 'clojure-mode-hook 'paredit-mode)
