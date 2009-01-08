@@ -54,10 +54,10 @@
 (load-library "scheme-configs")
 (load-library "js2")
 
-(load-library "cedet")
-(semantic-load-enable-excessive-code-helpers)
-(require 'semantic-load)
-(autoload 'jde-mode "jde" nil t)
+;; (load-library "cedet")
+;; (semantic-load-enable-excessive-code-helpers)
+;; (require 'semantic-load)
+;; (autoload 'jde-mode "jde" nil t)
 
 (pymacs-load "ropemacs" "rope-")
 
