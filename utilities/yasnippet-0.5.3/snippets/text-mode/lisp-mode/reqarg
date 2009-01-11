@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
 # name: Initform for a required CLOS slot
 # --
-:initform (error ":${1:initarg} must be specified.")$0
+:initarg :${1:initarg}
+:initform (error ":$1 must be specified.")$0
