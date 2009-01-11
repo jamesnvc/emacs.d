@@ -156,6 +156,8 @@
 (define-key factor-mode-map [tab] 'yas/expand)
 
 ;; Org
+(define-key org-mode-map (kbd "C-<up>") 'org-priority-up)
+(define-key org-mode-map (kbd "C-<down>") 'org-priority-down)
 (define-key mode-specific-map [?a] 'org-agenda)
 (define-prefix-command 'org-todo-state-map)
 (define-key org-mode-map (kbd "C-c x") 'org-todo-state-map)
