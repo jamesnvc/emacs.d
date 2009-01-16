@@ -67,6 +67,7 @@
 (require 'magit)
 
 ;; Factor
+(setq fuel-factor-root-dir (expand-file-name "~/src/factor"))
 (require 'fuel-mode)
 (require 'factor-mode)
 
