@@ -158,6 +158,8 @@
 ;; Org
 (define-key org-mode-map (kbd "C-<up>") 'org-priority-up)
 (define-key org-mode-map (kbd "C-<down>") 'org-priority-down)
+(define-key org-mode-map [(shift up)] (lambda (&optional n) (interactive "p") (scroll-down (or n 1))))
+(define-key org-mode-map [(shift down)] (lambda (&optional n) (interactive "p") (scroll-up (or n 1))))
 (define-key mode-specific-map [?a] 'org-agenda)
 (define-prefix-command 'org-todo-state-map)
 (define-key org-mode-map (kbd "C-c x") 'org-todo-state-map)
