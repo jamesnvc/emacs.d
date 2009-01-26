@@ -87,7 +87,7 @@ directory, select directory. Lastly the file is opened."
    (setq ad-return-value (sacha/org-bbdb-export path desc format)))
 
  ;;;_+ Hippie expansion for BBDB; map M-/ to hippie-expand for most fun
- (add-to-list 'hippie-expand-try-functions-list 'sacha/try-expand-bbdb-annotation)
+;;  (add-to-list 'hippie-expand-try-functions-list 'sacha/try-expand-bbdb-annotation)
  (defun sacha/try-expand-bbdb-annotation (old)
    "Expand from BBDB. If OLD is non-nil, cycle through other possibilities."
    (unless old
