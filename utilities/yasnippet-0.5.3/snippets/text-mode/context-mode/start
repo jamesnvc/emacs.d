@@ -1,0 +1,6 @@
+# -*- coding: utf-8 -*-
+# name: \start...\stop
+# --
+\start${1:text}
+  $0
+\stop$1

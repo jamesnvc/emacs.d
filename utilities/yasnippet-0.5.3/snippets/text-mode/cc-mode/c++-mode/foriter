@@ -1,0 +1,5 @@
+#name : for with iterator
+# --
+for (${1:iter} = ${2:vect}.begin(); $1 != $2.end(); ++$1) {
+  $0
+}

@@ -1,0 +1,7 @@
+#name : for with iterator
+# --
+const vector<${1:type}>& ${2:vect} = ${3:source};
+vector<$1>::const_iterator ${4:iter};
+for ($4 = $2.begin(); $4 != $2.end(); ++$4) {
+  $0
+}

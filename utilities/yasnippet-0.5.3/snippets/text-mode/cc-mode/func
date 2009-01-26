@@ -1,0 +1,5 @@
+#name : <type> name(lambda-list) { ... }
+# --
+${1:void} $2($3) {
+  $0
+}

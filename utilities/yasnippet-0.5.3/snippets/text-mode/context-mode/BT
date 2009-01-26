@@ -1,0 +1,4 @@
+# -*- coding: utf-8 -*-
+# name: /BTEX{...}/ETEX
+# --
+/BTEX{$1}/ETEX  $0
