@@ -4,8 +4,7 @@
 (load-library "imap")
 (require 'nnir)
 
-;; (setq gnus-select-method '(nntp "news.gmane.org"))
-
+(setq gnus-agent nil)
 ;; (setq gnus-invalid-group-regexp "^$")
 (load-file (concat emacs-root "private"))
 
@@ -21,7 +20,9 @@
 
 (setq gnus-select-method '(nnnil "")
       gnus-secondary-select-methods
-      '((nnimap "localhost" (nnimap-address "localhost"))))
+      '((nnimap "localhost" (nnimap-address "localhost"))
+        ;; (nntp "news.gmane.org")
+        ))
 
 (setq message-send-mail-partially-limit nil)
 (setq gnus-message-archive-method '(nnimap "localhost"))
