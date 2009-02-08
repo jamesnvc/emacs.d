@@ -197,7 +197,7 @@ buffer. Error if CHAR not found."
 		      ('left-arrow 8592)
 		      ('up-arrow 8593)
 		      ('right-arrow 8594)
-		      ('down-arrow 8595)
+              ('down-arrow 8595)
   
 		      ;; boxes
 		      ('double-vertical-bar #X2551)
@@ -220,7 +220,7 @@ buffer. Error if CHAR not found."
 		      ;; misc
 		      ('nil #X2205)
 		      ('horizontal-ellipsis #X2026)
-		      ('double-exclamation #X203C)
+              ('double-exclamation #X203C)
 		      ('prime #X2032)
 		      ('double-prime #X2033)
 		      ('for-all #X2200)
