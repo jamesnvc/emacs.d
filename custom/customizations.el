@@ -1,5 +1,6 @@
 (defconst use-backup-dir t)
 
+(require 'appt)
 (require 'bbdb)
 (require 'browse-kill-ring)
 (require 'cldoc)
@@ -40,6 +41,24 @@
 
 (require 'ecb)
 
+;; Org stuff (popup reminders)
+(setq appt-time-msg-list nil)
+(org-agenda-to-appt)
+
+(defadvice  org-agenda-redo (after org-agenda-redo-add-appts)
+  "Pressing `r' on the agenda will also add appointments."
+  (progn 
+    (setq appt-time-msg-list nil)
+    (org-agenda-to-appt)))
+
+(ad-activate 'org-agenda-redo)
+(progn
+  (appt-activate 1)
+  (setq appt-display-format 'window)
+  (setq appt-disp-window-function (function my-appt-disp-window))
+  (defun my-appt-disp-window (min-to-app new-time msg)
+    (call-process "/home/james/bin/popup.py" nil 0 nil min-to-app msg new-time)))
+
 ;; BBDB
 (bbdb-initialize 'gnus 'message 'sendmail 'vm 'w3)
 (require 'bbdb-human-names)
@@ -62,7 +81,7 @@
 (setq planner-project "MyPlans")
 (setq muse-project-alist
       '(("MyPlans"
-         ("~/plans" ;; Or wherever you want your planner files to be
+         ("~/plans"
           :default "index"
           :major-mode planner-mode
           :visit-link planner-visit-link))))
