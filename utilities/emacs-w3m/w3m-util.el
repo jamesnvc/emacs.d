@@ -809,7 +809,9 @@ But this function should work even if STRING is considerably long."
      (condition-case nil
 	 (string-match w3m-url-components-regexp string)
        (error ;; Stack overflow in regexp matcher
-	(w3m-string-match-url-components-1 string)))))
+        (condition-case nil
+            (w3m-string-match-url-components-1 string)
+          (error nil))))))
 
 (defsubst w3m-time-newer-p (a b)
   "Return t, if A is newer than B.  Otherwise return nil.

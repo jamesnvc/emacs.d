@@ -6268,9 +6268,10 @@ compatibility which is described in Section 5.2 of RFC 2396.")
       (concat (substring base 0 (match-end 5)) url))
      (t
       ;; URL has only a fragment part.
-      (w3m-string-match-url-components base)
-      (concat (substring base 0 (match-beginning 8))
-	      url)))))
+      (if (w3m-string-match-url-components base)
+          (concat (substring base 0 (match-beginning 8))
+                  url)
+          url)))))
 
 (defun w3m-display-progress-message (url)
   "Show \"Reading URL...\" message in the middle of a buffer."
