@@ -96,10 +96,16 @@
 (iswitchb-mode t)
 (setq iswitchb-prompt-newbuffer nil)
 
+;;; Ido or Icicles?  While Icicles is apparently much more featurefull, I cannot abide the way it
+;;; mangles tramp...maybe if I can it working properly...
 ;; Ido
 (load-file (concat emacs-root "utilities/ido.el"))
 (ido-mode t)
 (setq ido-enable-flex-matching t)
+(ido-everywhere t)
+(setq ido-use-filename-at-point t)
+;; Icicles
+;; (load-library "icy-configs")
 
 (load "dired-x")
 (prefer-coding-system 'utf-8)
