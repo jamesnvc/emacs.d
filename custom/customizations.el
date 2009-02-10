@@ -35,8 +35,10 @@
 (setq uniquify-after-kill-buffer-p t) ; rename after killing uniquified
 (setq uniquify-ignore-buffers-re "^\\*") ; don't muck with special buffers
 
+;; Google cal/reader/etc interface
 (load-library "g")
 (setq g-user-email "james.nvc@gmail.com")
+(gcal-emacs-calendar-setup)
 (setq g-html-handler 'w3m-buffer)
 
 (require 'ecb)
