@@ -1,0 +1,263 @@
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/5864/trunk/sounds/chimes-11k-stereo
+END
+select-object.wav
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/!svn/ver/4047/trunk/sounds/chimes-11k-stereo/select-object.wav
+END
+unmodified-object.wav
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/!svn/ver/4047/trunk/sounds/chimes-11k-stereo/unmodified-object.wav
+END
+help.wav
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/!svn/ver/4047/trunk/sounds/chimes-11k-stereo/help.wav
+END
+fill-object.wav
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/4047/trunk/sounds/chimes-11k-stereo/fill-object.wav
+END
+left.wav
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/!svn/ver/4047/trunk/sounds/chimes-11k-stereo/left.wav
+END
+yes-answer.wav
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/!svn/ver/4047/trunk/sounds/chimes-11k-stereo/yes-answer.wav
+END
+scroll.wav
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/!svn/ver/4047/trunk/sounds/chimes-11k-stereo/scroll.wav
+END
+item.wav
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/!svn/ver/4047/trunk/sounds/chimes-11k-stereo/item.wav
+END
+section.wav
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/4047/trunk/sounds/chimes-11k-stereo/section.wav
+END
+progress.wav
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/!svn/ver/4047/trunk/sounds/chimes-11k-stereo/progress.wav
+END
+y-answer.wav
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/!svn/ver/4047/trunk/sounds/chimes-11k-stereo/y-answer.wav
+END
+paragraph.wav
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/4047/trunk/sounds/chimes-11k-stereo/paragraph.wav
+END
+delete-object.wav
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/!svn/ver/4047/trunk/sounds/chimes-11k-stereo/delete-object.wav
+END
+new-mail.wav
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/!svn/ver/4047/trunk/sounds/chimes-11k-stereo/new-mail.wav
+END
+off.wav
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/4047/trunk/sounds/chimes-11k-stereo/off.wav
+END
+button.wav
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/!svn/ver/4047/trunk/sounds/chimes-11k-stereo/button.wav
+END
+on.wav
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/4047/trunk/sounds/chimes-11k-stereo/on.wav
+END
+right.wav
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/!svn/ver/4047/trunk/sounds/chimes-11k-stereo/right.wav
+END
+search-miss.wav
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/4047/trunk/sounds/chimes-11k-stereo/search-miss.wav
+END
+working.wav
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/5864/trunk/sounds/chimes-11k-stereo/working.wav
+END
+center.wav
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/!svn/ver/4047/trunk/sounds/chimes-11k-stereo/center.wav
+END
+large-movement.wav
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/4047/trunk/sounds/chimes-11k-stereo/large-movement.wav
+END
+warn-user.wav
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/4047/trunk/sounds/chimes-11k-stereo/warn-user.wav
+END
+alert-user.wav
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/!svn/ver/4047/trunk/sounds/chimes-11k-stereo/alert-user.wav
+END
+ask-question.wav
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/4047/trunk/sounds/chimes-11k-stereo/ask-question.wav
+END
+modified-object.wav
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/!svn/ver/4047/trunk/sounds/chimes-11k-stereo/modified-object.wav
+END
+.nosearch
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/!svn/ver/4149/trunk/sounds/chimes-11k-stereo/.nosearch
+END
+task-done.wav
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/4047/trunk/sounds/chimes-11k-stereo/task-done.wav
+END
+search-hit.wav
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/!svn/ver/4047/trunk/sounds/chimes-11k-stereo/search-hit.wav
+END
+n-answer.wav
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/!svn/ver/4047/trunk/sounds/chimes-11k-stereo/n-answer.wav
+END
+alarm.wav
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/!svn/ver/4047/trunk/sounds/chimes-11k-stereo/alarm.wav
+END
+deselect-object.wav
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/!svn/ver/4047/trunk/sounds/chimes-11k-stereo/deselect-object.wav
+END
+define-theme.el
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/4047/trunk/sounds/chimes-11k-stereo/define-theme.el
+END
+mark-object.wav
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/4047/trunk/sounds/chimes-11k-stereo/mark-object.wav
+END
+save-object.wav
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/4047/trunk/sounds/chimes-11k-stereo/save-object.wav
+END
+open-object.wav
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/4047/trunk/sounds/chimes-11k-stereo/open-object.wav
+END
+yank-object.wav
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/4047/trunk/sounds/chimes-11k-stereo/yank-object.wav
+END
+no-answer.wav
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/4047/trunk/sounds/chimes-11k-stereo/no-answer.wav
+END
+close-object.wav
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/4047/trunk/sounds/chimes-11k-stereo/close-object.wav
+END
+shutdown.wav
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/!svn/ver/4047/trunk/sounds/chimes-11k-stereo/shutdown.wav
+END
+news.wav
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/!svn/ver/4047/trunk/sounds/chimes-11k-stereo/news.wav
+END
+ellipses.wav
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/!svn/ver/4047/trunk/sounds/chimes-11k-stereo/ellipses.wav
+END
+ask-short-question.wav
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/!svn/ver/4047/trunk/sounds/chimes-11k-stereo/ask-short-question.wav
+END

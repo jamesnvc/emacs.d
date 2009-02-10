@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 24
+/svn/!svn/ver/6103/trunk
+END
+.nosearch
+K 25
+svn:wc:ra_dav:version-url
+V 34
+/svn/!svn/ver/4149/trunk/.nosearch
+END
+configure
+K 25
+svn:wc:ra_dav:version-url
+V 34
+/svn/!svn/ver/4047/trunk/configure
+END
+run
+K 25
+svn:wc:ra_dav:version-url
+V 28
+/svn/!svn/ver/4047/trunk/run
+END
+emacspeak.spec.in
+K 25
+svn:wc:ra_dav:version-url
+V 42
+/svn/!svn/ver/4047/trunk/emacspeak.spec.in
+END
+Makefile
+K 25
+svn:wc:ra_dav:version-url
+V 33
+/svn/!svn/ver/6065/trunk/Makefile
+END
+SOURCEFORGE-README
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/svn/!svn/ver/4080/trunk/SOURCEFORGE-README
+END

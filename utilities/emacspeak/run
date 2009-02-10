@@ -1,0 +1,5 @@
+#!/bin/sh
+#$Id: run 4047 2006-08-11 19:11:17Z tv.raman.tv $
+#Run out of this directory.
+#
+emacs -q -l ./lisp/emacspeak-setup.el -l $HOME/.emacs

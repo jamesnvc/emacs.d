@@ -1,0 +1,113 @@
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/6085/trunk/servers/linux-outloud
+END
+ALSA
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/4047/trunk/servers/linux-outloud/ALSA
+END
+.nosearch
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/4149/trunk/servers/linux-outloud/.nosearch
+END
+aoutput.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/!svn/ver/4496/trunk/servers/linux-outloud/aoutput.cpp
+END
+tcleci.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/4501/trunk/servers/linux-outloud/tcleci.cpp
+END
+langswitch.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/4438/trunk/servers/linux-outloud/langswitch.cpp
+END
+atcleci.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/!svn/ver/4731/trunk/servers/linux-outloud/atcleci.cpp
+END
+aoutput.h
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/4496/trunk/servers/linux-outloud/aoutput.h
+END
+langswitch.h
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/!svn/ver/4438/trunk/servers/linux-outloud/langswitch.h
+END
+.indent.pro
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/!svn/ver/4732/trunk/servers/linux-outloud/.indent.pro
+END
+makefile.debug
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/4436/trunk/servers/linux-outloud/makefile.debug
+END
+VIAVOICE
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/!svn/ver/4047/trunk/servers/linux-outloud/VIAVOICE
+END
+alsaparams.c
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/!svn/ver/4047/trunk/servers/linux-outloud/alsaparams.c
+END
+makefile.tcl83
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/5381/trunk/servers/linux-outloud/makefile.tcl83
+END
+makefile.tcl84
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/6085/trunk/servers/linux-outloud/makefile.tcl84
+END
+makefile.x86_64
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/!svn/ver/4436/trunk/servers/linux-outloud/makefile.x86_64
+END
+Makefile
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/!svn/ver/4464/trunk/servers/linux-outloud/Makefile
+END
+asoundrc
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/!svn/ver/4566/trunk/servers/linux-outloud/asoundrc
+END
+eci.ini
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/4047/trunk/servers/linux-outloud/eci.ini
+END

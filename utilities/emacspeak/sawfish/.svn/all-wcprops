@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 32
+/svn/!svn/ver/4149/trunk/sawfish
+END
+.nosearch
+K 25
+svn:wc:ra_dav:version-url
+V 42
+/svn/!svn/ver/4149/trunk/sawfish/.nosearch
+END
+tools.jl
+K 25
+svn:wc:ra_dav:version-url
+V 41
+/svn/!svn/ver/4047/trunk/sawfish/tools.jl
+END
+sawfishrc
+K 25
+svn:wc:ra_dav:version-url
+V 42
+/svn/!svn/ver/4047/trunk/sawfish/sawfishrc
+END
+tts.jl
+K 25
+svn:wc:ra_dav:version-url
+V 39
+/svn/!svn/ver/4047/trunk/sawfish/tts.jl
+END

@@ -1,0 +1,269 @@
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/5864/trunk/sounds/cartoon-22k-mono
+END
+select-object.wav
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/4047/trunk/sounds/cartoon-22k-mono/select-object.wav
+END
+unmodified-object.wav
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/!svn/ver/4047/trunk/sounds/cartoon-22k-mono/unmodified-object.wav
+END
+help.wav
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/4047/trunk/sounds/cartoon-22k-mono/help.wav
+END
+left.wav
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/4047/trunk/sounds/cartoon-22k-mono/left.wav
+END
+fill-object.wav
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/!svn/ver/4047/trunk/sounds/cartoon-22k-mono/fill-object.wav
+END
+yes-answer.wav
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/4047/trunk/sounds/cartoon-22k-mono/yes-answer.wav
+END
+item.wav
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/4047/trunk/sounds/cartoon-22k-mono/item.wav
+END
+scroll.wav
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/!svn/ver/4047/trunk/sounds/cartoon-22k-mono/scroll.wav
+END
+full.wav
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/4047/trunk/sounds/cartoon-22k-mono/full.wav
+END
+section.wav
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/!svn/ver/4047/trunk/sounds/cartoon-22k-mono/section.wav
+END
+progress.wav
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/4047/trunk/sounds/cartoon-22k-mono/progress.wav
+END
+paragraph.wav
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/!svn/ver/4047/trunk/sounds/cartoon-22k-mono/paragraph.wav
+END
+y-answer.wav
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/4047/trunk/sounds/cartoon-22k-mono/y-answer.wav
+END
+delete-object.wav
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/4047/trunk/sounds/cartoon-22k-mono/delete-object.wav
+END
+new-mail.wav
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/4047/trunk/sounds/cartoon-22k-mono/new-mail.wav
+END
+off.wav
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/4047/trunk/sounds/cartoon-22k-mono/off.wav
+END
+button.wav
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/!svn/ver/4047/trunk/sounds/cartoon-22k-mono/button.wav
+END
+on.wav
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/!svn/ver/4047/trunk/sounds/cartoon-22k-mono/on.wav
+END
+right.wav
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/!svn/ver/4047/trunk/sounds/cartoon-22k-mono/right.wav
+END
+search-miss.wav
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/!svn/ver/4047/trunk/sounds/cartoon-22k-mono/search-miss.wav
+END
+working.wav
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/!svn/ver/5864/trunk/sounds/cartoon-22k-mono/working.wav
+END
+center.wav
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/!svn/ver/4047/trunk/sounds/cartoon-22k-mono/center.wav
+END
+quit.wav
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/4047/trunk/sounds/cartoon-22k-mono/quit.wav
+END
+large-movement.wav
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/!svn/ver/4047/trunk/sounds/cartoon-22k-mono/large-movement.wav
+END
+alert-user.wav
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/4047/trunk/sounds/cartoon-22k-mono/alert-user.wav
+END
+ask-question.wav
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/4047/trunk/sounds/cartoon-22k-mono/ask-question.wav
+END
+warn-user.wav
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/!svn/ver/4047/trunk/sounds/cartoon-22k-mono/warn-user.wav
+END
+modified-object.wav
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/4047/trunk/sounds/cartoon-22k-mono/modified-object.wav
+END
+.nosearch
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/!svn/ver/4149/trunk/sounds/cartoon-22k-mono/.nosearch
+END
+task-done.wav
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/!svn/ver/4047/trunk/sounds/cartoon-22k-mono/task-done.wav
+END
+search-hit.wav
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/4047/trunk/sounds/cartoon-22k-mono/search-hit.wav
+END
+n-answer.wav
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/4047/trunk/sounds/cartoon-22k-mono/n-answer.wav
+END
+deselect-object.wav
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/4047/trunk/sounds/cartoon-22k-mono/deselect-object.wav
+END
+alarm.wav
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/!svn/ver/4047/trunk/sounds/cartoon-22k-mono/alarm.wav
+END
+define-theme.el
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/!svn/ver/4047/trunk/sounds/cartoon-22k-mono/define-theme.el
+END
+mark-object.wav
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/!svn/ver/4047/trunk/sounds/cartoon-22k-mono/mark-object.wav
+END
+save-object.wav
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/!svn/ver/4047/trunk/sounds/cartoon-22k-mono/save-object.wav
+END
+open-object.wav
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/!svn/ver/4047/trunk/sounds/cartoon-22k-mono/open-object.wav
+END
+yank-object.wav
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/!svn/ver/4047/trunk/sounds/cartoon-22k-mono/yank-object.wav
+END
+no-answer.wav
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/!svn/ver/4047/trunk/sounds/cartoon-22k-mono/no-answer.wav
+END
+close-object.wav
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/4047/trunk/sounds/cartoon-22k-mono/close-object.wav
+END
+news.wav
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/4047/trunk/sounds/cartoon-22k-mono/news.wav
+END
+ellipses.wav
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/4047/trunk/sounds/cartoon-22k-mono/ellipses.wav
+END
+ask-short-question.wav
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/!svn/ver/4047/trunk/sounds/cartoon-22k-mono/ask-short-question.wav
+END

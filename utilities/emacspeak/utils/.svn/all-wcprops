@@ -1,0 +1,113 @@
+K 25
+svn:wc:ra_dav:version-url
+V 30
+/svn/!svn/ver/6077/trunk/utils
+END
+googlecode-upload.py
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/4342/trunk/utils/googlecode-upload.py
+END
+indent-files.el
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/4047/trunk/utils/indent-files.el
+END
+.nosearch
+K 25
+svn:wc:ra_dav:version-url
+V 40
+/svn/!svn/ver/4149/trunk/utils/.nosearch
+END
+update-email.pl
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/4047/trunk/utils/update-email.pl
+END
+v2p.pl
+K 25
+svn:wc:ra_dav:version-url
+V 37
+/svn/!svn/ver/4047/trunk/utils/v2p.pl
+END
+gen.sh
+K 25
+svn:wc:ra_dav:version-url
+V 37
+/svn/!svn/ver/4047/trunk/utils/gen.sh
+END
+byte-compile-dynamic.pl
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/4047/trunk/utils/byte-compile-dynamic.pl
+END
+list-files.pl
+K 25
+svn:wc:ra_dav:version-url
+V 44
+/svn/!svn/ver/4047/trunk/utils/list-files.pl
+END
+byte-dont-compile-dynamic.pl
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/!svn/ver/4047/trunk/utils/byte-dont-compile-dynamic.pl
+END
+gendoc.el
+K 25
+svn:wc:ra_dav:version-url
+V 40
+/svn/!svn/ver/4047/trunk/utils/gendoc.el
+END
+update-copyright.pl
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/4532/trunk/utils/update-copyright.pl
+END
+update-tts-url.pl
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/4047/trunk/utils/update-tts-url.pl
+END
+cvs2cl.pl
+K 25
+svn:wc:ra_dav:version-url
+V 40
+/svn/!svn/ver/4047/trunk/utils/cvs2cl.pl
+END
+code-utils.el
+K 25
+svn:wc:ra_dav:version-url
+V 44
+/svn/!svn/ver/4047/trunk/utils/code-utils.el
+END
+snd-server.tcl
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/svn/!svn/ver/4047/trunk/utils/snd-server.tcl
+END
+gsub.pl
+K 25
+svn:wc:ra_dav:version-url
+V 38
+/svn/!svn/ver/4047/trunk/utils/gsub.pl
+END
+ems-new
+K 25
+svn:wc:ra_dav:version-url
+V 38
+/svn/!svn/ver/4047/trunk/utils/ems-new
+END
+document-commands.el
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/6077/trunk/utils/document-commands.el
+END

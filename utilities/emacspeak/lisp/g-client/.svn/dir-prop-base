@@ -1,0 +1,10 @@
+K 10
+svn:ignore
+V 54
+*.elc
+.excludes
+*.tar.bz2
+g-loaddefs.el
+g-cus-load.el
+
+END

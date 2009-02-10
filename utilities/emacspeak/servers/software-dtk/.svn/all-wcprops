@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/svn/!svn/ver/4191/trunk/servers/software-dtk
+END
+.nosearch
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/!svn/ver/4149/trunk/servers/software-dtk/.nosearch
+END
+DTK
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/4047/trunk/servers/software-dtk/DTK
+END
+software-dtk.spec
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/4047/trunk/servers/software-dtk/software-dtk.spec
+END
+tcldtk.c
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/4047/trunk/servers/software-dtk/tcldtk.c
+END
+Makefile
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/4047/trunk/servers/software-dtk/Makefile
+END

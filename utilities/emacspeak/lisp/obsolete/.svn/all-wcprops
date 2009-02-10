@@ -1,0 +1,185 @@
+K 25
+svn:wc:ra_dav:version-url
+V 38
+/svn/!svn/ver/5552/trunk/lisp/obsolete
+END
+emacspeak-cyclebuffer.el
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/4047/trunk/lisp/obsolete/emacspeak-cyclebuffer.el
+END
+emacspeak-hyperbole.el
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/4532/trunk/lisp/obsolete/emacspeak-hyperbole.el
+END
+html-outline.el
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/5267/trunk/lisp/obsolete/html-outline.el
+END
+.nosearch
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/4149/trunk/lisp/obsolete/.nosearch
+END
+jc-voices.el
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/4047/trunk/lisp/obsolete/jc-voices.el
+END
+emacspeak-oo-browser.el
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/!svn/ver/4532/trunk/lisp/obsolete/emacspeak-oo-browser.el
+END
+fast-voice-lock.el
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/4532/trunk/lisp/obsolete/fast-voice-lock.el
+END
+outloud-css-speech.el
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/!svn/ver/4532/trunk/lisp/obsolete/outloud-css-speech.el
+END
+emacspeak-atom.el
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/4859/trunk/lisp/obsolete/emacspeak-atom.el
+END
+emacspeak-wrolo.el
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/4532/trunk/lisp/obsolete/emacspeak-wrolo.el
+END
+emacspeak-buff-sel.el
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/!svn/ver/5552/trunk/lisp/obsolete/emacspeak-buff-sel.el
+END
+emacspeak-nero.el
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/5550/trunk/lisp/obsolete/emacspeak-nero.el
+END
+voice-lock.el
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/4532/trunk/lisp/obsolete/voice-lock.el
+END
+emacspeak-imcom.el
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/4532/trunk/lisp/obsolete/emacspeak-imcom.el
+END
+emacspeak-rss.el
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/!svn/ver/4859/trunk/lisp/obsolete/emacspeak-rss.el
+END
+emacspeak-kotl.el
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/4532/trunk/lisp/obsolete/emacspeak-kotl.el
+END
+dtk-tcl.el
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/4532/trunk/lisp/obsolete/dtk-tcl.el
+END
+emacspeak-oalsaplayer.el
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/4532/trunk/lisp/obsolete/emacspeak-oalsaplayer.el
+END
+voice-settings.el
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/4532/trunk/lisp/obsolete/voice-settings.el
+END
+string.el
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/4671/trunk/lisp/obsolete/string.el
+END
+emacspeak-freeamp.el
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/!svn/ver/4532/trunk/lisp/obsolete/emacspeak-freeamp.el
+END
+emacspeak-atom-blogger.el
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/!svn/ver/4766/trunk/lisp/obsolete/emacspeak-atom-blogger.el
+END
+html-voice.el
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/4532/trunk/lisp/obsolete/html-voice.el
+END
+lazy-voice-lock.el
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/4532/trunk/lisp/obsolete/lazy-voice-lock.el
+END
+xml-parse.el
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/5146/trunk/lisp/obsolete/xml-parse.el
+END
+emacspeak-newdaisy.el
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/!svn/ver/5147/trunk/lisp/obsolete/emacspeak-newdaisy.el
+END
+dtk-css-speech.el
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/4532/trunk/lisp/obsolete/dtk-css-speech.el
+END
+xml-sexp.el
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/4273/trunk/lisp/obsolete/xml-sexp.el
+END
+font2voice.el
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/4047/trunk/lisp/obsolete/font2voice.el
+END
+jit-voice-lock.el
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/4047/trunk/lisp/obsolete/jit-voice-lock.el
+END

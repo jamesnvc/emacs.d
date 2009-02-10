@@ -1,0 +1,7 @@
+#!/bin/sh
+#$Id: vm-play 4047 2006-08-11 19:11:17Z tv.raman.tv $
+#Description: Wrapper for playing audio/wav attachments from vm
+#Provides hook for setting volume during playback.
+aumix -w 100
+play $1
+aumix -L  -f $HOME/.emacspeak/.aumixrc

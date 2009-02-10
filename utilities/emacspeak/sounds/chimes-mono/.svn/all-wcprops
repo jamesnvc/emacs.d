@@ -1,0 +1,281 @@
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/svn/!svn/ver/5864/trunk/sounds/chimes-mono
+END
+select-object.wav
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/4047/trunk/sounds/chimes-mono/select-object.wav
+END
+voice-mail.wav
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/!svn/ver/4047/trunk/sounds/chimes-mono/voice-mail.wav
+END
+unmodified-object.wav
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/4047/trunk/sounds/chimes-mono/unmodified-object.wav
+END
+help.wav
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/4047/trunk/sounds/chimes-mono/help.wav
+END
+fill-object.wav
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/!svn/ver/4047/trunk/sounds/chimes-mono/fill-object.wav
+END
+left.wav
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/4047/trunk/sounds/chimes-mono/left.wav
+END
+yes-answer.wav
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/!svn/ver/4047/trunk/sounds/chimes-mono/yes-answer.wav
+END
+item.wav
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/4047/trunk/sounds/chimes-mono/item.wav
+END
+scroll.wav
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/4047/trunk/sounds/chimes-mono/scroll.wav
+END
+tmp.wav
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/4047/trunk/sounds/chimes-mono/tmp.wav
+END
+section.wav
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/!svn/ver/4047/trunk/sounds/chimes-mono/section.wav
+END
+progress.wav
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/4047/trunk/sounds/chimes-mono/progress.wav
+END
+y-answer.wav
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/4047/trunk/sounds/chimes-mono/y-answer.wav
+END
+paragraph.wav
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/4047/trunk/sounds/chimes-mono/paragraph.wav
+END
+delete-object.wav
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/4047/trunk/sounds/chimes-mono/delete-object.wav
+END
+new-mail.wav
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/4047/trunk/sounds/chimes-mono/new-mail.wav
+END
+off.wav
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/4047/trunk/sounds/chimes-mono/off.wav
+END
+button.wav
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/4047/trunk/sounds/chimes-mono/button.wav
+END
+on.wav
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/4047/trunk/sounds/chimes-mono/on.wav
+END
+enter.wav
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/4047/trunk/sounds/chimes-mono/enter.wav
+END
+right.wav
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/4047/trunk/sounds/chimes-mono/right.wav
+END
+search-miss.wav
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/!svn/ver/4047/trunk/sounds/chimes-mono/search-miss.wav
+END
+working.wav
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/!svn/ver/5864/trunk/sounds/chimes-mono/working.wav
+END
+center.wav
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/4047/trunk/sounds/chimes-mono/center.wav
+END
+large-movement.wav
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/!svn/ver/4047/trunk/sounds/chimes-mono/large-movement.wav
+END
+ask-question.wav
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/!svn/ver/4047/trunk/sounds/chimes-mono/ask-question.wav
+END
+alert-user.wav
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/!svn/ver/4047/trunk/sounds/chimes-mono/alert-user.wav
+END
+warn-user.wav
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/4047/trunk/sounds/chimes-mono/warn-user.wav
+END
+modified-object.wav
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/4047/trunk/sounds/chimes-mono/modified-object.wav
+END
+.nosearch
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/4149/trunk/sounds/chimes-mono/.nosearch
+END
+task-done.wav
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/4047/trunk/sounds/chimes-mono/task-done.wav
+END
+search-hit.wav
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/!svn/ver/4047/trunk/sounds/chimes-mono/search-hit.wav
+END
+n-answer.wav
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/4047/trunk/sounds/chimes-mono/n-answer.wav
+END
+alarm.wav
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/4047/trunk/sounds/chimes-mono/alarm.wav
+END
+deselect-object.wav
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/4047/trunk/sounds/chimes-mono/deselect-object.wav
+END
+define-theme.el
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/!svn/ver/4047/trunk/sounds/chimes-mono/define-theme.el
+END
+mark-object.wav
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/!svn/ver/4047/trunk/sounds/chimes-mono/mark-object.wav
+END
+save-object.wav
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/!svn/ver/4047/trunk/sounds/chimes-mono/save-object.wav
+END
+open-object.wav
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/!svn/ver/4047/trunk/sounds/chimes-mono/open-object.wav
+END
+yank-object.wav
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/!svn/ver/4047/trunk/sounds/chimes-mono/yank-object.wav
+END
+no-answer.wav
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/4047/trunk/sounds/chimes-mono/no-answer.wav
+END
+close-object.wav
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/!svn/ver/4047/trunk/sounds/chimes-mono/close-object.wav
+END
+shutdown.wav
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/4047/trunk/sounds/chimes-mono/shutdown.wav
+END
+news.wav
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/4047/trunk/sounds/chimes-mono/news.wav
+END
+ellipses.wav
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/4047/trunk/sounds/chimes-mono/ellipses.wav
+END
+ask-short-question.wav
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/4047/trunk/sounds/chimes-mono/ask-short-question.wav
+END

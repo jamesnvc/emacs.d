@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/4761/trunk/lisp/obsolete/atom-blogger
+END
+old-blogger-edit.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/!svn/ver/4761/trunk/lisp/obsolete/atom-blogger/old-blogger-edit.xsl
+END
+COPYING
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/!svn/ver/4761/trunk/lisp/obsolete/atom-blogger/COPYING
+END
+blogger-edit.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/4761/trunk/lisp/obsolete/atom-blogger/blogger-edit.xsl
+END
+old-atom-blogger.el
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/!svn/ver/4761/trunk/lisp/obsolete/atom-blogger/old-atom-blogger.el
+END
+Makefile
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/!svn/ver/4761/trunk/lisp/obsolete/atom-blogger/Makefile
+END
+atom-blogger.el
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/!svn/ver/4761/trunk/lisp/obsolete/atom-blogger/atom-blogger.el
+END

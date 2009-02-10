@@ -1,0 +1,299 @@
+K 25
+svn:wc:ra_dav:version-url
+V 42
+/svn/!svn/ver/5864/trunk/sounds/default-8k
+END
+shutdown.au
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/4047/trunk/sounds/default-8k/shutdown.au
+END
+on.au
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/4047/trunk/sounds/default-8k/on.au
+END
+search-miss.au
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/4047/trunk/sounds/default-8k/search-miss.au
+END
+center.au
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/4047/trunk/sounds/default-8k/center.au
+END
+working.au
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/5864/trunk/sounds/default-8k/working.au
+END
+quit.au
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/4047/trunk/sounds/default-8k/quit.au
+END
+large-movement.au
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/!svn/ver/4047/trunk/sounds/default-8k/large-movement.au
+END
+select-object.au
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/!svn/ver/4047/trunk/sounds/default-8k/select-object.au
+END
+modified-object.au
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/4047/trunk/sounds/default-8k/modified-object.au
+END
+voice-mail.au
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/4047/trunk/sounds/default-8k/voice-mail.au
+END
+unmodified-object.au
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/4047/trunk/sounds/default-8k/unmodified-object.au
+END
+define-theme.elc
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/!svn/ver/4047/trunk/sounds/default-8k/define-theme.elc
+END
+n-answer.au
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/4047/trunk/sounds/default-8k/n-answer.au
+END
+deselect-object.au
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/4047/trunk/sounds/default-8k/deselect-object.au
+END
+alarm.au
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/4047/trunk/sounds/default-8k/alarm.au
+END
+yes-answer.au
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/4047/trunk/sounds/default-8k/yes-answer.au
+END
+mark-object.au
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/4047/trunk/sounds/default-8k/mark-object.au
+END
+save-object.au
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/4047/trunk/sounds/default-8k/save-object.au
+END
+y-answer.au
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/4047/trunk/sounds/default-8k/y-answer.au
+END
+paragraph.au
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/!svn/ver/4047/trunk/sounds/default-8k/paragraph.au
+END
+yank-object.au
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/4047/trunk/sounds/default-8k/yank-object.au
+END
+new-mail.au
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/4047/trunk/sounds/default-8k/new-mail.au
+END
+button.au
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/4047/trunk/sounds/default-8k/button.au
+END
+news.au
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/4047/trunk/sounds/default-8k/news.au
+END
+.nosearch
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/4149/trunk/sounds/default-8k/.nosearch
+END
+right.au
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/4047/trunk/sounds/default-8k/right.au
+END
+enter.au
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/4047/trunk/sounds/default-8k/enter.au
+END
+ellipses.au
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/4047/trunk/sounds/default-8k/ellipses.au
+END
+ask-short-question.au
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/!svn/ver/4047/trunk/sounds/default-8k/ask-short-question.au
+END
+alert-user.au
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/4047/trunk/sounds/default-8k/alert-user.au
+END
+ask-question.au
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/!svn/ver/4047/trunk/sounds/default-8k/ask-question.au
+END
+warn-user.au
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/!svn/ver/4047/trunk/sounds/default-8k/warn-user.au
+END
+task-done.au
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/!svn/ver/4047/trunk/sounds/default-8k/task-done.au
+END
+define-theme.el
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/!svn/ver/4047/trunk/sounds/default-8k/define-theme.el
+END
+search-hit.au
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/4047/trunk/sounds/default-8k/search-hit.au
+END
+help.au
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/4047/trunk/sounds/default-8k/help.au
+END
+fill-object.au
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/4047/trunk/sounds/default-8k/fill-object.au
+END
+left.au
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/4047/trunk/sounds/default-8k/left.au
+END
+scroll.au
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/4047/trunk/sounds/default-8k/scroll.au
+END
+item.au
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/4047/trunk/sounds/default-8k/item.au
+END
+full.au
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/4047/trunk/sounds/default-8k/full.au
+END
+progress.au
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/4047/trunk/sounds/default-8k/progress.au
+END
+section.au
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/4047/trunk/sounds/default-8k/section.au
+END
+open-object.au
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/4047/trunk/sounds/default-8k/open-object.au
+END
+delete-object.au
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/!svn/ver/4047/trunk/sounds/default-8k/delete-object.au
+END
+window-resize.au
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/!svn/ver/4047/trunk/sounds/default-8k/window-resize.au
+END
+no-answer.au
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/!svn/ver/4047/trunk/sounds/default-8k/no-answer.au
+END
+close-object.au
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/!svn/ver/4047/trunk/sounds/default-8k/close-object.au
+END
+off.au
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/4047/trunk/sounds/default-8k/off.au
+END

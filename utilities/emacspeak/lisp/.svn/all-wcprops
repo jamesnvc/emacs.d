@@ -1,0 +1,1151 @@
+K 25
+svn:wc:ra_dav:version-url
+V 29
+/svn/!svn/ver/6103/trunk/lisp
+END
+emacspeak-webspace.el
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/6080/trunk/lisp/emacspeak-webspace.el
+END
+emacspeak-filtertext.el
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-filtertext.el
+END
+.files
+K 25
+svn:wc:ra_dav:version-url
+V 36
+/svn/!svn/ver/4339/trunk/lisp/.files
+END
+emacspeak-info.el
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-info.el
+END
+amixer.el
+K 25
+svn:wc:ra_dav:version-url
+V 39
+/svn/!svn/ver/5798/trunk/lisp/amixer.el
+END
+emacspeak-analog.el
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-analog.el
+END
+emacspeak-tabulate.el
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-tabulate.el
+END
+emacspeak-eperiodic.el
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-eperiodic.el
+END
+emacspeak-dmacro.el
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-dmacro.el
+END
+emacspeak-moz.el
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-moz.el
+END
+emacspeak-custom.el
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-custom.el
+END
+emacspeak-url-template.el
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/!svn/ver/6103/trunk/lisp/emacspeak-url-template.el
+END
+emacspeak-kmacro.el
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-kmacro.el
+END
+emacspeak-damlite.el
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-damlite.el
+END
+emacspeak-enriched.el
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-enriched.el
+END
+emacspeak-c.el
+K 25
+svn:wc:ra_dav:version-url
+V 44
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-c.el
+END
+emacspeak-tcl.el
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-tcl.el
+END
+emacspeak-midge.el
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-midge.el
+END
+emacspeak-auctex.el
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-auctex.el
+END
+outloud-voices.el
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/5798/trunk/lisp/outloud-voices.el
+END
+emacspeak-ses.el
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-ses.el
+END
+acss-structure.el
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/5798/trunk/lisp/acss-structure.el
+END
+emacspeak-gomoku.el
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-gomoku.el
+END
+emacspeak-fix-interactive.el
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-fix-interactive.el
+END
+flite-voices.el
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/svn/!svn/ver/5798/trunk/lisp/flite-voices.el
+END
+emacspeak-table-ui.el
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/5925/trunk/lisp/emacspeak-table-ui.el
+END
+emacspeak-xml-shell.el
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-xml-shell.el
+END
+emacspeak-find-dired.el
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-find-dired.el
+END
+emacspeak-w3m.el
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/5825/trunk/lisp/emacspeak-w3m.el
+END
+emacspeak-piglets.el
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-piglets.el
+END
+russian-spelling.el
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/5798/trunk/lisp/russian-spelling.el
+END
+emacspeak-desktop.el
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-desktop.el
+END
+emacspeak-muse.el
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-muse.el
+END
+emacspeak-php-mode.el
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-php-mode.el
+END
+emacspeak-view.el
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-view.el
+END
+emacspeak-iswitchb.el
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-iswitchb.el
+END
+emacspeak-sh-script.el
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-sh-script.el
+END
+emacspeak-jawbreaker.el
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-jawbreaker.el
+END
+elib-readme
+K 25
+svn:wc:ra_dav:version-url
+V 41
+/svn/!svn/ver/4047/trunk/lisp/elib-readme
+END
+emacspeak-python.el
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-python.el
+END
+emacspeak-apt-utils.el
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/5961/trunk/lisp/emacspeak-apt-utils.el
+END
+emacspeak-folding.el
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-folding.el
+END
+emacspeak-vm.el
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-vm.el
+END
+emacspeak-ocr.el
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/5996/trunk/lisp/emacspeak-ocr.el
+END
+emacspeak-message.el
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-message.el
+END
+emacspeak-tempo.el
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-tempo.el
+END
+tapestry.el
+K 25
+svn:wc:ra_dav:version-url
+V 41
+/svn/!svn/ver/5798/trunk/lisp/tapestry.el
+END
+emacspeak-jabber.el
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/6070/trunk/lisp/emacspeak-jabber.el
+END
+emacspeak-amphetadesk.el
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-amphetadesk.el
+END
+emacspeak-keymap.el
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/6007/trunk/lisp/emacspeak-keymap.el
+END
+emacspeak-madplay.el
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-madplay.el
+END
+emacspeak-todo-mode.el
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-todo-mode.el
+END
+emacspeak-bbdb.el
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/5987/trunk/lisp/emacspeak-bbdb.el
+END
+emacspeak-gridtext.el
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-gridtext.el
+END
+emacspeak-metapost.el
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-metapost.el
+END
+emacspeak-mspools.el
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-mspools.el
+END
+emacspeak-supercite.el
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-supercite.el
+END
+emacspeak-websearch.el
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/6026/trunk/lisp/emacspeak-websearch.el
+END
+emacspeak-rmail.el
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-rmail.el
+END
+emacspeak-arc.el
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-arc.el
+END
+emacspeak-zinf.el
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-zinf.el
+END
+emacspeak-hide.el
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/6005/trunk/lisp/emacspeak-hide.el
+END
+emacspeak-sounds.el
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-sounds.el
+END
+emacspeak-proced.el
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/5965/trunk/lisp/emacspeak-proced.el
+END
+emacspeak-ediff.el
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-ediff.el
+END
+dtk-unicode.el
+K 25
+svn:wc:ra_dav:version-url
+V 44
+/svn/!svn/ver/6000/trunk/lisp/dtk-unicode.el
+END
+emacspeak-firevox.el
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-firevox.el
+END
+emacspeak-net-utils.el
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-net-utils.el
+END
+emacspeak-tar.el
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-tar.el
+END
+emacspeak-entertain.el
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-entertain.el
+END
+emacspeak-ess.el
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-ess.el
+END
+emacspeak-xslt.el
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/6034/trunk/lisp/emacspeak-xslt.el
+END
+emacspeak-re-builder.el
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-re-builder.el
+END
+emacspeak-flyspell.el
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-flyspell.el
+END
+dtk-interp.el
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/svn/!svn/ver/5798/trunk/lisp/dtk-interp.el
+END
+emacspeak-advice.el
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/6103/trunk/lisp/emacspeak-advice.el
+END
+emacspeak-reftex.el
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-reftex.el
+END
+emacspeak-emms.el
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/5830/trunk/lisp/emacspeak-emms.el
+END
+emacspeak.el
+K 25
+svn:wc:ra_dav:version-url
+V 42
+/svn/!svn/ver/5798/trunk/lisp/emacspeak.el
+END
+emacspeak-sigbegone.el
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-sigbegone.el
+END
+emacspeak-bs.el
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-bs.el
+END
+emacspeak-cperl.el
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-cperl.el
+END
+emacspeak-add-log.el
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-add-log.el
+END
+README
+K 25
+svn:wc:ra_dav:version-url
+V 36
+/svn/!svn/ver/4047/trunk/lisp/README
+END
+emacspeak-autoload.el
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-autoload.el
+END
+emacspeak-load-path.el
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-load-path.el
+END
+emacspeak-find-func.el
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-find-func.el
+END
+emacspeak-cmuscheme.el
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-cmuscheme.el
+END
+emacspeak-calendar.el
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-calendar.el
+END
+emacspeak-webmarks.el
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-webmarks.el
+END
+emacspeak-man.el
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-man.el
+END
+emacspeak-texinfo.el
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-texinfo.el
+END
+emacspeak-generic.el
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-generic.el
+END
+emacspeak-nxml.el
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-nxml.el
+END
+emacspeak-redefine.el
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/6001/trunk/lisp/emacspeak-redefine.el
+END
+emacspeak-aumix.el
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-aumix.el
+END
+emacspeak-table.el
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-table.el
+END
+emacspeak-windmove.el
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-windmove.el
+END
+emacspeak-solitaire.el
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-solitaire.el
+END
+emacspeak-swbuff.el
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-swbuff.el
+END
+emacspeak-bmk-mgr.el
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-bmk-mgr.el
+END
+emacspeak-sql.el
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-sql.el
+END
+emacspeak-perl.el
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-perl.el
+END
+emacspeak-speak.el
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/5997/trunk/lisp/emacspeak-speak.el
+END
+emacspeak-bookmark.el
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-bookmark.el
+END
+dectalk-voices.el
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/5798/trunk/lisp/dectalk-voices.el
+END
+espeak-voices.el
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/5931/trunk/lisp/espeak-voices.el
+END
+emacspeak-finder.el
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-finder.el
+END
+.skeleton.el
+K 25
+svn:wc:ra_dav:version-url
+V 42
+/svn/!svn/ver/5222/trunk/lisp/.skeleton.el
+END
+emacspeak-gnus.el
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/5940/trunk/lisp/emacspeak-gnus.el
+END
+emacspeak-eterm.el
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-eterm.el
+END
+unicode-todo.txt
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/5684/trunk/lisp/unicode-todo.txt
+END
+emacspeak-wizards.el
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/6081/trunk/lisp/emacspeak-wizards.el
+END
+emacspeak-speedbar.el
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-speedbar.el
+END
+emacspeak-rpm-spec.el
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-rpm-spec.el
+END
+emacspeak-forms.el
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-forms.el
+END
+emacspeak-org.el
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-org.el
+END
+emacspeak-dired.el
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-dired.el
+END
+Makefile
+K 25
+svn:wc:ra_dav:version-url
+V 38
+/svn/!svn/ver/5734/trunk/lisp/Makefile
+END
+emacspeak-xslide.el
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-xslide.el
+END
+emacspeak-gnuplot.el
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-gnuplot.el
+END
+emacspeak-alsaplayer.el
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-alsaplayer.el
+END
+emacspeak-webutils.el
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/6038/trunk/lisp/emacspeak-webutils.el
+END
+.rss
+K 25
+svn:wc:ra_dav:version-url
+V 34
+/svn/!svn/ver/4047/trunk/lisp/.rss
+END
+emacspeak-setup.el
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/6078/trunk/lisp/emacspeak-setup.el
+END
+emacspeak-actions.el
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-actions.el
+END
+emacspeak-jde.el
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-jde.el
+END
+emacspeak-checkdoc.el
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-checkdoc.el
+END
+emacspeak-tnt.el
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-tnt.el
+END
+emacspeak-realaudio.el
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/5962/trunk/lisp/emacspeak-realaudio.el
+END
+emacspeak-ansi-color.el
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-ansi-color.el
+END
+emacspeak-dismal.el
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-dismal.el
+END
+emacspeak-sudoku.el
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/5961/trunk/lisp/emacspeak-sudoku.el
+END
+emacspeak-we.el
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/svn/!svn/ver/6029/trunk/lisp/emacspeak-we.el
+END
+emacspeak-eshell.el
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-eshell.el
+END
+emacspeak-ediary.el
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-ediary.el
+END
+emacspeak-winring.el
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-winring.el
+END
+emacspeak-dictation.el
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-dictation.el
+END
+emacspeak-outline.el
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-outline.el
+END
+multispeech-voices.el
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/5798/trunk/lisp/multispeech-voices.el
+END
+emacspeak-ibuffer.el
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-ibuffer.el
+END
+emacspeak-facemenu.el
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-facemenu.el
+END
+emacspeak-widget.el
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-widget.el
+END
+emacspeak-view-process.el
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-view-process.el
+END
+emacspeak-browse-kill-ring.el
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-browse-kill-ring.el
+END
+emacspeak-ispell.el
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-ispell.el
+END
+emacspeak-w3.el
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/svn/!svn/ver/5830/trunk/lisp/emacspeak-w3.el
+END
+emacspeak-etable.el
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-etable.el
+END
+emacspeak-rpm.el
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-rpm.el
+END
+emacspeak-calc.el
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-calc.el
+END
+emacspeak-babel.el
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-babel.el
+END
+emacspeak-pcl-cvs.el
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-pcl-cvs.el
+END
+emacspeak-pronounce.el
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-pronounce.el
+END
+emacspeak-erc.el
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-erc.el
+END
+emacspeak-mpg123.el
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-mpg123.el
+END
+emacspeak-personality.el
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-personality.el
+END
+emacspeak-tetris.el
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-tetris.el
+END
+emacspeak-ido.el
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-ido.el
+END
+emacspeak-tapestry.el
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-tapestry.el
+END
+emacspeak-bibtex.el
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-bibtex.el
+END
+emacspeak-imenu.el
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-imenu.el
+END
+emacspeak-eudc.el
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-eudc.el
+END
+xml-parse.el
+K 25
+svn:wc:ra_dav:version-url
+V 42
+/svn/!svn/ver/5798/trunk/lisp/xml-parse.el
+END
+emacspeak-psgml.el
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-psgml.el
+END
+emacspeak-m-player.el
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/6052/trunk/lisp/emacspeak-m-player.el
+END
+emacspeak-calculator.el
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-calculator.el
+END
+emacspeak-ecb.el
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-ecb.el
+END
+emacspeak-remote.el
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-remote.el
+END
+dtk-speak.el
+K 25
+svn:wc:ra_dav:version-url
+V 42
+/svn/!svn/ver/5960/trunk/lisp/dtk-speak.el
+END
+emacspeak-js2.el
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-js2.el
+END
+emacspeak-make-mode.el
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-make-mode.el
+END
+emacspeak-tdtd.el
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-tdtd.el
+END
+stack-f.el
+K 25
+svn:wc:ra_dav:version-url
+V 40
+/svn/!svn/ver/5798/trunk/lisp/stack-f.el
+END
+emacspeak-sawfish.el
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-sawfish.el
+END
+emacspeak-apt-sources.el
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/5961/trunk/lisp/emacspeak-apt-sources.el
+END
+emacspeak-dictionary.el
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-dictionary.el
+END
+emacspeak-xslt-process.el
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-xslt-process.el
+END
+emacspeak-daisy.el
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-daisy.el
+END
+cd-tool.el
+K 25
+svn:wc:ra_dav:version-url
+V 40
+/svn/!svn/ver/5798/trunk/lisp/cd-tool.el
+END
+emacspeak-hideshow.el
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-hideshow.el
+END
+emacspeak-replace.el
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-replace.el
+END
+voice-setup.el
+K 25
+svn:wc:ra_dav:version-url
+V 44
+/svn/!svn/ver/6060/trunk/lisp/voice-setup.el
+END
+emacspeak-newsticker.el
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-newsticker.el
+END
+emacspeak-wdired.el
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-wdired.el
+END
+emacspeak-gud.el
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-gud.el
+END
+emacspeak-ruby.el
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-ruby.el
+END
+emacspeak-buff-menu.el
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-buff-menu.el
+END
+emacspeak-cedet.el
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-cedet.el
+END
+emacspeak-sgml-mode.el
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-sgml-mode.el
+END
+emacspeak-preamble.el
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-preamble.el
+END
+emacspeak-compile.el
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/5798/trunk/lisp/emacspeak-compile.el
+END

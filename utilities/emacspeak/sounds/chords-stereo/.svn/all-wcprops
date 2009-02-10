@@ -1,0 +1,65 @@
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/svn/!svn/ver/4149/trunk/sounds/chords-stereo
+END
+.nosearch
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/!svn/ver/4149/trunk/sounds/chords-stereo/.nosearch
+END
+y-answer.wav
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/!svn/ver/4047/trunk/sounds/chords-stereo/y-answer.wav
+END
+open-object.wav
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/4047/trunk/sounds/chords-stereo/open-object.wav
+END
+delete-object.wav
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/4047/trunk/sounds/chords-stereo/delete-object.wav
+END
+close-object.wav
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/!svn/ver/4047/trunk/sounds/chords-stereo/close-object.wav
+END
+define-theme.el
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/4047/trunk/sounds/chords-stereo/define-theme.el
+END
+yes-answer.wav
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/!svn/ver/4047/trunk/sounds/chords-stereo/yes-answer.wav
+END
+mark-object.wav
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/4047/trunk/sounds/chords-stereo/mark-object.wav
+END
+large-movement.wav
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/!svn/ver/4047/trunk/sounds/chords-stereo/large-movement.wav
+END
+save-object.wav
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/4047/trunk/sounds/chords-stereo/save-object.wav
+END

@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 39
+/svn/!svn/ver/5585/trunk/servers/python
+END
+acss.py
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/4047/trunk/servers/python/acss.py
+END
+.nosearch
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/4149/trunk/servers/python/.nosearch
+END
+speaker.py
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/5585/trunk/servers/python/speaker.py
+END
+HTTPSpeaker.py
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/5584/trunk/servers/python/HTTPSpeaker.py
+END
+outloud.py
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/4047/trunk/servers/python/outloud.py
+END
+README
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/4047/trunk/servers/python/README
+END
+speakable.py
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/4047/trunk/servers/python/speakable.py
+END
+dectalk.py
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/4047/trunk/servers/python/dectalk.py
+END

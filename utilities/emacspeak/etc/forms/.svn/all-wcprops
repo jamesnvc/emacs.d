@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 34
+/svn/!svn/ver/4149/trunk/etc/forms
+END
+.nosearch
+K 25
+svn:wc:ra_dav:version-url
+V 44
+/svn/!svn/ver/4149/trunk/etc/forms/.nosearch
+END
+pilot-addresses.el
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/4047/trunk/etc/forms/pilot-addresses.el
+END
+apache-clf.el
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/4047/trunk/etc/forms/apache-clf.el
+END
+maillog.el
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/svn/!svn/ver/4047/trunk/etc/forms/maillog.el
+END
+aumix-rc.el
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/4047/trunk/etc/forms/aumix-rc.el
+END
+messages.el
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/4047/trunk/etc/forms/messages.el
+END

@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 35
+/svn/!svn/ver/4149/trunk/etc/tables
+END
+.nosearch
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/svn/!svn/ver/4149/trunk/etc/tables/.nosearch
+END
+s-caltrain.tab
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/4047/trunk/etc/tables/s-caltrain.tab
+END
+fares.tab
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/svn/!svn/ver/4047/trunk/etc/tables/fares.tab
+END
+matrix.dat
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/4047/trunk/etc/tables/matrix.dat
+END
+tables.html
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/4047/trunk/etc/tables/tables.html
+END
+n-caltrain.tab
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/4047/trunk/etc/tables/n-caltrain.tab
+END

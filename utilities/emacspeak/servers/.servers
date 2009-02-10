@@ -1,0 +1,10 @@
+#$Id: .servers 4333 2007-01-19 02:33:36Z tv.raman.tv $
+dtk-exp
+dtk-mv
+dtk-soft
+outloud
+ssh-outloud
+ssh-dtk-exp
+dsp-outloud
+multispeech
+espeak

@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 41
+/svn/!svn/ver/4925/trunk/servers/obsolete
+END
+dsp-outloud
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/4667/trunk/servers/obsolete/dsp-outloud
+END
+dtk-mv
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/4667/trunk/servers/obsolete/dtk-mv
+END
+ssh-tts
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/4668/trunk/servers/obsolete/ssh-tts
+END
+tts-utils
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/4925/trunk/servers/obsolete/tts-utils
+END
+ssh-dsp-outloud
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/4667/trunk/servers/obsolete/ssh-dsp-outloud
+END
+remote-tcl
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/4667/trunk/servers/obsolete/remote-tcl
+END
+stdiosynth-notes
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/!svn/ver/4669/trunk/servers/obsolete/stdiosynth-notes
+END

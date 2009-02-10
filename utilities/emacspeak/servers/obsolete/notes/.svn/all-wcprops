@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/4668/trunk/servers/obsolete/notes
+END
+.nosearch
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/4668/trunk/servers/obsolete/notes/.nosearch
+END
+notes.el
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/4668/trunk/servers/obsolete/notes/notes.el
+END
+notes.c
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/!svn/ver/4668/trunk/servers/obsolete/notes/notes.c
+END
+Makefile
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/4668/trunk/servers/obsolete/notes/Makefile
+END

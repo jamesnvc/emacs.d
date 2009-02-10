@@ -1,0 +1,13 @@
+K 10
+svn:ignore
+V 97
+*.elc
+emacspeak-finder-inf.el
+README
+emacspeak-loaddefs.el
+emacspeak-cus-load.el
+patches
+TAGS
+gm
+
+END

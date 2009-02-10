@@ -1,0 +1,197 @@
+K 25
+svn:wc:ra_dav:version-url
+V 31
+/svn/!svn/ver/4266/trunk/debian
+END
+control
+K 25
+svn:wc:ra_dav:version-url
+V 39
+/svn/!svn/ver/4256/trunk/debian/control
+END
+docs.~1~
+K 25
+svn:wc:ra_dav:version-url
+V 40
+/svn/!svn/ver/4256/trunk/debian/docs.~1~
+END
+manpage.sgml.ex
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/4256/trunk/debian/manpage.sgml.ex
+END
+docs
+K 25
+svn:wc:ra_dav:version-url
+V 36
+/svn/!svn/ver/4256/trunk/debian/docs
+END
+info
+K 25
+svn:wc:ra_dav:version-url
+V 36
+/svn/!svn/ver/4256/trunk/debian/info
+END
+postinst.ex
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/svn/!svn/ver/4256/trunk/debian/postinst.ex
+END
+preinst.ex
+K 25
+svn:wc:ra_dav:version-url
+V 42
+/svn/!svn/ver/4256/trunk/debian/preinst.ex
+END
+postrm.ex
+K 25
+svn:wc:ra_dav:version-url
+V 41
+/svn/!svn/ver/4256/trunk/debian/postrm.ex
+END
+prerm.ex
+K 25
+svn:wc:ra_dav:version-url
+V 40
+/svn/!svn/ver/4256/trunk/debian/prerm.ex
+END
+conffiles.ex.~1~
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/4256/trunk/debian/conffiles.ex.~1~
+END
+menu.ex
+K 25
+svn:wc:ra_dav:version-url
+V 39
+/svn/!svn/ver/4256/trunk/debian/menu.ex
+END
+.nosearch
+K 25
+svn:wc:ra_dav:version-url
+V 41
+/svn/!svn/ver/4266/trunk/debian/.nosearch
+END
+emacspeak.doc-base.EX
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/4256/trunk/debian/emacspeak.doc-base.EX
+END
+emacsen-remove.ex
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/4256/trunk/debian/emacsen-remove.ex
+END
+watch.ex
+K 25
+svn:wc:ra_dav:version-url
+V 40
+/svn/!svn/ver/4256/trunk/debian/watch.ex
+END
+manpage.xml.ex
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/4256/trunk/debian/manpage.xml.ex
+END
+manpage.1.ex
+K 25
+svn:wc:ra_dav:version-url
+V 44
+/svn/!svn/ver/4256/trunk/debian/manpage.1.ex
+END
+compat
+K 25
+svn:wc:ra_dav:version-url
+V 38
+/svn/!svn/ver/4256/trunk/debian/compat
+END
+conffiles.ex
+K 25
+svn:wc:ra_dav:version-url
+V 44
+/svn/!svn/ver/4256/trunk/debian/conffiles.ex
+END
+changelog~
+K 25
+svn:wc:ra_dav:version-url
+V 42
+/svn/!svn/ver/4256/trunk/debian/changelog~
+END
+emacspeak-default.ex
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/4256/trunk/debian/emacspeak-default.ex
+END
+emacsen-startup.ex
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/4256/trunk/debian/emacsen-startup.ex
+END
+changelog
+K 25
+svn:wc:ra_dav:version-url
+V 41
+/svn/!svn/ver/4256/trunk/debian/changelog
+END
+emacsen-install.ex
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/4256/trunk/debian/emacsen-install.ex
+END
+rules
+K 25
+svn:wc:ra_dav:version-url
+V 37
+/svn/!svn/ver/4256/trunk/debian/rules
+END
+dirs.~1~
+K 25
+svn:wc:ra_dav:version-url
+V 40
+/svn/!svn/ver/4256/trunk/debian/dirs.~1~
+END
+init.d.ex
+K 25
+svn:wc:ra_dav:version-url
+V 41
+/svn/!svn/ver/4256/trunk/debian/init.d.ex
+END
+dirs
+K 25
+svn:wc:ra_dav:version-url
+V 36
+/svn/!svn/ver/4256/trunk/debian/dirs
+END
+copyright.~1~
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/svn/!svn/ver/4256/trunk/debian/copyright.~1~
+END
+copyright
+K 25
+svn:wc:ra_dav:version-url
+V 41
+/svn/!svn/ver/4256/trunk/debian/copyright
+END
+control.~1~
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/svn/!svn/ver/4256/trunk/debian/control.~1~
+END
+README.Debian
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/svn/!svn/ver/4256/trunk/debian/README.Debian
+END

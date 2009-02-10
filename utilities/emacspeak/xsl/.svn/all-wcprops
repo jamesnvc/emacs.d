@@ -1,0 +1,311 @@
+K 25
+svn:wc:ra_dav:version-url
+V 28
+/svn/!svn/ver/6100/trunk/xsl
+END
+content.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 40
+/svn/!svn/ver/6018/trunk/xsl/content.xsl
+END
+count-matches.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/5222/trunk/xsl/count-matches.xsl
+END
+strip-word.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/svn/!svn/ver/6018/trunk/xsl/strip-word.xsl
+END
+fv.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 35
+/svn/!svn/ver/6018/trunk/xsl/fv.xsl
+END
+mug.xml
+K 25
+svn:wc:ra_dav:version-url
+V 36
+/svn/!svn/ver/4047/trunk/xsl/mug.xml
+END
+xml2sexp.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 41
+/svn/!svn/ver/6018/trunk/xsl/xml2sexp.xsl
+END
+auto-atom-discover.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/6018/trunk/xsl/auto-atom-discover.xsl
+END
+list-tables.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 44
+/svn/!svn/ver/6018/trunk/xsl/list-tables.xsl
+END
+default.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 40
+/svn/!svn/ver/6018/trunk/xsl/default.xsl
+END
+unravel-tables.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/6018/trunk/xsl/unravel-tables.xsl
+END
+toc.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 36
+/svn/!svn/ver/6018/trunk/xsl/toc.xsl
+END
+common.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 39
+/svn/!svn/ver/6018/trunk/xsl/common.xsl
+END
+identity.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 41
+/svn/!svn/ver/6018/trunk/xsl/identity.xsl
+END
+xpath-junk.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/svn/!svn/ver/6018/trunk/xsl/xpath-junk.xsl
+END
+id-values.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 42
+/svn/!svn/ver/6018/trunk/xsl/id-values.xsl
+END
+linearize-tables.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/6018/trunk/xsl/linearize-tables.xsl
+END
+kml2html.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 41
+/svn/!svn/ver/6018/trunk/xsl/kml2html.xsl
+END
+anchors.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 40
+/svn/!svn/ver/6018/trunk/xsl/anchors.xsl
+END
+enumerate-tables.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/6018/trunk/xsl/enumerate-tables.xsl
+END
+sort-tables.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 44
+/svn/!svn/ver/6018/trunk/xsl/sort-tables.xsl
+END
+smil-anchors.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/svn/!svn/ver/6018/trunk/xsl/smil-anchors.xsl
+END
+extract-node-by-id.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/6018/trunk/xsl/extract-node-by-id.xsl
+END
+nuke-noscript.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/6018/trunk/xsl/nuke-noscript.xsl
+END
+add-submit-button.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/6018/trunk/xsl/add-submit-button.xsl
+END
+legacy-atom.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 44
+/svn/!svn/ver/6018/trunk/xsl/legacy-atom.xsl
+END
+object.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 39
+/svn/!svn/ver/6018/trunk/xsl/object.xsl
+END
+emapspeak.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 42
+/svn/!svn/ver/6018/trunk/xsl/emapspeak.xsl
+END
+schema-documentation.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/6018/trunk/xsl/schema-documentation.xsl
+END
+rss.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 36
+/svn/!svn/ver/6018/trunk/xsl/rss.xsl
+END
+opml.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 37
+/svn/!svn/ver/6018/trunk/xsl/opml.xsl
+END
+Makefile
+K 25
+svn:wc:ra_dav:version-url
+V 37
+/svn/!svn/ver/4047/trunk/xsl/Makefile
+END
+list-attribute-values.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/6018/trunk/xsl/list-attribute-values.xsl
+END
+2pass-unravel-tables.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/5222/trunk/xsl/2pass-unravel-tables.xsl
+END
+.nosearch
+K 25
+svn:wc:ra_dav:version-url
+V 38
+/svn/!svn/ver/4149/trunk/xsl/.nosearch
+END
+dtb-page-range.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/6018/trunk/xsl/dtb-page-range.xsl
+END
+mlb-scorecard.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/6018/trunk/xsl/mlb-scorecard.xsl
+END
+muggle.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 39
+/svn/!svn/ver/6018/trunk/xsl/muggle.xsl
+END
+google-hits.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 44
+/svn/!svn/ver/6018/trunk/xsl/google-hits.xsl
+END
+strip-table-attrs.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/6018/trunk/xsl/strip-table-attrs.xsl
+END
+extract-by-class.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/6018/trunk/xsl/extract-by-class.xsl
+END
+README
+K 25
+svn:wc:ra_dav:version-url
+V 35
+/svn/!svn/ver/4047/trunk/xsl/README
+END
+auto-rss-discover.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/6018/trunk/xsl/auto-rss-discover.xsl
+END
+opml2sexp.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 42
+/svn/!svn/ver/6018/trunk/xsl/opml2sexp.xsl
+END
+jabber-messages.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/6018/trunk/xsl/jabber-messages.xsl
+END
+role-values.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 44
+/svn/!svn/ver/6018/trunk/xsl/role-values.xsl
+END
+extract-table.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/6018/trunk/xsl/extract-table.xsl
+END
+class-values.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/svn/!svn/ver/6018/trunk/xsl/class-values.xsl
+END
+mlb-alerts.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/svn/!svn/ver/6018/trunk/xsl/mlb-alerts.xsl
+END
+display-none.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/svn/!svn/ver/6018/trunk/xsl/display-none.xsl
+END
+xpath-filter.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/svn/!svn/ver/6100/trunk/xsl/xpath-filter.xsl
+END
+atom-view.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 42
+/svn/!svn/ver/6018/trunk/xsl/atom-view.xsl
+END

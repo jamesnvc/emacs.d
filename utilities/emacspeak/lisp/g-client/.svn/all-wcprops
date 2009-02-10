@@ -1,0 +1,215 @@
+K 25
+svn:wc:ra_dav:version-url
+V 38
+/svn/!svn/ver/6102/trunk/lisp/g-client
+END
+g-autogen.el
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/5798/trunk/lisp/g-client/g-autogen.el
+END
+gnotebook.el
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/5798/trunk/lisp/g-client/gnotebook.el
+END
+gevent-accept.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/4400/trunk/lisp/g-client/gevent-accept.xsl
+END
+.excludes
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/4400/trunk/lisp/g-client/.excludes
+END
+blogger-edit-post.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/!svn/ver/4817/trunk/lisp/g-client/blogger-edit-post.xsl
+END
+gfeeds.el
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/5898/trunk/lisp/g-client/gfeeds.el
+END
+gevent.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/4400/trunk/lisp/g-client/gevent.xsl
+END
+gdocs.el
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/6071/trunk/lisp/g-client/gdocs.el
+END
+g-cus-load.el.in
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/!svn/ver/4703/trunk/lisp/g-client/g-cus-load.el.in
+END
+gtube.el
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/5975/trunk/lisp/g-client/gtube.el
+END
+g-client.html
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/4413/trunk/lisp/g-client/g-client.html
+END
+gcal.el
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/5798/trunk/lisp/g-client/gcal.el
+END
+COPYING
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/4400/trunk/lisp/g-client/COPYING
+END
+Makefile
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/6064/trunk/lisp/g-client/Makefile
+END
+gsheet.el
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/5798/trunk/lisp/g-client/gsheet.el
+END
+indent-files.el
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/5798/trunk/lisp/g-client/indent-files.el
+END
+g-utils.el
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/6102/trunk/lisp/g-client/g-utils.el
+END
+gcal-view.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/4400/trunk/lisp/g-client/gcal-view.xsl
+END
+gweb.el
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/6100/trunk/lisp/g-client/gweb.el
+END
+gcontacts.el
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/6066/trunk/lisp/g-client/gcontacts.el
+END
+g-auth.el
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/5911/trunk/lisp/g-client/g-auth.el
+END
+g.el
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/svn/!svn/ver/5798/trunk/lisp/g-client/g.el
+END
+gblogger.el
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/5993/trunk/lisp/g-client/gblogger.el
+END
+g-client.org
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/4426/trunk/lisp/g-client/g-client.org
+END
+gskeleton.el
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/5798/trunk/lisp/g-client/gskeleton.el
+END
+g-load-path.el
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/5798/trunk/lisp/g-client/g-load-path.el
+END
+ut.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/svn/!svn/ver/4787/trunk/lisp/g-client/ut.xsl
+END
+gphoto.el
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/6101/trunk/lisp/g-client/gphoto.el
+END
+g-app.el
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/6047/trunk/lisp/g-client/g-app.el
+END
+gevent-view.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/4400/trunk/lisp/g-client/gevent-view.xsl
+END
+greader.el
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/6031/trunk/lisp/g-client/greader.el
+END
+json.el
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/6008/trunk/lisp/g-client/json.el
+END
+g-loaddefs.el.in
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/!svn/ver/4703/trunk/lisp/g-client/g-loaddefs.el.in
+END
+gfinance.el
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/5798/trunk/lisp/g-client/gfinance.el
+END
+atom-view.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/6044/trunk/lisp/g-client/atom-view.xsl
+END
