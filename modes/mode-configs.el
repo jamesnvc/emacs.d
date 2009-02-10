@@ -108,7 +108,6 @@
 ;; For debugging
 (setq fsm-use-debug-buffer t)
 
-
 ;; Lisp
 (if (file-exists-p "/usr/share/doc/hyperspec/")
     (setq common-lisp-hyperspec-root "file:/usr/share/doc/hyperspec/"))
