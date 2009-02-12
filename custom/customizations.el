@@ -13,6 +13,8 @@
 (require 'highlight-parentheses)
 (require 'hippie-exp)
 (require 'htmlize)
+(require 'jit-lock)
+(require 'ledger)
 (require 'planner)
 (require 'pabbrev)
 (require 'ibuffer)
@@ -29,6 +31,13 @@
 
 (setq split-width-threshold 400)
 
+(setq jit-lock-stealth-time 1)
+
+(setq safe-local-variable-values 
+      (quote ((auto-recompile . t) 
+              (outline-minor-mode . t) 
+              auto-recompile outline-minor-mode)))
+
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'reverse)
 (setq uniquify-separator "|")
@@ -42,6 +51,11 @@
 (setq g-html-handler 'w3m-buffer)
 
 (require 'ecb)
+
+;; Twitter
+(autoload 'twit-post "twit" "post on twitter" t)
+(autoload 'twit-post-region "twit" "post on twitter" t)
+(autoload 'twit-show-recent-tweets "twit" "read from twitter" t)
 
 ;; Org stuff (popup reminders)
 (setq appt-time-msg-list nil)
