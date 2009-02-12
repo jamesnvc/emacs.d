@@ -1,4 +1,11 @@
 ;;; Mode hooks
+
+;; Asm
+(add-hook 'asm-mode-hook
+               (lambda ()
+                (font-lock-add-keywords nil
+                 '(("\\<\\(FIXME\\|TODO\\|BUG\\):" 1 font-lock-warning-face t)))))
+
 ;; Python
 (add-hook 'python-mode-hook 'ropemacs-mode)
 
@@ -79,7 +86,10 @@
 
 ;; C
 ;; (add-hook 'c-mode-common-hook 'flymake-mode)
-
+(add-hook 'c-mode-common-hook
+               (lambda ()
+                (font-lock-add-keywords nil
+                 '(("\\<\\(FIXME\\|TODO\\|BUG\\):" 1 font-lock-warning-face t)))))
 ;; Other
 ;; (add-hook 'text-mode-hook 'flyspell-mode)
 ;; (add-hook 'mail-mode-hook 'flyspell-mode)
