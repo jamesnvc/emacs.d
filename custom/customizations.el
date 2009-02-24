@@ -292,3 +292,7 @@ MANDATORY_MANPATH" "/usr/share/man" "/usr/local/man")))
             anything-c-source-man-pages
 	    anything-c-source-file-cache
             anything-c-source-emacs-commands))
+
+;; Load stuff from M-x customize from a different file, to keep .emacs cleaner 
+(setq custom-file (concat emacs-root "custom/custom.el"))
+(load custom-file 'noerror)
