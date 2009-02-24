@@ -9,6 +9,7 @@
 (global-set-key [(S XF86Back)] 'winring-prev-configuration)
 
 ;; F keys
+(global-set-key [f2] 'webjump)
 (global-set-key [f3] 'eshell)
 (global-set-key [f4] 'replace-regexp)
 (global-set-key [f5]
@@ -40,6 +41,7 @@
 (global-set-key (kbd "M-r") 'isearch-backward)
 (global-set-key (kbd "M-s") 'isearch-forward)
 (global-set-key (kbd "M-X") 'anything)
+(global-set-key [(shift menu)] 'anything)
 (global-set-key (kbd "M-Z") 'zap-to-char-back)
 (global-set-key [(meta down)] 'move-line-down)
 (global-set-key [(meta up)] 'move-line-up)
