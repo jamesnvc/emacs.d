@@ -51,7 +51,7 @@
 (gcal-emacs-calendar-setup)
 (setq g-html-handler 'w3m-buffer)
 
-(require 'ecb)
+;; (require 'ecb)
 
 ;; Twitter
 (autoload 'twit-post "twit" "post on twitter" t)
@@ -61,6 +61,7 @@
 ;; Org stuff (popup reminders)
 (setq appt-time-msg-list nil)
 (org-agenda-to-appt)
+
 
 (defadvice  org-agenda-redo (after org-agenda-redo-add-appts)
   "Pressing `r' on the agenda will also add appointments."

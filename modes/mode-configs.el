@@ -54,6 +54,7 @@
 (load-library "scheme-configs")
 (load-library "js2")
 
+(require 'cedet)
 ;; (load-library "cedet")
 ;; (semantic-load-enable-excessive-code-helpers)
 ;; (require 'semantic-load)
