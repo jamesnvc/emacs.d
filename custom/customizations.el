@@ -25,6 +25,7 @@
 (require 'vm)
 (require 'message)
 (require 'w3m)
+(require 'webjump)
 
 (load-library "snippet-expands")
 (load-library "fuzzy-match")
@@ -75,6 +76,17 @@
   (defun my-appt-disp-window (min-to-app new-time msg)
     (call-process "/home/james/bin/popup.py" nil 0 nil min-to-app msg new-time)))
 
+;; Webjumps
+(setq webjump-sites
+      (append '(
+                ("Reddit Search" .
+                 [simple-query "www.reddit.com" "http://www.reddit.com/search?q=" ""])
+                ("Google Image Search" .
+                 [simple-query "images.google.com" "images.google.com/images?hl=en&q=" ""])
+                ("Flickr Search" .
+                 [simple-query "www.flickr.com" "flickr.com/search/?q=" ""])
+                )
+              webjump-sample-sites))
 ;; BBDB
 (bbdb-initialize 'gnus 'message 'sendmail 'vm 'w3)
 (require 'bbdb-human-names)
