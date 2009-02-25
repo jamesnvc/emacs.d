@@ -194,7 +194,8 @@ MANDATORY_MANPATH" "/usr/share/man" "/usr/local/man")))
 (setq browse-url-browser-function 'w3m-browse-url)
 (fset 'yes-or-no-p 'y-or-n-p)
 (setq hippie-expand-try-functions-list
-      '(try-expand-dabbrev
+      '(yas/hippie-try-expand
+        try-expand-dabbrev
         try-expand-dabbrev-all-buffers
         try-expand-dabbrev-from-kill
         try-complete-lisp-symbol-partially
