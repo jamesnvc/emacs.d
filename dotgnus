@@ -18,15 +18,25 @@
       gnus-read-newsrc-file nil
       gnus-check-new-newsgroups nil)
 
-(setq gnus-select-method '(nnnil "")
-      gnus-secondary-select-methods
-      '((nnimap "localhost" (nnimap-address "localhost"))
-        ;; (nntp "news.gmane.org")
-        ))
+(setq gnus-select-method '(nnnil ""))
+
+(setq gnus-secondary-select-methods
+      '(
+        (nnimap "gmail"
+         (nnimap-address "imap.gmail.com")
+         (nnimap-server-port 993)
+         (nnimap-stream ssl)
+         (nnir-search-engine imap))
+        (nnimap "localhost" (nnimap-address "localhost"))
+        (nntp "news.gmane.org")
+        )
+      )
 
 (setq message-send-mail-partially-limit nil)
-(setq gnus-message-archive-method '(nnimap "localhost"))
-(setq gnus-message-archive-group "nnimap+localhost:Sent")
+;; (setq gnus-message-archive-method '(nnimap "localhost"))
+(setq gnus-message-archive-method '(nnimap "gmail"))
+;; (setq gnus-message-archive-group "nnimap+localhost:Sent")
+(setq gnus-message-archive-group "nnimap+gmail:Sent")
 (setq gnus-gcc-mark-as-read t)
 
 (setq gnus-thread-sort-functions
@@ -108,6 +118,27 @@
 (add-hook 'message-send-hook 'ispell-message)
 
 (setq mm-text-html-renderer 'w3m)
+
+;; Add PGP integration
+(load-library "mailcrypt")
+(mc-setversion "gpg")
+(autoload 'mc-install-write-mode "mailcrypt" nil t)
+(autoload 'mc-install-read-mode "mailcrypt" nil t)
+(add-hook 'gnus-summary-mode-hook 'mc-install-read-mode)
+(add-hook 'message-mode-hook 'mc-install-write-mode)
+(add-hook 'news-reply-mode-hook 'mc-install-write-mode)
+
+;; Always sign encrypted messages
+(setq mc-pgp-always-sign t)
+;; How long should mailcrypt remember your passphrase
+(setq mc-passwd-timeout 600)
+
+(add-hook 'message-send-hook 'my-sign-message)
+
+(defun my-sign-message ()
+  (if (y-or-n-p "Sign message? ")
+      (mc-sign-message)))
+
 
 ;; (defun wicked/gnus-article-show-html ()
 ;;   "Show the current message as HTML mail."
