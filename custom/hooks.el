@@ -8,6 +8,8 @@
 
 ;; Python
 (add-hook 'python-mode-hook 'ropemacs-mode)
+;; turn off yas for python, since we really want tab to indent (use hippie-expand for yas)
+(add-hook 'python-mode-hook 'yas/minor-mode-off) 
 
 ;; Flyspell
 ;; (add-hook 'text-mode-hook 'flyspell-mode-on)

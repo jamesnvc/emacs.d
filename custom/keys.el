@@ -190,6 +190,7 @@
 (define-key bbdb-mode-map (kbd "z") 'wicked/bbdb-ping-bbdb-record)
 (add-hook 'mail-setup-hook (lambda () (local-set-key "\t" 'bbdb-complete-name)) t)
 (define-key isearch-mode-map (kbd "C-x") 'sacha/isearch-yank-current-word)
+(define-key yas/keymap [tab] 'yas/next-field-group)
 
 ;; Miscellaneous key-related configs
 (defalias 'qrr 'query-replace-regexp)
