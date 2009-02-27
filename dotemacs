@@ -7,7 +7,6 @@
 (defvar src-root (expand-file-name "~/src/"))
 
 (add-to-list 'load-path "/home/james/src/factor/misc/fuel")
-
 (labels ((add-path (p)
 		   (add-to-list 'load-path
 			   (concat emacs-root p))))
@@ -73,3 +72,5 @@
 (load-library "hooks") ;; Various hooks
 
 (server-start)
+
+;; End of my .emacs
