@@ -425,13 +425,13 @@ currently under the curser"
   (let ((count (how-many "\\w+" beginning end)))
     (cond ((zerop count)
            (message
-            "The region does NOT have any words."))
+            "Region does not have any words."))
           ((= 1 count)
            (message
-            "The region has 1 word."))
+            "Region has 1 word."))
           (t
            (message
-            "The region has %d words." count)))))
+            "Region has %d words." count)))))
 
 (defun eval-and-replace ()
   "Replace the preceding sexp with its value."
