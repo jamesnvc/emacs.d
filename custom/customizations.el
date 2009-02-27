@@ -100,13 +100,6 @@
 (yas/initialize)
 (yas/load-directory (concat emacs-root "utilities/yasnippet-0.5.3/snippets"))
 
-(setenv "PYMACS_PYTHON" "python2.5")
-(autoload 'pymacs-apply "pymacs")
-(autoload 'pymacs-call "pymacs")
-(autoload 'pymacs-eval "pymacs" nil t)
-(autoload 'pymacs-exec "pymacs" nil t)
-(autoload 'pymacs-load "pymacs" nil t)
-
 (setq planner-project "MyPlans")
 (setq muse-project-alist
       '(("MyPlans"

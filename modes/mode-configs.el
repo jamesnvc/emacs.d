@@ -60,6 +60,13 @@
 ;; (require 'semantic-load)
 ;; (autoload 'jde-mode "jde" nil t)
 
+(setenv "PYMACS_PYTHON" "python2.5")
+(autoload 'pymacs-apply "pymacs")
+(autoload 'pymacs-call "pymacs")
+(autoload 'pymacs-eval "pymacs" nil t)
+(autoload 'pymacs-exec "pymacs" nil t)
+(autoload 'pymacs-load "pymacs" nil t)
+
 (pymacs-load "ropemacs" "rope-")
 
 (display-battery-mode 1)
