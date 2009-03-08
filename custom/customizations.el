@@ -1,5 +1,6 @@
 (defconst use-backup-dir t)
 
+(require 'auto-complete)
 (require 'appt)
 (require 'bbdb)
 (require 'browse-kill-ring)
@@ -109,11 +110,6 @@
           :visit-link planner-visit-link))))
 
 (require 'emacs-goodies-el)
-
-;; Set colours
-(color-theme-clarity)
-(set-background-color "grey6")
-(set-foreground-color "white")
 
 (iswitchb-mode t)
 (setq iswitchb-prompt-newbuffer nil)
@@ -290,3 +286,7 @@ MANDATORY_MANPATH" "/usr/share/man" "/usr/local/man")))
 ;; Load stuff from M-x customize from a different file, to keep .emacs cleaner 
 (setq custom-file (concat emacs-root "custom/custom.el"))
 (load custom-file 'noerror)
+
+;; Set colours, overriding custom-set-faces
+(load-library "colourizing")
+(color-theme-jamesnvc)
