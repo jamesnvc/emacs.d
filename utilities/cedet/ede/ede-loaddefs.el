@@ -8,7 +8,7 @@
 ;;;;;;  ede-documentation-files ede-description ede-name project-make-dist
 ;;;;;;  project-compile-target project-compile-project project-edit-file-target
 ;;;;;;  ede-compile-target ede-remove-file global-ede-mode) "ede"
-;;;;;;  "ede.el" (18817 6879))
+;;;;;;  "ede.el" (18858 42690))
 ;;; Generated autoloads from ede.el
 
 (eieio-defclass-autoload 'ede-project-autoload 'nil "ede" "Class representing minimal knowledge set to run preliminary EDE functions.\nWhen more advanced functionality is needed from a project type, that projects\ntype is required and the load function used.")
@@ -120,7 +120,7 @@ Display the results as a debug list.
 ;;;***
 
 ;;;### (autoloads (ede-cpp-root-load ede-cpp-root-project-root ede-cpp-root-project-file-for-dir)
-;;;;;;  "ede-cpp-root" "ede-cpp-root.el" (18835 37189))
+;;;;;;  "ede-cpp-root" "ede-cpp-root.el" (18858 42690))
 ;;; Generated autoloads from ede-cpp-root.el
 
 (autoload 'ede-cpp-root-project-file-for-dir "ede-cpp-root" "\
@@ -170,8 +170,8 @@ ROOTPROJ is nil, since there is only one project.
 
 ;;;***
 
-;;;### (autoloads (ede-find-file) "ede-files" "ede-files.el" (18827
-;;;;;;  433))
+;;;### (autoloads (ede-find-file) "ede-files" "ede-files.el" (18858
+;;;;;;  42690))
 ;;; Generated autoloads from ede-files.el
 
 (autoload 'ede-find-file "ede-files" "\
@@ -184,7 +184,7 @@ the current EDE project.
 ;;;***
 
 ;;;### (autoloads (ede-linux-load ede-linux-project-root) "ede-linux"
-;;;;;;  "ede-linux.el" (18764 9607))
+;;;;;;  "ede-linux.el" (18858 42690))
 ;;; Generated autoloads from ede-linux.el
 
 (autoload 'ede-linux-project-root "ede-linux" "\
@@ -207,7 +207,7 @@ ROOTPROJ is nil, since there is only one project.
 ;;;***
 
 ;;;### (autoloads (ede-enable-locate-on-project) "ede-locate" "ede-locate.el"
-;;;;;;  (18816 46124))
+;;;;;;  (18858 42690))
 ;;; Generated autoloads from ede-locate.el
 
 (autoload 'ede-enable-locate-on-project "ede-locate" "\
@@ -220,7 +220,7 @@ based on `ede-locate-setup-options'.
 ;;;***
 
 ;;;### (autoloads (ede-pmake-varname) "ede-pmake" "ede-pmake.el"
-;;;;;;  (18805 14570))
+;;;;;;  (18858 42690))
 ;;; Generated autoloads from ede-pmake.el
 
 (autoload 'ede-pmake-varname "ede-pmake" "\
@@ -238,7 +238,7 @@ Convert OBJ into a variable name name, which converts .  to _.
 ;;;***
 
 ;;;### (autoloads (ede-simple-load ede-simple-projectfile-for-dir)
-;;;;;;  "ede-simple" "ede-simple.el" (18751 20021))
+;;;;;;  "ede-simple" "ede-simple.el" (18858 42690))
 ;;; Generated autoloads from ede-simple.el
 
 (add-to-list 'ede-project-class-files (ede-project-autoload "simple-overlay" :name "Simple" :file 'ede-simple :proj-file 'ede-simple-projectfile-for-dir :load-type 'ede-simple-load :class-sym 'ede-simple-project) t)
@@ -296,10 +296,10 @@ Argument NEWVERSION is the version number to use in the current project.
 ;;;### (autoloads nil nil ("autoconf-compat.el" "autoconf-edit.el"
 ;;;;;;  "ede-dired.el" "ede-load.el" "ede-pconf.el" "ede-proj-archive.el"
 ;;;;;;  "ede-proj-aux.el" "ede-proj-comp.el" "ede-proj-elisp.el"
-;;;;;;  "ede-proj-info.el" "ede-proj-misc.el" "ede-proj-obj.el" "ede-proj-prog.el"
-;;;;;;  "ede-proj-scheme.el" "ede-proj-shared.el" "ede-proj-skel.el"
-;;;;;;  "ede-source.el" "ede-speedbar.el" "ede-system.el" "project-am.el")
-;;;;;;  (18837 40846 622062))
+;;;;;;  "ede-proj-info.el" "ede-proj-maven2.el" "ede-proj-misc.el"
+;;;;;;  "ede-proj-obj.el" "ede-proj-prog.el" "ede-proj-scheme.el"
+;;;;;;  "ede-proj-shared.el" "ede-proj-skel.el" "ede-source.el" "ede-speedbar.el"
+;;;;;;  "ede-system.el" "project-am.el") (18858 42837 741303))
 
 ;;;***
 

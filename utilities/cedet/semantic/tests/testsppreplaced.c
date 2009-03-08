@@ -57,4 +57,10 @@ int tail_fcn(int q);
 
 int __gthrw_foo (int arg1) { }
 
+/* TEST: macros using macros */
+int foo;
+
+/* TEST: macros with args using macros */
+int noodle(int noodle);
+
 /* End */

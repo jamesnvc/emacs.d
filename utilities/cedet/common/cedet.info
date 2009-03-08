@@ -54,6 +54,9 @@ the mailing list cedet-devel.net via the URL:
 * Code Generation::
 * C++ Features::
 * GNU Global::
+* ID Utils::
+* CScope::
+* Maintenance::	Maintaining your CEDET Data files
 * GNU Free Documentation License::
 * Index::
 
@@ -660,7 +663,7 @@ macro to the C pre-processor, see *note ede-cpp-root: (ede)the
 ede-cpp-root chapter.
 
 
-File: cedet.info,  Node: GNU Global,  Next: GNU Free Documentation License,  Prev: C++ Features,  Up: Top
+File: cedet.info,  Node: GNU Global,  Next: ID Utils,  Prev: C++ Features,  Up: Top
 
 9 GNU Global
 ************
@@ -680,7 +683,7 @@ file like this:
 
      (setq cedet-global-command "global") ; Change to path of global as needed
      (when (cedet-gnu-global-version-check t)  ; Is it ok?
-         ;; Configurations for GNU Global and CEDET.
+         ;; Configurations for GNU Global and CEDET
          )
 
 9.1 EDE and GNU Global
@@ -726,7 +729,143 @@ search for references via the commands:
      Find references to an arbitrary symbol.
 
 
-File: cedet.info,  Node: GNU Free Documentation License,  Next: Index,  Prev: GNU Global,  Up: Top
+File: cedet.info,  Node: ID Utils,  Next: CScope,  Prev: GNU Global,  Up: Top
+
+10 ID Utils
+***********
+
+Several tools in CEDET can support the use of ID Utils.  If you use ID
+Utils in your project, you should enable the use of it to enhance or
+speed up various tools in CEDET.
+
+   You can download ID Utils from `http://www.gnu.org/software/idutils/'
+
+   To make sure your ID Utils installation is good, use the command
+
+     M-x cedet-idutils-version-check RET
+
+   You can wrap any CEDET / ID Utils configurations in your `.emacs'
+file like this:
+
+     (when (cedet-idutils-version-check t)  ; Is it ok?
+         ;; Configurations for ID Utils and CEDET.
+         )
+
+10.1 EDE and ID Utils
+=====================
+
+The EDE project system can use ID Utils to accelerate finding files
+within a project.  The EDE command to `ede-find-file' bound to `C-c .
+f' is one direct application.  semantic also makes heavy use of of the
+feature to find header files.
+
+   To enable it, configure the variable `ede-locate-setup-options'.
+Something like this can work in your `.emacs' file.
+
+     (setq ede-locate-setup-options
+           '(ede-locate-idutils
+             ede-locate-base))
+
+10.2 semantic
+=============
+
+The semantic symref tool can use ID Utils to local symbol references.
+This tool will automatically detect ID Utils and use it.  You can
+search for references via the commands:
+
+`semantic-symref'
+     Find references to the tag under the cursor.
+
+`semantic-symref-symbol'
+     Find references to an arbitrary symbol.
+
+
+File: cedet.info,  Node: CScope,  Next: Maintenance,  Prev: ID Utils,  Up: Top
+
+11 CScope
+*********
+
+Several tools in CEDET can support the use of CScope.  If you use
+CScope in your project, you can enable the use of it to enhance or
+speed up various tools in CEDET.
+
+   You can download CScope from `http://cscope.sourceforge.net/'
+
+   To make sure your CScope installation is good, use the command
+
+     M-x cedet-cscope-version-check RET
+
+   You can wrap any CEDET / CScope configurations in your `.emacs' file
+like this:
+
+     (when (cedet-cscope-version-check t)  ; Is it ok?
+         ;; Configurations for CScope and CEDET.
+         )
+
+11.1 Detecting CScope
+=====================
+
+CScope is detected by the presense of a `cscope.out' file at the ROOT
+of your current project, as specified by EDE.  CScope the program
+supports multiple `cscope.out' files spread out through your project,
+but this is not detecte by CEDET.  It will also use a `cscope.out' in
+the same directory as your sources if you do not use EDE
+
+   If you use CScope and need this feature, please consider fixing it.
+Contact the cedet-devel mailing list.
+
+11.2 EDE and CScope
+===================
+
+The EDE project system can use CScope to accelerate finding files
+within a project.  The EDE command to `ede-find-file' bound to `C-c .
+f' is one direct application.  semantic also makes heavy use of of the
+feature to find header files for C and C++.
+
+   To enable it, configure the variable `ede-locate-setup-options'.
+Something like this can work in your `.emacs' file.
+
+     (setq ede-locate-setup-options
+           '(ede-locate-cscope
+             ede-locate-base))
+
+11.3 semantic Database
+======================
+
+@TODO
+
+   semantic can could use CScope as a back end for database searches,
+but this has not been implemented yet.
+
+11.4 semantic
+=============
+
+The semantic symref tool can use CScope to local symbol references.
+This tool will automatically detect CScope and use it.  You can search
+for references via the commands:
+
+`semantic-symref'
+     Find references to the tag under the cursor.
+
+`semantic-symref-symbol'
+     Find references to an arbitrary symbol.
+
+
+File: cedet.info,  Node: Maintenance,  Next: GNU Free Documentation License,  Prev: CScope,  Up: Top
+
+12 Maintenance
+**************
+
+Most of the CEDET tools do their best to maintain their data files and
+caches.  It is useful, however, to periodically run:
+
+     M-x semanticdb-cleanup-cache-files RET
+
+   to delete old database cache files that may no longer be associated
+with directories on your system.
+
+
+File: cedet.info,  Node: GNU Free Documentation License,  Next: Index,  Prev: Maintenance,  Up: Top
 
 Appendix A GNU Free Documentation License
 *****************************************
@@ -1111,26 +1250,29 @@ Index
 
 Tag Table:
 Node: Top899
-Node: Overview1854
-Node: EIEIO4763
-Node: Semantic5774
-Node: SRecode7090
-Node: Speedbar7577
-Node: EDE8527
-Node: COGRE9851
-Node: Other Library Functions10386
-Node: Installation/Basic Configuration12982
-Node: JDEE Target15537
-Node: ECB Target16486
-Node: Project Management17209
-Node: Code Completion18544
-Node: Code Generation20168
-Node: C++ Features20937
-Ref: semantic-lex-c-preprocessor-symbol-map21558
-Ref: semantic-lex-c-preprocessor-symbol-file22911
-Ref: semantic-c-obey-conditional-section-parsing-flag23504
-Node: GNU Global24870
-Node: GNU Free Documentation License26929
-Node: Index46651
+Node: Overview1928
+Node: EIEIO4837
+Node: Semantic5848
+Node: SRecode7164
+Node: Speedbar7651
+Node: EDE8601
+Node: COGRE9925
+Node: Other Library Functions10460
+Node: Installation/Basic Configuration13056
+Node: JDEE Target15611
+Node: ECB Target16560
+Node: Project Management17283
+Node: Code Completion18618
+Node: Code Generation20242
+Node: C++ Features21011
+Ref: semantic-lex-c-preprocessor-symbol-map21632
+Ref: semantic-lex-c-preprocessor-symbol-file22985
+Ref: semantic-c-obey-conditional-section-parsing-flag23578
+Node: GNU Global24944
+Node: ID Utils26980
+Node: CScope28502
+Node: Maintenance30654
+Node: GNU Free Documentation License31064
+Node: Index50787
 
 End Tag Table

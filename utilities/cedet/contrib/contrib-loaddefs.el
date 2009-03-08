@@ -97,7 +97,8 @@ Use the alternate LALR(1) parser.
 ;;;***
 
 ;;;### (autoloads nil nil ("cedet-contrib-load.el" "cedet-contrib.el"
-;;;;;;  "wisent-ruby.el") (18837 40852 821856))
+;;;;;;  "wisent-csharp-wy.el" "wisent-php-wy.el" "wisent-ruby-wy.el"
+;;;;;;  "wisent-ruby.el") (18858 42844 812321))
 
 ;;;***
 

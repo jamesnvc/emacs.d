@@ -27,6 +27,44 @@ exists.
 
 ;;;***
 
+;;;### (autoloads (cedet-cscope-version-check cedet-cscope-expand-filename
+;;;;;;  cedet-cscope-search cedet-cscope-command) "cedet-cscope"
+;;;;;;  "cedet-cscope.el" (18855 29112))
+;;; Generated autoloads from cedet-cscope.el
+
+(defvar cedet-cscope-command "cscope" "\
+Command name for the CScope executable.")
+
+(custom-autoload 'cedet-cscope-command "cedet-cscope" t)
+
+(autoload 'cedet-cscope-search "cedet-cscope" "\
+Perform a search with CScope, return the created buffer.
+SEARCHTEXT is text to find.
+TEXTTYPE is the type of text, such as 'regexp, 'string, 'tagname,
+'tagregexp, or 'tagcompletions.
+TYPE is the type of search, meaning that SEARCHTEXT is compared to
+filename, tagname (tags table), references (uses of a tag) , or
+symbol (uses of something not in the tag table.)
+SCOPE is the scope of the search, such as 'project or 'subdirs.
+
+\(fn SEARCHTEXT TEXTTYPE TYPE SCOPE)" nil nil)
+
+(autoload 'cedet-cscope-expand-filename "cedet-cscope" "\
+Expand the FILENAME with CScope.
+Return a fully qualified filename.
+
+\(fn FILENAME)" t nil)
+
+(autoload 'cedet-cscope-version-check "cedet-cscope" "\
+Check the version of the installed CScope command.
+If optional programatic argument NOERROR is non-nil, then
+instead of throwing an error if Global isn't available, then
+return nil.
+
+\(fn &optional NOERROR)" t nil)
+
+;;;***
+
 ;;;### (autoloads nil "cedet-edebug" "cedet-edebug.el" (18411 2781))
 ;;; Generated autoloads from cedet-edebug.el
 
@@ -98,8 +136,39 @@ return nil.
 
 ;;;***
 
+;;;### (autoloads (cedet-idutils-version-check cedet-idutils-expand-filename
+;;;;;;  cedet-idutils-token-command cedet-idutils-file-command) "cedet-idutils"
+;;;;;;  "cedet-idutils.el" (18851 8015))
+;;; Generated autoloads from cedet-idutils.el
+
+(defvar cedet-idutils-file-command "fnid" "\
+Command name for the ID Utils executable for searching file names.")
+
+(custom-autoload 'cedet-idutils-file-command "cedet-idutils" t)
+
+(defvar cedet-idutils-token-command "lid" "\
+Command name for the ID Utils executable for searching for tokens.")
+
+(custom-autoload 'cedet-idutils-token-command "cedet-idutils" t)
+
+(autoload 'cedet-idutils-expand-filename "cedet-idutils" "\
+Expand the FILENAME with IDUtils.
+Return a filename relative to the default directory.
+
+\(fn FILENAME)" t nil)
+
+(autoload 'cedet-idutils-version-check "cedet-idutils" "\
+Check the version of the installed ID Utils command.
+If optional programatic argument NOERROR is non-nil, then
+instead of throwing an error if Global isn't available, then
+return nil.
+
+\(fn &optional NOERROR)" t nil)
+
+;;;***
+
 ;;;### (autoloads (cedet-utest-batch cedet-utest) "cedet-utests"
-;;;;;;  "cedet-utests.el" (18834 9457))
+;;;;;;  "cedet-utests.el" (18858 42690))
 ;;; Generated autoloads from cedet-utests.el
 
 (autoload 'cedet-utest "cedet-utests" "\
@@ -198,7 +267,7 @@ messages to CHANNEL.
 
 ;;;### (autoloads (inversion-upgrade-package inversion-add-to-load-path
 ;;;;;;  inversion-find-version inversion-require-emacs inversion-require)
-;;;;;;  "inversion" "inversion.el" (18791 59877))
+;;;;;;  "inversion" "inversion.el" (18858 42690))
 ;;; Generated autoloads from inversion.el
 
 (autoload 'inversion-require "inversion" "\
@@ -357,7 +426,7 @@ Only pulses the line if `pulse-command-advice-flag' is non-nil.
 ;;;***
 
 ;;;### (autoloads nil nil ("cedet-load.el" "cedet.el" "ezimage.el"
-;;;;;;  "sformat.el" "working.el") (18837 40810 956878))
+;;;;;;  "sformat.el" "working.el") (18858 42794 407825))
 
 ;;;***
 

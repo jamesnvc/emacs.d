@@ -246,7 +246,7 @@ Insert get/set methods for the current class.
 ;;;***
 
 ;;;### (autoloads (srecode-field-utest) "srecode-fields" "srecode-fields.el"
-;;;;;;  (18834 7262))
+;;;;;;  (18858 42691))
 ;;; Generated autoloads from srecode-fields.el
 
 (eieio-defclass-autoload 'srecode-field '(srecode-overlaid) "srecode-fields" "Representation of one field.")
@@ -338,7 +338,7 @@ will be derived.
 ;;;***
 
 ;;;### (autoloads (srecode-insert-fcn srecode-insert srecode-insert-again)
-;;;;;;  "srecode-insert" "srecode-insert.el" (18834 8376))
+;;;;;;  "srecode-insert" "srecode-insert.el" (18858 42691))
 ;;; Generated autoloads from srecode-insert.el
 
 (autoload 'srecode-insert-again "srecode-insert" "\
@@ -628,7 +628,8 @@ Adds the following:
 ;;;***
 
 ;;;### (autoloads nil nil ("srecode-document-vars.el" "srecode-extract.el"
-;;;;;;  "srecode-load.el" "srecode.el") (18837 40843 48017))
+;;;;;;  "srecode-load.el" "srecode-template-wy.el" "srecode.el")
+;;;;;;  (18858 42833 825807))
 
 ;;;***
 

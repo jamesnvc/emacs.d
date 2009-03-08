@@ -1,6 +1,6 @@
 \input texinfo   @c -*-texinfo-*-
 @c
-@c $Id: ede.texi,v 1.21 2008/12/29 04:21:02 zappo Exp $
+@c $Id: ede.texi,v 1.23 2009/02/27 22:13:02 zappo Exp $
 @c
 @setfilename ede.info
 @settitle Emacs Development Environment
@@ -17,7 +17,7 @@ END-INFO-DIR-ENTRY
 @sp 10
 @center @titlefont{ede}
 @vskip 0pt plus 1 fill
-Copyright @copyright{} 1998, 1999, 2000, 2001, 2004, 2005, 2008 Eric M. Ludlam
+Copyright @copyright{} 1998, 1999, 2000, 2001, 2004, 2005, 2008, 2009 Eric M. Ludlam
 @end titlepage
 
 @macro cedet{}
@@ -516,6 +516,11 @@ compiler on the command line, or are in special headers.
 See the @code{semantic-lex-c-preprocessor-symbol-map} for more
 on how to format this entry.
 
+If there is a single file in your project, you can instead set the
+@code{:spp-files} to a list of file names relative to the root of your
+project.  Specifying this is like setting the variable
+@code{semantic-lex-c-preprocessor-symbol-file} in semantic.
+
 If you want to override the file-finding tool with your own
 function you can do this:
 
@@ -613,6 +618,8 @@ The various simple project styles all have one major drawback, which
 is that the files in the project are not completely known to EDE.
 When the EDE API is used to try and file files by some reference name
 in the project, then that could fail.
+
+@@TODO - Add ID Utils and CScope examples
 
 @ede{} can therefore use some external locate commands, such as the unix
 ``locate'' command, or ``GNU Global''.

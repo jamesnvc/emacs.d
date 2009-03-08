@@ -211,7 +211,7 @@ Report debug info for checking STARTFILE for up-to-date tags.
 ;;;***
 
 ;;;### (autoloads (semantic-analyze-current-context) "semantic-analyze"
-;;;;;;  "semantic-analyze.el" (18791 55282))
+;;;;;;  "semantic-analyze.el" (18858 42690))
 ;;; Generated autoloads from semantic-analyze.el
 
 (autoload 'semantic-analyze-current-context "semantic-analyze" "\
@@ -330,7 +330,7 @@ list of semantic tokens found.
 ;;;### (autoloads (semantic-c-add-preprocessor-symbol semantic-default-c-setup
 ;;;;;;  semantic-c-member-of-autocast semantic-lex-c-preprocessor-symbol-file
 ;;;;;;  semantic-lex-c-preprocessor-symbol-map) "semantic-c" "bovine/semantic-c.el"
-;;;;;;  (18822 21064))
+;;;;;;  (18858 42691))
 ;;; Generated autoloads from bovine/semantic-c.el
 
 (defvar semantic-lex-c-preprocessor-symbol-map nil "\
@@ -452,7 +452,7 @@ Chart the extent of the context analysis.
 ;;;;;;  semantic-complete-inline-tag-project semantic-complete-read-tag-project
 ;;;;;;  semantic-complete-read-tag-buffer-deep semantic-complete-inline-force-display
 ;;;;;;  semantic-complete-read-tag-engine semantic-completion-inline-active-p)
-;;;;;;  "semantic-complete" "semantic-complete.el" (18791 55307))
+;;;;;;  "semantic-complete" "semantic-complete.el" (18858 42690))
 ;;; Generated autoloads from semantic-complete.el
 
 (autoload 'semantic-completion-inline-active-p "semantic-complete" "\
@@ -584,6 +584,8 @@ Perform prompt completion to do in buffer completion.
 possible values.
 The function returns immediately, leaving the buffer in a mode that
 will perform the completion.
+Configure `semantic-complete-inline-analyzer-displayor-class' to change
+how completion options are displayed.
 
 \(fn)" t nil)
 
@@ -593,6 +595,8 @@ Perform prompt completion to do in buffer completion.
 possible values.
 The function returns immediately, leaving the buffer in a mode that
 will perform the completion.
+Configure `semantic-complete-inline-analyzer-idle-displayor-class'
+to change how completion options are displayed.
 
 \(fn)" t nil)
 
@@ -1002,7 +1006,7 @@ Any mode that has been tested to work will be added to this function.
 ;;;***
 
 ;;;### (autoloads (semantic-ectag-parse-buffer) "semantic-ectag-parse"
-;;;;;;  "ctags/semantic-ectag-parse.el" (18791 64106))
+;;;;;;  "ctags/semantic-ectag-parse.el" (18858 42691))
 ;;; Generated autoloads from ctags/semantic-ectag-parse.el
 
 (autoload 'semantic-ectag-parse-buffer "semantic-ectag-parse" "\
@@ -1710,7 +1714,7 @@ list of possible completions.
 ;;;***
 
 ;;;### (autoloads (semantic-ia-utest) "semantic-ia-utest" "semantic-ia-utest.el"
-;;;;;;  (18836 42961))
+;;;;;;  (18858 42690))
 ;;; Generated autoloads from semantic-ia-utest.el
 
 (autoload 'semantic-ia-utest "semantic-ia-utest" "\
@@ -1813,7 +1817,7 @@ Optional argument STREAM is an optional stream of tags used to create menus.
 ;;;### (autoloads (define-lex-block-analyzer define-lex-simple-regex-analyzer
 ;;;;;;  define-lex-regex-analyzer define-lex-analyzer semantic-lex
 ;;;;;;  semantic-lex-init define-lex) "semantic-lex" "semantic-lex.el"
-;;;;;;  (18685 11371))
+;;;;;;  (18858 42690))
 ;;; Generated autoloads from semantic-lex.el
 
 (defvar semantic-lex-analyzer 'semantic-flex "\
@@ -1921,8 +1925,8 @@ symbols returned in open and close tokens.
 
 ;;;***
 
-;;;### (autoloads (semantic-lex-spp-table-write-slot-value) "semantic-lex-spp"
-;;;;;;  "semantic-lex-spp.el" (18791 63991))
+;;;### (autoloads (semantic-lex-spp-write-utest semantic-lex-spp-table-write-slot-value)
+;;;;;;  "semantic-lex-spp" "semantic-lex-spp.el" (18858 42690))
 ;;; Generated autoloads from semantic-lex-spp.el
 
 (autoload 'semantic-lex-spp-table-write-slot-value "semantic-lex-spp" "\
@@ -1930,6 +1934,11 @@ Write out the VALUE of a slot for EIEIO.
 The VALUE is a spp lexical table.
 
 \(fn VALUE)" nil nil)
+
+(autoload 'semantic-lex-spp-write-utest "semantic-lex-spp" "\
+Unit test using the test spp file to test the slot write fcn.
+
+\(fn)" t nil)
 
 ;;;***
 
@@ -2290,7 +2299,7 @@ likely derived, then this function is needed.
 ;;;### (autoloads (semantic-symref-find-text semantic-symref-find-file-references-by-name
 ;;;;;;  semantic-symref-find-tags-by-completion semantic-symref-find-tags-by-regexp
 ;;;;;;  semantic-symref-find-tags-by-name semantic-symref-find-references-by-name)
-;;;;;;  "semantic-symref" "symref/semantic-symref.el" (18820 54420))
+;;;;;;  "semantic-symref" "symref/semantic-symref.el" (18858 42691))
 ;;; Generated autoloads from symref/semantic-symref.el
 
 (autoload 'semantic-symref-find-references-by-name "semantic-symref" "\
@@ -2352,11 +2361,19 @@ Returns an object of class `semantic-symref-result'.
 
 ;;;***
 
+;;;### (autoloads nil "semantic-symref-cscope" "symref/semantic-symref-cscope.el"
+;;;;;;  (18855 29150))
+;;; Generated autoloads from symref/semantic-symref-cscope.el
+
+(eieio-defclass-autoload 'semantic-symref-tool-cscope '(semantic-symref-tool-baseclass) "semantic-symref-cscope" "A symref tool implementation using CScope.\nThe CScope command can be used to generate lists of tags in a way\nsimilar to that of `grep'.  This tool will parse the output to generate\nthe hit list.\n\nSee the function `cedet-cscope-search' for more details.")
+
+;;;***
+
 ;;;### (autoloads nil "semantic-symref-global" "symref/semantic-symref-global.el"
-;;;;;;  (18755 61395))
+;;;;;;  (18858 42691))
 ;;; Generated autoloads from symref/semantic-symref-global.el
 
-(eieio-defclass-autoload 'semantic-symref-tool-global '(semantic-symref-tool-baseclass) "semantic-symref-global" "A symref tool implementation using GNU Global.\nThe gnu GLOBAL command can be used to generate lists of tags in a way\nsimilar to that of `grep'.  This tool will parse the output to generate\nthe hit list.\n\nSee the function `cedet-gnu-global-search' for more details.")
+(eieio-defclass-autoload 'semantic-symref-tool-global '(semantic-symref-tool-baseclass) "semantic-symref-global" "A symref tool implementation using GNU Global.\nThe GNU Global command can be used to generate lists of tags in a way\nsimilar to that of `grep'.  This tool will parse the output to generate\nthe hit list.\n\nSee the function `cedet-gnu-global-search' for more details.")
 
 ;;;***
 
@@ -2365,6 +2382,14 @@ Returns an object of class `semantic-symref-result'.
 ;;; Generated autoloads from symref/semantic-symref-grep.el
 
 (eieio-defclass-autoload 'semantic-symref-tool-grep '(semantic-symref-tool-baseclass) "semantic-symref-grep" "A symref tool implementation using grep.\nThis tool uses EDE to find he root of the project, then executes\nfind-grep in the project.  The output is parsed for hits\nand those hits returned.")
+
+;;;***
+
+;;;### (autoloads nil "semantic-symref-idutils" "symref/semantic-symref-idutils.el"
+;;;;;;  (18852 3236))
+;;; Generated autoloads from symref/semantic-symref-idutils.el
+
+(eieio-defclass-autoload 'semantic-symref-tool-idutils '(semantic-symref-tool-baseclass) "semantic-symref-idutils" "A symref tool implementation using ID Utils.\nThe udutils command set can be used to generate lists of tags in a way\nsimilar to that of `grep'.  This tool will parse the output to generate\nthe hit list.\n\nSee the function `cedet-idutils-search' for more details.")
 
 ;;;***
 
@@ -2612,7 +2637,7 @@ The VALUE is a list of tags.
 ;;;***
 
 ;;;### (autoloads (semantic-default-texi-setup) "semantic-texi" "semantic-texi.el"
-;;;;;;  (18791 59244))
+;;;;;;  (18858 42690))
 ;;; Generated autoloads from semantic-texi.el
 
 (autoload 'semantic-default-texi-setup "semantic-texi" "\
@@ -2625,7 +2650,7 @@ Set up a buffer for parsing of Texinfo files.
 ;;;***
 
 ;;;### (autoloads (semantic-utest-main) "semantic-utest" "semantic-utest.el"
-;;;;;;  (18810 36071))
+;;;;;;  (18858 42690))
 ;;; Generated autoloads from semantic-utest.el
 
 (autoload 'semantic-utest-main "semantic-utest" "\
@@ -2869,7 +2894,7 @@ warn instead.
 ;;;;;;  semanticdb-table-oob-sanity-check semanticdb-adebug-project-database-list
 ;;;;;;  semanticdb-adebug-current-table semanticdb-adebug-current-database
 ;;;;;;  semanticdb-dump-all-table-summary) "semanticdb-debug" "semanticdb-debug.el"
-;;;;;;  (18805 14155))
+;;;;;;  (18858 42691))
 ;;; Generated autoloads from semanticdb-debug.el
 
 (autoload 'semanticdb-dump-all-table-summary "semanticdb-debug" "\
@@ -3820,15 +3845,20 @@ Setup buffer for parse.
 ;;;***
 
 ;;;### (autoloads nil nil ("bovine/bovine-grammar-macros.el" "bovine/erlang-edoc.el"
-;;;;;;  "bovine/semantic-erlang.el" "bovine/semantic-java.el" "bovine/semantic-skeleton-by.el"
+;;;;;;  "bovine/semantic-c-by.el" "bovine/semantic-erlang-by.el"
+;;;;;;  "bovine/semantic-erlang.el" "bovine/semantic-java.el" "bovine/semantic-make-by.el"
+;;;;;;  "bovine/semantic-scm-by.el" "bovine/semantic-skeleton-by.el"
 ;;;;;;  "ctags/semantic-ectag-util.el" "document-vars.el" "semantic-analyze-fcn.el"
 ;;;;;;  "semantic-ast.el" "semantic-cb.el" "semantic-example.el"
 ;;;;;;  "semantic-fw.el" "semantic-grammar-wy.el" "semantic-inc.el"
 ;;;;;;  "semantic-load.el" "semantic-sb.el" "semantic-util.el" "semanticdb-el.el"
 ;;;;;;  "semanticdb-java.el" "semanticdb-javascript.el" "semanticdb-mk.el"
 ;;;;;;  "semanticdb-skel.el" "semanticdb-system.el" "wisent/semantic-wisent.el"
-;;;;;;  "wisent/wisent-calc.el" "wisent/wisent-expr.el" "wisent/wisent-grammar-macros.el"
-;;;;;;  "wisent/wisent-java.el") (18837 40817 238399))
+;;;;;;  "wisent/wisent-awk-wy.el" "wisent/wisent-calc-wy.el" "wisent/wisent-calc.el"
+;;;;;;  "wisent/wisent-cim-wy.el" "wisent/wisent-expr.el" "wisent/wisent-grammar-macros.el"
+;;;;;;  "wisent/wisent-java-tags-wy.el" "wisent/wisent-java-wy.el"
+;;;;;;  "wisent/wisent-java.el" "wisent/wisent-javascript-jv-wy.el"
+;;;;;;  "wisent/wisent-python-wy.el") (18858 42816 671958))
 
 ;;;***
 

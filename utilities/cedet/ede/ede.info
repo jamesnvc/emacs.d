@@ -503,6 +503,11 @@ the command line, or are in special headers.  See the
 `semantic-lex-c-preprocessor-symbol-map' for more on how to format this
 entry.
 
+   If there is a single file in your project, you can instead set the
+`:spp-files' to a list of file names relative to the root of your
+project.  Specifying this is like setting the variable
+`semantic-lex-c-preprocessor-symbol-file' in semantic.
+
    If you want to override the file-finding tool with your own function
 you can do this:
 
@@ -606,6 +611,8 @@ The various simple project styles all have one major drawback, which is
 that the files in the project are not completely known to EDE.  When
 the EDE API is used to try and file files by some reference name in the
 project, then that could fail.
+
+   @TODO - Add ID Utils and CScope examples
 
    EDE can therefore use some external locate commands, such as the unix
 "locate" command, or "GNU Global".
@@ -898,6 +905,8 @@ File: ede.info,  Node: Project,  Next: Targets,  Prev: Extending EDE,  Up: Top
 *  ede-project ::
 *   ede-cpp-root-project ::
 *   ede-emacs-project ::
+*   ede-linux-project ::
+*   ede-maven-project ::
 *   ede-simple-project ::
 *   ede-simple-base-project ::
 *   ede-proj-project ::
@@ -940,6 +949,11 @@ Slots:
 
           The version number used when distributing files.
 
+    `:directory'
+          Type: `string'
+
+          Directory this project is associated with.
+
     `:file'
           Type: `string'
 
@@ -950,9 +964,15 @@ Slots:
 9.1.1 Specialized Methods
 -------------------------
 
+ -- Method: ede-project-inode :AFTER proj
+     Get the inode of the directory project PROJ is in.
+
  -- Method: ede-project-root :AFTER this
      If a project knows it's root, return it here.  Allows for
      one-project-object-for-a-tree type systems.
+
+ -- Method: ede-find-subproject-for-directory :AFTER proj dir
+     Find a subproject of PROJ that corresponds to DIR.
 
  -- Method: ede-project-root-directory :AFTER this &optional file
      If a project knows it's root, return it here.  Allows for
@@ -991,6 +1011,8 @@ Inheritance Tree:
                         Children:
                               *Note ede-cpp-root-project::,
                               *Note ede-emacs-project::,
+                              *Note ede-linux-project::,
+                              *Note ede-maven-project::,
                               *Note ede-simple-project::,
                               *Note ede-simple-base-project::,
                               *Note ede-proj-project::,
@@ -1004,6 +1026,11 @@ Inheritance Tree:
 Create a new object with name NAME of class type ede-project
 
 Slots:
+
+    `:directory'
+          Type: `string'
+
+          Directory this project is associated with.
 
     `:file'
           Type: `string'
@@ -1132,6 +1159,10 @@ Slots:
      function also applies PROC to sub-sub projects.  See also
      "ede-map-subprojects".
 
+ -- Method: project-update-version :AFTER ot
+     The `:version' of the project OT has been updated.  Handle saving,
+     or other detail.
+
  -- Method: ede-buffer-header-file :AFTER this buffer
      Return `nil', projects don't have header files.
 
@@ -1149,13 +1180,13 @@ Slots:
      `ede-project'
 
  -- Method: ede-description :AFTER this
-     Return a description suitible for the minibuffer about THIS.
-
- -- Method: project-make-dist :AFTER this
-     Build a distribution for the project based on THIS project.
+     Return a description suitable for the minibuffer about THIS.
 
  -- Method: eieio-speedbar-object-children :AFTER this
      Return the list of speedbar display children for THIS.
+
+ -- Method: project-make-dist :AFTER this
+     Build a distribution for the project based on THIS project.
 
  -- Method: ede-system-include-path :AFTER this
      Get the system include path used by project THIS.
@@ -1176,6 +1207,11 @@ Slots:
      Return a list of menu items for building project OBJ.  If optional
      argument CURRENT is non-`nil', return sub-menu code.
 
+ -- Method: ede-update-version-in-source :AFTER this version
+     Change occurrences of a version string in sources.  In project
+     THIS, cycle over all targets to give them a chance to set their
+     sources to VERSION.
+
  -- Method: project-new-target :AFTER proj &rest args
      Create a new target.  It is up to the project PROJ to get the name.
 
@@ -1189,6 +1225,13 @@ Slots:
  -- Method: ede-map-project-buffers :AFTER this proc
      For THIS, execute PROC on all buffers belonging to THIS.
 
+ -- Method: ede-expand-filename-impl :AFTER this filename &optional
+          force
+     Return a fully qualified file name based on project THIS.
+     FILENAME should be just a filename which occurs in a directory
+     controlled by this project.  Optional argument FORCE forces the
+     default filename to be provided even if it doesn't exist.
+
  -- Method: eieio-done-customizing :AFTER proj
      Call this when a user finishes customizing PROJ.
 
@@ -1201,7 +1244,7 @@ Slots:
      the project.
 
  -- Method: project-interactive-select-target :AFTER this prompt
-     Interactivly query for a target that exists in project THIS.
+     Interactively query for a target that exists in project THIS.
      Argument PROMPT is the prompt to use when querying the user for a
      target.
 
@@ -1219,7 +1262,7 @@ Slots:
      Commit any change to PROJ to its file.
 
  -- Method: project-dist-files :AFTER this
-     Return a list of files that constitues a distribution of THIS
+     Return a list of files that constitutes a distribution of THIS
      project.
 
  -- Method: ede-object-menu :BEFORE this
@@ -1254,6 +1297,11 @@ Inheritance Tree:
 Create a new object with name NAME of class type ede-cpp-root-project
 
 Slots:
+
+    `:directory'
+          Type: `string'
+
+          Directory this project is associated with.
 
     `:file'
           Type: `string'
@@ -1301,12 +1349,22 @@ Slots:
           Type: `list'
           Default Value: `nil'
 
-          C Preprocessor macros for your files.  These macros might be
+          C Preprocessor macros for your files.  Preprocessor symbols
+          will be used while parsing your files.  These macros might be
           passed in through the command line compiler, or are critical
           symbols derived from header files.  Providing header files
           macro values through this slot improves accuracy and
-          performance.  See `semantic-lex-c-preprocessor-symbol-map'
-          for more.
+          performance.  Use `:spp-files' to use these files directly.
+
+    `:spp-files'
+          Type: `list'
+          Default Value: `nil'
+
+          C header file with Preprocessor macros for your files.  The
+          PreProcessor symbols appearing in these files will be used
+          while parsing files in this project.  See
+          `semantic-lex-c-preprocessor-symbol-map' for more on how this
+          works.
 
     `:header-match-regexp'
           Type: `string'
@@ -1353,19 +1411,22 @@ Slots:
  -- Method: ede-project-root :AFTER this
      Return my root.
 
- -- Method: ede-expand-filename :AFTER proj name
-     Within this project PROJ, find the file NAME.  This knows details
-     about or source tree.
+ -- Method: ede-find-subproject-for-directory :AFTER proj dir
+     Return PROJ, for handling all subdirs below DIR.
 
  -- Method: ede-project-root-directory :AFTER this
      Return my root.
+
+ -- Method: ede-expand-filename-impl :AFTER proj name
+     Within this project PROJ, find the file NAME.  This knows details
+     about or source tree.
 
  -- Method: ede-find-target :AFTER proj buffer
      Find an EDE target in PROJ for BUFFER.  If one doesn't exist,
      create a new one for this directory.
 
 
-File: ede.info,  Node: ede-emacs-project,  Next: ede-simple-project,  Prev: ede-cpp-root-project,  Up: Project
+File: ede.info,  Node: ede-emacs-project,  Next: ede-linux-project,  Prev: ede-cpp-root-project,  Up: Project
 
 9.4 ede-emacs-project
 =====================
@@ -1390,6 +1451,11 @@ Inheritance Tree:
 Create a new object with name NAME of class type ede-emacs-project
 
 Slots:
+
+    `:directory'
+          Type: `string'
+
+          Directory this project is associated with.
 
     `:file'
           Type: `string'
@@ -1419,22 +1485,25 @@ Slots:
  -- Method: ede-project-root :AFTER this
      Return my root.
 
- -- Method: ede-expand-filename :AFTER proj name
-     Within this project PROJ, find the file NAME.  Knows about how the
-     Emacs source tree is organized.
+ -- Method: ede-find-subproject-for-directory :AFTER proj dir
+     Return PROJ, for handling all subdirs below DIR.
 
  -- Method: ede-project-root-directory :AFTER this &optional file
      Return the root for THIS Emacs project with file.
+
+ -- Method: ede-expand-filename-impl :AFTER proj name
+     Within this project PROJ, find the file NAME.  Knows about how the
+     Emacs source tree is organized.
 
  -- Method: ede-find-target :AFTER proj buffer
      Find an EDE target in PROJ for BUFFER.  If one doesn't exist,
      create a new one for this directory.
 
 
-File: ede.info,  Node: ede-simple-project,  Next: ede-simple-base-project,  Prev: ede-emacs-project,  Up: Project
+File: ede.info,  Node: ede-linux-project,  Next: ede-maven-project,  Prev: ede-emacs-project,  Up: Project
 
-9.5 ede-simple-project
-======================
+9.5 ede-linux-project
+=====================
 
 Inheritance Tree:
 
@@ -1446,16 +1515,21 @@ Inheritance Tree:
 
                    `*Note ede-project::.'
 
-                        `ede-simple-project'
+                        `ede-linux-project'
                               No children
 
 
 
 
 
-Create a new object with name NAME of class type ede-simple-project
+Create a new object with name NAME of class type ede-linux-project
 
 Slots:
+
+    `:directory'
+          Type: `string'
+
+          Directory this project is associated with.
 
     `:file'
           Type: `string'
@@ -1479,13 +1553,160 @@ Slots:
 9.5.1 Specialized Methods
 -------------------------
 
+ -- Method: initialize-instance :AFTER this &rest fields
+     Make sure the `:file' is fully expanded.
+
+ -- Method: ede-project-root :AFTER this
+     Return my root.
+
+ -- Method: ede-find-subproject-for-directory :AFTER proj dir
+     Return PROJ, for handling all subdirs below DIR.
+
+ -- Method: ede-project-root-directory :AFTER this &optional file
+     Return the root for THIS Linux project with file.
+
+ -- Method: ede-expand-filename-impl :AFTER proj name
+     Within this project PROJ, find the file NAME.  Knows about how the
+     Linux source tree is organized.
+
+ -- Method: ede-find-target :AFTER proj buffer
+     Find an EDE target in PROJ for BUFFER.  If one doesn't exist,
+     create a new one for this directory.
+
+
+File: ede.info,  Node: ede-maven-project,  Next: ede-simple-project,  Prev: ede-linux-project,  Up: Project
+
+9.6 ede-maven-project
+=====================
+
+Inheritance Tree:
+
+    `eieio-speedbar'
+
+         `eieio-speedbar-directory-button'
+
+              `*Note ede-project-placeholder::.'
+
+                   `*Note ede-project::.'
+
+                        `ede-maven-project'
+                              No children
+
+
+
+
+
+Create a new object with name NAME of class type ede-maven-project
+
+Slots:
+
+    `:directory'
+          Type: `string'
+
+          Directory this project is associated with.
+
+    `:file'
+          Type: `string'
+
+          File name where this project is stored.
+
+    `:targets'
+          Type: `list'
+
+          List of top level targets in this project.
+
+    `:tool-cache'
+          Type: `list'
+
+          List of tool cache configurations in this project.  This
+          allows any tool to create, manage, and persist
+          project-specific settings.
+
+
+
+9.6.1 Specialized Methods
+-------------------------
+
+ -- Method: initialize-instance :AFTER this &rest fields
+     Make sure the `:targets' is setup.
+
+ -- Method: ede-project-root :AFTER this
+     Return my root.
+
+ -- Method: ede-find-subproject-for-directory :AFTER proj dir
+     Return PROJ, for handling all subdirs below DIR.
+
+ -- Method: ede-project-root-directory :AFTER this &optional file
+     Return the root for THIS Maven project with file.
+
+ -- Method: ede-find-target :AFTER proj buffer
+     Find an EDE target in PROJ for BUFFER.  If one doesn't exist,
+     create a new one for this directory.
+
+
+File: ede.info,  Node: ede-simple-project,  Next: ede-simple-base-project,  Prev: ede-maven-project,  Up: Project
+
+9.7 ede-simple-project
+======================
+
+Inheritance Tree:
+
+    `eieio-speedbar'
+
+         `eieio-speedbar-directory-button'
+
+              `*Note ede-project-placeholder::.'
+
+                   `*Note ede-project::.'
+
+                        `ede-simple-project'
+                              No children
+
+
+
+
+
+Create a new object with name NAME of class type ede-simple-project
+
+Slots:
+
+    `:directory'
+          Type: `string'
+
+          Directory this project is associated with.
+
+    `:file'
+          Type: `string'
+
+          File name where this project is stored.
+
+    `:targets'
+          Type: `list'
+
+          List of top level targets in this project.
+
+    `:tool-cache'
+          Type: `list'
+
+          List of tool cache configurations in this project.  This
+          allows any tool to create, manage, and persist
+          project-specific settings.
+
+
+
+9.7.1 Specialized Methods
+-------------------------
+
+ -- Method: ede-find-subproject-for-directory :AFTER proj dir
+     Return PROJ, for handling all subdirs below DIR.
+
  -- Method: ede-commit-project :AFTER proj
      Commit any change to PROJ to its file.
 
 
 File: ede.info,  Node: ede-simple-base-project,  Next: ede-proj-project,  Prev: ede-simple-project,  Up: Project
 
-9.6 ede-simple-base-project
+9.8 ede-simple-base-project
 ===========================
 
 Inheritance Tree:
@@ -1512,7 +1733,7 @@ of subdirectories.
 
 File: ede.info,  Node: ede-proj-project,  Next: project-am-makefile,  Prev: ede-simple-base-project,  Up: Project
 
-9.7 ede-proj-project
+9.9 ede-proj-project
 ====================
 
 Inheritance Tree:
@@ -1535,6 +1756,11 @@ Inheritance Tree:
 Create a new object with name NAME of class type ede-proj-project
 
 Slots:
+
+    `:directory'
+          Type: `string'
+
+          Directory this project is associated with.
 
     `:file'
           Type: `string'
@@ -1608,7 +1834,7 @@ Slots:
 
 
 
-9.7.1 Specialized Methods
+9.9.1 Specialized Methods
 -------------------------
 
  -- Method: project-rescan :AFTER this
@@ -1665,7 +1891,7 @@ Slots:
      argument FORCE will force items to be regenerated.
 
  -- Method: ede-proj-makefile-garbage-patterns :AFTER this
-     Return a list of patterns that are considred garbage to THIS.
+     Return a list of patterns that are considered garbage to THIS.
      These are removed with make clean.
 
  -- Method: ede-proj-configure-synchronize :AFTER this
@@ -1722,8 +1948,8 @@ Slots:
 
 File: ede.info,  Node: project-am-makefile,  Next: ede-step-project,  Prev: ede-proj-project,  Up: Project
 
-9.8 project-am-makefile
-=======================
+9.10 project-am-makefile
+========================
 
 Inheritance Tree:
 
@@ -1746,6 +1972,11 @@ Create a new object with name NAME of class type project-am-makefile
 
 Slots:
 
+    `:directory'
+          Type: `string'
+
+          Directory this project is associated with.
+
     `:file'
           Type: `string'
 
@@ -1766,8 +1997,8 @@ Slots:
 
 
 
-9.8.1 Specialized Methods
--------------------------
+9.10.1 Specialized Methods
+--------------------------
 
  -- Method: project-rescan :AFTER this
      Rescan the makefile for all targets and sub targets.
@@ -1798,8 +2029,8 @@ Slots:
 
 File: ede.info,  Node: ede-step-project,  Prev: project-am-makefile,  Up: Project
 
-9.9 ede-step-project
-====================
+9.11 ede-step-project
+=====================
 
 Inheritance Tree:
 
@@ -1821,6 +2052,11 @@ Inheritance Tree:
 Create a new object with name NAME of class type ede-step-project
 
 Slots:
+
+    `:directory'
+          Type: `string'
+
+          Directory this project is associated with.
 
     `:file'
           Type: `string'
@@ -1864,7 +2100,7 @@ Slots:
           Default Value: `user'
 
           Installation domain specification.  The variable
-          GNUSTEP_INSTALLATION_DOMAIN is setted at this value.
+          GNUSTEP_INSTALLATION_DOMAIN is set at this value.
 
     `:preamble'
           Type: `(or null list)'
@@ -1892,8 +2128,8 @@ Slots:
 
 
 
-9.9.1 Specialized Methods
--------------------------
+9.11.1 Specialized Methods
+--------------------------
 
  -- Method: project-rescan :AFTER this
      Rescan the EDE proj project THIS.
@@ -1957,6 +2193,16 @@ File: ede.info,  Node: Targets,  Next: Sourcecode,  Prev: Project,  Up: Top
 * Menu:
 
 * ede-target ::
+*  ede-cpp-root-target ::
+*  ede-emacs-target-c ::
+*  ede-emacs-target-el ::
+*  ede-emacs-target-misc ::
+*  ede-linux-target-c ::
+*  ede-linux-target-misc ::
+*  ede-maven-target-java ::
+*  ede-maven-target-c ::
+*  ede-maven-target-misc ::
+*  ede-simple-target ::
 *  ede-proj-target ::
 *   ede-proj-target-makefile ::
 *    semantic-ede-proj-target-grammar ::
@@ -1970,29 +2216,19 @@ File: ede.info,  Node: Targets,  Next: Sourcecode,  Prev: Project,  Up: Top
 *    ede-proj-target-makefile-info ::
 *   ede-proj-target-aux ::
 *   ede-proj-target-scheme ::
-*  ede-cpp-root-target ::
-*  ede-emacs-target-c ::
-*  ede-emacs-target-el ::
-*  ede-emacs-target-misc ::
-*  ede-simple-target ::
 *  project-am-target ::
 *   project-am-objectcode ::
 *    project-am-program ::
 *    project-am-lib ::
+*   project-am-header ::
+*    project-am-header-noinst ::
+*    project-am-header-inst ::
 *   project-am-lisp ::
 *   project-am-texinfo ::
 *   project-am-man ::
-*  ede-step-target ::
-*   ede-step-target-ctool ::
-*   ede-step-target-tool ::
-*   ede-step-target-clibrary ::
-*   ede-step-target-library ::
-*   ede-step-target-application ::
-*   ede-step-target-documentation ::
-*   ede-step-target-subproject ::
 
 
-File: ede.info,  Node: ede-target,  Next: ede-proj-target,  Up: Targets
+File: ede.info,  Node: ede-target,  Next: ede-cpp-root-target,  Up: Targets
 
 10.1 ede-target
 ===============
@@ -2006,14 +2242,18 @@ Inheritance Tree:
               `ede-target'
 
                    Children:
-                         *Note ede-proj-target::,
                          *Note ede-cpp-root-target::,
                          *Note ede-emacs-target-c::,
                          *Note ede-emacs-target-el::,
                          *Note ede-emacs-target-misc::,
+                         *Note ede-linux-target-c::,
+                         *Note ede-linux-target-misc::,
+                         *Note ede-maven-target-java::,
+                         *Note ede-maven-target-c::,
+                         *Note ede-maven-target-misc::,
                          *Note ede-simple-target::,
-                         *Note project-am-target::,
-                         *Note ede-step-target::.
+                         *Note ede-proj-target::,
+                         *Note project-am-target::.
 
 
 
@@ -2090,8 +2330,8 @@ Slots:
      is an argument.
 
  -- Method: ede-buffer-documentation-files :AFTER this buffer
-     Check for some documenation files for THIS.  Also do a quick check
-     to see if there is a Documentation tag in this BUFFER.
+     Check for some documentation files for THIS.  Also do a quick
+     check to see if there is a Documentation tag in this BUFFER.
 
  -- Method: ede-buffer-mine :AFTER this buffer
      Return non-`nil' if object THIS lays claim to the file in BUFFER.
@@ -2108,7 +2348,7 @@ Slots:
      `ede-target'
 
  -- Method: ede-description :AFTER this
-     Return a description suitible for the minibuffer about THIS.
+     Return a description suitable for the minibuffer about THIS.
 
  -- Method: eieio-speedbar-object-children :AFTER this
      Return the list of speedbar display children for THIS.
@@ -2132,6 +2372,9 @@ Slots:
 
  -- Method: ede-want-file-p :AFTER this file
      Return non-`nil' if THIS target wants FILE.
+
+ -- Method: ede-update-version-in-source :AFTER this version
+     In sources for THIS, change version numbers to VERSION.
 
  -- Method: project-delete-target :AFTER ot
      Delete the current target OT from it's parent project.
@@ -2175,10 +2418,403 @@ Slots:
      Retrieves the slot `menu' from an object of class `ede-target'
 
 
-File: ede.info,  Node: ede-proj-target,  Next: ede-proj-target-makefile,  Prev: ede-target,  Up: Targets
+File: ede.info,  Node: ede-cpp-root-target,  Next: ede-emacs-target-c,  Prev: ede-target,  Up: Targets
 
-10.2 ede-proj-target
-====================
+10.2 ede-cpp-root-target
+========================
+
+Inheritance Tree:
+
+    `eieio-speedbar'
+
+         `eieio-speedbar-directory-button'
+
+              `*Note ede-target::.'
+
+                   `ede-cpp-root-target'
+                         No children
+
+
+
+
+Create a new object with name NAME of class type ede-cpp-root-target
+
+Slots:
+
+    `:name'
+          Type: `string'
+
+          Name of this target.
+
+    `:path'
+          Type: `string'
+
+          The path to the sources of this target.  Relative to the path
+          of the project it belongs to.
+
+
+
+10.2.1 Specialized Methods
+--------------------------
+
+ -- Method: ede-preprocessor-map :AFTER this
+     Get the pre-processor map for project THIS.
+
+ -- Method: ede-system-include-path :AFTER this
+     Get the system include path used by project THIS.
+
+
+File: ede.info,  Node: ede-emacs-target-c,  Next: ede-emacs-target-el,  Prev: ede-cpp-root-target,  Up: Targets
+
+10.3 ede-emacs-target-c
+=======================
+
+Inheritance Tree:
+
+    `eieio-speedbar'
+
+         `eieio-speedbar-directory-button'
+
+              `*Note ede-target::.'
+
+                   `ede-emacs-target-c'
+                         No children
+
+
+
+
+Create a new object with name NAME of class type ede-emacs-target-c
+
+Slots:
+
+    `:name'
+          Type: `string'
+
+          Name of this target.
+
+    `:path'
+          Type: `string'
+
+          The path to the sources of this target.  Relative to the path
+          of the project it belongs to.
+
+
+
+10.3.1 Specialized Methods
+--------------------------
+
+ -- Method: ede-preprocessor-map :AFTER this
+     Get the pre-processor map for Emacs C code.  All files need the
+     macros from lisp.h!
+
+
+File: ede.info,  Node: ede-emacs-target-el,  Next: ede-emacs-target-misc,  Prev: ede-emacs-target-c,  Up: Targets
+
+10.4 ede-emacs-target-el
+========================
+
+Inheritance Tree:
+
+    `eieio-speedbar'
+
+         `eieio-speedbar-directory-button'
+
+              `*Note ede-target::.'
+
+                   `ede-emacs-target-el'
+                         No children
+
+
+
+
+Create a new object with name NAME of class type ede-emacs-target-el
+
+Slots:
+
+    `:name'
+          Type: `string'
+
+          Name of this target.
+
+    `:path'
+          Type: `string'
+
+          The path to the sources of this target.  Relative to the path
+          of the project it belongs to.
+
+
+
+
+File: ede.info,  Node: ede-emacs-target-misc,  Next: ede-linux-target-c,  Prev: ede-emacs-target-el,  Up: Targets
+
+10.5 ede-emacs-target-misc
+==========================
+
+Inheritance Tree:
+
+    `eieio-speedbar'
+
+         `eieio-speedbar-directory-button'
+
+              `*Note ede-target::.'
+
+                   `ede-emacs-target-misc'
+                         No children
+
+
+
+
+Create a new object with name NAME of class type ede-emacs-target-misc
+
+Slots:
+
+    `:name'
+          Type: `string'
+
+          Name of this target.
+
+    `:path'
+          Type: `string'
+
+          The path to the sources of this target.  Relative to the path
+          of the project it belongs to.
+
+
+
+
+File: ede.info,  Node: ede-linux-target-c,  Next: ede-linux-target-misc,  Prev: ede-emacs-target-misc,  Up: Targets
+
+10.6 ede-linux-target-c
+=======================
+
+Inheritance Tree:
+
+    `eieio-speedbar'
+
+         `eieio-speedbar-directory-button'
+
+              `*Note ede-target::.'
+
+                   `ede-linux-target-c'
+                         No children
+
+
+
+
+Create a new object with name NAME of class type ede-linux-target-c
+
+Slots:
+
+    `:name'
+          Type: `string'
+
+          Name of this target.
+
+    `:path'
+          Type: `string'
+
+          The path to the sources of this target.  Relative to the path
+          of the project it belongs to.
+
+
+
+10.6.1 Specialized Methods
+--------------------------
+
+ -- Method: ede-preprocessor-map :AFTER this
+     Get the pre-processor map for Linux C code.  All files need the
+     macros from lisp.h!
+
+
+File: ede.info,  Node: ede-linux-target-misc,  Next: ede-maven-target-java,  Prev: ede-linux-target-c,  Up: Targets
+
+10.7 ede-linux-target-misc
+==========================
+
+Inheritance Tree:
+
+    `eieio-speedbar'
+
+         `eieio-speedbar-directory-button'
+
+              `*Note ede-target::.'
+
+                   `ede-linux-target-misc'
+                         No children
+
+
+
+
+Create a new object with name NAME of class type ede-linux-target-misc
+
+Slots:
+
+    `:name'
+          Type: `string'
+
+          Name of this target.
+
+    `:path'
+          Type: `string'
+
+          The path to the sources of this target.  Relative to the path
+          of the project it belongs to.
+
+
+
+
+File: ede.info,  Node: ede-maven-target-java,  Next: ede-maven-target-c,  Prev: ede-linux-target-misc,  Up: Targets
+
+10.8 ede-maven-target-java
+==========================
+
+Inheritance Tree:
+
+    `eieio-speedbar'
+
+         `eieio-speedbar-directory-button'
+
+              `*Note ede-target::.'
+
+                   `ede-maven-target-java'
+                         No children
+
+
+
+
+Create a new object with name NAME of class type ede-maven-target-java
+
+Slots:
+
+    `:name'
+          Type: `string'
+
+          Name of this target.
+
+    `:path'
+          Type: `string'
+
+          The path to the sources of this target.  Relative to the path
+          of the project it belongs to.
+
+
+
+
+File: ede.info,  Node: ede-maven-target-c,  Next: ede-maven-target-misc,  Prev: ede-maven-target-java,  Up: Targets
+
+10.9 ede-maven-target-c
+=======================
+
+Inheritance Tree:
+
+    `eieio-speedbar'
+
+         `eieio-speedbar-directory-button'
+
+              `*Note ede-target::.'
+
+                   `ede-maven-target-c'
+                         No children
+
+
+
+
+Create a new object with name NAME of class type ede-maven-target-c
+
+Slots:
+
+    `:name'
+          Type: `string'
+
+          Name of this target.
+
+    `:path'
+          Type: `string'
+
+          The path to the sources of this target.  Relative to the path
+          of the project it belongs to.
+
+
+
+
+File: ede.info,  Node: ede-maven-target-misc,  Next: ede-simple-target,  Prev: ede-maven-target-c,  Up: Targets
+
+10.10 ede-maven-target-misc
+===========================
+
+Inheritance Tree:
+
+    `eieio-speedbar'
+
+         `eieio-speedbar-directory-button'
+
+              `*Note ede-target::.'
+
+                   `ede-maven-target-misc'
+                         No children
+
+
+
+
+Create a new object with name NAME of class type ede-maven-target-misc
+
+Slots:
+
+    `:name'
+          Type: `string'
+
+          Name of this target.
+
+    `:path'
+          Type: `string'
+
+          The path to the sources of this target.  Relative to the path
+          of the project it belongs to.
+
+
+
+
+File: ede.info,  Node: ede-simple-target,  Next: ede-proj-target,  Prev: ede-maven-target-misc,  Up: Targets
+
+10.11 ede-simple-target
+=======================
+
+Inheritance Tree:
+
+    `eieio-speedbar'
+
+         `eieio-speedbar-directory-button'
+
+              `*Note ede-target::.'
+
+                   `ede-simple-target'
+                         No children
+
+
+
+
+Create a new object with name NAME of class type ede-simple-target
+
+Slots:
+
+    `:name'
+          Type: `string'
+
+          Name of this target.
+
+    `:path'
+          Type: `string'
+
+          The path to the sources of this target.  Relative to the path
+          of the project it belongs to.
+
+
+
+
+File: ede.info,  Node: ede-proj-target,  Next: ede-proj-target-makefile,  Prev: ede-simple-target,  Up: Targets
+
+10.12 ede-proj-target
+=====================
 
 Inheritance Tree:
 
@@ -2237,16 +2873,16 @@ Slots:
           Type: `(or null symbol)'
           Default Value: `nil'
 
-          The linker to be used to link compled sources for this object.
-          This should be a symbol, which contains the object defining
-          the linker.  This enables save/restore to do so by name,
-          permitting the sharing of these linker resources, and global
-          customization thereof.
+          The linker to be used to link compiled sources for this
+          object.  This should be a symbol, which contains the object
+          defining the linker.  This enables save/restore to do so by
+          name, permitting the sharing of these linker resources, and
+          global customization thereof.
 
 
 
-10.2.1 Specialized Methods
---------------------------
+10.12.1 Specialized Methods
+---------------------------
 
  -- Method: project-compile-target :AFTER obj &optional command
      Compile the current target OBJ.  Argument COMMAND is the command
@@ -2305,7 +2941,7 @@ Slots:
      Converts all symbols into the objects to be used.
 
  -- Method: ede-proj-makefile-garbage-patterns :AFTER this
-     Return a list of patterns that are considred garbage to THIS.
+     Return a list of patterns that are considered garbage to THIS.
      These are removed with make clean.
 
  -- Method: ede-proj-tweak-autoconf :AFTER this
@@ -2354,8 +2990,8 @@ Slots:
 
 File: ede.info,  Node: ede-proj-target-makefile,  Next: semantic-ede-proj-target-grammar,  Prev: ede-proj-target,  Up: Targets
 
-10.3 ede-proj-target-makefile
-=============================
+10.13 ede-proj-target-makefile
+==============================
 
 Inheritance Tree:
 
@@ -2430,8 +3066,8 @@ Slots:
 
 
 
-10.3.1 Specialized Methods
---------------------------
+10.13.1 Specialized Methods
+---------------------------
 
  -- Method: ede-proj-makefile-dependencies :AFTER this
      Return a string representing the dependencies for THIS.  Some
@@ -2464,8 +3100,8 @@ Slots:
 
 File: ede.info,  Node: semantic-ede-proj-target-grammar,  Next: ede-proj-target-makefile-objectcode,  Prev: ede-proj-target-makefile,  Up: Targets
 
-10.4 semantic-ede-proj-target-grammar
-=====================================
+10.14 semantic-ede-proj-target-grammar
+======================================
 
 Inheritance Tree:
 
@@ -2505,8 +3141,8 @@ Slots:
 
 
 
-10.4.1 Specialized Methods
---------------------------
+10.14.1 Specialized Methods
+---------------------------
 
  -- Method: project-compile-target :AFTER obj
      Compile all sources in a Lisp target OBJ.
@@ -2530,8 +3166,8 @@ Slots:
 
 File: ede.info,  Node: ede-proj-target-makefile-objectcode,  Next: ede-proj-target-makefile-archive,  Prev: semantic-ede-proj-target-grammar,  Up: Targets
 
-10.5 ede-proj-target-makefile-objectcode
-========================================
+10.15 ede-proj-target-makefile-objectcode
+=========================================
 
 Inheritance Tree:
 
@@ -2581,8 +3217,8 @@ Slots:
           *Note ede-proj-target-makefile::.
 
 
-10.5.1 Specialized Methods
---------------------------
+10.15.1 Specialized Methods
+---------------------------
 
  -- Method: ede-buffer-header-file :AFTER this buffer
      There are no default header files.
@@ -2602,8 +3238,8 @@ Slots:
 
 File: ede.info,  Node: ede-proj-target-makefile-archive,  Next: ede-proj-target-makefile-program,  Prev: ede-proj-target-makefile-objectcode,  Up: Targets
 
-10.6 ede-proj-target-makefile-archive
-=====================================
+10.16 ede-proj-target-makefile-archive
+======================================
 
 Inheritance Tree:
 
@@ -2646,8 +3282,8 @@ Slots:
 
 
 
-10.6.1 Specialized Methods
---------------------------
+10.16.1 Specialized Methods
+---------------------------
 
  -- Method: ede-proj-makefile-insert-rules :AFTER this
      Create the make rule needed to create an archive for THIS.
@@ -2660,8 +3296,8 @@ Slots:
 
 File: ede.info,  Node: ede-proj-target-makefile-program,  Next: ede-proj-target-makefile-shared-object,  Prev: ede-proj-target-makefile-archive,  Up: Targets
 
-10.7 ede-proj-target-makefile-program
-=====================================
+10.17 ede-proj-target-makefile-program
+======================================
 
 Inheritance Tree:
 
@@ -2709,7 +3345,7 @@ Slots:
           Type: `list'
           Default Value: `nil'
 
-          Libraries, such as "m" or "Xt" which this program dependso on.
+          Libraries, such as "m" or "Xt" which this program depends on.
           The linker flag "-l" is automatically prepended.  Do not
           include a "lib" prefix, or a ".so" suffix.
 
@@ -2727,8 +3363,8 @@ Slots:
 
 
 
-10.7.1 Specialized Methods
---------------------------
+10.17.1 Specialized Methods
+---------------------------
 
  -- Method: project-debug-target :AFTER obj
      Debug a program target OBJ.
@@ -2745,8 +3381,8 @@ Slots:
 
 File: ede.info,  Node: ede-proj-target-makefile-shared-object,  Next: ede-proj-target-elisp,  Prev: ede-proj-target-makefile-program,  Up: Targets
 
-10.8 ede-proj-target-makefile-shared-object
-===========================================
+10.18 ede-proj-target-makefile-shared-object
+============================================
 
 Inheritance Tree:
 
@@ -2792,8 +3428,8 @@ Slots:
 
 
 
-10.8.1 Specialized Methods
---------------------------
+10.18.1 Specialized Methods
+---------------------------
 
  -- Method: ede-proj-configure-add-missing :AFTER this
      Query if any files needed by THIS provided by automake are missing.
@@ -2817,8 +3453,8 @@ Slots:
 
 File: ede.info,  Node: ede-proj-target-elisp,  Next: ede-proj-target-elisp-autoloads,  Prev: ede-proj-target-makefile-shared-object,  Up: Targets
 
-10.9 ede-proj-target-elisp
-==========================
+10.19 ede-proj-target-elisp
+===========================
 
 Inheritance Tree:
 
@@ -2868,8 +3504,8 @@ Slots:
 
 
 
-10.9.1 Specialized Methods
---------------------------
+10.19.1 Specialized Methods
+---------------------------
 
  -- Method: project-compile-target :AFTER obj
      Compile all sources in a Lisp target OBJ.  Bonus: Return a cons
@@ -2897,7 +3533,7 @@ Slots:
 
 File: ede.info,  Node: ede-proj-target-elisp-autoloads,  Next: ede-proj-target-makefile-miscelaneous,  Prev: ede-proj-target-elisp,  Up: Targets
 
-10.10 ede-proj-target-elisp-autoloads
+10.20 ede-proj-target-elisp-autoloads
 =====================================
 
 Inheritance Tree:
@@ -2963,7 +3599,7 @@ Slots:
 
 
 
-10.10.1 Specialized Methods
+10.20.1 Specialized Methods
 ---------------------------
 
  -- Method: ede-proj-makefile-dependencies :AFTER this
@@ -3015,7 +3651,7 @@ Slots:
 
 File: ede.info,  Node: ede-proj-target-makefile-miscelaneous,  Next: ede-proj-target-makefile-info,  Prev: ede-proj-target-elisp-autoloads,  Up: Targets
 
-10.11 ede-proj-target-makefile-miscelaneous
+10.21 ede-proj-target-makefile-miscelaneous
 ===========================================
 
 Inheritance Tree:
@@ -3058,12 +3694,12 @@ Slots:
           Type: `string'
           Default Value: `""'
 
-          Miscelaneous sources which have a specialized makefile.  The
+          Miscellaneous sources which have a specialized makefile.  The
           sub-makefile is used to build this target.
 
 
 
-10.11.1 Specialized Methods
+10.21.1 Specialized Methods
 ---------------------------
 
  -- Method: ede-proj-makefile-insert-rules :AFTER this
@@ -3078,7 +3714,7 @@ Slots:
 
 File: ede.info,  Node: ede-proj-target-makefile-info,  Next: ede-proj-target-aux,  Prev: ede-proj-target-makefile-miscelaneous,  Up: Targets
 
-10.12 ede-proj-target-makefile-info
+10.22 ede-proj-target-makefile-info
 ===================================
 
 Inheritance Tree:
@@ -3126,7 +3762,7 @@ Slots:
 
 
 
-10.12.1 Specialized Methods
+10.22.1 Specialized Methods
 ---------------------------
 
  -- Method: ede-proj-configure-add-missing :AFTER this
@@ -3134,7 +3770,7 @@ Slots:
      Results in -add-missing being passed to automake.
 
  -- Method: object-write :AFTER this
-     Before commiting any change to THIS, make sure the mainmenu is
+     Before committing any change to THIS, make sure the mainmenu is
      first.
 
  -- Method: ede-proj-makefile-sourcevar :AFTER this
@@ -3168,7 +3804,7 @@ Slots:
 
 File: ede.info,  Node: ede-proj-target-aux,  Next: ede-proj-target-scheme,  Prev: ede-proj-target-makefile-info,  Up: Targets
 
-10.13 ede-proj-target-aux
+10.23 ede-proj-target-aux
 =========================
 
 Inheritance Tree:
@@ -3205,16 +3841,16 @@ Slots:
 
 
 
-10.13.1 Specialized Methods
+10.23.1 Specialized Methods
 ---------------------------
 
  -- Method: ede-proj-makefile-sourcevar :AFTER this
      Return the variable name for THIS's sources.
 
 
-File: ede.info,  Node: ede-proj-target-scheme,  Next: ede-cpp-root-target,  Prev: ede-proj-target-aux,  Up: Targets
+File: ede.info,  Node: ede-proj-target-scheme,  Next: project-am-target,  Prev: ede-proj-target-aux,  Up: Targets
 
-10.14 ede-proj-target-scheme
+10.24 ede-proj-target-scheme
 ============================
 
 Inheritance Tree:
@@ -3257,217 +3893,16 @@ Slots:
 
 
 
-10.14.1 Specialized Methods
+10.24.1 Specialized Methods
 ---------------------------
 
  -- Method: ede-proj-tweak-autoconf :AFTER this
      Tweak the configure file (current buffer) to accomodate THIS.
 
 
-File: ede.info,  Node: ede-cpp-root-target,  Next: ede-emacs-target-c,  Prev: ede-proj-target-scheme,  Up: Targets
+File: ede.info,  Node: project-am-target,  Next: project-am-objectcode,  Prev: ede-proj-target-scheme,  Up: Targets
 
-10.15 ede-cpp-root-target
-=========================
-
-Inheritance Tree:
-
-    `eieio-speedbar'
-
-         `eieio-speedbar-directory-button'
-
-              `*Note ede-target::.'
-
-                   `ede-cpp-root-target'
-                         No children
-
-
-
-
-Create a new object with name NAME of class type ede-cpp-root-target
-
-Slots:
-
-    `:name'
-          Type: `string'
-
-          Name of this target.
-
-    `:path'
-          Type: `string'
-
-          The path to the sources of this target.  Relative to the path
-          of the project it belongs to.
-
-
-
-10.15.1 Specialized Methods
----------------------------
-
- -- Method: ede-preprocessor-map :AFTER this
-     Get the pre-processor map for project THIS.
-
- -- Method: ede-system-include-path :AFTER this
-     Get the system include path used by project THIS.
-
-
-File: ede.info,  Node: ede-emacs-target-c,  Next: ede-emacs-target-el,  Prev: ede-cpp-root-target,  Up: Targets
-
-10.16 ede-emacs-target-c
-========================
-
-Inheritance Tree:
-
-    `eieio-speedbar'
-
-         `eieio-speedbar-directory-button'
-
-              `*Note ede-target::.'
-
-                   `ede-emacs-target-c'
-                         No children
-
-
-
-
-Create a new object with name NAME of class type ede-emacs-target-c
-
-Slots:
-
-    `:name'
-          Type: `string'
-
-          Name of this target.
-
-    `:path'
-          Type: `string'
-
-          The path to the sources of this target.  Relative to the path
-          of the project it belongs to.
-
-
-
-10.16.1 Specialized Methods
----------------------------
-
- -- Method: ede-preprocessor-map :AFTER this
-     Get the pre-processor map for Emacs C code.  All files need the
-     macros from lisp.h!
-
-
-File: ede.info,  Node: ede-emacs-target-el,  Next: ede-emacs-target-misc,  Prev: ede-emacs-target-c,  Up: Targets
-
-10.17 ede-emacs-target-el
-=========================
-
-Inheritance Tree:
-
-    `eieio-speedbar'
-
-         `eieio-speedbar-directory-button'
-
-              `*Note ede-target::.'
-
-                   `ede-emacs-target-el'
-                         No children
-
-
-
-
-Create a new object with name NAME of class type ede-emacs-target-el
-
-Slots:
-
-    `:name'
-          Type: `string'
-
-          Name of this target.
-
-    `:path'
-          Type: `string'
-
-          The path to the sources of this target.  Relative to the path
-          of the project it belongs to.
-
-
-
-
-File: ede.info,  Node: ede-emacs-target-misc,  Next: ede-simple-target,  Prev: ede-emacs-target-el,  Up: Targets
-
-10.18 ede-emacs-target-misc
-===========================
-
-Inheritance Tree:
-
-    `eieio-speedbar'
-
-         `eieio-speedbar-directory-button'
-
-              `*Note ede-target::.'
-
-                   `ede-emacs-target-misc'
-                         No children
-
-
-
-
-Create a new object with name NAME of class type ede-emacs-target-misc
-
-Slots:
-
-    `:name'
-          Type: `string'
-
-          Name of this target.
-
-    `:path'
-          Type: `string'
-
-          The path to the sources of this target.  Relative to the path
-          of the project it belongs to.
-
-
-
-
-File: ede.info,  Node: ede-simple-target,  Next: project-am-target,  Prev: ede-emacs-target-misc,  Up: Targets
-
-10.19 ede-simple-target
-=======================
-
-Inheritance Tree:
-
-    `eieio-speedbar'
-
-         `eieio-speedbar-directory-button'
-
-              `*Note ede-target::.'
-
-                   `ede-simple-target'
-                         No children
-
-
-
-
-Create a new object with name NAME of class type ede-simple-target
-
-Slots:
-
-    `:name'
-          Type: `string'
-
-          Name of this target.
-
-    `:path'
-          Type: `string'
-
-          The path to the sources of this target.  Relative to the path
-          of the project it belongs to.
-
-
-
-
-File: ede.info,  Node: project-am-target,  Next: project-am-objectcode,  Prev: ede-simple-target,  Up: Targets
-
-10.20 project-am-target
+10.25 project-am-target
 =======================
 
 Inheritance Tree:
@@ -3482,6 +3917,7 @@ Inheritance Tree:
 
                         Children:
                               *Note project-am-objectcode::,
+                              *Note project-am-header::,
                               *Note project-am-lisp::,
                               *Note project-am-texinfo::,
                               *Note project-am-man::.
@@ -3507,7 +3943,7 @@ Slots:
 
 
 
-10.20.1 Specialized Methods
+10.25.1 Specialized Methods
 ---------------------------
 
  -- Method: project-compile-target :AFTER obj &optional command
@@ -3537,7 +3973,7 @@ Slots:
 
 File: ede.info,  Node: project-am-objectcode,  Next: project-am-program,  Prev: project-am-target,  Up: Targets
 
-10.21 project-am-objectcode
+10.26 project-am-objectcode
 ===========================
 
 Inheritance Tree:
@@ -3578,7 +4014,7 @@ Slots:
 
 
 
-10.21.1 Specialized Methods
+10.26.1 Specialized Methods
 ---------------------------
 
  -- Method: project-am-macro :AFTER this
@@ -3596,15 +4032,10 @@ Slots:
  -- Method: ede-buffer-mine :AFTER this buffer
      Return `t' if object THIS lays claim to the file in BUFFER.
 
- -- Method: ede-sb-expand :AFTER this depth
-     Expand node describing something built into objectcode.  TEXT is
-     the text clicked on.  TOKEN is the object we are expanding from.
-     INDENT is the current indentatin level.
-
 
 File: ede.info,  Node: project-am-program,  Next: project-am-lib,  Prev: project-am-objectcode,  Up: Targets
 
-10.22 project-am-program
+10.27 project-am-program
 ========================
 
 Inheritance Tree:
@@ -3650,19 +4081,16 @@ Slots:
 
 
 
-10.22.1 Specialized Methods
+10.27.1 Specialized Methods
 ---------------------------
 
  -- Method: project-rescan :AFTER this
      Rescan object THIS.
 
- -- Method: ede-sb-button :AFTER this depth
-     Create a speedbar button for object THIS at DEPTH.
-
 
-File: ede.info,  Node: project-am-lib,  Next: project-am-lisp,  Prev: project-am-program,  Up: Targets
+File: ede.info,  Node: project-am-lib,  Next: project-am-header,  Prev: project-am-program,  Up: Targets
 
-10.23 project-am-lib
+10.28 project-am-lib
 ====================
 
 Inheritance Tree:
@@ -3702,19 +4130,165 @@ Slots:
 
 
 
-10.23.1 Specialized Methods
+10.28.1 Specialized Methods
 ---------------------------
 
  -- Method: project-rescan :AFTER this
      Rescan object THIS.
 
- -- Method: ede-sb-button :AFTER this depth
-     Create a speedbar button for object THIS at DEPTH.
+
+File: ede.info,  Node: project-am-header,  Next: project-am-header-noinst,  Prev: project-am-lib,  Up: Targets
+
+10.29 project-am-header
+=======================
+
+Inheritance Tree:
+
+    `eieio-speedbar'
+
+         `eieio-speedbar-directory-button'
+
+              `*Note ede-target::.'
+
+                   `*Note project-am-target::.'
+
+                        `project-am-header'
+
+                             Children:
+                                   *Note project-am-header-noinst::,
+                                   *Note project-am-header-inst::.
+
+
+
+
+
+
+Create a new object with name NAME of class type project-am-header
+
+Slots:
+
+    `:name'
+          Type: `string'
+
+          Name of this target.
+
+    `:path'
+          Type: `string'
+
+          The path to the sources of this target.  Relative to the path
+          of the project it belongs to.
+
+
+
+10.29.1 Specialized Methods
+---------------------------
+
+ -- Method: project-rescan :AFTER this
+     Rescan the Header sources.
 
 
-File: ede.info,  Node: project-am-lisp,  Next: project-am-texinfo,  Prev: project-am-lib,  Up: Targets
+File: ede.info,  Node: project-am-header-noinst,  Next: project-am-header-inst,  Prev: project-am-header,  Up: Targets
 
-10.24 project-am-lisp
+10.30 project-am-header-noinst
+==============================
+
+Inheritance Tree:
+
+    `eieio-speedbar'
+
+         `eieio-speedbar-directory-button'
+
+              `*Note ede-target::.'
+
+                   `*Note project-am-target::.'
+
+                        `*Note project-am-header::.'
+
+                             `project-am-header-noinst'
+                                   No children
+
+
+
+
+
+
+Create a new object with name NAME of class type
+project-am-header-noinst
+
+Slots:
+
+    `:name'
+          Type: `string'
+
+          Name of this target.
+
+    `:path'
+          Type: `string'
+
+          The path to the sources of this target.  Relative to the path
+          of the project it belongs to.
+
+
+
+10.30.1 Specialized Methods
+---------------------------
+
+ -- Method: project-am-macro :AFTER this
+     Return the default macro to 'edit' for this object.
+
+
+File: ede.info,  Node: project-am-header-inst,  Next: project-am-lisp,  Prev: project-am-header-noinst,  Up: Targets
+
+10.31 project-am-header-inst
+============================
+
+Inheritance Tree:
+
+    `eieio-speedbar'
+
+         `eieio-speedbar-directory-button'
+
+              `*Note ede-target::.'
+
+                   `*Note project-am-target::.'
+
+                        `*Note project-am-header::.'
+
+                             `project-am-header-inst'
+                                   No children
+
+
+
+
+
+
+Create a new object with name NAME of class type project-am-header-inst
+
+Slots:
+
+    `:name'
+          Type: `string'
+
+          Name of this target.
+
+    `:path'
+          Type: `string'
+
+          The path to the sources of this target.  Relative to the path
+          of the project it belongs to.
+
+
+
+10.31.1 Specialized Methods
+---------------------------
+
+ -- Method: project-am-macro :AFTER this
+     Return the default macro to 'edit' for this object.
+
+
+File: ede.info,  Node: project-am-lisp,  Next: project-am-texinfo,  Prev: project-am-header-inst,  Up: Targets
+
+10.32 project-am-lisp
 =====================
 
 Inheritance Tree:
@@ -3749,12 +4323,9 @@ Slots:
           The path to the sources of this target.  Relative to the path
           of the project it belongs to.
 
-    `:lisp'
-          List of lisp files to build.
 
 
-
-10.24.1 Specialized Methods
+10.32.1 Specialized Methods
 ---------------------------
 
  -- Method: project-am-macro :AFTER this
@@ -3766,18 +4337,10 @@ Slots:
  -- Method: ede-buffer-mine :AFTER this buffer
      Return `t' if object THIS lays claim to the file in BUFFER.
 
- -- Method: ede-sb-button :AFTER this depth
-     Create a speedbar button for object THIS at DEPTH.
-
- -- Method: ede-sb-expand :AFTER this depth
-     Expand node describing lisp code.  TEXT is the text clicked on.
-     TOKEN is the object we are expanding from.  INDENT is the current
-     indentatin level.
-
 
 File: ede.info,  Node: project-am-texinfo,  Next: project-am-man,  Prev: project-am-lisp,  Up: Targets
 
-10.25 project-am-texinfo
+10.33 project-am-texinfo
 ========================
 
 Inheritance Tree:
@@ -3820,7 +4383,7 @@ Slots:
 
 
 
-10.25.1 Specialized Methods
+10.33.1 Specialized Methods
 ---------------------------
 
  -- Method: project-am-macro :AFTER this
@@ -3835,23 +4398,15 @@ Slots:
  -- Method: ede-buffer-mine :AFTER this buffer
      Return `t' if object THIS lays claim to the file in BUFFER.
 
- -- Method: ede-sb-button :AFTER this depth
-     Create a speedbar button for object THIS at DEPTH.
-
- -- Method: ede-sb-expand :AFTER this depth
-     Expand node describing a texinfo manual.  TEXT is the text clicked
-     on.  TOKEN is the object we are expanding from.  INDENT is the
-     current indentatin level.
-
  -- Method: ede-documentation :AFTER this
      Return a list of files that provides documentation.  Documentation
      is not for object THIS, but is provided by THIS for other files in
      the project.
 
 
-File: ede.info,  Node: project-am-man,  Next: ede-step-target,  Prev: project-am-texinfo,  Up: Targets
+File: ede.info,  Node: project-am-man,  Prev: project-am-texinfo,  Up: Targets
 
-10.26 project-am-man
+10.34 project-am-man
 ====================
 
 Inheritance Tree:
@@ -3888,7 +4443,7 @@ Slots:
 
 
 
-10.26.1 Specialized Methods
+10.34.1 Specialized Methods
 ---------------------------
 
  -- Method: project-am-macro :AFTER this
@@ -3899,489 +4454,6 @@ Slots:
 
  -- Method: ede-buffer-mine :AFTER this buffer
      Return `t' if object THIS lays claim to the file in BUFFER.
-
- -- Method: ede-sb-button :AFTER this depth
-     Create a speedbar button for object THIS at DEPTH.
-
-
-File: ede.info,  Node: ede-step-target,  Next: ede-step-target-ctool,  Prev: project-am-man,  Up: Targets
-
-10.27 ede-step-target
-=====================
-
-Inheritance Tree:
-
-    `eieio-speedbar'
-
-         `eieio-speedbar-directory-button'
-
-              `*Note ede-target::.'
-
-                   `ede-step-target'
-
-                        Children:
-                              *Note ede-step-target-ctool::,
-                              *Note ede-step-target-tool::,
-                              *Note ede-step-target-clibrary::,
-                              *Note ede-step-target-library::,
-                              *Note ede-step-target-application::,
-                              *Note ede-step-target-documentation::,
-                              *Note ede-step-target-subproject::.
-
-
-
-
-
-Create a new object with name NAME of class type ede-step-target
-
-Slots:
-
-    `:name'
-          Type: `string'
-
-          Name of this target.
-
-    `:path'
-          Type: `string'
-
-          The path to the sources of this target.  Relative to the path
-          of the project it belongs to.
-
-    `:makefile'
-          Type: `string'
-          Default Value: `"GNUmakefile"'
-
-          File name of generated Makefile.
-
-    `:type'
-          Type: `symbol'
-          Default Value: `ctool'
-
-          Type of GNUstep-Make target.
-
-    `:include-dirs'
-          Type: `list'
-          Default Value: `nil'
-
-          Include directories like cpp flags -I.  Include some dir via
-          the -I preprocessor flag, for this target.
-
-    `:auxsource'
-          Type: `list'
-          Default Value: `nil'
-
-          Auxilliary source files included in this target.  Each of
-          these is considered equivalent to a source file, but it is not
-          distributed, and each should have a corresponding rule to
-          build it.
-
-
-
-10.27.1 Specialized Methods
----------------------------
-
- -- Method: project-compile-target :AFTER obj &optional command
-     Compile the current target OBJ.  Argument COMMAND is the command
-     to use for compiling the target.
-
- -- Method: project-rescan :AFTER this readstream
-     Rescan target THIS from the read list READSTREAM.
-
- -- Method: project-debug-target :AFTER obj
-     Run the current project target OBJ in a debugger.
-
- -- Method: project-remove-file :AFTER target file
-     For TARGET, remove FILE.  FILE must be massaged by
-     "ede-convert-path".
-
- -- Method: ede-buffer-mine :AFTER this buffer
-     Return `t' if object THIS lays claim to the file in BUFFER.
-
- -- Method: project-delete-target :AFTER this
-     Delete the current target THIS from it's parent project.
-
- -- Method: ede-proj-makefile-target-name :AFTER this
-     Return the name of the main target for THIS target.
-
- -- Method: eieio-done-customizing :AFTER target
-     Call this when a user finishes customizing this object.  Argument
-     TARGET is the project we are completing customization on.
-
- -- Method: project-add-file :AFTER this file
-     Add to target THIS the current buffer represented as FILE.
-
-
-File: ede.info,  Node: ede-step-target-ctool,  Next: ede-step-target-tool,  Prev: ede-step-target,  Up: Targets
-
-10.28 ede-step-target-ctool
-===========================
-
-Inheritance Tree:
-
-    `eieio-speedbar'
-
-         `eieio-speedbar-directory-button'
-
-              `*Note ede-target::.'
-
-                   `*Note ede-step-target::.'
-
-                        `ede-step-target-ctool'
-                              No children
-
-
-
-
-
-Create a new object with name NAME of class type ede-step-target-ctool
-
-Slots:
-
-    `:name'
-          Type: `string'
-
-          Name of this target.
-
-    `:path'
-          Type: `string'
-
-          The path to the sources of this target.  Relative to the path
-          of the project it belongs to.
-
-    `:cflags'
-          Type: `list'
-          Default Value: `nil'
-
-          Not Documented
-
-    `:ldflags'
-          Type: `list'
-          Default Value: `nil'
-
-          Not Documented
-
-
-
-
-File: ede.info,  Node: ede-step-target-tool,  Next: ede-step-target-clibrary,  Prev: ede-step-target-ctool,  Up: Targets
-
-10.29 ede-step-target-tool
-==========================
-
-Inheritance Tree:
-
-    `eieio-speedbar'
-
-         `eieio-speedbar-directory-button'
-
-              `*Note ede-target::.'
-
-                   `*Note ede-step-target::.'
-
-                        `ede-step-target-tool'
-                              No children
-
-
-
-
-
-Create a new object with name NAME of class type ede-step-target-tool
-
-Slots:
-
-    `:name'
-          Type: `string'
-
-          Name of this target.
-
-    `:path'
-          Type: `string'
-
-          The path to the sources of this target.  Relative to the path
-          of the project it belongs to.
-
-    `:type'
-          Type: `symbol'
-          Default Value: `(quote tool)'
-
-          *Note ede-step-target::.
-
-    `:cflags'
-          Type: `list'
-          Default Value: `nil'
-
-          Not Documented
-
-    `:ldflags'
-          Type: `list'
-          Default Value: `nil'
-
-          Not Documented
-
-
-
-
-File: ede.info,  Node: ede-step-target-clibrary,  Next: ede-step-target-library,  Prev: ede-step-target-tool,  Up: Targets
-
-10.30 ede-step-target-clibrary
-==============================
-
-Inheritance Tree:
-
-    `eieio-speedbar'
-
-         `eieio-speedbar-directory-button'
-
-              `*Note ede-target::.'
-
-                   `*Note ede-step-target::.'
-
-                        `ede-step-target-clibrary'
-                              No children
-
-
-
-
-
-Create a new object with name NAME of class type
-ede-step-target-clibrary
-
-Slots:
-
-    `:name'
-          Type: `string'
-
-          Name of this target.
-
-    `:path'
-          Type: `string'
-
-          The path to the sources of this target.  Relative to the path
-          of the project it belongs to.
-
-    `:type'
-          Type: `symbol'
-          Default Value: `(quote clibrary)'
-
-          *Note ede-step-target::.
-
-    `:cflags'
-          Type: `list'
-          Default Value: `nil'
-
-          Not Documented
-
-    `:ldflags'
-          Type: `list'
-          Default Value: `nil'
-
-          Not Documented
-
-
-
-
-File: ede.info,  Node: ede-step-target-library,  Next: ede-step-target-application,  Prev: ede-step-target-clibrary,  Up: Targets
-
-10.31 ede-step-target-library
-=============================
-
-Inheritance Tree:
-
-    `eieio-speedbar'
-
-         `eieio-speedbar-directory-button'
-
-              `*Note ede-target::.'
-
-                   `*Note ede-step-target::.'
-
-                        `ede-step-target-library'
-                              No children
-
-
-
-
-
-Create a new object with name NAME of class type ede-step-target-library
-
-Slots:
-
-    `:name'
-          Type: `string'
-
-          Name of this target.
-
-    `:path'
-          Type: `string'
-
-          The path to the sources of this target.  Relative to the path
-          of the project it belongs to.
-
-    `:type'
-          Type: `symbol'
-          Default Value: `(quote library)'
-
-          *Note ede-step-target::.
-
-    `:cflags'
-          Type: `list'
-          Default Value: `nil'
-
-          Not Documented
-
-    `:ldflags'
-          Type: `list'
-          Default Value: `nil'
-
-          Not Documented
-
-
-
-
-File: ede.info,  Node: ede-step-target-application,  Next: ede-step-target-documentation,  Prev: ede-step-target-library,  Up: Targets
-
-10.32 ede-step-target-application
-=================================
-
-Inheritance Tree:
-
-    `eieio-speedbar'
-
-         `eieio-speedbar-directory-button'
-
-              `*Note ede-target::.'
-
-                   `*Note ede-step-target::.'
-
-                        `ede-step-target-application'
-                              No children
-
-
-
-
-
-Create a new object with name NAME of class type
-ede-step-target-application
-
-Slots:
-
-    `:name'
-          Type: `string'
-
-          Name of this target.
-
-    `:path'
-          Type: `string'
-
-          The path to the sources of this target.  Relative to the path
-          of the project it belongs to.
-
-    `:type'
-          Type: `symbol'
-          Default Value: `(quote application)'
-
-          *Note ede-step-target::.
-
-    `:cflags'
-          Type: `list'
-          Default Value: `nil'
-
-          Not Documented
-
-    `:ldflags'
-          Type: `list'
-          Default Value: `nil'
-
-          Not Documented
-
-
-
-
-File: ede.info,  Node: ede-step-target-documentation,  Next: ede-step-target-subproject,  Prev: ede-step-target-application,  Up: Targets
-
-10.33 ede-step-target-documentation
-===================================
-
-Inheritance Tree:
-
-    `eieio-speedbar'
-
-         `eieio-speedbar-directory-button'
-
-              `*Note ede-target::.'
-
-                   `*Note ede-step-target::.'
-
-                        `ede-step-target-documentation'
-                              No children
-
-
-
-
-
-Create a new object with name NAME of class type
-ede-step-target-documentation
-
-Slots:
-
-    `:name'
-          Type: `string'
-
-          Name of this target.
-
-    `:path'
-          Type: `string'
-
-          The path to the sources of this target.  Relative to the path
-          of the project it belongs to.
-
-    `:type'
-          Type: `symbol'
-          Default Value: `(quote documentation)'
-
-          *Note ede-step-target::.
-
-
-
-File: ede.info,  Node: ede-step-target-subproject,  Prev: ede-step-target-documentation,  Up: Targets
-
-10.34 ede-step-target-subproject
-================================
-
-Inheritance Tree:
-
-    `eieio-speedbar'
-
-         `eieio-speedbar-directory-button'
-
-              `*Note ede-target::.'
-
-                   `*Note ede-step-target::.'
-
-                        `ede-step-target-subproject'
-                              No children
-
-
-
-
-
-Create a new object with name NAME of class type
-ede-step-target-subproject
-
-Slots:
-
-    `:name'
-          Type: `string'
-
-          Name of this target.
-
-    `:path'
-          Type: `string'
-
-          The path to the sources of this target.  Relative to the path
-          of the project it belongs to.
-
-
 
 
 File: ede.info,  Node: Sourcecode,  Next: Compilers,  Prev: Targets,  Up: Top
@@ -4956,67 +5028,69 @@ Node: Make and Automake projects15179
 Node: Automake direct projects15822
 Node: Simple projects16406
 Node: ede-cpp-root17462
-Node: ede-simple subclassing21966
-Node: ede-emacs22219
-Node: ede-linux22601
-Node: Custom Locate22983
-Node: Extending EDE24417
-Node: User interface methods26883
-Node: Base project methods28105
-Node: Sourcecode objects29472
-Node: Compiler and Linker objects31175
-Node: Project33671
-Node: ede-project-placeholder34016
-Node: ede-project35758
-Node: ede-cpp-root-project44331
-Node: ede-emacs-project48664
-Node: ede-simple-project50214
-Node: ede-simple-base-project51254
-Node: ede-proj-project51793
-Node: project-am-makefile58604
-Node: ede-step-project60636
-Node: Targets65174
-Node: ede-target66337
-Node: ede-proj-target72443
-Node: ede-proj-target-makefile78706
-Node: semantic-ede-proj-target-grammar82118
-Node: ede-proj-target-makefile-objectcode83822
-Node: ede-proj-target-makefile-archive85690
-Node: ede-proj-target-makefile-program87124
-Node: ede-proj-target-makefile-shared-object89328
-Node: ede-proj-target-elisp91346
-Node: ede-proj-target-elisp-autoloads93552
-Node: ede-proj-target-makefile-miscelaneous97233
-Node: ede-proj-target-makefile-info98747
-Node: ede-proj-target-aux101469
-Node: ede-proj-target-scheme102374
-Node: ede-cpp-root-target103426
-Node: ede-emacs-target-c104358
-Node: ede-emacs-target-el105224
-Node: ede-emacs-target-misc105899
-Node: ede-simple-target106581
-Node: project-am-target107245
-Node: project-am-objectcode109082
-Node: project-am-program110760
-Node: project-am-lib111865
-Node: project-am-lisp112861
-Node: project-am-texinfo114269
-Node: project-am-man116073
-Node: ede-step-target117217
-Node: ede-step-target-ctool120255
-Node: ede-step-target-tool121185
-Node: ede-step-target-clibrary122234
-Node: ede-step-target-library123305
-Node: ede-step-target-application124378
-Node: ede-step-target-documentation125476
-Node: ede-step-target-subproject126395
-Node: Sourcecode127144
-Node: ede-sourcecode127362
-Node: Compilers130058
-Node: ede-compilation-program130509
-Node: ede-compiler133780
-Node: ede-object-compiler136919
-Node: semantic-ede-grammar-compiler-class139120
-Node: ede-linker141008
+Node: ede-simple subclassing22213
+Node: ede-emacs22466
+Node: ede-linux22848
+Node: Custom Locate23230
+Node: Extending EDE24709
+Node: User interface methods27175
+Node: Base project methods28397
+Node: Sourcecode objects29764
+Node: Compiler and Linker objects31467
+Node: Project33963
+Node: ede-project-placeholder34358
+Node: ede-project36415
+Node: ede-cpp-root-project45913
+Node: ede-emacs-project50870
+Node: ede-linux-project52638
+Node: ede-maven-project54403
+Node: ede-simple-project55999
+Node: ede-simple-base-project57253
+Node: ede-proj-project57792
+Node: project-am-makefile64701
+Node: ede-step-project66834
+Node: Targets71470
+Node: ede-target72608
+Node: ede-cpp-root-target79066
+Node: ede-emacs-target-c79982
+Node: ede-emacs-target-el80844
+Node: ede-emacs-target-misc81517
+Node: ede-linux-target-c82198
+Node: ede-linux-target-misc83064
+Node: ede-maven-target-java83747
+Node: ede-maven-target-c84430
+Node: ede-maven-target-misc85101
+Node: ede-simple-target85782
+Node: ede-proj-target86444
+Node: ede-proj-target-makefile92721
+Node: semantic-ede-proj-target-grammar96137
+Node: ede-proj-target-makefile-objectcode97845
+Node: ede-proj-target-makefile-archive99717
+Node: ede-proj-target-makefile-program101155
+Node: ede-proj-target-makefile-shared-object103362
+Node: ede-proj-target-elisp105384
+Node: ede-proj-target-elisp-autoloads107594
+Node: ede-proj-target-makefile-miscelaneous111275
+Node: ede-proj-target-makefile-info112790
+Node: ede-proj-target-aux115513
+Node: ede-proj-target-scheme116418
+Node: project-am-target117468
+Node: project-am-objectcode119367
+Node: project-am-program120815
+Node: project-am-lib121819
+Node: project-am-header122716
+Node: project-am-header-noinst123704
+Node: project-am-header-inst124685
+Node: project-am-lisp125656
+Node: project-am-texinfo126711
+Node: project-am-man128198
+Node: Sourcecode129217
+Node: ede-sourcecode129435
+Node: Compilers132131
+Node: ede-compilation-program132582
+Node: ede-compiler135853
+Node: ede-object-compiler138992
+Node: semantic-ede-grammar-compiler-class141193
+Node: ede-linker143081
 
 End Tag Table

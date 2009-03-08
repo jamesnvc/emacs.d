@@ -1,5 +1,3 @@
-/Makefile/1.20/Sun Feb  1 16:31:43 2009//
-/Project.ede/1.10/Sun Feb  1 16:31:23 2009//
 /gr-test.wy/1.3/Fri Sep 30 20:49:22 2005//
 /scopetest.cpp/1.2/Tue Jul 20 18:32:00 2004//
 /scopetest.java/1.1/Thu Feb 12 02:14:14 2004//
@@ -14,8 +12,6 @@
 /testfriends.cpp/1.2/Sat Nov 29 16:37:32 2008//
 /testjavacomp.java/1.1/Sun Feb  1 16:28:25 2009//
 /testspp.c/1.4/Fri Mar 21 18:01:30 2008//
-/testsppreplace.c/1.8/Sun Aug  3 02:10:53 2008//
-/testsppreplaced.c/1.6/Sun Aug  3 02:11:24 2008//
 /teststruct.cpp/1.1/Thu Feb 12 22:50:12 2009//
 /testsubclass.cpp/1.11/Sun Feb  1 16:27:18 2009//
 /testsubclass.hh/1.8/Fri Nov 28 03:50:29 2008//
@@ -23,4 +19,9 @@
 /testtypedefs.cpp/1.1/Fri May 16 02:53:12 2008//
 /testusing.cpp/1.1/Wed Nov 26 18:06:09 2008//
 /testusing.hh/1.1/Wed Nov 26 18:06:23 2008//
+/Makefile/1.21/Sun Mar  1 15:16:19 2009//
+/Project.ede/1.11/Sun Mar  1 15:16:19 2009//
+/testsppcomplete.c/1.1/Thu Feb 26 03:29:09 2009//
+/testsppreplace.c/1.10/Sun Mar  1 15:16:19 2009//
+/testsppreplaced.c/1.8/Sun Mar  1 15:16:19 2009//
 D

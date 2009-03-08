@@ -3,7 +3,7 @@
 ;; Copyright (C) 2009 Eric M. Ludlam
 ;;
 ;; Author: Eric M. Ludlam <eric@siege-engine.com>
-;; X-RCS: $Id: srecode-fields.el,v 1.4 2009/02/11 00:31:26 zappo Exp $
+;; X-RCS: $Id: srecode-fields.el,v 1.6 2009/03/01 04:39:10 zappo Exp $
 ;;
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
@@ -44,7 +44,15 @@
 (eval-and-compile
   (if (featurep 'xemacs)
       (progn
-	(defalias 'srecode-make-overlay   'make-extent)
+	(defalias 'srecode-make-overlay
+	  (lambda (beg end &optional buffer &rest rest)
+	    (let ((ol (make-extent beg end buffer)))
+	      (when rest
+		(set-extent-property ol 'start-open (car rest))
+		(setq rest (cdr rest)))
+	      (when rest
+		(set-extent-property ol 'end-open (car rest)))
+	      ol)))
 	(defalias 'srecode-overlay-put    'set-extent-property)
 	(defalias 'srecode-overlay-get    'extent-property)
 	(defalias 'srecode-overlay-move   'set-extent-endpoints)
@@ -349,31 +357,34 @@ PRE-LEN is used in the after mode for the length of the changed text."
 	   (inhibit-point-motion-hooks t)
 	   (inhibit-modification-hooks t)
 	   )
-      ;; First, fixup the two overlays, in case they got confused.
-      (let ((main (oref field overlay))
-	    (tail (oref field tail)))
-	(srecode-overlay-move main
-			      (srecode-overlay-start main)
-			      (1- (srecode-overlay-end tail)))
-	(srecode-overlay-move tail
-			      (1- (srecode-overlay-end tail))
-			      (srecode-overlay-end tail)))
-      ;; Now capture text from the main overlay, and propagate it.
-      (let* ((new-text (srecode-overlaid-text field))
-	     (region (srecode-active-template-region))
-	     (allfields (when region (oref region fields)))
-	     (name (oref field name)))
-	(dolist (F allfields)
-	  (when (and (not (eq F field))
-		     (string= name (oref F name)))
-	    (if (> (length new-text) srecode-field-replication-max-size)
-		(message "Field size too large for replication.")
-	      ;; If we find other fields with the same name, then keep
-	      ;; then all together.  Disable change hooks to make sure
-	      ;; we don't get a recursive edit.
-	      (srecode-overlaid-text F new-text)
-	      ))))
-	)))
+      ;; Sometimes a field is deleted, but we might still get a stray
+      ;; event.  Lets just ignore those events.
+      (when (slot-boundp field 'overlay)
+	;; First, fixup the two overlays, in case they got confused.
+	(let ((main (oref field overlay))
+	      (tail (oref field tail)))
+	  (srecode-overlay-move main
+				(srecode-overlay-start main)
+				(1- (srecode-overlay-end tail)))
+	  (srecode-overlay-move tail
+				(1- (srecode-overlay-end tail))
+				(srecode-overlay-end tail)))
+	;; Now capture text from the main overlay, and propagate it.
+	(let* ((new-text (srecode-overlaid-text field))
+	       (region (srecode-active-template-region))
+	       (allfields (when region (oref region fields)))
+	       (name (oref field name)))
+	  (dolist (F allfields)
+	    (when (and (not (eq F field))
+		       (string= name (oref F name)))
+	      (if (> (length new-text) srecode-field-replication-max-size)
+		  (message "Field size too large for replication.")
+		;; If we find other fields with the same name, then keep
+		;; then all together.  Disable change hooks to make sure
+		;; we don't get a recursive edit.
+		(srecode-overlaid-text F new-text)
+		))))
+	))))
 
 (defun srecode-field-behind-hook (ol after start end &optional pre-len)
   "Modification hook for the field overlay.
@@ -507,7 +518,12 @@ It is filled with some text."
 (defun srecode-field-utest ()
   "Test the srecode field manager."
   (interactive)
+  (if (featurep 'xemacs)
+      (message "There is no XEmacs support for SRecode Fields.")
+    (srecode-field-utest-impl)))
 
+(defun srecode-field-utest-impl ()
+  "Implementation of the SRecode field utest."
   (save-excursion
     (find-file "/tmp/srecode-field-test.txt")
 

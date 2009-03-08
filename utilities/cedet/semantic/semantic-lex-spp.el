@@ -2,7 +2,7 @@
 
 ;;; Copyright (C) 2006, 2007, 2008, 2009 Eric M. Ludlam
 
-;; X-CVS: $Id: semantic-lex-spp.el,v 1.29 2009/01/10 01:29:27 zappo Exp $
+;; X-CVS: $Id: semantic-lex-spp.el,v 1.36 2009/02/26 03:14:41 zappo Exp $
 
 ;; This file is not part of GNU Emacs.
 
@@ -34,32 +34,75 @@
 ;;
 ;; (add-hook 'semantic-lex-reset-hooks 'semantic-lex-spp-reset-hook nil t)
 ;;
+;;
+;; Special Lexical Tokens:
+;;
+;; There are several special lexical tokens that are used by the
+;; Semantic PreProcessor lexer.  They are:
+;;
+;; Declarations:
+;;   spp-macro-def - A definition of a lexical macro.
+;;   spp-macro-undef - A removal of a definition of a lexical macro.
+;;   spp-system-include - A system level include file
+;;   spp-include - An include file
+;;   spp-concat - A lexical token representing textual concatenation
+;;           of symbol parts.
+;;
+;; Operational tokens:
+;;   spp-arg-list - Represents an argument list to a macro.
+;;   spp-symbol-merge - A request for multiple symbols to be textually merged.
+;;
 ;;; TODO:
 ;;
 ;; Use `semantic-push-parser-warning' for situations where there are likely
 ;; macros that are undefined unexpectedly, or other problem.
+;;
+;; TODO:
+;;
+;; Try to handle the case of:
+;;
+;; #define NN namespace nn {
+;; #define NN_END }
+;; 
+;; NN
+;;   int mydecl() {}
+;; NN_END
+;; 
 
 (require 'semantic-lex)
 
 ;;; Code:
 (defvar semantic-lex-spp-macro-symbol-obarray nil
-  "Table of macro keywords used by the Semantic Macro.")
+  "Table of macro keywords used by the Semantic Preprocessor.
+These symbols will be used in addition to those in
+`semantic-lex-spp-dynamic-macro-symbol-obarray'.")
 (make-variable-buffer-local 'semantic-lex-spp-macro-symbol-obarray)
 
 (defvar semantic-lex-spp-project-macro-symbol-obarray nil
-  "Table of macro keywords for this project used by the Semantic Macro.")
+  "Table of macro keywords for this project.
+These symbols will be used in addition to those in
+`semantic-lex-spp-dynamic-macro-symbol-obarray'.")
 (make-variable-buffer-local 'semantic-lex-spp-project-macro-symbol-obarray)
 
 (defvar semantic-lex-spp-dynamic-macro-symbol-obarray nil
-  "Table of macro keywords found during lexical analysis.
-This table is then used by the macro during the lexical analysis
-step.")
+  "Table of macro keywords used during lexical analysis.
+Macros are lexical symbols which are replaced by other lexical
+tokens during lexical analysis.  During analysis symbols can be
+added and removed from this symbol table.")
 (make-variable-buffer-local 'semantic-lex-spp-dynamic-macro-symbol-obarray)
 
 ;;; MACRO TABLE UTILS
 ;;
+;; The dynamic macro table is a buffer local variable that is modified
+;; during the analysis.  OBARRAYs are used, so the language must
+;; have symbols that are compatible with Emacs Lisp symbols.
+;;
 (defsubst semantic-lex-spp-symbol (name)
-  "Return spp symbol with NAME or nil if not found."
+  "Return spp symbol with NAME or nil if not found.
+The searcy priority is:
+  1. DYNAMIC symbols
+  2. PROJECT specified symbols.
+  3. SYSTEM specified symbols."
   (and
    (stringp name)
    (or
@@ -86,12 +129,12 @@ step.")
       (setq semantic-lex-spp-dynamic-macro-symbol-obarray
 	    (make-vector 13 0))))
 
-(defun semantic-lex-spp-symbol-set (name value &optional obarray)
+(defun semantic-lex-spp-symbol-set (name value &optional obarray-in)
   "Set value of spp symbol with NAME to VALUE and return VALUE.
-If optional OBARRAY is non-nil, then use that obarray instead of
+If optional OBARRAY-IN is non-nil, then use that obarray instead of
 the dynamic map."
   (if (and (stringp value) (string= value "")) (setq value nil))
-  (set (intern name (or obarray
+  (set (intern name (or obarray-in
 			(semantic-lex-spp-dynamic-map)))
        value))
 
@@ -164,27 +207,26 @@ The value of each symbol is the replacement stream."
 
 (defun semantic-lex-spp-set-dynamic-table (new-entries)
   "Set the dynamic symbol table to NEW-ENTRIES.
-Fore use with semanticdb restoration of state."
+For use with semanticdb restoration of state."
   (dolist (e new-entries)
     ;; Default obarray for below is the dynamic map.
     (semantic-lex-spp-symbol-set (car e) (cdr e))))
 
-(defun semantic-lex-spp-reset-dynamic-table ()
-  "Reset the dynamic spp symbol table.
-This should be done before any new parsing step."
-  (setq semantic-lex-spp-dynamic-macro-symbol-obarray nil))
-
 (defun semantic-lex-spp-reset-hook (start end)
   "Reset anything needed by SPP for parsing.
 In this case, reset the dynamic macro symbol table if
-START recons the entire buffer.
+START is (point-min).
 END is not used."
   (if (= start (point-min))
       (setq semantic-lex-spp-dynamic-macro-symbol-obarray nil))
   )
 
-;;; MACRO EXPANSION PARSING
+;;; MACRO EXPANSION: Simple cases
 ;;
+;; If a user fills in the table with simple strings, we can
+;; support that by converting them into tokens with the
+;; various analyzers that are available.
+
 (defun semantic-lex-spp-extract-regex-and-compare (analyzer value)
   "Extract a regexp from an ANALYZER and use to match VALUE.
 Return non-nil if it matches"
@@ -197,15 +239,69 @@ Return non-nil if it matches"
       (string-match regex value))
     ))
 
-(defun semantic-lex-spp-macro-with-args (val)
-  "If the macro value VAL has an arglist, return the arglist."
-  (when (and val (consp val) (consp (car val))
-	     (eq 'spp-arg-list (car (car val))))
-    (car (cdr (car val)))))
+(defun semantic-lex-spp-simple-macro-to-macro-stream (val beg end argvalues)
+  "Convert lexical macro contents VAL into a macro expansion stream.
+These are for simple macro expansions that a user may have typed in directly.
+As such, we need to analyze the input text, to figure out what kind of real
+lexical token we should be inserting in its place.
+
+Argument VAL is the value of some macro to be converted into a stream.
+BEG and END are the token bounds of the macro to be expanded
+that will somehow gain a much longer token stream.
+ARGVALUES are values for any arg list, or nil."
+  (cond
+   ;; We perform a replacement.  Technically, this should
+   ;; be a full lexical step over the "val" string, but take
+   ;; a guess that its just a keyword or existing symbol.
+   ;;
+   ;; Probably a really bad idea.  See how it goes.
+   ((semantic-lex-spp-extract-regex-and-compare
+     semantic-lex-symbol-or-keyword val)
+    (semantic-lex-push-token
+     (semantic-lex-token (or (semantic-lex-keyword-p val) 'symbol)
+			 beg end
+			 val)))
+   
+   ;; Ok, the rest of these are various types of syntax.
+   ;; Conveniences for users that type in their symbol table.
+   ((semantic-lex-spp-extract-regex-and-compare
+     semantic-lex-punctuation val)
+    (semantic-lex-token 'punctuation beg end val))
+   ((semantic-lex-spp-extract-regex-and-compare
+     semantic-lex-number val)
+    (semantic-lex-token 'number beg end val))
+   ((semantic-lex-spp-extract-regex-and-compare
+     semantic-lex-paren-or-list val)
+    (semantic-lex-token 'semantic-list beg end val))
+   ((semantic-lex-spp-extract-regex-and-compare
+     semantic-lex-string val)
+    (semantic-lex-token 'string beg end val))
+   (t nil)
+   ))
+
+;;; MACRO EXPANSION : Lexical token replacement
+;;
+;; When substituting in a macro from a token stream of formatted
+;; semantic lex tokens, things can be much more complicated.
+;;
+;; Some macros have arguments that get set into the dynamic macro
+;; table during replacement.
+;;
+;; In general, the macro tokens are substituted into the regular
+;; token stream, but placed under the characters of the original
+;; macro symbol.
+;;
+;; Argument lists are saved as a lexical token at the beginning
+;; of a replacement value.
 
 (defun semantic-lex-spp-one-token-to-txt (tok)
   "Convert the token TOK into a string.
-If TOK is made of multiple tokens, convert those to text."
+If TOK is made of multiple tokens, convert those to text.  This
+conversion is needed if a macro has a merge symbol in it that
+combines the text of two previously distinct symbols.  For
+exampe, in c:
+
+#define (a,b) a ## b;"
   (let ((txt (semantic-lex-token-text tok))
 	(sym nil)
 	)
@@ -236,6 +332,223 @@ If TOK is made of multiple tokens, convert those to text."
 	  (t nil))
     ))
 
+(defun semantic-lex-spp-macro-with-args (val)
+  "If the macro value VAL has an argument list, return the arglist."
+  (when (and val (consp val) (consp (car val))
+	     (eq 'spp-arg-list (car (car val))))
+    (car (cdr (car val)))))
+
+(defun semantic-lex-spp-token-macro-to-macro-stream (val beg end argvalues)
+  "Convert lexical macro contents VAL into a macro expansion stream.
+Argument VAL is the value of some macro to be converted into a stream.
+BEG and END are the token bounds of the macro to be expanded
+that will somehow gain a much longer token stream.
+ARGVALUES are values for any arg list, or nil.
+See comments in code for information about how token streams are processed
+and what valid VAL values are."
+  
+  ;; A typical VAL value might be either a stream of tokens.
+  ;; Tokens saved into a macro stream always includes the text from the
+  ;; buffer, since the locations specified probably don't represent
+  ;; that text anymore, or even the same buffer.
+  ;;
+  ;; CASE 1: Simple token stream
+  ;;
+  ;; #define SUPER mysuper::
+  ;;  ==>
+  ;;((symbol "mysuper" 480 . 487)
+  ;; (punctuation ":" 487 . 488)
+  ;; (punctuation ":" 488 . 489))
+  ;;
+  ;; CASE 2: Token stream with argument list
+  ;;
+  ;; #define INT_FCN(name) int name (int in)
+  ;;  ==>
+  ;; ((spp-arg-list ("name") 558 . 564)
+  ;;  (INT "int" 565 . 568)
+  ;;  (symbol "name" 569 . 573)
+  ;;  (semantic-list "(int in)" 574 . 582))
+  ;;
+  ;; In the second case, a macro with an argument list as the a rgs as the
+  ;; first entry.
+  ;;
+  ;; CASE 3: Symbol text merge
+  ;;
+  ;; #define TMP(a) foo_ ## a
+  ;;   ==>
+  ;; ((spp-arg-list ("a") 20 . 23)
+  ;;  (spp-symbol-merge ((symbol "foo_" 24 . 28) (symbol "a" 32 . 33))
+  ;; 		          24 . 33))
+  ;;
+  ;; Usually in conjunction with a macro with an argument, merging symbol
+  ;; parts is a way of fabricating new symbols from pieces inside the macro.
+  ;; These macros use `spp-symbol-merge' tokens whose TEXT part is another
+  ;; token stream.  This sub-stream ought to consist of only 2 SYMBOL pieces,
+  ;; though I suppose keywords might be ok.  The end result of this example
+  ;; merge symbol would be (symbol "foo_A" 24 . 33) where A is the symbol
+  ;; passed in from the arg list "a".
+  ;;
+  ;; CASE 4: Nested token streams
+  ;;
+  ;; #define FOO(f) f
+  ;; #define BLA bla FOO(foo)
+  ;;  ==>
+  ;; ((INT "int" 82 . 85)
+  ;;  (symbol "FOO" 86 . 89)
+  ;;  (semantic-list "(foo)" 89 . 94))
+  ;;
+  ;; Nested token FOO shows up in the table of macros, and gets replace
+  ;; inline.  This is the same as case 2.
+
+  (let ((arglist (semantic-lex-spp-macro-with-args val))
+	(argalist nil)
+	(val-tmp nil)
+	(v nil)
+	)
+    ;; CASE 2: Dealing with the arg list.
+    (when arglist
+      ;;  Skip the arg list.
+      (setq val (cdr val))
+
+      ;; Push args into the replacement list.
+      (let ((AV argvalues))
+	(dolist (A arglist)
+	  (semantic-lex-spp-symbol-set A (car AV))
+	  (setq argalist (cons (cons A (car AV)) argalist))
+	  (setq AV (cdr AV))))
+      )
+
+    ;; Set val-tmp after stripping arguments.
+    (setq val-tmp val)
+
+    ;; CASE 1: Push everything else onto the list.
+    ;;   Once the arg list is stripped off, CASE 2 is the same
+    ;;   as CASE 1.
+    (while val-tmp
+      (setq v (car val-tmp))
+      (setq val-tmp (cdr val-tmp))
+
+      (let* (;; The text of the current lexical token.
+	     (txt (car (cdr v)))
+	     ;; Try to convert txt into a macro declaration.  If it is
+	     ;; not a macro, use nil.
+	     (txt-macro-or-nil (semantic-lex-spp-symbol txt))
+	     ;; If our current token is a macro, then pull off the argument
+	     ;; list.
+	     (macro-and-args
+	      (when txt-macro-or-nil
+		(semantic-lex-spp-macro-with-args (symbol-value txt-macro-or-nil)))
+	      )
+	     ;; We need to peek at the next token when testing for
+	     ;; used macros with arg lists.
+	     (next-tok-class (semantic-lex-token-class (car val-tmp)))
+	     )
+
+	(cond
+	 ;; CASE 3: Merge symbols together.
+	 ((eq (semantic-lex-token-class v) 'spp-symbol-merge)
+	  ;; We need to merge the tokens in the 'text segement together,
+	  ;; and produce a single symbol from it.
+	  (let ((newsym
+		 (mapconcat (lambda (tok)
+			      (semantic-lex-spp-one-token-to-txt tok))
+			    txt
+			    "")))
+	    (semantic-lex-push-token
+	     (semantic-lex-token 'symbol beg end newsym))
+	    ))
+
+	 ;; CASE 2: Argument replacement.   If a discovered symbol is in
+	 ;;    the active list of arguments, then we need to substitute
+	 ;;    in the new value.
+	 ((and (eq (semantic-lex-token-class v) 'symbol) txt-macro-or-nil
+	       (or (and macro-and-args (eq next-tok-class 'semantic-list))
+		   (not macro-and-args))
+	       )
+	  (let ((AV nil))
+	    (when macro-and-args
+	      (setq AV
+		    (semantic-lex-spp-stream-for-arglist (car val-tmp)))
+	      ;; We used up these args.  Pull from the stream.
+	      (setq val-tmp (cdr val-tmp))
+	      )
+
+	    ;; Don't recurse directly into this same fcn, because it is
+	    ;; convenient to have plain string replacements too.
+	    (semantic-lex-spp-macro-to-macro-stream
+	     (symbol-value txt-macro-or-nil)
+	     beg end AV)
+	    ))
+
+	 ;; This is a HACK for the C parser.  The 'macros text
+	 ;; property is some storage so that the parser can do
+	 ;; some C specific text manipulations.
+	 ((eq (semantic-lex-token-class v) 'semantic-list)
+	  ;; Push our arg list onto the semantic list.
+	  (when argalist
+	    (setq txt (concat txt)) ; Copy the text.
+	    (put-text-property 0 1 'macros argalist txt))
+	  (semantic-lex-push-token
+	   (semantic-lex-token (semantic-lex-token-class v) beg end txt))
+	  )
+
+	 ;; CASE 1: Just another token in the stream.
+	 (t
+	  ;; Nothing new.
+	  (semantic-lex-push-token
+	   (semantic-lex-token (semantic-lex-token-class v) beg end txt))
+	  )
+	 )))
+      
+    ;; CASE 2: The arg list we pushed onto the symbol table
+    ;;         must now be removed.
+    (dolist (A arglist)
+      (semantic-lex-spp-symbol-remove A))
+    ))
+
+;;; Macro Merging
+;;
+;; Used when token streams from different macros include eachother.
+;; Merged macro streams perform in place replacements.
+
+(defun semantic-lex-spp-merge-streams (raw-stream)
+  "Merge elements from the RAW-STREAM together.
+Handle spp-concat symbol concatenation.
+Handle Nested macro replacements.
+Return the cooked stream."
+  (let ((cooked-stream nil))
+    ;; Merge the stream
+    (while raw-stream
+      (cond ((eq (semantic-lex-token-class (car raw-stream)) 'spp-concat)
+	     ;; handle hashhash, by skipping it.
+	     (setq raw-stream (cdr raw-stream))
+	     ;; Now merge the symbols.
+	     (let ((prev-tok (car cooked-stream))
+		   (next-tok (car raw-stream)))
+	       (setq cooked-stream (cdr cooked-stream))
+	       (push (semantic-lex-token
+		      'spp-symbol-merge
+		      (semantic-lex-token-start prev-tok)
+		      (semantic-lex-token-end next-tok)
+		      (list prev-tok next-tok))
+		     cooked-stream)
+	       ))
+	    (t
+	     (push (car raw-stream) cooked-stream))
+	    )
+      (setq raw-stream (cdr raw-stream))
+      )
+
+    (nreverse cooked-stream))
+  )
+
+;;; MACRO EXPANSION
+;;
+;; There are two types of expansion.
+;;
+;; 1. Expansion using a value made up of lexical tokens.
+;; 2. User input replacement from a plain string.
+
 (defun semantic-lex-spp-macro-to-macro-stream (val beg end argvalues)
   "Convert lexical macro contents VAL into a macro expansion stream.
 Argument VAL is the value of some macro to be converted into a stream.
@@ -244,142 +557,29 @@ that will somehow gain a much longer token stream.
 ARGVALUES are values for any arg list, or nil."
   (cond
    ;; If val is nil, then just skip it.
-   ((null val)
-    nil)
+   ((null val) t)
    ;; If it is a token, then return that token rebuilt.
    ((and (consp val) (car val) (symbolp (car val)))
     (semantic-lex-push-token
-     (semantic-lex-token (car val) beg end (semantic-lex-token-text val)))
-    )
-   ;; If it is a list of tokens, then push each token one at a time.
+     (semantic-lex-token (car val) beg end (semantic-lex-token-text val))))
+   ;; Test for a token list.
    ((and (consp val) (consp (car val)) (car (car val))
 	 (symbolp (car (car val))))
-    (let ((arglist (semantic-lex-spp-macro-with-args val))
-	  (argalist nil)
-	  (val-tmp nil)
-	  (v nil)
-	  )
-      ;; Skip the arg list.
-      (when arglist (setq val (cdr val)))
-
-      ;; Push args into the replacement list.
-      (dolist (A arglist)
-	(semantic-lex-spp-symbol-set A (car argvalues))
-	(setq argalist (cons (cons A (car argvalues)) argalist))
-	(setq argvalues (cdr argvalues)))
-
-      ;; Set val-tmp after stripping arguments.
-      (setq val-tmp val)
-
-      ;; Push everything else onto the list.
-      (while val-tmp
-	(setq v (car val-tmp))
-	(setq val-tmp (cdr val-tmp))
-
-	(let* ((txt (car (cdr v)))
-	       (sym (semantic-lex-spp-symbol txt))
-	       (macro-and-args
-		(when sym
-		  (semantic-lex-spp-macro-with-args (symbol-value sym)))
-		)
-	       (next-tok-class (semantic-lex-token-class (car val-tmp)))
-	       )
-	  (cond
-	   ((eq (car v) 'spp-symbol-merge)
-	    ;; We need to merge the tokens in the 'text segement together,
-	    ;; and produce a single symbol from it.
-	    (let ((newsym
-		   (mapconcat (lambda (tok)
-				(semantic-lex-spp-one-token-to-txt tok))
-			      txt
-			      "")))
-	      (semantic-lex-push-token
-	       (semantic-lex-token 'symbol beg end newsym))
-	      ))
-	   ((and (eq (car v) 'symbol) sym
-		 (or (and macro-and-args (eq next-tok-class 'semantic-list))
-		     (not macro-and-args))
-		 )
-	    ;; Special arg symbol
-	    (semantic-lex-spp-macro-to-macro-stream
-	     (symbol-value sym)
-	     beg end nil)
-	    )
-	   ((eq (car v) 'semantic-list)
-	    ;; Push our arg list onto the semantic list.
-	    (when argalist
-	      (setq txt (concat txt))
-	      (put-text-property 0 1 'macros argalist txt))
-	    (semantic-lex-push-token
-	     (semantic-lex-token (car v) beg end txt))
-	    )
-	   (t
-	    ;; Nothing new.
-	    (semantic-lex-push-token
-	     (semantic-lex-token (car v) beg end txt))
-	    )
-	   )))
-      
-      (dolist (A arglist)
-	(semantic-lex-spp-symbol-remove A))
-
-      ))
-   ;; We perform a replacement.  Technically, this should
-   ;; be a full lexical step over the "val" string, but take
-   ;; a guess that its just a keyword or existing symbol.
-   ;;
-   ;; Probably a really bad idea.  See how it goes.
-   ((semantic-lex-spp-extract-regex-and-compare
-     semantic-lex-symbol-or-keyword val)
-    (semantic-lex-push-token
-     (semantic-lex-token (or (semantic-lex-keyword-p val) 'symbol)
-			 beg end
-			 val)))
-
-   ;; Ok, the rest of these are various types of syntax.
-   ;; This is a poor solution.  We should really have some sort of
-   ;; stream merging.
-   ((semantic-lex-spp-extract-regex-and-compare
-     semantic-lex-punctuation val)
-    (semantic-lex-token 'punctuation beg end val))
-   ((semantic-lex-spp-extract-regex-and-compare
-     semantic-lex-number val)
-    (semantic-lex-token 'number beg end val))
-   ((semantic-lex-spp-extract-regex-and-compare
-     semantic-lex-paren-or-list val)
-    (semantic-lex-token 'semantic-list beg end val))
-   ((semantic-lex-spp-extract-regex-and-compare
-     semantic-lex-string val)
-    (semantic-lex-token 'string beg end val))
-   (t nil)
+    (semantic-lex-spp-token-macro-to-macro-stream val beg end argvalues))
+   ;; Test for miscellaneous strings.
+   ((stringp val)
+    (semantic-lex-spp-simple-macro-to-macro-stream val beg end argvalues))
    ))
 
+;;; --------------------------------------------------------
+;;;
+;;; ANALYZERS:
+;;;
 
-;;; MACRO TABLE DEBUG
+;;; Symbol Is Macro
 ;;
-(defun semantic-lex-spp-describe (&optional buffer)
-  "Describe the current list of spp macros for BUFFER.
-If BUFFER is not provided, use the current buffer."
-  (interactive)
-  (let ((syms (save-excursion
-		(if buffer (set-buffer buffer))
-		(semantic-lex-spp-macros)))
-	(sym nil))
-    (with-output-to-temp-buffer "*SPP MACROS*"
-      (princ "Macro\t\tValue\n")
-      (while syms
-	(setq sym (car syms)
-	      syms (cdr syms))
-	(princ (symbol-name sym))
-	(princ "\t")
-	(if (< (length (symbol-name sym)) 8)
-	    (princ "\t"))
-	(prin1 (symbol-value sym))
-	(princ "\n")
-	))))
-
-
-;;; Analyzers
+;; An analyser that will push tokens from a macro in place
+;; of the macro symbol.
 ;;
 (defun semantic-lex-spp-anlyzer-do-replace (sym val beg end)
   "Do the lexical replacement for SYM with VAL.
@@ -430,23 +630,22 @@ STR occurs in the current buffer between BEG and END."
 	   (semantic-lex-spp-symbol-p str))
       (setq sym (semantic-lex-spp-symbol str)
 	    val (symbol-value sym))
+
+      ;; Do direct replacements of single value macros of macros.
+      ;; This solves issues with a macro containing one symbol that
+      ;; is another macro, and get arg lists passed around.
+      (while (and val (consp val)
+		  (semantic-lex-token-p (car val))
+		  (eq (length val) 1)
+		  (eq (semantic-lex-token-class (car val)) 'symbol)
+		  (semantic-lex-spp-symbol-p (semantic-lex-token-text (car val)))
+		  )
+	(setq str (semantic-lex-token-text (car val)))
+	(setq sym (semantic-lex-spp-symbol str)
+	      val (symbol-value sym))
+	)
+
       (semantic-lex-spp-anlyzer-do-replace sym val beg end))
-     ;;
-     ;; A macro that needs a raw replacement, not a full textual replacemnet.
-     ((and (not semantic-lex-spp-replacements-enabled)
-	   (semantic-lex-spp-symbol-p str)
-	   ;; Get sym values
-	   (setq sym (semantic-lex-spp-symbol str))
-	   (setq val (symbol-value sym))
-	   ;; Is it a list of lex tags?
-	   (consp val) (consp (car val))
-	   )
-      ;; We are inside a stream for assignment into another lexical
-      ;; symbol.  Push a magic keyword.
-      ;;(message "push %S" val)
-      (semantic-lex-push-token
-       (semantic-lex-token 'spp-replace-replace beg end val))
-      )
      ;; Anything else.
      (t
       ;; A regular keyword.
@@ -462,6 +661,14 @@ STR occurs in the current buffer between BEG and END."
 	(beg (match-beginning 0))
 	(end (match-end 0)))
     (semantic-lex-spp-analyzer-push-tokens-for-symbol str beg end)))
+
+;;; ANALYZERS FOR NEW MACROS
+;;
+;; These utilities and analyzer declaration function are for
+;; creating an analyzer which produces new macros in the macro table.
+;;
+;; There are two analyzers.  One for new macros, and one for removing
+;; a macro.
 
 (defun semantic-lex-spp-first-token-arg-list (token)
   "If TOKEN is a semantic-list, turn it into a an SPP ARG LIST."
@@ -482,6 +689,9 @@ Don't go past MAX."
     (if (not ans)
 	(progn (goto-char max)
 	       nil)
+      (when (> (semantic-lex-token-end (car ans)) max)
+	(let ((bounds (semantic-lex-token-bounds (car ans))))
+	  (setcdr bounds max)))
       (goto-char (semantic-lex-token-end (car ans)))
       (car ans))
     ))
@@ -511,12 +721,7 @@ EOS is the end of the stream to lex for this macro."
     (while (< (point) eos)
       (let* ((tok (semantic-lex-spp-one-token-and-move-for-macro eos))
 	     (str (when tok
-		    (cond
-		     ((eq (semantic-lex-token-class tok) 'spp-replace-replace)
-		      (car (cdr tok))
-		      )
-		     (t
-		      (semantic-lex-token-text tok)))))
+		    (semantic-lex-token-text tok)))
 	     )
 	(if str
 	    (push (semantic-lex-token (semantic-lex-token-class tok)
@@ -593,12 +798,21 @@ of type `spp-macro-undef' is to be created."
 
 ;;; INCLUDES
 ;;
-;; Bringing pre-processor macros in from included headers.
+;; These analyzers help a language define how include files
+;; are identified.  These are ONLY for languages that perform
+;; an actual textual includesion, and not for imports.
+;;
+;; This section is supposed to allow the macros from the headers to be
+;; added to the local dynamic macro table, but that hasn't been
+;; written yet.
+;;
 (defcustom semantic-lex-spp-use-headers-flag nil
   "*Non-nil means to pre-parse headers as we go.
 For languages that use the Semantic pre-processor, this can
 improve the accuracy of parsed files where include files
-can change the state of what's parsed in the current file."
+can change the state of what's parsed in the current file.
+
+Note: Note implemented yet"
   :group 'semantic
   :type 'boolean)
 
@@ -655,6 +869,11 @@ where a valid symbol is 'system, or nil."
 	 ))))
 
 ;;; EIEIO USAGE
+;;
+;; Semanticdb can save off macro tables for quick lookup later.
+;;
+;; These routines are for saving macro lists into an EIEIO persistent
+;; file.
 (defvar semantic-lex-spp-macro-max-length-to-save 200
   "*Maximum length of an SPP macro before we opt to not save it.")
 
@@ -701,13 +920,49 @@ The VALUE is a spp lexical table."
     (princ ")\n"))
 )
 
+;;; TESTS
+;;
 (defun semantic-lex-spp-write-test ()
-  "Test the semantic tag writer against the tag under point."
+  "Test the semantic tag writer against the current buffer."
   (interactive)
   (with-output-to-temp-buffer "*SPP Write Test*"
     (semantic-lex-spp-table-write-slot-value
      (semantic-lex-spp-save-table))))
 
+;;;###autoload
+(defun semantic-lex-spp-write-utest ()
+  "Unit test using the test spp file to test the slot write fcn."
+  (interactive)
+  (let* ((sem (locate-library "semantic-lex-spp.el"))
+	 (dir (file-name-directory sem)))
+    (save-excursion
+      (set-buffer (find-file-noselect
+		   (expand-file-name "tests/testsppreplace.c"
+				     dir)))
+      (semantic-lex-spp-write-test))))
+
+;;; MACRO TABLE DEBUG
+;;
+(defun semantic-lex-spp-describe (&optional buffer)
+  "Describe the current list of spp macros for BUFFER.
+If BUFFER is not provided, use the current buffer."
+  (interactive)
+  (let ((syms (save-excursion
+		(if buffer (set-buffer buffer))
+		(semantic-lex-spp-macros)))
+	(sym nil))
+    (with-output-to-temp-buffer "*SPP MACROS*"
+      (princ "Macro\t\tValue\n")
+      (while syms
+	(setq sym (car syms)
+	      syms (cdr syms))
+	(princ (symbol-name sym))
+	(princ "\t")
+	(if (< (length (symbol-name sym)) 8)
+	    (princ "\t"))
+	(prin1 (symbol-value sym))
+	(princ "\n")
+	))))
 
 ;;; EDEBUG Handlers
 ;;
