@@ -1,5 +1,39 @@
 ;;; Mode hooks
 
+;; Cedet hooks
+(defun my-cedet-hook ()
+  (local-set-key [(control return)] 'semantic-ia-complete-symbol-menu)
+  (local-set-key "\C-c?" 'semantic-ia-complete-symbol)
+  ;;
+  (local-set-key "\C-c>" 'semantic-complete-analyze-inline)
+  (local-set-key "\C-c=" 'semantic-decoration-include-visit)
+    
+  (local-set-key "\C-cj" 'semantic-ia-fast-jump)
+  (local-set-key "\C-cq" 'semantic-ia-show-doc)
+  (local-set-key "\C-cs" 'semantic-ia-show-summary)
+  (local-set-key "\C-cp" 'semantic-analyze-proto-impl-toggle)
+  )
+;;(add-hook 'semantic-init-hooks 'my-cedet-hook)
+(add-hook 'c-mode-common-hook 'my-cedet-hook)
+(add-hook 'lisp-mode-hook 'my-cedet-hook)
+(add-hook 'emacs-lisp-mode-hook 'my-cedet-hook)
+;; (add-hook 'erlang-mode-hook 'my-cedet-hook)
+(defun my-c-mode-cedet-hook ()
+ ;; (local-set-key "." 'semantic-complete-self-insert)
+ ;; (local-set-key ">" 'semantic-complete-self-insert)
+  (local-set-key "\C-ct" 'eassist-switch-h-cpp)
+  (local-set-key "\C-xt" 'eassist-switch-h-cpp)
+  (local-set-key "\C-ce" 'eassist-list-methods)
+  (local-set-key "\C-c\C-r" 'semantic-symref)
+  )
+(add-hook 'c-mode-common-hook 'my-c-mode-cedet-hook)
+;; hooks, specific for semantic
+(defun my-semantic-hook ()
+;; (semantic-tag-folding-mode 1)
+  (imenu-add-to-menubar "TAGS")
+ )
+(add-hook 'semantic-init-hooks 'my-semantic-hook)
+
 ;; Asm
 (add-hook 'asm-mode-hook
                (lambda ()
@@ -9,7 +43,7 @@
 ;; Python
 (add-hook 'python-mode-hook 'ropemacs-mode)
 ;; turn off yas for python, since we really want tab to indent (use hippie-expand for yas)
-(add-hook 'python-mode-hook 'yas/minor-mode-off) 
+(add-hook 'python-mode-hook 'yas/minor-mode-off)
 
 ;; Flyspell
 ;; (add-hook 'text-mode-hook 'flyspell-mode-on)

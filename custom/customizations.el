@@ -35,9 +35,9 @@
 
 (setq jit-lock-stealth-time 1)
 
-(setq safe-local-variable-values 
-      (quote ((auto-recompile . t) 
-              (outline-minor-mode . t) 
+(setq safe-local-variable-values
+      (quote ((auto-recompile . t)
+              (outline-minor-mode . t)
               auto-recompile outline-minor-mode)))
 
 (require 'uniquify)
@@ -66,7 +66,7 @@
 
 (defadvice  org-agenda-redo (after org-agenda-redo-add-appts)
   "Pressing `r' on the agenda will also add appointments."
-  (progn 
+  (progn
     (setq appt-time-msg-list nil)
     (org-agenda-to-appt)))
 
@@ -283,7 +283,7 @@ MANDATORY_MANPATH" "/usr/share/man" "/usr/local/man")))
 	    anything-c-source-file-cache
             anything-c-source-emacs-commands))
 
-;; Load stuff from M-x customize from a different file, to keep .emacs cleaner 
+;; Load stuff from M-x customize from a different file, to keep .emacs cleaner
 (setq custom-file (concat emacs-root "custom/custom.el"))
 (load custom-file 'noerror)
 

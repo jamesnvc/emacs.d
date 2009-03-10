@@ -54,9 +54,26 @@
 (load-library "scheme-configs")
 (load-library "js2")
 
+;; Cedet stuff
 (require 'cedet)
-;; (load-library "cedet")
-;; (semantic-load-enable-excessive-code-helpers)
+(semantic-load-enable-excessive-code-helpers)
+(setq senator-minor-mode-name "SN")
+(setq semantic-imenu-auto-rebuild-directory-indexes nil)
+(global-srecode-minor-mode 1)
+(global-semantic-mru-bookmark-mode 1)
+(require 'semantic-decorate-include)
+;; gcc setup
+(require 'semantic-gcc)
+;; smart complitions
+(require 'semantic-ia)
+(setq-mode-local c-mode semanticdb-find-default-throttle
+                 '(project unloaded system recursive))
+(setq-mode-local c++-mode semanticdb-find-default-throttle
+                 '(project unloaded system recursive))
+(setq-mode-local erlang-mode semanticdb-find-default-throttle
+                 '(project unloaded system recursive))
+(require 'eassist)
+
 ;; (require 'semantic-load)
 ;; (autoload 'jde-mode "jde" nil t)
 
