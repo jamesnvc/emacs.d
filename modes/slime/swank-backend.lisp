@@ -35,7 +35,7 @@
            ;; interrupt macro for the backend
            #:*pending-slime-interrupts*
            #:check-slime-interrupts
-           #:slime-interrupt-queued
+           #:*interrupt-queued-handler*
            ;; inspector related symbols
            #:emacs-inspect
            #:label-value-line
@@ -173,8 +173,9 @@ Backends implement these functions using DEFIMPLEMENTATION."
 (defun warn-unimplemented-interfaces ()
   "Warn the user about unimplemented backend features.
 The portable code calls this function at startup."
-  (warn "These Swank interfaces are unimplemented:~% ~A"
-        (sort (copy-list *unimplemented-interfaces*) #'string<)))
+  (let ((*print-pretty* t))
+    (warn "These Swank interfaces are unimplemented:~% ~:<~{~A~^ ~:_~}~:>"
+          (list (sort (copy-list *unimplemented-interfaces*) #'string<)))))
 
 (defun import-to-swank-mop (symbol-list)
   (dolist (sym symbol-list)
@@ -244,6 +245,12 @@ EXCEPT is a list of symbol names which should be ignored."
                      (cons `(,(first name) (,(reader (second name)) ,tmp)))
                      (t (error "Malformed syntax in WITH-STRUCT: ~A" name))))
           ,@body)))))
+
+(defun with-symbol (name package)
+  "Generate a form suitable for testing with #+."
+  (if (find-symbol (string name) (string package))
+      '(:and)
+      '(:or)))
 
 
 ;;;; TCP server
@@ -370,8 +377,8 @@ This is used to resolve filenames without directory component."
   (declare (ignore ignore))
   `(call-with-compilation-hooks (lambda () (progn ,@body))))
 
-(definterface swank-compile-string (string &key buffer position directory 
-                                           debug)
+(definterface swank-compile-string (string &key buffer position filename
+                                           policy)
   "Compile source from STRING.
 During compilation, compiler conditions must be trapped and
 resignalled as COMPILER-CONDITIONs.
@@ -381,19 +388,20 @@ If supplied, BUFFER and POSITION specify the source location in Emacs.
 Additionally, if POSITION is supplied, it must be added to source
 positions reported in compiler conditions.
 
-If DIRECTORY is specified it may be used by certain implementations to
+If FILENAME is specified it may be used by certain implementations to
 rebind *DEFAULT-PATHNAME-DEFAULTS* which may improve the recording of
 source information.
 
-If DEBUG is supplied, and non-NIL, it may be used by certain
+If POLICY is supplied, and non-NIL, it may be used by certain
 implementations to compile with a debug optimization quality of its
 value.
 
 Should return T on successfull compilation, NIL otherwise.
 ")
 
-(definterface swank-compile-file (pathname load-p external-format)
-   "Compile PATHNAME signalling COMPILE-CONDITIONs.
+(definterface swank-compile-file (input-file output-file load-p 
+                                             external-format)
+   "Compile INPUT-FILE signalling COMPILE-CONDITIONs.
 If LOAD-P is true, load the file after compilation.
 EXTERNAL-FORMAT is a value returned by find-external-format or
 :default.
@@ -573,6 +581,10 @@ NIL."
 		   (frob new-form t)
 		   (values new-form expanded)))))
     (frob form env)))
+
+(definterface format-string-expand (control-string)
+  "Expand the format string CONTROL-STRING."
+  (macroexpand `(formatter ,control-string)))
 
 (definterface describe-symbol-for-emacs (symbol)
    "Return a property list describing SYMBOL.
@@ -1036,6 +1048,14 @@ but that thread may hold it more than once."
 (definterface receive-if (predicate &optional timeout)
   "Return the first message satisfiying PREDICATE.")
 
+(definterface set-default-initial-binding (var form)
+  "Initialize special variable VAR by default with FORM.
+
+Some implementations initialize certain variables in each newly
+created thread.  This function sets the form which is used to produce
+the initial value."
+  (set var (eval form)))
+
 ;; List of delayed interrupts.  
 ;; This should only have thread-local bindings, so no init form.
 (defvar *pending-slime-interrupts*)
@@ -1050,11 +1070,12 @@ Return a boolean indicating whether any interrupts was processed."
     (funcall (pop *pending-slime-interrupts*))
     t))
 
-(define-condition slime-interrupt-queued () ()
-  (:documentation 
-   "Non-serious condition signalled when an interrupt
-occurs while interrupt handling is disabled.
-Backends can use this to abort blocking operations."))
+(defvar *interrupt-queued-handler* nil
+  "Function to call on queued interrupts.
+Interrupts get queued when an interrupt occurs while interrupt
+handling is disabled.
+
+Backends can use this function to abort slow operations.")
 
 (definterface wait-for-input (streams &optional timeout)
   "Wait for input on a list of streams.  Return those that are ready.
@@ -1065,25 +1086,40 @@ If TIMEOUT is a number and no streams is ready after TIMEOUT seconds,
 return nil.
 
 Return :interrupt if an interrupt occurs while waiting."
-  (assert (= (length streams) 1))
-  (let ((stream (car streams)))
-    (case timeout
-      ((nil)
-       (cond ((check-slime-interrupts) :interrupt)
-             (t (peek-char nil stream nil nil) 
-                streams)))
-      ((t) 
-       (let ((c (read-char-no-hang stream nil nil)))
-         (cond (c 
-                (unread-char c stream) 
-                streams)
-               (t '()))))
-      (t 
-       (loop
-        (if (check-slime-interrupts) (return :interrupt))
-        (when (wait-for-input streams t) (return streams))
-        (sleep 0.1)
-        (when (<= (decf timeout 0.1) 0) (return nil)))))))
+  (assert (member timeout '(nil t)))
+  (cond #+(or)
+        ((null (cdr streams)) 
+         (wait-for-one-stream (car streams) timeout))
+        (t
+         (wait-for-streams streams timeout))))
+
+(defun wait-for-streams (streams timeout)
+  (loop
+   (when (check-slime-interrupts) (return :interrupt))
+   (let ((ready (remove-if-not #'stream-readable-p streams)))
+     (when ready (return ready)))
+   (when timeout (return nil))
+   (sleep 0.1)))
+
+;; Note: Usually we can't interrupt PEEK-CHAR cleanly.
+(defun wait-for-one-stream (stream timeout)
+  (ecase timeout
+    ((nil)
+     (cond ((check-slime-interrupts) :interrupt)
+           (t (peek-char nil stream nil nil) 
+              (list stream))))
+    ((t) 
+     (let ((c (read-char-no-hang stream nil nil)))
+       (cond (c 
+              (unread-char c stream) 
+              (list stream))
+             (t '()))))))
+
+(defun stream-readable-p (stream)
+  (let ((c (read-char-no-hang stream nil :eof)))
+    (cond ((not c) nil)
+          ((eq c :eof) t)
+          (t (unread-char c stream) t))))
 
 (definterface toggle-trace (spec)
   "Toggle tracing of the function(s) given with SPEC.

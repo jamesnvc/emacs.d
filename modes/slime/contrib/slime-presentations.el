@@ -400,7 +400,7 @@ Also return the start position, end position, and buffer of the presentation."
     (slime-M-.-presentation presentation start end (current-buffer))))
 
 (defun slime-edit-presentation (name &optional where)
-  (if (or current-prefix-arg (not (equal (slime-symbol-name-at-point) name)))
+  (if (or current-prefix-arg (not (equal (slime-symbol-at-point) name)))
       nil ; NAME came from user explicitly, so decline.
       (multiple-value-bind (presentation start end whole-p)
 	  (slime-presentation-around-or-before-point (point))
@@ -698,10 +698,7 @@ output; otherwise the new input is appended."
 				  slime-presentation-bindings)
   (define-key slime-presentation-command-map "\M-o" 'slime-clear-presentations)
   ;; C-c C-v is the prefix for the presentation-command map.
-  (slime-define-key "\C-v" slime-presentation-command-map :prefixed t)
-  (define-key slime-repl-mode-map "\C-c\C-v" slime-presentation-command-map)
-  (define-key sldb-mode-map "\C-c\C-v" slime-presentation-command-map)
-  (define-key slime-inspector-mode-map "\C-c\C-v" slime-presentation-command-map))
+  (define-key slime-prefix-map "\C-v" slime-presentation-command-map))
 
 (defun slime-presentation-around-or-before-point-p ()
   (multiple-value-bind (presentation beg end) 
@@ -843,7 +840,7 @@ even on Common Lisp implementations without weak hash tables."
 (defun slime-presentation-sldb-insert-frame-variable-value (value frame index)
   (slime-insert-presentation
    (in-sldb-face local-value value)
-   `(:frame-var ,slime-current-thread ,(car frame) ,i) t))
+   `(:frame-var ,slime-current-thread ,(car frame) ,index) t))
 
 ;;; Initialization
 

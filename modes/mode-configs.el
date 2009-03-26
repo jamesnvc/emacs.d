@@ -54,7 +54,7 @@
 (load-library "scheme-configs")
 (load-library "js2")
 
-;; Cedet stuff
+;;; Cedet stuff
 (require 'cedet)
 (semantic-load-enable-excessive-code-helpers)
 (setq senator-minor-mode-name "SN")
@@ -73,10 +73,16 @@
 (setq-mode-local erlang-mode semanticdb-find-default-throttle
                  '(project unloaded system recursive))
 (require 'eassist)
+;; gnu global support
+(require 'semanticdb-global)
+(semanticdb-enable-gnu-global-databases 'c-mode)
+(semanticdb-enable-gnu-global-databases 'c++-mode)
 
 ;; (require 'semantic-load)
-;; (autoload 'jde-mode "jde" nil t)
+(autoload 'jde-mode "jde" nil t)
 
+
+;;; Pymacs
 (setenv "PYMACS_PYTHON" "python2.5")
 (autoload 'pymacs-apply "pymacs")
 (autoload 'pymacs-call "pymacs")

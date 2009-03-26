@@ -7,13 +7,13 @@
 
 (require 'swank-clojure-autoload)
 
-(swank-clojure-config)
+(clojure-slime-config)
 
 (add-to-list 'slime-lisp-implementations
       `(clojure ("clj" "--emacs") :init swank-clojure-init))
       
-(require 'clojure-auto)
-(require 'swank-clojure-autoload)
+;; (require 'clojure-auto)
+;; (require 'swank-clojure-autoload)
 
 (defun run-clojure ()
   "Starts clojure in Slime"
