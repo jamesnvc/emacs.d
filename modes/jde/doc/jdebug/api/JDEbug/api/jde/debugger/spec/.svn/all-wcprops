@@ -1,0 +1,95 @@
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svnroot/jdee/!svn/ver/76/branches/2.3.6/jde/doc/jdebug/api/JDEbug/api/jde/debugger/spec
+END
+AccessWatchpointSpec.html
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/svnroot/jdee/!svn/ver/76/branches/2.3.6/jde/doc/jdebug/api/JDEbug/api/jde/debugger/spec/AccessWatchpointSpec.html
+END
+ModificationWatchpointSpec.html
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/svnroot/jdee/!svn/ver/76/branches/2.3.6/jde/doc/jdebug/api/JDEbug/api/jde/debugger/spec/ModificationWatchpointSpec.html
+END
+LineBreakpointSpec.html
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/svnroot/jdee/!svn/ver/76/branches/2.3.6/jde/doc/jdebug/api/JDEbug/api/jde/debugger/spec/LineBreakpointSpec.html
+END
+package-frame.html
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svnroot/jdee/!svn/ver/76/branches/2.3.6/jde/doc/jdebug/api/JDEbug/api/jde/debugger/spec/package-frame.html
+END
+package-summary.html
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svnroot/jdee/!svn/ver/76/branches/2.3.6/jde/doc/jdebug/api/JDEbug/api/jde/debugger/spec/package-summary.html
+END
+package-tree.html
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svnroot/jdee/!svn/ver/76/branches/2.3.6/jde/doc/jdebug/api/JDEbug/api/jde/debugger/spec/package-tree.html
+END
+WatchpointSpec.html
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svnroot/jdee/!svn/ver/76/branches/2.3.6/jde/doc/jdebug/api/JDEbug/api/jde/debugger/spec/WatchpointSpec.html
+END
+SourceNameReferenceTypeSpec.html
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/svnroot/jdee/!svn/ver/76/branches/2.3.6/jde/doc/jdebug/api/JDEbug/api/jde/debugger/spec/SourceNameReferenceTypeSpec.html
+END
+EventRequestSpecList.html
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/svnroot/jdee/!svn/ver/76/branches/2.3.6/jde/doc/jdebug/api/JDEbug/api/jde/debugger/spec/EventRequestSpecList.html
+END
+EventRequestSpec.html
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/svnroot/jdee/!svn/ver/76/branches/2.3.6/jde/doc/jdebug/api/JDEbug/api/jde/debugger/spec/EventRequestSpec.html
+END
+PatternReferenceTypeSpec.html
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/svnroot/jdee/!svn/ver/76/branches/2.3.6/jde/doc/jdebug/api/JDEbug/api/jde/debugger/spec/PatternReferenceTypeSpec.html
+END
+ExceptionSpec.html
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svnroot/jdee/!svn/ver/76/branches/2.3.6/jde/doc/jdebug/api/JDEbug/api/jde/debugger/spec/ExceptionSpec.html
+END
+BreakpointSpec.html
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svnroot/jdee/!svn/ver/76/branches/2.3.6/jde/doc/jdebug/api/JDEbug/api/jde/debugger/spec/BreakpointSpec.html
+END
+MethodBreakpointSpec.html
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/svnroot/jdee/!svn/ver/76/branches/2.3.6/jde/doc/jdebug/api/JDEbug/api/jde/debugger/spec/MethodBreakpointSpec.html
+END
+ReferenceTypeSpec.html
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/svnroot/jdee/!svn/ver/76/branches/2.3.6/jde/doc/jdebug/api/JDEbug/api/jde/debugger/spec/ReferenceTypeSpec.html
+END

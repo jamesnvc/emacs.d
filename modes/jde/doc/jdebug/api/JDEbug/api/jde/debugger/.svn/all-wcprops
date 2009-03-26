@@ -1,0 +1,173 @@
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svnroot/jdee/!svn/ver/76/branches/2.3.6/jde/doc/jdebug/api/JDEbug/api/jde/debugger
+END
+SessionManager.html
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svnroot/jdee/!svn/ver/76/branches/2.3.6/jde/doc/jdebug/api/JDEbug/api/jde/debugger/SessionManager.html
+END
+EventHandler.html
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svnroot/jdee/!svn/ver/76/branches/2.3.6/jde/doc/jdebug/api/JDEbug/api/jde/debugger/EventHandler.html
+END
+CommandEvent.html
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svnroot/jdee/!svn/ver/76/branches/2.3.6/jde/doc/jdebug/api/JDEbug/api/jde/debugger/CommandEvent.html
+END
+VMUtil.html
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svnroot/jdee/!svn/ver/76/branches/2.3.6/jde/doc/jdebug/api/JDEbug/api/jde/debugger/VMUtil.html
+END
+JDEException.html
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svnroot/jdee/!svn/ver/76/branches/2.3.6/jde/doc/jdebug/api/JDEbug/api/jde/debugger/JDEException.html
+END
+DebuggeeSIO.html
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svnroot/jdee/!svn/ver/76/branches/2.3.6/jde/doc/jdebug/api/JDEbug/api/jde/debugger/DebuggeeSIO.html
+END
+ObjectStore.html
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svnroot/jdee/!svn/ver/76/branches/2.3.6/jde/doc/jdebug/api/JDEbug/api/jde/debugger/ObjectStore.html
+END
+package-frame.html
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svnroot/jdee/!svn/ver/76/branches/2.3.6/jde/doc/jdebug/api/JDEbug/api/jde/debugger/package-frame.html
+END
+Debugger.html
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svnroot/jdee/!svn/ver/76/branches/2.3.6/jde/doc/jdebug/api/JDEbug/api/jde/debugger/Debugger.html
+END
+CommandListener.html
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svnroot/jdee/!svn/ver/76/branches/2.3.6/jde/doc/jdebug/api/JDEbug/api/jde/debugger/CommandListener.html
+END
+Main.html
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svnroot/jdee/!svn/ver/76/branches/2.3.6/jde/doc/jdebug/api/JDEbug/api/jde/debugger/Main.html
+END
+Debug.html
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svnroot/jdee/!svn/ver/76/branches/2.3.6/jde/doc/jdebug/api/JDEbug/api/jde/debugger/Debug.html
+END
+DisplayableValue.html
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svnroot/jdee/!svn/ver/76/branches/2.3.6/jde/doc/jdebug/api/JDEbug/api/jde/debugger/DisplayableValue.html
+END
+Rep.html
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svnroot/jdee/!svn/ver/76/branches/2.3.6/jde/doc/jdebug/api/JDEbug/api/jde/debugger/Rep.html
+END
+package-summary.html
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svnroot/jdee/!svn/ver/76/branches/2.3.6/jde/doc/jdebug/api/JDEbug/api/jde/debugger/package-summary.html
+END
+package-tree.html
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svnroot/jdee/!svn/ver/76/branches/2.3.6/jde/doc/jdebug/api/JDEbug/api/jde/debugger/package-tree.html
+END
+CommandStream.html
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svnroot/jdee/!svn/ver/76/branches/2.3.6/jde/doc/jdebug/api/JDEbug/api/jde/debugger/CommandStream.html
+END
+LispForm.html
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svnroot/jdee/!svn/ver/76/branches/2.3.6/jde/doc/jdebug/api/JDEbug/api/jde/debugger/LispForm.html
+END
+EventSetEvent.html
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svnroot/jdee/!svn/ver/76/branches/2.3.6/jde/doc/jdebug/api/JDEbug/api/jde/debugger/EventSetEvent.html
+END
+ProcessCommands.html
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svnroot/jdee/!svn/ver/76/branches/2.3.6/jde/doc/jdebug/api/JDEbug/api/jde/debugger/ProcessCommands.html
+END
+JDEbug.html
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svnroot/jdee/!svn/ver/76/branches/2.3.6/jde/doc/jdebug/api/JDEbug/api/jde/debugger/JDEbug.html
+END
+Protocol.html
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svnroot/jdee/!svn/ver/76/branches/2.3.6/jde/doc/jdebug/api/JDEbug/api/jde/debugger/Protocol.html
+END
+JDE.html
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svnroot/jdee/!svn/ver/76/branches/2.3.6/jde/doc/jdebug/api/JDEbug/api/jde/debugger/JDE.html
+END
+JDENumberFormatException.html
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/svnroot/jdee/!svn/ver/76/branches/2.3.6/jde/doc/jdebug/api/JDEbug/api/jde/debugger/JDENumberFormatException.html
+END
+EventSetListener.html
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svnroot/jdee/!svn/ver/76/branches/2.3.6/jde/doc/jdebug/api/JDEbug/api/jde/debugger/EventSetListener.html
+END
+DebuggeeProcess.html
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svnroot/jdee/!svn/ver/76/branches/2.3.6/jde/doc/jdebug/api/JDEbug/api/jde/debugger/DebuggeeProcess.html
+END
+ProcessRegistry.html
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svnroot/jdee/!svn/ver/76/branches/2.3.6/jde/doc/jdebug/api/JDEbug/api/jde/debugger/ProcessRegistry.html
+END
+Etc.html
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svnroot/jdee/!svn/ver/76/branches/2.3.6/jde/doc/jdebug/api/JDEbug/api/jde/debugger/Etc.html
+END

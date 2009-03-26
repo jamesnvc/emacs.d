@@ -1,0 +1,71 @@
+9
+
+dir
+77
+https://jdee.svn.sourceforge.net/svnroot/jdee/branches/2.3.6/jde/java
+https://jdee.svn.sourceforge.net/svnroot/jdee
+
+
+
+2008-11-25T09:08:17.380134Z
+65
+paullandes
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+381a1f10-3442-0410-997e-ef331cd04102
+
+.nosearch
+file
+
+
+
+
+2009-03-11T01:27:01.000000Z
+ba622d8c15c07ae40330ae655f6d34a7
+2007-12-29T03:21:28.897480Z
+4
+pkinnucan
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+51
+
+lib
+dir
+
+src
+dir
+
+bsh-commands
+dir
+

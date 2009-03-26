@@ -1,0 +1,107 @@
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svnroot/jdee/!svn/ver/76/branches/2.3.6/jde/java/src/jde/juci
+END
+Connection.java
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svnroot/jdee/!svn/ver/76/branches/2.3.6/jde/java/src/jde/juci/Connection.java
+END
+NoMoreResultsException.java
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svnroot/jdee/!svn/ver/76/branches/2.3.6/jde/java/src/jde/juci/NoMoreResultsException.java
+END
+Quoted.java
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svnroot/jdee/!svn/ver/76/branches/2.3.6/jde/java/src/jde/juci/Quoted.java
+END
+Cons.java
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svnroot/jdee/!svn/ver/76/branches/2.3.6/jde/java/src/jde/juci/Cons.java
+END
+LispWriterTest.java
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svnroot/jdee/!svn/ver/76/branches/2.3.6/jde/java/src/jde/juci/LispWriterTest.java
+END
+LispWriter.java
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svnroot/jdee/!svn/ver/76/branches/2.3.6/jde/java/src/jde/juci/LispWriter.java
+END
+SymbolTest.java
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svnroot/jdee/!svn/ver/76/branches/2.3.6/jde/java/src/jde/juci/SymbolTest.java
+END
+Symbol.java
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svnroot/jdee/!svn/ver/76/branches/2.3.6/jde/java/src/jde/juci/Symbol.java
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svnroot/jdee/!svn/ver/76/branches/2.3.6/jde/java/src/jde/juci/package.html
+END
+Logger.java
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svnroot/jdee/!svn/ver/76/branches/2.3.6/jde/java/src/jde/juci/Logger.java
+END
+ConnectionImplTest.java
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svnroot/jdee/!svn/ver/76/branches/2.3.6/jde/java/src/jde/juci/ConnectionImplTest.java
+END
+ConnectionImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svnroot/jdee/!svn/ver/76/branches/2.3.6/jde/java/src/jde/juci/ConnectionImpl.java
+END
+ConnectionUnavailableException.java
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svnroot/jdee/!svn/ver/76/branches/2.3.6/jde/java/src/jde/juci/ConnectionUnavailableException.java
+END
+WrappedRuntimeException.java
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svnroot/jdee/!svn/ver/76/branches/2.3.6/jde/java/src/jde/juci/WrappedRuntimeException.java
+END
+ElispError.java
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svnroot/jdee/!svn/ver/76/branches/2.3.6/jde/java/src/jde/juci/ElispError.java
+END
+ConnectionFactory.java
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svnroot/jdee/!svn/ver/76/branches/2.3.6/jde/java/src/jde/juci/ConnectionFactory.java
+END
+AllTests.java
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svnroot/jdee/!svn/ver/76/branches/2.3.6/jde/java/src/jde/juci/AllTests.java
+END
