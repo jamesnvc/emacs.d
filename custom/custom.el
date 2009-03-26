@@ -191,7 +191,11 @@
  '(woman-emulation (quote nroff))
  '(woman-fill-frame t)
  '(woman-preserve-ascii nil)
- '(woman-use-own-frame nil))
+ '(woman-use-own-frame nil)
+ '(semantic-idle-scheduler-idle-time 3)
+ '(semantic-self-insert-show-completion-function (lambda nil (semantic-ia-complete-symbol-menu (point))))
+ '(global-semantic-tag-folding-mode t nil (semantic-util-modes))
+ )
 
 (custom-set-faces
   ;; custom-set-faces was added by Custom.

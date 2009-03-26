@@ -10,7 +10,6 @@
 (labels ((add-path (p)
 		   (add-to-list 'load-path
 			   (concat emacs-root p))))
-  (add-path "elib")
   (add-path "modes") ;; For various major/minor modes and their setup
   (add-path "modes/auctex-11.85")
   (add-path "modes/auctex-11.85/preview")
@@ -31,7 +30,7 @@
   (add-path "modes/slime/contrib")
   (add-path "modes/sml-mode-4.0")
   (add-path "modes/tuareg-mode-1.45.4")
-  (add-path "modes/jde/lisp")
+  (add-path "modes/jde/build/lisp")
   (add-path "modes/ess-5.3.5/lisp") ;; R statistical language
   (add-path "utilities")
   (add-path "utilities/emacspeak/lisp/g-client")
@@ -50,6 +49,7 @@
   (add-path "utilities/cedet/semantic")
   (add-path "utilities/cedet/speedbar")
   (add-path "utilities/yasnippet-0.5.3")
+  (add-path "utilities/elib")
   (add-path "modes/mmm-mode-0.4.8")
   (add-path "utilities/emacs-w3m")
   (add-path "utilities/g-client") ;; Google APIs

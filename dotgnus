@@ -36,7 +36,7 @@
 ;; (setq gnus-message-archive-method '(nnimap "localhost"))
 (setq gnus-message-archive-method '(nnimap "gmail"))
 ;; (setq gnus-message-archive-group "nnimap+localhost:Sent")
-(setq gnus-message-archive-group "nnimap+gmail:Sent")
+(setq gnus-message-archive-group "nnimap+gmail:[Gmail]/Sent Mail")
 (setq gnus-gcc-mark-as-read t)
 
 (setq gnus-thread-sort-functions
@@ -137,7 +137,7 @@
 
 (defun my-sign-message ()
   (if (y-or-n-p "Sign message? ")
-      (mc-sign-message)))
+      (mc-sign)))
 
 
 ;; (defun wicked/gnus-article-show-html ()

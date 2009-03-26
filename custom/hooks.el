@@ -1,38 +1,18 @@
 ;;; Mode hooks
 
 ;; Cedet hooks
-(defun my-cedet-hook ()
-  (local-set-key [(control return)] 'semantic-ia-complete-symbol-menu)
-  (local-set-key "\C-c?" 'semantic-ia-complete-symbol)
-  ;;
-  (local-set-key "\C-c>" 'semantic-complete-analyze-inline)
-  (local-set-key "\C-c=" 'semantic-decoration-include-visit)
-    
-  (local-set-key "\C-cj" 'semantic-ia-fast-jump)
-  (local-set-key "\C-cq" 'semantic-ia-show-doc)
-  (local-set-key "\C-cs" 'semantic-ia-show-summary)
-  (local-set-key "\C-cp" 'semantic-analyze-proto-impl-toggle)
-  )
 ;;(add-hook 'semantic-init-hooks 'my-cedet-hook)
 (add-hook 'c-mode-common-hook 'my-cedet-hook)
 (add-hook 'lisp-mode-hook 'my-cedet-hook)
 (add-hook 'emacs-lisp-mode-hook 'my-cedet-hook)
 ;; (add-hook 'erlang-mode-hook 'my-cedet-hook)
-(defun my-c-mode-cedet-hook ()
- ;; (local-set-key "." 'semantic-complete-self-insert)
- ;; (local-set-key ">" 'semantic-complete-self-insert)
-  (local-set-key "\C-ct" 'eassist-switch-h-cpp)
-  (local-set-key "\C-xt" 'eassist-switch-h-cpp)
-  (local-set-key "\C-ce" 'eassist-list-methods)
-  (local-set-key "\C-c\C-r" 'semantic-symref)
-  )
 (add-hook 'c-mode-common-hook 'my-c-mode-cedet-hook)
 ;; hooks, specific for semantic
-(defun my-semantic-hook ()
-;; (semantic-tag-folding-mode 1)
-  (imenu-add-to-menubar "TAGS")
- )
 (add-hook 'semantic-init-hooks 'my-semantic-hook)
+
+;; Org hooks
+(add-hook 'org-mode-hook 'org-mode-reftex-setup)
+
 
 ;; Asm
 (add-hook 'asm-mode-hook
@@ -53,6 +33,9 @@
                              (setq forth-indent-level 4)
                              (setq forth-minor-indent-level 2)
                              (setq forth-hilight-level 3))))
+
+;; Java
+(add-hook 'java-mode-hook 'c-subword-mode)
 
 ;; Javascript
 (add-hook 'javascript-mode-hook 'javascript-custom-setup)
@@ -109,6 +92,7 @@
 
 ;; Clojure
 (add-hook 'clojure-mode-hook 'paredit-mode)
+(add-hook 'clojure-mode-hook 'c-subword-mode)
 
 ;; Factor
 (add-hook 'factor-mode-hook
@@ -161,3 +145,5 @@
              "default")))
 
 (add-hook 'find-file-hook 'auto-insert)
+
+(remove-hook 'senator-minor-mode-hook 'senator-hippie-expand-hook)

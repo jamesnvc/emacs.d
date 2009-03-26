@@ -116,12 +116,13 @@
 
 ;;; Ido or Icicles?  While Icicles is apparently much more featurefull, I cannot abide the way it
 ;;; mangles tramp...maybe if I can it working properly...
-;; Ido
+;;; Ido
 (load-file (concat emacs-root "utilities/ido.el"))
 (ido-mode t)
 (setq ido-enable-flex-matching t)
 (ido-everywhere t)
 (setq ido-use-filename-at-point t)
+
 ;; Icicles
 ;; (load-library "icy-configs")
 
@@ -290,3 +291,5 @@ MANDATORY_MANPATH" "/usr/share/man" "/usr/local/man")))
 ;; Set colours, overriding custom-set-faces
 (load-library "colourizing")
 (color-theme-jamesnvc)
+
+;; (require 'shell-config)
