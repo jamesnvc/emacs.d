@@ -63,7 +63,7 @@
 
 
 ;; Latex
-(add-hook 'latex-mode-hook 'flyspell-mode)
+(add-hook 'latex-mode-hook '(lambda () (flyspell-mode 1)))
 (add-hook 'yatex-mode-hook 'flyspell-mode)
 (add-hook 'latex-mode-hook 'pretty-greek)
 (add-hook 'doc-view-mode-hook 'auto-revert-mode)
