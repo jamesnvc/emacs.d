@@ -23,6 +23,9 @@
      (mode-line ((t (:foreground "#ffffff" :background "#333333"))))
      (region ((t (:foreground nil :background "#555555"))))
      (show-paren-match-face ((t (:bold t :foreground "SlateBlue1" :background "grey5"))))
+     
+     (twitter-user-name-face ((t (:bold t :foreground "white"  :background "blue"))))
+     (twitter-time-stamp-face ((t (:bold nil :foreground "white" :background "blue"))))
 
      )))
 
