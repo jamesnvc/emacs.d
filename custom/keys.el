@@ -3,8 +3,8 @@
 ;; Other keys
 (global-set-key [up] 'increment-number-at-point)
 (global-set-key [down] 'decrement-number-at-point)
-(global-set-key [XF86Back] 'next-buffer) ;; Thinkpad <- key
-(global-set-key [XF86Forward] 'previous-buffer) ;; Thinknpad -> key
+(global-set-key [XF86Back] 'next-buffer)
+(global-set-key [XF86Forward] 'previous-buffer)
 (global-set-key [(S XF86Forward)] 'winring-next-configuration)
 (global-set-key [(S XF86Back)] 'winring-prev-configuration)
 
@@ -13,7 +13,7 @@
 (global-set-key [f3] 'eshell)
 (global-set-key [f4] 'replace-regexp)
 (global-set-key [f5]
-                (lambda () (interactive) (yas/load-directory (concat emacs-root "utilities/yasnippet-0.5.3/snippets"))))
+                (lambda () (interactive) (yas/load-directory (concat emacs-root "utilities/yasnippet-read-only/snippets"))))
 (global-set-key [f9] 'slime-selector)
 (global-set-key [f10] 'run-clojure)
 (global-set-key (kbd "<f7> t") 'planner-create-task-from-buffer)
@@ -41,7 +41,6 @@
 (global-set-key (kbd "M-p") '(lambda () (interactive) (other-window -1)))
 (global-set-key (kbd "M-r") 'isearch-backward)
 (global-set-key (kbd "M-s") 'isearch-forward)
-(global-set-key (kbd "M-X") 'anything)
 (global-set-key [(shift menu)] 'anything)
 (global-set-key (kbd "M-Z") 'zap-to-char-back)
 (global-set-key [(meta down)] 'move-line-down)
@@ -181,6 +180,14 @@
 ;; Forth
 (define-key forth-mode-map (kbd "C-h") 'backward-delete-char-untabify)
 (define-key forth-mode-map (kbd "C-x C-n") 'other-window)
+(define-key forth-mode-map (kbd "M-SPC") 'just-one-space)
+
+;;; Smex
+(global-set-key (kbd "M-x") 'smex)
+(global-set-key [(menu)] 'smex)
+(global-set-key (kbd "M-X") 'smex-major-mode-commands)
+(global-set-key (kbd "C-c M-x") 'smex-update-and-run)
+(global-set-key (kbd "C-c C-c M-x") 'execute-extended-command) ;; Original M-x
 
 ;; Miscelaneous
 (define-key isearch-mode-map (kbd "C-h") 'isearch-delete-char)
