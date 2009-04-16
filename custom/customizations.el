@@ -23,6 +23,7 @@
 (require 'printing)
 (require 'snippet)
 (require 'smart-snippet)
+(require 'smex)
 (require 'vm)
 (require 'message)
 (require 'w3m)
@@ -55,9 +56,9 @@
 ;; (require 'ecb)
 
 ;; Twitter
-(autoload 'twit-post "twit" "post on twitter" t)
-(autoload 'twit-post-region "twit" "post on twitter" t)
-(autoload 'twit-show-recent-tweets "twit" "read from twitter" t)
+(autoload 'twitter-get-friends-timeline "twitter" nil t)
+(autoload 'twitter-status-edit "twitter" nil t)
+(add-hook 'twitter-status-edit-mode-hook 'longlines-mode)
 
 ;; Org stuff (popup reminders)
 (setq appt-time-msg-list nil)
@@ -99,7 +100,7 @@
 
 (require 'yasnippet)
 (yas/initialize)
-(yas/load-directory (concat emacs-root "utilities/yasnippet-0.5.3/snippets"))
+(yas/load-directory (concat emacs-root "utilities/yasnippet-read-only/snippets"))
 
 (setq planner-project "MyPlans")
 (setq muse-project-alist
