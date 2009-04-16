@@ -1,0 +1,9 @@
+# -*- coding: utf-8 -*-
+# name: New file boilerplate
+# --
+! Copyright (C) 2008 James Cash
+! See http://factorcode.org/license.txt for BSD license.
+USING: kernel accessors sequences ;
+IN: $1`(file-name-nondirectory (file-name-sans-extension (buffer-file-name)))` 
+
+$0

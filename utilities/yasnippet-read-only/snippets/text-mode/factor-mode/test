@@ -1,0 +1,6 @@
+# -*- coding: utf-8 -*-
+# name: unit-test
+# --
+{ $1 } [
+    $2
+] unit-test

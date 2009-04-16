@@ -1,0 +1,141 @@
+9
+
+dir
+366
+http://yasnippet.googlecode.com/svn/trunk/snippets/text-mode
+http://yasnippet.googlecode.com/svn
+
+
+
+2009-03-21T07:08:41.656626Z
+365
+pluskid
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+b2103351-7347-0410-aa0e-656c9fbaa8cf
+
+emacs-lisp-mode
+dir
+
+f90-mode
+dir
+
+sql-mode
+dir
+
+perl-mode
+dir
+
+html-mode
+dir
+
+email
+file
+
+
+
+
+2009-04-02T12:43:25.000000Z
+fa9ae2839be3e6d9b17a93f74da07504
+2008-03-10T12:26:15.728182Z
+126
+pluskid
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+47
+
+erlang-mode
+dir
+
+rst-mode
+dir
+
+time
+file
+
+
+
+
+2009-04-02T12:43:25.000000Z
+f0b9d06664e171627d8c87ea7a26b7c6
+2008-03-10T12:26:15.728182Z
+126
+pluskid
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+51
+
+latex-mode
+dir
+
+nxml-mode
+dir
+
+ruby-mode
+dir
+
+python-mode
+dir
+
+markdown-mode
+dir
+
+scala-mode
+dir
+
+cc-mode
+dir
+
+css-mode
+dir
+
