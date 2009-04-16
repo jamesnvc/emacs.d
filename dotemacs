@@ -11,36 +11,32 @@
 		   (add-to-list 'load-path
 			   (concat emacs-root p))))
   (add-path "modes") ;; For various major/minor modes and their setup
+  (add-path "modes/arorem") ;; For rails
   (add-path "modes/auctex-11.85")
   (add-path "modes/auctex-11.85/preview")
-  (add-path "modes/arorem") ;; For rails
   (add-path "modes/cl-lookup")
   (add-path "modes/clojure-mode")
-  (add-path "modes/swank-clojure")
   (add-path "modes/distel") ;; Erlang
+  (add-path "modes/ess-5.3.5/lisp") ;; R statistical language
   (add-path "modes/gnuplot-mode.0.6.0")
+  (add-path "modes/haskell")
   (add-path "modes/icicles")
-  (add-path "modes/ruby") ;; Fancy ruby stuff
+  (add-path "modes/jde/build/lisp")
+  (add-path "modes/mmm-mode-0.4.8")
   (add-path "modes/muse")
   (add-path "modes/nxml-mode")
-  (add-path "modes/haskell")
   (add-path "modes/redshank")
   (add-path "modes/remember-1.9")
+  (add-path "modes/ruby") ;; Fancy ruby stuff
+  (add-path "modes/scala-tool-support/emacs")
   (add-path "modes/slime")
   (add-path "modes/slime/contrib")
   (add-path "modes/sml-mode-4.0")
+  (add-path "modes/swank-clojure")
   (add-path "modes/tuareg-mode-1.45.4")
-  (add-path "modes/jde/build/lisp")
-  (add-path "modes/ess-5.3.5/lisp") ;; R statistical language
   (add-path "utilities")
-  (add-path "utilities/emacspeak/lisp/g-client")
   (add-path "utilities/Pymacs-0.23")
-  (add-path "utilities/vm") ;; VM mailer
   (add-path "utilities/bbdb/lisp")
-  (add-path "utilities/ecb")
-  (add-path "utilities/magit")
-  (add-path "utilities/mailcrypt-3.5.8")
-  (add-path "utilities/planner")
   (add-path "utilities/cedet/cogre")
   (add-path "utilities/cedet/common")
   (add-path "utilities/cedet/contrib")
@@ -48,15 +44,22 @@
   (add-path "utilities/cedet/eieio")
   (add-path "utilities/cedet/semantic")
   (add-path "utilities/cedet/speedbar")
-  (add-path "utilities/yasnippet-0.5.3")
+  (add-path "utilities/ecb")
   (add-path "utilities/elib")
-  (add-path "modes/mmm-mode-0.4.8")
   (add-path "utilities/emacs-w3m")
+  (add-path "utilities/emacspeak/lisp/g-client")
   (add-path "utilities/g-client") ;; Google APIs
+  (add-path "utilities/magit")
+  (add-path "utilities/mailcrypt-3.5.8")
+  (add-path "utilities/planner")
+  (add-path "utilities/smex")
+  (add-path "utilities/twitter")
+  (add-path "utilities/vm") ;; VM mailer
+  (add-path "utilities/yasnippet-read-only")
   (add-path "other") ;; various stuff that doesn't fit elsewhere
+  (add-path "other/dvc/++build")
   (add-path "other/emacs-chess")
   (add-path "other/emacs-goodies-el")
-  (add-path "other/dvc/++build")
   (add-path "other/git")
   (add-path "other/mail")
   (add-path "mymisc") ;; stuff that I'm fiddling with
@@ -70,7 +73,7 @@
 (load-library "customizations") ;; Generic customizations
 (load-library "keys") ;; my key customizations
 (load-library "hooks") ;; Various hooks
-
+(smex-initialize) ;; Should run after all other packages loaded
 (server-start)
 
 ;; End of my .emacs
