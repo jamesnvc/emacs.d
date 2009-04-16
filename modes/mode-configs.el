@@ -38,6 +38,7 @@
 (require 'remember)
 (require 'ruby-electric)
 (require 'ruby-mode)
+(require 'scala-mode-auto)
 (require 'slime)
 (require 'smalltalk-mode)
 (require 'stumpwm-mode)
