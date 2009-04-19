@@ -29,6 +29,7 @@
   (add-path "modes/remember-1.9")
   (add-path "modes/ruby") ;; Fancy ruby stuff
   (add-path "modes/scala-tool-support/emacs")
+  (add-path "modes/sepia")
   (add-path "modes/slime")
   (add-path "modes/slime/contrib")
   (add-path "modes/sml-mode-4.0")
@@ -57,6 +58,7 @@
   (add-path "utilities/vm") ;; VM mailer
   (add-path "utilities/yasnippet-read-only")
   (add-path "other") ;; various stuff that doesn't fit elsewhere
+  (add-path "other/anything-config")
   (add-path "other/dvc/++build")
   (add-path "other/emacs-chess")
   (add-path "other/emacs-goodies-el")
