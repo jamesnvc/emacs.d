@@ -28,6 +28,8 @@
                        ("\\.ses$" . ses-mode)
                        ("\\.st$" . smalltalk-mode)
                        ("\\.tac$" . python-mode) ;; twisted application
+                       ("\\.t$" . cperl-mode)
+                       ("\\.tt$" . tt-mode)
                        ;; ("\\.tex$" . yatex-mode)
                        ("\\.verilog$" . verilog-mode)
                        )
