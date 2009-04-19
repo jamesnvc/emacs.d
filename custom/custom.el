@@ -1,9 +1,9 @@
 ;;; --------------------------------------------------------------------------------
 (custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
+  ;; custom-set-variables was added by Custom.
+  ;; If you edit it by hand, you could mess it up, so be careful.
+  ;; Your init file should contain only one such instance.
+  ;; If there is more than one, they won't work right.
  '(Info-additional-directory-list (quote ("/usr/local/info" "/home/james/doc/info" "/home/james/doc/info/perl-5.6-info/info/")))
  '(Man-width t)
  '(abbrev-mode nil)
@@ -78,6 +78,7 @@
  '(g-xslt-debug nil)
  '(gblogger-user-email "james.nvc@gmail.com")
  '(global-font-lock-mode t nil (font-lock))
+ '(global-semantic-tag-folding-mode t nil (semantic-util-modes))
  '(haskell-font-lock-symbols t)
  '(haskell-ghci-program-args (quote ("-fglasgow-exts")))
  '(indent-tabs-mode nil)
@@ -157,10 +158,13 @@
  '(quack-programs (quote ("gsi" "/usr/local/Gambit-C/bin/gsi" "bigloo" "csi" "csi -hygienic" "gambit" "gosh" "gsi " "gsi ~~/syntax-case -" "gsi ~~/syntax-case.-" "gsi ~~/syntax-case.scm -" "gsi-script" "guile" "kawa" "mit-scheme" "mred -z" "mzscheme" "mzscheme -M errortrace" "petite" "rs" "scheme" "scheme48" "scsh" "sisc" "stklos" "sxi")))
  '(quack-remap-find-file-bindings-p nil)
  '(quack-smart-open-paren-p nil)
+ '(recentf-max-saved-items 500)
  '(remember-annotation-functions (quote (org-remember-annotation)))
  '(remember-handler-functions (quote (org-remember-handler)))
  '(save-place t nil (saveplace))
  '(scheme-mit-dialect nil)
+ '(semantic-idle-scheduler-idle-time 3)
+ '(semantic-self-insert-show-completion-function (lambda nil (semantic-ia-complete-symbol-menu (point))))
  '(server-window (quote switch-to-buffer-other-frame))
  '(shell-file-name "/bin/bash")
  '(show-paren-mode t)
@@ -191,11 +195,7 @@
  '(woman-emulation (quote nroff))
  '(woman-fill-frame t)
  '(woman-preserve-ascii nil)
- '(woman-use-own-frame nil)
- '(semantic-idle-scheduler-idle-time 3)
- '(semantic-self-insert-show-completion-function (lambda nil (semantic-ia-complete-symbol-menu (point))))
- '(global-semantic-tag-folding-mode t nil (semantic-util-modes))
- )
+ '(woman-use-own-frame nil))
 
 (custom-set-faces
   ;; custom-set-faces was added by Custom.
