@@ -1,0 +1,6 @@
+#name : sub name : Path { ... }
+# --
+sub ${1:function_name} : ${2:Local} {
+  my ( $self, $c ) = @_;
+  $0
+}
