@@ -169,7 +169,7 @@
 (setq inhibit-startup-message t)
 (setq set-mark-command-repeat-pop t)
 (setq delete-auto-save-files t)
-(setq-default fill-column 100)
+(setq-default fill-column 78)
 (setq-default ispell-program-name "aspell")
 (setq case-fold-search nil)
 (setq compilation-window-height 10)
@@ -277,13 +277,15 @@ MANDATORY_MANPATH" "/usr/share/man" "/usr/local/man")))
 (require 'filecache)
 (require 'anything)
 (require 'anything-config)
+
 (setq anything-sources
-      (list anything-c-source-buffers
-            anything-c-source-file-name-history
+      (list anything-c-source-buffers+
+            anything-c-source-locate
+            anything-c-source-recentf   
+            anything-c-source-org-headline
             anything-c-source-info-pages
             anything-c-source-man-pages
-	    anything-c-source-file-cache
-            anything-c-source-emacs-commands))
+            anything-c-source-buffer-not-found))
 
 ;; Load stuff from M-x customize from a different file, to keep .emacs cleaner
 (setq custom-file (concat emacs-root "custom/custom.el"))
