@@ -123,7 +123,8 @@
   (car
    (let ((cperl-message-on-help-error nil))
      (cperl-get-help))))
-
+;; Template Toolkit
+(autoload 'tt-mode "tt-mode")
 
 ;; XML and HTML
 (defalias 'xml-mode 'nxml-mode)
