@@ -43,6 +43,7 @@
 (require 'smalltalk-mode)
 (require 'stumpwm-mode)
 (require 'tuareg)
+(require 'yaml-mode)
 
 (load-library "python")
 (load-library "auto-modes")
@@ -115,7 +116,6 @@
 
 ;; Perl
 (defalias 'perl-mode 'cperl-mode)
-
 (setq cperl-hairy t)
 (setq cperl-electric-keywords t)
 (defun my-cperl-eldoc-documentation-function ()
@@ -123,6 +123,7 @@
   (car
    (let ((cperl-message-on-help-error nil))
      (cperl-get-help))))
+(setq cperl-indent-level 4)
 ;; Template Toolkit
 (autoload 'tt-mode "tt-mode")
 

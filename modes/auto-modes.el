@@ -32,5 +32,6 @@
                        ("\\.tt$" . tt-mode)
                        ;; ("\\.tex$" . yatex-mode)
                        ("\\.verilog$" . verilog-mode)
+                       ("\\.yml$" . yaml-mode)
                        )
                      auto-mode-alist))
