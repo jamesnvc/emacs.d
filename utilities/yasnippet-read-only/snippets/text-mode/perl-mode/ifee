@@ -1,9 +1,11 @@
 #name : if, elsif, else ...
 # --
-if ($1) {
+if ( $1 ) {
 	${2:# body...}
-} elsif ($3) {
+}
+elsif ( $3 ) {
 	${4:# elsif...}
-} else {
+}
+else {
 	${5:# else...}
 }
