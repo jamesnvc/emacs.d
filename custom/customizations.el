@@ -53,7 +53,7 @@
 (gcal-emacs-calendar-setup)
 (setq g-html-handler 'w3m-buffer)
 
-;; (require 'ecb)
+(require 'ecb)
 
 ;; Twitter
 (autoload 'twitter-get-friends-timeline "twitter" nil t)
