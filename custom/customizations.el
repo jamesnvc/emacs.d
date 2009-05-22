@@ -10,6 +10,7 @@
 (require 'epa) ;; GPG integeration!
 (epa-file-enable)
 (require 'emacs-goodies-el)
+;; (require 'eproject)
 (require 'ffap)
 (require 'highlight-parentheses)
 (require 'hippie-exp)
@@ -41,11 +42,27 @@
               (outline-minor-mode . t)
               auto-recompile outline-minor-mode)))
 
+(setq save-place-file "~/.emacs.d/saveplace") ;; keep my ~/ clean
+(setq-default save-place t)                   ;; activate it for all buffers
+(require 'saveplace)                          ;; get the package
+
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'reverse)
 (setq uniquify-separator "|")
 (setq uniquify-after-kill-buffer-p t) ; rename after killing uniquified
 (setq uniquify-ignore-buffers-re "^\\*") ; don't muck with special buffers
+
+;;; eproject
+;; (define-project-type perl (generic)
+;;   (or (look-for "Makefile.PL") (look-for "Build.PL"))
+;;   :relevant-files ("\\.pm$" "\\.t$" "\\.pl$" "\\.PL$"))
+
+;; (define-project-type lisp (generic)
+;;   (eproject--scan-parents-for file
+;;                               (lambda (directory)
+;;                                 (let ((dname (file-name-nondirectory directory)))
+;;                                   (file-exists-p (format "%s/%s.asd" directory dname)))))
+;;   :relevant-files ("\\.lisp$" "\\.asd$"))
 
 ;; Google cal/reader/etc interface
 (load-library "g")
