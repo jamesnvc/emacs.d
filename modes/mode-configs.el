@@ -124,6 +124,10 @@
    (let ((cperl-message-on-help-error nil))
      (cperl-get-help))))
 (setq cperl-indent-level 4)
+(defun perl-project-includes ()
+  "Return list of -I flags to pass to perl."
+  (eproject-assert-type 'perl)
+  (list (concat (eproject-root) "/lib")))
 ;; Template Toolkit
 (autoload 'tt-mode "tt-mode")
 
@@ -155,7 +159,7 @@
 (setq sbcl-program "/home/james/bin/sbcl")
 (setq slime-lisp-implementations
       `((sbcl (,sbcl-program  "--core" "/home/james/lib/sbcl/sbcl.core") :coding-system utf-8-unix)))
-(setq slime-backend "/home/james/src/clbuild/.swank-loader.lisp")
+(setq slime-backend (concat emacs-root "modes/slime/swank-loader.lisp"))
 (setq slime-use-autodoc-mode t)
 (setq slime-complete-symbol*-fancy t)
 (setq lisp-indent-function 'common-lisp-indent-function)

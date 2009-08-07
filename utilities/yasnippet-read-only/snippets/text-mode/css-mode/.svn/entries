@@ -1,7 +1,7 @@
 9
 
 dir
-366
+441
 http://yasnippet.googlecode.com/svn/trunk/snippets/text-mode/css-mode
 http://yasnippet.googlecode.com/svn
 
@@ -25,40 +25,6 @@ svn:special svn:externals svn:needs-lock
 
 
 b2103351-7347-0410-aa0e-656c9fbaa8cf
-
-pad.right
-file
-
-
-
-
-2009-04-02T12:43:25.000000Z
-8745a92ec70bca93fd138cfd71e627c9
-2008-04-23T06:51:30.438609Z
-252
-pluskid
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-98
 
 mar.top
 file
@@ -94,14 +60,14 @@ pluskid
 
 92
 
-mar.bottom
+pad.right
 file
 
 
 
 
 2009-04-02T12:43:25.000000Z
-d15332d456457786f953320216ef6c55
+8745a92ec70bca93fd138cfd71e627c9
 2008-04-23T06:51:30.438609Z
 252
 pluskid
@@ -162,6 +128,40 @@ pluskid
 
 75
 
+mar.bottom
+file
+
+
+
+
+2009-04-02T12:43:25.000000Z
+d15332d456457786f953320216ef6c55
+2008-04-23T06:51:30.438609Z
+252
+pluskid
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+98
+
 bg.1
 file
 
@@ -195,40 +195,6 @@ pluskid
 
 
 61
-
-disp.block
-file
-
-
-
-
-2009-04-02T12:43:25.000000Z
-260164dc8f37d3f03921f9864a1872c4
-2008-04-23T06:51:30.438609Z
-252
-pluskid
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-91
 
 bg
 file
@@ -264,14 +230,14 @@ pluskid
 
 63
 
-ff
+disp.block
 file
 
 
 
 
 2009-04-02T12:43:25.000000Z
-e7cfb5fd090037231b233a91ca96fb4b
+260164dc8f37d3f03921f9864a1872c4
 2008-04-23T06:51:30.438609Z
 252
 pluskid
@@ -296,41 +262,7 @@ pluskid
 
 
 
-94
-
-mar.margin
-file
-
-
-
-
-2009-04-02T12:43:25.000000Z
-3ad22c232d462e2762cc3ec3e0c2a2a1
-2008-04-23T06:51:30.438609Z
-252
-pluskid
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-132
+91
 
 mar.right
 file
@@ -366,14 +298,14 @@ pluskid
 
 96
 
-disp.none
+mar.margin
 file
 
 
 
 
 2009-04-02T12:43:25.000000Z
-54e7d6769aa790557f23db49726e6f6d
+3ad22c232d462e2762cc3ec3e0c2a2a1
 2008-04-23T06:51:30.438609Z
 252
 pluskid
@@ -398,7 +330,75 @@ pluskid
 
 
 
-89
+132
+
+ff
+file
+
+
+
+
+2009-04-02T12:43:25.000000Z
+e7cfb5fd090037231b233a91ca96fb4b
+2008-04-23T06:51:30.438609Z
+252
+pluskid
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+94
+
+pad.left
+file
+
+
+
+
+2009-04-02T12:43:25.000000Z
+60ffe1db943d442cbb8f7004364f25ad
+2008-04-23T06:51:30.438609Z
+252
+pluskid
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+96
 
 mar.mar
 file
@@ -434,14 +434,14 @@ pluskid
 
 84
 
-pad.left
+disp.none
 file
 
 
 
 
 2009-04-02T12:43:25.000000Z
-60ffe1db943d442cbb8f7004364f25ad
+54e7d6769aa790557f23db49726e6f6d
 2008-04-23T06:51:30.438609Z
 252
 pluskid
@@ -466,7 +466,7 @@ pluskid
 
 
 
-96
+89
 
 cl
 file

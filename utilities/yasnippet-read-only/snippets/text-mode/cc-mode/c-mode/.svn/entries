@@ -1,15 +1,15 @@
 9
 
 dir
-366
+441
 http://yasnippet.googlecode.com/svn/trunk/snippets/text-mode/cc-mode/c-mode
 http://yasnippet.googlecode.com/svn
 
 
 
-2008-03-10T12:24:21.312550Z
-125
-pluskid
+2009-07-25T16:26:27.368935Z
+436
+joaotavora
 
 
 svn:special svn:externals svn:needs-lock
@@ -25,6 +25,40 @@ svn:special svn:externals svn:needs-lock
 
 
 b2103351-7347-0410-aa0e-656c9fbaa8cf
+
+printf
+file
+
+
+
+
+2009-07-27T11:28:15.000000Z
+1dddbc73c2b282a905701b7a7315177f
+2009-07-25T16:26:27.368935Z
+436
+joaotavora
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+714
 
 fopen
 file

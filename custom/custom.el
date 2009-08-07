@@ -82,7 +82,7 @@
  '(haskell-font-lock-symbols t)
  '(haskell-ghci-program-args (quote ("-fglasgow-exts")))
  '(indent-tabs-mode nil)
- '(ipython-command "ipython2.5 -cl -pylab")
+ '(ipython-command "ipython -cl -pylab")
  '(ispell-local-dictionary nil)
  '(jde-jdk (quote ("1.5")))
  '(jde-jdk-registry (quote (("1.6" . "/usr/lib/jvm/java-6-sun") ("1.5" . "/usr/lib/jvm/java-1.5.0-sun"))))

@@ -3,7 +3,7 @@
 require 'fileutils'
 
 def find_version
-  File.read("yasnippet.el") =~ /;; Version: *([0-9.]+) *$/
+  File.read("yasnippet.el") =~ /;; Package-version: *([0-9.]+[a-z]?) *$/
   $version = $1
 end
 find_version
@@ -19,7 +19,7 @@ desc "create a release package"
 task :package do
   release_dir = "pkg/yasnippet-#{$version}"
   FileUtils.mkdir_p(release_dir)
-  files = ['snippets', 'yasnippet.el']
+  files = ['snippets', 'yasnippet.el', 'dropdown-list.el']
   FileUtils.cp_r files, release_dir
   FileUtils.rm_r Dir[release_dir + "/**/.svn"]
   FileUtils.cd 'pkg'
@@ -50,11 +50,6 @@ desc "Generate document"
 task :doc => FileList['doc/*.rst'].ext('html')
 
 namespace :doc do
-  task :upload do
-    sh "rsync -avz --exclude '.svn' doc " +
-      "pluskid.lifegoo.com:~/public_html/upload/project/yasnippet/"
-  end
-  
   task :archive do
     release_dir = "pkg/yasnippet-#{$version}"
     FileUtils.mkdir_p(release_dir)
@@ -62,5 +57,12 @@ namespace :doc do
       "--exclude=doc/.svn --exclude=doc/images/.svn doc/*.html doc/images"
   end
 end
+
+desc "Compile yasnippet.el into yasnippet.elc" 
+
+rule '.elc' => '.el' do |t|
+  sh "emacs --batch -L . --eval \"(byte-compile-file \\\"#{t.source}\\\")\""
+end
+task :compile => FileList["yasnippet.el", "dropdown-list.el"].ext('elc')
 
 task :default => :doc

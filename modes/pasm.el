@@ -1,7 +1,9 @@
 ;;;; pasm.el
 ;;;;
+;;;; $Id: /parrot/local/editor/pasm.el 6 2009-04-23T16:30:00.795416Z svm  $
+;;;;
 ;;;; this is a simple major mode for working with parrot assembler
-;;;; (and, to a certain extent, parrot imc) files.
+;;;; (and, to a certain extent, parrot imcc) files.
 ;;;;
 ;;;; first off: this file is 'it works for me' quality, use at your
 ;;;; own risk
@@ -30,8 +32,8 @@
 ;;;;
 ;;;; COPYRIGHT (C) 2002 Edward Marco Baringer. All Rights Reserved.
 ;;;; This file is free software. It may be used, redistributed
-;;;; and/or modified under the terms of the Perl Artistic License
-;;;; (see http://www.perl.com/perl/misc/Artistic.html)
+;;;; and/or modified under the terms of the Perl Artistic License 2.0
+;;;; (see http://www.perlfoundation.org/artistic_license_2_0)
 ;;;;
 
 (defvar *pasm-mode-syntax-table* nil)

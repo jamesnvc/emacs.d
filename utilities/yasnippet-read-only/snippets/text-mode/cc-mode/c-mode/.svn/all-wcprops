@@ -1,7 +1,13 @@
 K 25
 svn:wc:ra_dav:version-url
 V 57
-/svn/!svn/ver/127/trunk/snippets/text-mode/cc-mode/c-mode
+/svn/!svn/ver/436/trunk/snippets/text-mode/cc-mode/c-mode
+END
+printf
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/!svn/ver/436/trunk/snippets/text-mode/cc-mode/c-mode/printf
 END
 fopen
 K 25

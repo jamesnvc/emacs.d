@@ -1,7 +1,7 @@
 ;;; cperl-mode.el --- Perl code editing commands for Emacs
 
 ;; Copyright (C) 1985, 1986, 1987, 1991, 1992, 1993, 1994, 1995, 1996, 1997,
-;; 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008
+;; 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007
 ;;     Free Software Foundation, Inc.
 
 ;; Author: Ilya Zakharevich and Bob Olson
@@ -78,8 +78,9 @@
       (condition-case nil
 	  (require 'man)
 	(error nil))
+      (defconst cperl-xemacs-p (string-match "XEmacs\\|Lucid" emacs-version))
       (defvar cperl-can-font-lock
-	(or (featurep 'xemacs)
+	(or cperl-xemacs-p
 	    (and (boundp 'emacs-major-version)
 		 (or window-system
 		     (> emacs-major-version 20)))))
@@ -130,14 +131,14 @@
 		 (cperl-make-face ,arg ,descr))
 	     (or (boundp (quote ,arg)) ; We use unquoted variants too
 		 (defvar ,arg (quote ,arg) ,descr))))
-      (if (featurep 'xemacs)
+      (if cperl-xemacs-p
 	  (defmacro cperl-etags-snarf-tag (file line)
 	    `(progn
                (beginning-of-line 2)
                (list ,file ,line)))
 	(defmacro cperl-etags-snarf-tag (file line)
 	  `(etags-snarf-tag)))
-      (if (featurep 'xemacs)
+      (if cperl-xemacs-p
 	  (defmacro cperl-etags-goto-tag-location (elt)
 	    ;;(progn
             ;; (switch-to-buffer (get-file-buffer (elt ,elt 0)))
@@ -150,8 +151,10 @@
 	(defmacro cperl-etags-goto-tag-location (elt)
 	  `(etags-goto-tag-location ,elt))))
 
+(defconst cperl-xemacs-p (string-match "XEmacs\\|Lucid" emacs-version))
+
 (defvar cperl-can-font-lock
-  (or (featurep 'xemacs)
+  (or cperl-xemacs-p
       (and (boundp 'emacs-major-version)
 	   (or window-system
 	       (> emacs-major-version 20)))))
@@ -231,18 +234,12 @@ for constructs with multiline if/unless/while/until/for/foreach condition."
   :type 'integer
   :group 'cperl-indentation-details)
 
-;; Is is not unusual to put both things like perl-indent-level and
+;; Is is not unusual to put both perl-indent-level and
 ;; cperl-indent-level in the local variable section of a file. If only
 ;; one of perl-mode and cperl-mode is in use, a warning will be issued
-;; about the variable. Autoload these here, so that no warning is
+;; about the variable. Autoload this here, so that no warning is
 ;; issued when using either perl-mode or cperl-mode.
 ;;;###autoload(put 'cperl-indent-level 'safe-local-variable 'integerp)
-;;;###autoload(put 'cperl-brace-offset 'safe-local-variable 'integerp)
-;;;###autoload(put 'cperl-continued-brace-offset 'safe-local-variable 'integerp)
-;;;###autoload(put 'cperl-label-offset 'safe-local-variable 'integerp)
-;;;###autoload(put 'cperl-continued-statement-offset 'safe-local-variable 'integerp)
-;;;###autoload(put 'cperl-extra-newline-before-brace 'safe-local-variable 'booleanp)
-;;;###autoload(put 'cperl-merge-trailing-else 'safe-local-variable 'booleanp)
 
 (defcustom cperl-lineup-step nil
   "*`cperl-lineup' will always lineup at multiple of this number.
@@ -461,7 +458,7 @@ Font for POD headers."
   :group 'cperl-faces)
 
 ;;; Some double-evaluation happened with font-locks...  Needed with 21.2...
-(defvar cperl-singly-quote-face (featurep 'xemacs))
+(defvar cperl-singly-quote-face cperl-xemacs-p)
 
 (defcustom cperl-invalid-face 'underline
   "*Face for highlighting trailing whitespace."
@@ -1014,7 +1011,7 @@ In regular expressions (except character classes):
 (defmacro cperl-define-key (emacs-key definition &optional xemacs-key)
   `(define-key cperl-mode-map
      ,(if xemacs-key
-	  `(if (featurep 'xemacs) ,xemacs-key ,emacs-key)
+	  `(if cperl-xemacs-p ,xemacs-key ,emacs-key)
 	emacs-key)
      ,definition))
 
@@ -1027,7 +1024,7 @@ In regular expressions (except character classes):
      (setq cperl-del-back-ch (aref cperl-del-back-ch 0)))
 
 (defun cperl-mark-active () (mark))	; Avoid undefined warning
-(if (featurep 'xemacs)
+(if cperl-xemacs-p
     (progn
       ;; "Active regions" are on: use region only if active
       ;; "Active regions" are off: use region unconditionally
@@ -1043,7 +1040,7 @@ In regular expressions (except character classes):
 (defun cperl-putback-char (c)		; Emacs 19
   (set 'unread-command-events (list c))) ; Avoid undefined warning
 
-(if (featurep 'xemacs)
+(if cperl-xemacs-p
     (defun cperl-putback-char (c)	; XEmacs >= 19.12
       (setq unread-command-events (list (eval '(character-to-event c))))))
 
@@ -1195,7 +1192,7 @@ versions of Emacs."
 		      ;;(concat (char-to-string help-char) "v") ; does not work
 		      'cperl-get-help
 		      [(control c) (control h) v]))
-  (if (and (featurep 'xemacs)
+  (if (and cperl-xemacs-p
 	   (<= emacs-minor-version 11) (<= emacs-major-version 19))
       (progn
 	;; substitute-key-definition is usefulness-deenhanced...
@@ -1247,7 +1244,7 @@ versions of Emacs."
 	  ["Contract groups" cperl-contract-levels
 	   cperl-use-syntax-table-text-property]
 	  "----"
-	  ["Find next interpolated" cperl-next-interpolated-REx 
+	  ["Find next interpolated" cperl-next-interpolated-REx
 	   (next-single-property-change (point-min) 'REx-interpolated)]
 	  ["Find next interpolated (no //o)"
 	   cperl-next-interpolated-REx-0
@@ -1447,7 +1444,7 @@ the last)."
 	    cperl-white-and-comment-rex ; 4 = pre-package-name
 	       "\\([a-zA-Z_0-9:']+\\)\\)?\\)" ; 5 = package-name
        "\\|"
-          "[ \t]*sub"
+          "[ \t]*\\(?:sub\\|method\\|before\\|after\\|around\\)"
 	  (cperl-after-sub-regexp 'named nil) ; 8=name 11=proto 14=attr-start
 	  cperl-maybe-white-and-comment-rex	; 15=pre-block
    "\\|"
@@ -1515,8 +1512,6 @@ the last)."
   '(("^[^\n]* \\(file\\|at\\) \\([^ \t\n]+\\) [^\n]*line \\([0-9]+\\)[\\., \n]"
      2 3))
   "Alist that specifies how to match errors in perl output.")
-
-(defvar compilation-error-regexp-alist)
 
 ;;;###autoload
 (defun cperl-mode ()
@@ -1749,7 +1744,7 @@ or as help on variables `cperl-tips', `cperl-problems',
   (setq paragraph-separate paragraph-start)
   (make-local-variable 'paragraph-ignore-fill-prefix)
   (setq paragraph-ignore-fill-prefix t)
-  (if (featurep 'xemacs)
+  (if cperl-xemacs-p
     (progn
       (make-local-variable 'paren-backwards-message)
       (set 'paren-backwards-message t)))
@@ -1770,10 +1765,10 @@ or as help on variables `cperl-tips', `cperl-problems',
 ;;;	  (cperl-after-sub-regexp 'named nil) ; 8=name 11=proto 14=attr-start
 ;;;	  cperl-maybe-white-and-comment-rex	; 15=pre-block
   (setq defun-prompt-regexp
-	(concat "^[ \t]*\\(\\(?:sub\\|method\\)"
+	(concat "^[ \t]*\\(\\(?:sub\\|method\\|before\\|after\\|around\\)"
 		(cperl-after-sub-regexp 'named 'attr-groups)
 		"\\|"			; per toke.c
-		"\\(BEGIN\\|CHECK\\|INIT\\|END\\|AUTOLOAD\\|DESTROY\\)"
+		"\\(BEGIN\\|UNITCHECK\\|CHECK\\|INIT\\|END\\|AUTOLOAD\\|DESTROY\\)"
 		"\\)"
 		cperl-maybe-white-and-comment-rex))
   (make-local-variable 'comment-indent-function)
@@ -1798,11 +1793,9 @@ or as help on variables `cperl-tips', `cperl-problems',
   (set 'vc-sccs-header cperl-vc-sccs-header)
   ;; This one is obsolete...
   (make-local-variable 'vc-header-alist)
-  (with-no-warnings
-   (set 'vc-header-alist (or cperl-vc-header-alist ; Avoid warning
-			     `((SCCS ,(car cperl-vc-sccs-header))
-			       (RCS ,(car cperl-vc-rcs-header)))))
-   )
+  (set 'vc-header-alist (or cperl-vc-header-alist ; Avoid warning
+			    `((SCCS ,(car cperl-vc-sccs-header))
+                              (RCS ,(car cperl-vc-rcs-header)))))
   (cond ((boundp 'compilation-error-regexp-alist-alist);; xemacs 20.x
 	 (make-local-variable 'compilation-error-regexp-alist-alist)
 	 (set 'compilation-error-regexp-alist-alist
@@ -1842,7 +1835,7 @@ or as help on variables `cperl-tips', `cperl-problems',
 	(or (boundp 'font-lock-unfontify-region-function)
 	    (set 'font-lock-unfontify-region-function
 		 'font-lock-default-unfontify-region))
-	(unless (featurep 'xemacs)		; Our: just a plug for wrong font-lock
+	(unless cperl-xemacs-p		; Our: just a plug for wrong font-lock
 	  (make-local-variable 'font-lock-unfontify-region-function)
 	  (set 'font-lock-unfontify-region-function ; not present with old Emacs
 	       'cperl-font-lock-unfontify-region-function))
@@ -2846,7 +2839,7 @@ Will not look before LIM."
 				    (skip-chars-backward " \t")
 				    (looking-at "[ \t]*[a-zA-Z_][a-zA-Z_0-9]*[ \t]*:")))
 			     (get-text-property (point) 'first-format-line)))
-		   
+
 		   ;; Look at previous line that's at column 0
 		   ;; to determine whether we are in top-level decls
 		   ;; or function's arg decls.  Set basic-indent accordingly.
@@ -2978,7 +2971,7 @@ Will not look before LIM."
 						(point) 'attrib-group)))
 				   ((eq (preceding-char) ?b)
 				    (forward-sexp -1)
-				    (looking-at "sub\\>")))
+				    (looking-at "\\(?:sub\\|method\\|before\\|after\\|around\\)\\>")))
 			     (setq p (nth 1 ; start of innermost containing list
 					  (parse-partial-sexp
 					   (save-excursion (beginning-of-line)
@@ -3080,7 +3073,7 @@ and closing parentheses and brackets."
 	 ((eq 'toplevel (elt i 0)) ;; [toplevel start char-after state immed-after-block]
 	  (+ (save-excursion		; To beg-of-defun, or end of last sexp
 	       (goto-char (elt i 1))	; start = Good place to start parsing
-	       (- (current-indentation) ; 
+	       (- (current-indentation) ;
 		  (if (elt i 4) cperl-indent-level 0)))	; immed-after-block
 	     (if (eq (elt i 2) ?{) cperl-continued-brace-offset 0) ; char-after
 	     ;; Look at previous line that's at column 0
@@ -3704,7 +3697,7 @@ the sections using `cperl-pod-head-face', `cperl-pod-face',
 		"\\([?/<]\\)"	; /blah/ or ?blah? or <file*glob>
 		"\\|"
 		;; 1+6+2+1+1=11 extra () before this
-		"\\<\\(?:sub\\|method\\)\\>"		;  sub with proto/attr
+		"\\<\\(?:sub\\|method\\|before\\|after\\|around\\)\\>"		;  sub with proto/attr
 		"\\("
 		   cperl-white-and-comment-rex
 		   "\\(::[a-zA-Z_:'0-9]*\\|[a-zA-Z_'][a-zA-Z_:'0-9]*\\)\\)?" ; name
@@ -3717,7 +3710,7 @@ the sections using `cperl-pod-head-face', `cperl-pod-face',
 		"\\|"
 		;; 1+6+2+1+1+6+1=18 extra () before this (old pack'var syntax;
 		;; we do not support intervening comments...):
-		"\\(\\<\\(?:sub\\|method\\)[ \t\n\f]+\\|[&*$@%]\\)[a-zA-Z0-9_]*'"
+		"\\(\\<\\(?:sub\\|method\\|before\\|after\\|around\\)[ \t\n\f]+\\|[&*$@%]\\)[a-zA-Z0-9_]*'"
 		;; 1+6+2+1+1+6+1+1=19 extra () before this:
 		"\\|"
 		"__\\(END\\|DATA\\)__"	; __END__ or __DATA__
@@ -3900,7 +3893,7 @@ the sections using `cperl-pod-head-face', `cperl-pod-face',
 	       ;;; XXX What to do: foo <<bar ???
 	       ;;; XXX Need to support print {a} <<B ???
 				       (forward-sexp -1)
-				       (save-match-data	
+				       (save-match-data
 					; $foo << b; $f .= <<B;
 					; ($f+1) << b; a($f) . <<B;
 					; foo 1, <<B; $x{a} <<b;
@@ -3932,7 +3925,7 @@ the sections using `cperl-pod-head-face', `cperl-pod-face',
 			qtag (regexp-quote tag))
 		  (cond (cperl-pod-here-fontify
 			 ;; Highlight the starting delimiter
-			 (cperl-postpone-fontification 
+			 (cperl-postpone-fontification
 			  b1 e1 'face my-cperl-delimiters-face)
 			 (cperl-put-do-not-fontify b1 e1 t)))
 		  (forward-line)
@@ -4292,7 +4285,7 @@ the sections using `cperl-pod-head-face', `cperl-pod-face',
 ;;;m^a[\^b]c^ + m.a[^b]\.c.;
 			(save-excursion
 			  (goto-char (1+ b))
-			  ;; First 
+			  ;; First
 			  (cperl-look-at-leading-count is-x-REx e)
 			  (setq hairy-RE
 				(concat
@@ -4461,7 +4454,7 @@ the sections using `cperl-pod-head-face', `cperl-pod-face',
 					    "\\=[01234567]?[01234567]?"
 					    (1- e) 'to-end))
 				      (and (memq qtag (append "89" nil))
-					   (re-search-forward 
+					   (re-search-forward
 					    "\\=[0123456789]*" (1- e) 'to-end))
 				      (and (eq qtag ?x)
 					   (re-search-forward
@@ -4499,7 +4492,7 @@ the sections using `cperl-pod-head-face', `cperl-pod-face',
 			      ;; in m]]: m][\\\]\]] produces [\\]]
 ;;; POSIX?  [:word:] [:^word:] only inside []
 ;;;				       "\\=\\(\\\\.\\|[^][\\\\]\\|\\[:\\^?\sw+:]\\|\\[[^:]\\)*]")
-			      (while 
+			      (while
 				  (and argument
 				       (re-search-forward
 					(if (eq (char-after b) ?\] )
@@ -4587,7 +4580,7 @@ the sections using `cperl-pod-head-face', `cperl-pod-face',
 					   (setq qtag "Can't find })")))
 				  (progn
 				    (goto-char (1- e))
-				    (message "%s" qtag))
+				    (message qtag))
 				(cperl-postpone-fontification
 				 (1- tag) (1- (point))
 				 'face font-lock-variable-name-face)
@@ -4764,7 +4757,7 @@ the sections using `cperl-pod-head-face', `cperl-pod-face',
 		   (and (eq (preceding-char) ?b)
 			(progn
 			  (forward-sexp -1)
-			  (looking-at "sub[ \t\n\f#]")))))))))
+			  (looking-at "\\(?:sub\\|method\\|before\\|after\\|around\\)[ \t\n\f#]")))))))))
 
 ;;; What is the difference of (cperl-after-block-p lim t) and (cperl-block-p)?
 ;;; No save-excursion; condition-case ...  In (cperl-block-p) the block
@@ -4798,10 +4791,13 @@ statement would start; thus the block in ${func()} does not count."
 			;; sub f {}
 			(progn
 			  (cperl-backward-to-noncomment lim)
-			  (and (eq (preceding-char) ?b)
+			  (and (or (eq (preceding-char) ?b)  ; sub
+                                   (eq (preceding-char) ?d)  ; method, around
+                                   (eq (preceding-char) ?e)  ; before
+                                   (eq (preceding-char) ?r)) ; after
 			       (progn
 				 (forward-sexp -1)
-				 (looking-at "sub[ \t\n\f#]"))))))
+				 (looking-at "\\(?:sub\\|method\\|before\\|after\\|around\\)[ \t\n\f#]"))))))
 		;; What preceeds is not word...  XXXX Last statement in sub???
 		(cperl-after-expr-p lim))))
       (error nil))))
@@ -5612,7 +5608,7 @@ indentation and initial hashes.  Behaves usually outside of comment."
 			"Face for things which should stand out"))
   ;;(setq font-lock-constant-face 'font-lock-constant-face)
   )
-
+; (cperl-init-faces)
 (defun cperl-init-faces ()
   (condition-case errs
       (progn
@@ -5632,13 +5628,15 @@ indentation and initial hashes.  Behaves usually outside of comment."
 	      "\\(^\\|[^$@%&\\]\\)\\<\\("
 	      (mapconcat
 	       'identity
-	       '("if" "until" "while" "elsif" "else" 
+	       '("if" "until" "while" "elsif" "else"
                  "given" "when" "default" "break"
                  "unless" "for"
 		 "foreach" "continue" "exit" "die" "last" "goto" "next"
-		 "redo" "return" "local" "exec" "sub" "method" "do" "dump" 
+		 "redo" "return" "local" "exec" "sub"
+                 "method" "around" "before" "after" "class" "role" "with" "extends"
+                 "do" "dump"
                  "use" "our"
-		 "require" "package" "eval" "my" "state" 
+		 "require" "package" "eval" "my" "state"
                  "BEGIN" "END" "CHECK" "INIT" "UNITCHECK")
 	       "\\|")			; Flow control
 	      "\\)\\>") 2)		; was "\\)[ \n\t;():,\|&]"
@@ -5721,15 +5719,15 @@ indentation and initial hashes.  Behaves usually outside of comment."
 	      ;; "AUTOLOAD" "BEGIN" "CHECK" "DESTROY" "END" "INIT" "UNITCHECK" "__END__" "chomp"
 	      ;; "break" "chop" "default" "defined" "delete" "do" "each" "else" "elsif"
 	      ;; "eval" "exists" "for" "foreach" "format" "given" "goto"
-	      ;; "grep" "if" "keys" "last" "local" "map" "my" "next"
+	      ;; "grep" "has" "if" "keys" "last" "local" "map" "my" "next"
 	      ;; "no" "our" "package" "pop" "pos" "print" "printf" "push"
 	      ;; "q" "qq" "qw" "qx" "redo" "return" "say" "scalar" "shift"
 	      ;; "sort" "splice" "split" "state" "study" "sub" "tie" "tr"
 	      ;; "undef" "unless" "unshift" "untie" "until" "use"
 	      ;; "when" "while" "y"
-	      "AUTOLOAD\\|BEGIN\\|\\(UNIT\\)?CHECK\\|break\\|cho\\(p\\|mp\\)\\|d\\(e\\(f\\(ault|ined\\)\\|lete\\)\\|"
+	      "AUTOLOAD\\|BEGIN\\|\\(UNIT\\)?CHECK\\|break\\|cho\\(p\\|mp\\)\\|d\\(e\\(f\\(ault\\|ined\\)\\|lete\\)\\|"
 	      "o\\)\\|DESTROY\\|e\\(ach\\|val\\|xists\\|ls\\(e\\|if\\)\\)\\|"
-	      "END\\|for\\(\\|each\\|mat\\)\\|g\\(iven\\|rep\\|oto\\)\\|INIT\\|if\\|keys\\|"
+	      "END\\|for\\(\\|each\\|mat\\)\\|g\\(iven\\|rep\\|oto\\)\\|INIT\\|has\\|if\\|keys\\|"
 	      "l\\(ast\\|ocal\\)\\|m\\(ap\\|y\\)\\|n\\(ext\\|o\\)\\|our\\|"
 	      "p\\(ackage\\|rint\\(\\|f\\)\\|ush\\|o\\(p\\|s\\)\\)\\|"
 	      "q\\(\\|q\\|w\\|x\\|r\\)\\|re\\(turn\\|do\\)\\|s\\(ay\\|pli\\(ce\\|t\\)\\|"
@@ -5747,7 +5745,7 @@ indentation and initial hashes.  Behaves usually outside of comment."
 	    ;; This highlights declarations and definitions differenty.
 	    ;; We do not try to highlight in the case of attributes:
 	    ;; it is already done by `cperl-find-pods-heres'
-	    (list (concat "\\<\\(?:sub\\|method\\)"
+	    (list (concat "\\<\\(?:sub\\|method\\|around\\|before\\|after\\)"
 			  cperl-white-and-comment-rex ; whitespace/comments
 			  "\\([^ \n\t{;()]+\\)" ; 2=name (assume non-anonymous)
 			  "\\("
@@ -5769,7 +5767,7 @@ indentation and initial hashes.  Behaves usually outside of comment."
 			 (if (eq (char-after (cperl-1- (match-end 0))) ?\{ )
 			     'font-lock-function-name-face
 			   'font-lock-variable-name-face))))
-	    '("\\<\\(package\\|require\\|use\\|import\\|no\\|bootstrap\\)[ \t]+\\([a-zA-z_][a-zA-z_0-9:]*\\)[ \t;]" ; require A if B;
+	    '("\\<\\(package\\|require\\|use\\|import\\|no\\|bootstrap\\|class\\|with\\|extends\\|role\\|before\\|after\\|around\\)[ \t]+\\(?:#.+\n\\|[ \t]*\n\\)?[ \t]*\\([a-zA-z_][a-zA-z_0-9:]*\\)[ \t;]" ; require A if B;
 	      2 font-lock-function-name-face)
 	    '("^[ \t]*format[ \t]+\\([a-zA-z_][a-zA-z_0-9:]*\\)[ \t]*=[ \t]*$"
 	      1 font-lock-function-name-face)
@@ -5820,7 +5818,7 @@ indentation and initial hashes.  Behaves usually outside of comment."
 				   ","
 				   cperl-maybe-white-and-comment-rex
 				   "\\([$@%*]\\([a-zA-Z0-9_:]+\\|[^a-zA-Z0-9_]\\)\\)")
-			;; Bug in font-lock: limit is used not only to limit 
+			;; Bug in font-lock: limit is used not only to limit
 			;; searches, but to set the "extend window for
 			;; facification" property.  Thus we need to minimize.
 			,(if cperl-font-lock-multiline
@@ -5865,7 +5863,7 @@ indentation and initial hashes.  Behaves usually outside of comment."
 	   (and (fboundp 'turn-on-font-lock) ; Check for newer font-lock
 		;; not yet as of XEmacs 19.12, works with 21.1.11
 		(or
-		 (not (featurep 'xemacs))
+		 (not cperl-xemacs-p)
 		 (string< "21.1.9" emacs-version)
 		 (and (string< "21.1.10" emacs-version)
 		      (string< emacs-version "21.1.2")))
@@ -6026,7 +6024,7 @@ indentation and initial hashes.  Behaves usually outside of comment."
 	  ;;    (defconst cperl-nonoverridable-face
 	  ;;	'cperl-nonoverridable-face
 	  ;;	"Face to use for data types from another group."))
-	  ;;(if (not (featurep 'xemacs)) nil
+	  ;;(if (not cperl-xemacs-p) nil
 	  ;;  (or (boundp 'font-lock-comment-face)
 	  ;;	(defconst font-lock-comment-face
 	  ;;	  'font-lock-comment-face
@@ -6789,7 +6787,7 @@ construct.  DONE-TO and STATEPOS indicate changes to internal caches maintained
 by CPerl."
   (interactive "P")
   (or arg
-      (setq arg (if (eq cperl-syntaxify-by-font-lock 
+      (setq arg (if (eq cperl-syntaxify-by-font-lock
 			(if backtrace 'backtrace 'message)) 0 1)))
   (setq arg (if (> arg 0) (if backtrace 'backtrace 'message) t))
   (setq cperl-syntaxify-by-font-lock arg)
@@ -6975,7 +6973,7 @@ Use as
     (save-excursion
       (cond (inbuffer nil)		; Already there
 	    ((file-exists-p tags-file-name)
-	     (if (featurep 'xemacs)
+	     (if cperl-xemacs-p
 		 (visit-tags-table-buffer)
 	       (visit-tags-table-buffer tags-file-name)))
 	    (t (set-buffer (find-file-noselect tags-file-name))))
@@ -7111,7 +7109,7 @@ One may build such TAGS files from CPerl mode menu."
 	    pack name cons1 to l1 l2 l3 l4 b)
 	;; (setq cperl-hierarchy '(() () ())) ; Would write into '() later!
 	(setq cperl-hierarchy (list l1 l2 l3))
-	(if (featurep 'xemacs)		; Not checked
+	(if cperl-xemacs-p		; Not checked
 	    (progn
 	      (or tags-file-name
 		  ;; Does this work in XEmacs?
@@ -7639,7 +7637,6 @@ $~	The name of the current report format.
 ... = ...	Assignment.
 ... == ...	Numeric equality.
 ... =~ ...	Search pattern, substitution, or translation
-... ~~ ..       Smart match
 ... > ...	Numeric greater than.
 ... >= ...	Numeric greater than or equal to.
 ... >> ...	Bitwise shift right.
@@ -7677,7 +7674,7 @@ ARGVOUT	Output filehandle with -i flag.
 BEGIN { ... }	Immediately executed (during compilation) piece of code.
 END { ... }	Pseudo-subroutine executed after the script finishes.
 CHECK { ... }	Pseudo-subroutine executed after the script is compiled.
-UNITCHECK { ... } 
+UNITCHECK { ... }
 INIT { ... }	Pseudo-subroutine executed before the script starts running.
 DATA	Input filehandle for what follows after __END__	or __DATA__.
 accept(NEWSOCKET,GENERICSOCKET)
@@ -7701,7 +7698,6 @@ cos(EXPR)
 crypt(PLAINTEXT,SALT)
 dbmclose(%HASH)
 dbmopen(%HASH,DBNAME,MODE)
-default { ... } default case for given/when block
 defined(EXPR)
 delete($HASH{KEY})
 die(LIST)
@@ -7754,7 +7750,6 @@ getservbyport(PORT,PROTO)
 getservent
 getsockname(SOCKET)
 getsockopt(SOCKET,LEVEL,OPTNAME)
-given (EXPR) { [ when (EXPR) { ... } ]+ [ default { ... } ]? } 
 gmtime(EXPR)
 goto LABEL
 ... gt ...	String greater than.
@@ -8259,7 +8254,7 @@ We suppose that the regexp is scanned already."
 (defun cperl-invert-if-unless-modifiers ()
   "Change `B if A;' into `if (A) {B}' etc if possible.
 \(Unfinished.)"
-  (interactive)				; 
+  (interactive)				;
   (let (A B pre-B post-B pre-if post-if pre-A post-A if-string
 	  (w-rex "\\<\\(if\\|unless\\|while\\|until\\|for\\|foreach\\)\\>"))
     (and (= (char-syntax (preceding-char)) ?w)
@@ -8471,7 +8466,7 @@ the appropriate statement modifier."
 				  'variable-documentation))))
 	 (manual-program (if is-func "perldoc -f" "perldoc")))
     (cond
-     ((featurep 'xemacs)
+     (cperl-xemacs-p
       (let ((Manual-program "perldoc")
 	    (Manual-switches (if is-func (list "-f"))))
 	(manual-entry word)))
@@ -8513,7 +8508,7 @@ the appropriate statement modifier."
   (interactive)
   (require 'man)
   (cond
-   ((featurep 'xemacs)
+   (cperl-xemacs-p
     (let ((Manual-program "perldoc"))
       (manual-entry buffer-file-name)))
    (t
@@ -8708,8 +8703,6 @@ start with default arguments, then refine the slowdown regions."
       (setq delta (- (- tt (setq tt (funcall timems)))) tot (+ tot delta))
       (message "to %s:%6s,%7s" l delta tot))
     tot))
-
-(defvar font-lock-cache-position)
 
 (defun cperl-emulate-lazy-lock (&optional window-size)
   "Emulate `lazy-lock' without `condition-case', so `debug-on-error' works.

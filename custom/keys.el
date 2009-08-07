@@ -57,6 +57,7 @@
 
 ;; C-c
 (global-set-key (kbd "C-c C-u") 'uncomment-region)
+(global-set-key (kbd "C-c C-l") 'set-longlines-mode)
 (global-set-key (kbd "C-c N") 'winring-new-configuration)
 (global-set-key (kbd "C-c R") 'winring-rename-configuration)
 (global-set-key (kbd "C-c J") 'winring-jump-to-configuration)
@@ -183,7 +184,8 @@
 (define-key forth-mode-map (kbd "M-SPC") 'just-one-space)
 
 ;;; Smex
-(global-set-key (kbd "M-x") 'smex)
+;; (global-set-key (kbd "M-x") 'smex)
+(global-set-key (kbd "M-x") 'execute-extended-command)
 (global-set-key [(menu)] 'execute-extended-command)
 (global-set-key (kbd "M-X") 'anything)
 (global-set-key (kbd "C-c M-x") 'smex-update-and-run)
@@ -197,7 +199,7 @@
 (define-key bbdb-mode-map (kbd "z") 'wicked/bbdb-ping-bbdb-record)
 (add-hook 'mail-setup-hook (lambda () (local-set-key "\t" 'bbdb-complete-name)) t)
 (define-key isearch-mode-map (kbd "C-x") 'sacha/isearch-yank-current-word)
-(define-key yas/keymap [tab] 'yas/next-field-group)
+(define-key yas/keymap [tab] 'yas/next-field-or-maybe-expand)
 
 ;; Miscellaneous key-related configs
 (defalias 'qrr 'query-replace-regexp)

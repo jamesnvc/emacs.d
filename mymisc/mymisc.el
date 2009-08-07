@@ -1,4 +1,9 @@
 ;; Some things that I'm working on here...
+(defun set-longlines-mode ()
+  (interactive)
+  (text-mode)
+  (longlines-mode 1)
+  (longlines-show-hard-newlines 1))
 
 (defun james/org-todo-this-week ()
   (interactive)

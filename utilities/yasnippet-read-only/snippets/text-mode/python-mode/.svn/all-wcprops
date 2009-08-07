@@ -1,13 +1,13 @@
 K 25
 svn:wc:ra_dav:version-url
 V 54
-/svn/!svn/ver/365/trunk/snippets/text-mode/python-mode
+/svn/!svn/ver/433/trunk/snippets/text-mode/python-mode
 END
 prop
 K 25
 svn:wc:ra_dav:version-url
 V 59
-/svn/!svn/ver/365/trunk/snippets/text-mode/python-mode/prop
+/svn/!svn/ver/433/trunk/snippets/text-mode/python-mode/prop
 END
 ifmain
 K 25
@@ -19,7 +19,7 @@ class
 K 25
 svn:wc:ra_dav:version-url
 V 60
-/svn/!svn/ver/321/trunk/snippets/text-mode/python-mode/class
+/svn/!svn/ver/433/trunk/snippets/text-mode/python-mode/class
 END
 for
 K 25
@@ -61,5 +61,5 @@ def
 K 25
 svn:wc:ra_dav:version-url
 V 58
-/svn/!svn/ver/272/trunk/snippets/text-mode/python-mode/def
+/svn/!svn/ver/433/trunk/snippets/text-mode/python-mode/def
 END

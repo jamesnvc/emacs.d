@@ -1,4 +1,4 @@
-;;; $Id: parrot.el 14698 2006-09-24 02:19:47Z rgrjr $
+;;; $Id: /parrot/local/editor/parrot.el 6 2009-04-23T16:30:00.795416Z svm  $
 ;;; Emacs support for working on the source code of the Parrot virtual
 ;;; machine.
 ;;
@@ -22,3 +22,7 @@
 				    (statement-case-intro . *)
 				    (inextern-lang . 0)
 				    ))))
+
+(setq auto-mode-alist (cons '("\\.pmc$" . c-mode) auto-mode-alist))
+
+(setq auto-mode-alist (cons '("\\.ops$" . perl-mode) auto-mode-alist))

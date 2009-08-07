@@ -1,19 +1,25 @@
 K 25
 svn:wc:ra_dav:version-url
 V 23
-/svn/!svn/ver/366/trunk
+/svn/!svn/ver/441/trunk
 END
 Rakefile
 K 25
 svn:wc:ra_dav:version-url
 V 32
-/svn/!svn/ver/347/trunk/Rakefile
+/svn/!svn/ver/440/trunk/Rakefile
+END
+dropdown-list.el
+K 25
+svn:wc:ra_dav:version-url
+V 40
+/svn/!svn/ver/433/trunk/dropdown-list.el
 END
 yasnippet.el
 K 25
 svn:wc:ra_dav:version-url
 V 36
-/svn/!svn/ver/366/trunk/yasnippet.el
+/svn/!svn/ver/441/trunk/yasnippet.el
 END
 README
 K 25

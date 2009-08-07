@@ -36,6 +36,7 @@
   (add-path "modes/swank-clojure")
   (add-path "modes/tuareg-mode-1.45.4")
   (add-path "utilities")
+  (add-path "utilities/apel")
   (add-path "utilities/Pymacs-0.23")
   (add-path "utilities/bbdb/lisp")
   (add-path "utilities/cedet/cogre")
@@ -49,13 +50,17 @@
   (add-path "utilities/elib")
   (add-path "utilities/emacs-w3m")
   (add-path "utilities/emacspeak/lisp/g-client")
+  (add-path "utilities/flim")
   (add-path "utilities/g-client") ;; Google APIs
   (add-path "utilities/magit")
   (add-path "utilities/mailcrypt-3.5.8")
   (add-path "utilities/planner")
+  (add-path "utilities/semi")
   (add-path "utilities/smex")
   (add-path "utilities/twitter")
   (add-path "utilities/vm") ;; VM mailer
+  (add-path "utilities/wanderlust/utils")
+  (add-path "utilities/wl")
   (add-path "utilities/yasnippet-read-only")
   (add-path "other") ;; various stuff that doesn't fit elsewhere
   (add-path "other/anything-config")

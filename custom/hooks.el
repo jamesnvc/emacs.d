@@ -24,7 +24,9 @@
 (add-hook 'python-mode-hook 'ropemacs-mode)
 ;; turn off yas for python, since we really want tab to indent (use hippie-expand for yas)
 (add-hook 'python-mode-hook 'yas/minor-mode-off)
-
+(add-hook 'python-mode-hook (lambda ()
+                              (font-lock-add-keywords nil
+                               '(("\\<\\(FIXME\\|TODO\\|BUG\\):" 1 font-lock-warning-face t)))))
 ;; Flyspell
 ;; (add-hook 'text-mode-hook 'flyspell-mode-on)
 
@@ -47,6 +49,11 @@
 	    (set (make-local-variable 'eldoc-documentation-function)
 		 'my-cperl-eldoc-documentation-function)))
 (add-hook 'cperl-mode-hook (lambda () (eldoc-mode t)))
+(add-hook 'perl-project-file-visit-hook
+          (lambda ()
+            (ignore-errors
+              (stylish-repl-eval-perl
+               (format "use lib '%s'" (car (perl-project-includes)))))))
 
 ;; XML
 (add-hook 'nxml-mode-hook (lambda () (rng-validate-mode t)))

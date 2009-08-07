@@ -1,7 +1,7 @@
 K 25
 svn:wc:ra_dav:version-url
 V 54
-/svn/!svn/ver/292/trunk/snippets/text-mode/erlang-mode
+/svn/!svn/ver/433/trunk/snippets/text-mode/erlang-mode
 END
 mod
 K 25
@@ -13,7 +13,7 @@ begin
 K 25
 svn:wc:ra_dav:version-url
 V 60
-/svn/!svn/ver/292/trunk/snippets/text-mode/erlang-mode/begin
+/svn/!svn/ver/433/trunk/snippets/text-mode/erlang-mode/begin
 END
 imp
 K 25
@@ -21,35 +21,35 @@ svn:wc:ra_dav:version-url
 V 58
 /svn/!svn/ver/276/trunk/snippets/text-mode/erlang-mode/imp
 END
-compile
-K 25
-svn:wc:ra_dav:version-url
-V 62
-/svn/!svn/ver/292/trunk/snippets/text-mode/erlang-mode/compile
-END
 fun
 K 25
 svn:wc:ra_dav:version-url
 V 58
-/svn/!svn/ver/292/trunk/snippets/text-mode/erlang-mode/fun
+/svn/!svn/ver/433/trunk/snippets/text-mode/erlang-mode/fun
 END
-rcv
+compile
 K 25
 svn:wc:ra_dav:version-url
-V 58
-/svn/!svn/ver/292/trunk/snippets/text-mode/erlang-mode/rcv
+V 62
+/svn/!svn/ver/433/trunk/snippets/text-mode/erlang-mode/compile
 END
 rcv.after
 K 25
 svn:wc:ra_dav:version-url
 V 64
-/svn/!svn/ver/292/trunk/snippets/text-mode/erlang-mode/rcv.after
+/svn/!svn/ver/433/trunk/snippets/text-mode/erlang-mode/rcv.after
+END
+rcv
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/!svn/ver/433/trunk/snippets/text-mode/erlang-mode/rcv
 END
 ifndef
 K 25
 svn:wc:ra_dav:version-url
 V 61
-/svn/!svn/ver/292/trunk/snippets/text-mode/erlang-mode/ifndef
+/svn/!svn/ver/433/trunk/snippets/text-mode/erlang-mode/ifndef
 END
 exp
 K 25
@@ -57,75 +57,75 @@ svn:wc:ra_dav:version-url
 V 58
 /svn/!svn/ver/276/trunk/snippets/text-mode/erlang-mode/exp
 END
-beh
+if
 K 25
 svn:wc:ra_dav:version-url
-V 58
-/svn/!svn/ver/292/trunk/snippets/text-mode/erlang-mode/beh
+V 57
+/svn/!svn/ver/433/trunk/snippets/text-mode/erlang-mode/if
 END
 def
 K 25
 svn:wc:ra_dav:version-url
 V 58
-/svn/!svn/ver/292/trunk/snippets/text-mode/erlang-mode/def
+/svn/!svn/ver/433/trunk/snippets/text-mode/erlang-mode/def
 END
-if
+beh
 K 25
 svn:wc:ra_dav:version-url
-V 57
-/svn/!svn/ver/292/trunk/snippets/text-mode/erlang-mode/if
-END
-undef
-K 25
-svn:wc:ra_dav:version-url
-V 60
-/svn/!svn/ver/292/trunk/snippets/text-mode/erlang-mode/undef
+V 58
+/svn/!svn/ver/433/trunk/snippets/text-mode/erlang-mode/beh
 END
 after
 K 25
 svn:wc:ra_dav:version-url
 V 60
-/svn/!svn/ver/292/trunk/snippets/text-mode/erlang-mode/after
+/svn/!svn/ver/433/trunk/snippets/text-mode/erlang-mode/after
+END
+undef
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/!svn/ver/433/trunk/snippets/text-mode/erlang-mode/undef
 END
 inc
 K 25
 svn:wc:ra_dav:version-url
 V 58
-/svn/!svn/ver/292/trunk/snippets/text-mode/erlang-mode/inc
+/svn/!svn/ver/433/trunk/snippets/text-mode/erlang-mode/inc
 END
 loop
 K 25
 svn:wc:ra_dav:version-url
 V 59
-/svn/!svn/ver/292/trunk/snippets/text-mode/erlang-mode/loop
+/svn/!svn/ver/433/trunk/snippets/text-mode/erlang-mode/loop
 END
 rec
 K 25
 svn:wc:ra_dav:version-url
 V 58
-/svn/!svn/ver/292/trunk/snippets/text-mode/erlang-mode/rec
+/svn/!svn/ver/433/trunk/snippets/text-mode/erlang-mode/rec
 END
 case
 K 25
 svn:wc:ra_dav:version-url
 V 59
-/svn/!svn/ver/292/trunk/snippets/text-mode/erlang-mode/case
+/svn/!svn/ver/433/trunk/snippets/text-mode/erlang-mode/case
 END
 ifdef
 K 25
 svn:wc:ra_dav:version-url
 V 60
-/svn/!svn/ver/292/trunk/snippets/text-mode/erlang-mode/ifdef
+/svn/!svn/ver/433/trunk/snippets/text-mode/erlang-mode/ifdef
 END
 inc.lib
 K 25
 svn:wc:ra_dav:version-url
 V 62
-/svn/!svn/ver/292/trunk/snippets/text-mode/erlang-mode/inc.lib
+/svn/!svn/ver/433/trunk/snippets/text-mode/erlang-mode/inc.lib
 END
 try
 K 25
 svn:wc:ra_dav:version-url
 V 58
-/svn/!svn/ver/292/trunk/snippets/text-mode/erlang-mode/try
+/svn/!svn/ver/433/trunk/snippets/text-mode/erlang-mode/try
 END
