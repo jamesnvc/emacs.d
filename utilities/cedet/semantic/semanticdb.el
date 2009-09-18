@@ -4,7 +4,7 @@
 
 ;; Author: Eric M. Ludlam <zappo@gnu.org>
 ;; Keywords: tags
-;; X-RCS: $Id: semanticdb.el,v 1.132 2009/01/31 18:09:26 zappo Exp $
+;; X-RCS: $Id: semanticdb.el,v 1.136 2009/08/31 01:49:51 zappo Exp $
 
 ;; This file is not part of GNU Emacs.
 
@@ -190,6 +190,23 @@ If one doesn't exist, create it."
   ;; The abstract class will do... NOTHING!
   )
 
+
+;;; SEARCH RESULTS TABLE
+;;
+;; Needed for system databases that may not provide
+;; a semanticdb-table associated with a file.
+;;
+(defclass semanticdb-search-results-table (semanticdb-abstract-table)
+  (
+   )
+  "Table used for search results when there is no file or table association.
+Examples include search results from external sources such as from
+Emacs' own symbol table, or from external libraries.")
+
+(defmethod semanticdb-refresh-table ((obj semanticdb-search-results-table) &optional force)
+  "If the tag list associated with OBJ is loaded, refresh it.
+This will call `semantic-fetch-tags' if that file is in memory."
+  nil)
 
 ;;; CONCRETE TABLE CLASSES
 ;;
@@ -510,10 +527,13 @@ other than :table."
 
 ;;; REFRESH
 
-(defmethod semanticdb-refresh-table ((obj semanticdb-table))
+(defmethod semanticdb-refresh-table ((obj semanticdb-table) &optional force)
   "If the tag list associated with OBJ is loaded, refresh it.
+Optional argument FORCE will force a refresh even if the file in question
+is not in a buffer.  Avoid using FORCE for most uses, as an old cache
+may be sufficient for the general case.  Forced updates can be slow.
 This will call `semantic-fetch-tags' if that file is in memory."
-  (when (semanticdb-in-buffer-p obj)
+  (when (or (semanticdb-in-buffer-p obj) force)
     (save-excursion
       (semanticdb-set-buffer obj)
       (semantic-fetch-tags))))
@@ -589,6 +609,10 @@ The file associated with OBJ does not need to be in a buffer."
   ;;(oset table tags new-tags)
   ;; We do need to mark ourselves dirty.
   (semanticdb-set-dirty table)
+
+  ;; The lexical table may be modified.
+  (when (featurep 'semantic-lex-spp)
+    (oset table lexical-table (semantic-lex-spp-save-table)))
 
   ;; Incremental parser doesn't mokey around with this.
   (oset table unmatched-syntax semantic-unmatched-syntax-cache)
@@ -940,7 +964,10 @@ This should take a filename to be parsed.")
   "Create a table for the file FILENAME.
 If there are no language specific configurations, this
 function will read in the buffer, parse it, and kill the buffer."
-  (if semanticdb-out-of-buffer-create-table-fcn
+  (if (and semanticdb-out-of-buffer-create-table-fcn
+	   (not (file-remote-p filename)))
+      ;; Use external parser only of the file is accessible to the
+      ;; local file system.
       (funcall semanticdb-out-of-buffer-create-table-fcn filename)
     (save-excursion
       (let* ( ;; Remember the buffer to kill

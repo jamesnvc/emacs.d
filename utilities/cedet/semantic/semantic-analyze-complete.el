@@ -3,7 +3,7 @@
 ;; Copyright (C) 2007, 2008, 2009 Eric M. Ludlam
 
 ;; Author: Eric M. Ludlam <eric@siege-engine.com>
-;; X-RCS: $Id: semantic-analyze-complete.el,v 1.12 2009/01/31 18:28:21 zappo Exp $
+;; X-RCS: $Id: semantic-analyze-complete.el,v 1.14 2009/04/01 04:40:39 zappo Exp $
 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
@@ -38,25 +38,32 @@
 ;;; Helper Fcns
 ;;
 ;;
+;;;###autoload
 (define-overloadable-function semantic-analyze-type-constants (type)
   "For the tag TYPE, return any constant symbols of TYPE.
-Used as options when completing."
-  (let ((ans
-         (:override-with-args
-             ((semantic-analyze-find-tag (semantic-tag-name type)))
-           ;; Be default, we don't know.
-           nil))
-        (out nil))
-    (dolist (elt ans)
-      (cond
-       ((stringp elt)
-        (push (semantic-tag-new-variable
-               elt (semantic-tag-name type) nil)
-              out))
-       ((semantic-tag-p elt)
-        (push elt out))
-       (t nil)))
-    (nreverse out)))
+Used as options when completing.")
+
+(defun semantic-analyze-type-constants-default (type)
+  "Do nothing with TYPE."
+  nil)
+
+;; Old impl of the above.  I'm not sure what the issue is
+;  (let ((ans
+;         (:override-with-args
+;             ((semantic-analyze-find-tag (semantic-tag-name type)))
+;           ;; Be default, we don't know.
+;           nil))
+;        (out nil))
+;    (dolist (elt ans)
+;      (cond
+;       ((stringp elt)
+;        (push (semantic-tag-new-variable
+;               elt (semantic-tag-name type) nil)
+;              out))
+;       ((semantic-tag-p elt)
+;        (push elt out))
+;       (t nil)))
+;    (nreverse out)))
 
 ;;;###autoload
 (defun semantic-analyze-tags-of-class-list (tags classlist)
@@ -208,7 +215,7 @@ Argument CONTEXT is an object specifying the locally derived context."
 	   ;; Ok, we now have a completion list based on the text we found
 	   ;; we want to complete on.  Now filter that stream against the
 	   ;; type we want to search for.
-	   ((string= dtname (semantic-analyze-tag-type-to-name (car origc)))
+	   ((string= dtname (semantic-analyze-type-to-name (semantic-tag-type (car origc))))
 	    (setq c (cons (car origc) c))
 	    )
 

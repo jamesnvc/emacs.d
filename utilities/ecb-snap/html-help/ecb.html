@@ -3,7 +3,7 @@
 <title>ECB - the Emacs Code Browser</title>
 <meta http-equiv="Content-Type" content="text/html">
 <meta name="description" content="ECB - the Emacs Code Browser">
-<meta name="generator" content="makeinfo 4.13">
+<meta name="generator" content="makeinfo 4.8">
 <link title="Top" rel="start" href="ecb.html#Top">
 <link rel="up" href="../ecb.html#dir" title="(dir)">
 <link rel="prev" href="../ecb.html#dir" title="(dir)">
@@ -25,8 +25,8 @@
 <body>
 <h1 class="settitle">ECB - the Emacs Code Browser</h1>
 <div class="node">
-<a name="Top"></a>
 <p>
+<a name="Top"></a>
 Next:&nbsp;<a rel="next" accesskey="n" href="Install-and-first-steps.html#Install-and-first-steps">Install and first steps</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="../ecb.html#dir">(dir)</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="../ecb.html#dir">(dir)</a>
@@ -34,7 +34,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="../ecb.html#dir">(dir)</a>
 </div>
 
 <!-- node-name,  next,  previous,  up -->
-   <p>This is the user manual for ECB version 2.33beta2.
+<p>This is the user manual for ECB version 2.40.
 
    <p>ECB stands for "Emacs Code Browser". While (X)Emacs already has good
 <strong>editing</strong> support for many modes, its <strong>browsing</strong> support
@@ -46,12 +46,17 @@ and overview.
 
      <ul>
 <li>A directory tree,
-<li>a list of source files in the current directory,
+<li>a list of source files in the current directory
+(with full support and display of the VC-state),
 <li>a list of functions/classes/methods/... in the current file,
-(ECB uses the Semantic Bovinator, or Imenu, or etags, for getting this
+(ECB uses the CEDET-Semantic, or Imenu, or etags, for getting this
 list so all languages supported by any of these tools are
 automatically supported by ECB too)
-<li>a history of recently visited files,
+<li>a history of recently visited files
+(groupable by several criterias),
+<li>helpful informations and possible completions according to the current
+context which is computed by the semantic-analyzer for some sort of
+intellisense,
 <li>the Speedbar and
 <li>output from compilation (the "*compilation*" window) and other
 modes like help, grep etc. or whatever a user defines to be displayed
@@ -70,7 +75,7 @@ alphabetical list of all commands and user-options in <a href="Interactive-ECB-c
 
 <!-- In the following two paragraphs we distinct between HTML-, info-, -->
 <!-- and tex-format concerning the display of the URLs. -->
-   <p>The latest version of ECB can always be found at
+<p>The latest version of ECB can always be found at
 <a href="http://ecb.sourceforge.net">http://ecb.sourceforge.net</a>
 
    <p>To send bug reports, or participate in discussions about ECB, use the
@@ -91,13 +96,13 @@ how to do this.
 <li><a accesskey="1" href="Install-and-first-steps.html#Install-and-first-steps">Install and first steps</a>:      Installing ECB and first steps
 <li><a accesskey="2" href="Overview.html#Overview">Overview</a>:                     Compact introducing of basic concepts
 <li><a accesskey="3" href="Manual-usage.html#Manual-usage">Manual usage</a>:                 How to use this manual
-<li><a accesskey="4" href="ECB_002dinteractors.html#ECB_002dinteractors">ECB-interactors</a>:              Description of all interactors of ECB
+<li><a accesskey="4" href="ECB_002dwindows.html#ECB_002dwindows">ECB-windows</a>:                  Description of all ECB-windows of ECB
 <li><a accesskey="5" href="Activation-and-Deactivation.html#Activation-and-Deactivation">Activation and Deactivation</a>:  How to start and end ECB
 <li><a accesskey="6" href="Usage-of-ECB.html#Usage-of-ECB">Usage of ECB</a>:                 How to use ECB
 <li><a accesskey="7" href="Customizing.html#Customizing">Customizing</a>:                  How to customize ECB
 <li><a accesskey="8" href="Submitting-problem-report.html#Submitting-problem-report">Submitting problem report</a>:    What to do when problems occur
 <li><a accesskey="9" href="Upgrading.html#Upgrading">Upgrading</a>:                    Upgrading and downloading packages
-<li><a href="Tips-and-tricks.html#Tips-and-tricks">Tips and tricks</a>:              Useful hints and tips
+<li><a href="Common-use_002dcases.html#Common-use_002dcases">Common use-cases</a>:              Useful hints and tips
 <li><a href="Elisp-programming.html#Elisp-programming">Elisp programming</a>:            Entry points for Elisp programmers
 <li><a href="Conflicts-and-bugs.html#Conflicts-and-bugs">Conflicts and bugs</a>:           Known Conflicts with other packages and bugs
 <li><a href="FAQ.html#FAQ">FAQ</a>:                          Frequently asked questions
@@ -122,8 +127,9 @@ how to do this.
 
 </p>
 <ul class="menu">
-<li><a href="XEmacs-Installation.html#XEmacs-Installation">XEmacs Installation</a>:          Installation of ECB for XEmacs users
-<li><a href="GNU-Emacs-Installation.html#GNU-Emacs-Installation">GNU Emacs Installation</a>:       Installation of ECB for GNU Emacs users
+<li><a href="Requirements.html#Requirements">Requirements</a>:                 Requirements for ECB
+<li><a href="ECB-as-XEmacs_002dpackage.html#ECB-as-XEmacs_002dpackage">ECB as XEmacs-package</a>:        Installation of ECB as a XEmacs-package
+<li><a href="Standard-ECB_002dInstallation.html#Standard-ECB_002dInstallation">Standard ECB-Installation</a>:    Standard installation of ECB for (X)Emacs
 
 </li></ul>
 <p>How to set up Emacs for file parsing with ECB
@@ -131,27 +137,28 @@ how to do this.
 </p>
 <ul class="menu">
 <li><a href="General-hints.html#General-hints">General hints</a>:                General hints for a correct setup
-<li><a href="Setting-up-semantic.html#Setting-up-semantic">Setting up semantic</a>:          How to setup semantic correctly
+<li><a href="Setting-up-CEDET_002fsemantic.html#Setting-up-CEDET_002fsemantic">Setting up CEDET/semantic</a>:    How to setup semantic correctly
 <li><a href="Non_002dsemantic-files.html#Non_002dsemantic-files">Non-semantic files</a>:           Setup for file types not supported by semantic
 
 </li></ul>
-<p>All interactors of ECB
+<p>All ECB-windows of ECB
 
 </p>
 <ul class="menu">
-<li><a href="Basic-interactors.html#Basic-interactors">Basic interactors</a>:            Description of the basic interactors
-<li><a href="Add_002don-interactors.html#Add_002don-interactors">Add-on interactors</a>:           Description of additional interactors
+<li><a href="Basic-ECB_002dwindows.html#Basic-ECB_002dwindows">Basic ECB-windows</a>:            Description of the basic ECB-windows
+<li><a href="Add_002don-ECB_002dwindows.html#Add_002don-ECB_002dwindows">Add-on ECB-windows</a>:           Description of additional ECB-windows
 
 </li></ul>
-<p>The basic interactors of ECB
+<p>The basic ECB-windows of ECB
 
 </p>
 <ul class="menu">
 <li><a href="Tree_002dbuffer-basics.html#Tree_002dbuffer-basics">Tree-buffer basics</a>:           General introduction into tree-buffers
 <li><a href="Tree_002dbuffer-styles.html#Tree_002dbuffer-styles">Tree-buffer styles</a>:           Displaying the trees with different styles
-<li><a href="ECB-Directories_002dbuffer.html#ECB-Directories_002dbuffer">ECB Directories-buffer</a>:       Contents of the ECB Directories-buffer
-<li><a href="ECB-Sources_002dbuffer.html#ECB-Sources_002dbuffer">ECB Sources-buffer</a>:           Contents of the ECB Sources/history-buffer
-<li><a href="ECB-Methods_002dbuffer.html#ECB-Methods_002dbuffer">ECB Methods-buffer</a>:           Contents of the ECB Methods-buffer
+<li><a href="ECB-Directories_002dwindow.html#ECB-Directories_002dwindow">ECB Directories-window</a>:       Contents of the ECB Directories-window
+<li><a href="ECB-Sources_002dwindow.html#ECB-Sources_002dwindow">ECB Sources-window</a>:           Contents of the ECB Sources-window
+<li><a href="ECB-Methods_002dwindow.html#ECB-Methods_002dwindow">ECB Methods-window</a>:           Contents of the ECB Methods-window
+<li><a href="ECB-History_002dwindow.html#ECB-History_002dwindow">ECB History-window</a>:           Contents of the ECB History-window
 
 </li></ul>
 <p>Displaying the trees with different styles
@@ -164,7 +171,7 @@ how to do this.
 <li><a href="Images-for-Methods_002dbuffer.html#Images-for-Methods_002dbuffer">Images for Methods-buffer</a>:    Images for the tags in the Methods-buffer
 
 </li></ul>
-<p>Add-on interactors of ECB
+<p>Add-on ECB-windows of ECB
 
 </p>
 <ul class="menu">
@@ -189,7 +196,7 @@ how to do this.
 <li><a href="The-edit_002darea.html#The-edit_002darea">The edit-area</a>:                How to use the edit-area
 <li><a href="Temp_002d-and-compile_002dbuffers.html#Temp_002d-and-compile_002dbuffers">Temp- and compile-buffers</a>:    Displaying temp- and compilation-buffers
 <li><a href="The-other-window.html#The-other-window">The other window</a>:             How the ``other window'' is determined
-<li><a href="The-Methods-buffer.html#The-Methods-buffer">The Methods buffer</a>:           Using and customizing the Methods-buffer
+<li><a href="The-Methods-window.html#The-Methods-window">The Methods window</a>:           Using and customizing the Methods-window
 <li><a href="Filtering-the-tree_002dbuffers.html#Filtering-the-tree_002dbuffers">Filtering the tree-buffers</a>:   Applying filters to the ECB-tree-buffers
 <li><a href="The-ECB_002dlayout.html#The-ECB_002dlayout">The ECB-layout</a>:               Changing, customizing, redrawing, creating
 <li><a href="Hiding-the-ECB-windows.html#Hiding-the-ECB-windows">Hiding the ECB windows</a>:       Hiding/Showing the ECB-windows
@@ -210,14 +217,16 @@ how to do this.
 <li><a href="Using-popup_002dmenus.html#Using-popup_002dmenus">Using popup-menus</a>:            Using the popup-menus from keyboard.
 
 </li></ul>
-<p>Using and customizing the ECB-Methods buffer
+<p>Using and customizing the ECB-Methods window
 
 </p>
 <ul class="menu">
 <li><a href="Visiting-tags.html#Visiting-tags">Visiting tags</a>:                Possible actions after visiting a tag
 <li><a href="Expanding.html#Expanding">Expanding</a>:                    Explicit and automatic expanding
 <li><a href="Customizing-the-display.html#Customizing-the-display">Customizing the display</a>:      How to customize the Methods-buffer display
-<li><a href="Rebuilding-the-Methods.html#Rebuilding-the-Methods">Rebuilding the Methods</a>:       When to rebuild the Methods-buffer
+<li><a href="Updating-Methods_002dwindow.html#Updating-Methods_002dwindow">Updating Methods-window</a>:      Updating Methods with contents of current buffer
+<li><a href="Updating-for-ind_002e-buffers.html#Updating-for-ind_002e-buffers">Updating for ind. buffers</a>:    Updating Methods for indirect buffers
+<li><a href="Jumping-to-external-tags.html#Jumping-to-external-tags">Jumping to external tags</a>:     Jumping to the definition of external types
 
 </li></ul>
 <p>Applying filters to the special ECB-tree-buffers
@@ -239,6 +248,15 @@ how to do this.
 <li><a href="Changing-window-sizes.html#Changing-window-sizes">Changing window sizes</a>:        Changing sizes of the ECB-windows
 <li><a href="Fixing-window-sizes.html#Fixing-window-sizes">Fixing window sizes</a>:          Fixing sizes of the ECB-windows
 <li><a href="Creating-a-new-ECB_002dlayout.html#Creating-a-new-ECB_002dlayout">Creating a new ECB-layout</a>:    Interactively creating new layouts
+
+</li></ul>
+<p>Synchronization of the ECB-windows
+
+</p>
+<ul class="menu">
+<li><a href="General-synchronization-aspects.html#General-synchronization-aspects">General synchronization aspects</a>:        General synchronization aspects
+<li><a href="Synchronization-of-basic-ECB_002dwindows.html#Synchronization-of-basic-ECB_002dwindows">Synchronization of basic ECB-windows</a>:   Synchronization of basic ECB-windows
+<li><a href="Add_002don-synchronization.html#Add_002don-synchronization">Add-on synchronization</a>:                 Synchronization of add-on ECB-windows
 
 </li></ul>
 <p>Customizing ECB
@@ -265,16 +283,16 @@ how to do this.
 <li><a href="ecb_002dgeneral.html#ecb_002dgeneral">ecb-general</a>:                  General customizing ECB
 <li><a href="ecb_002dtree_002dbuffer.html#ecb_002dtree_002dbuffer">ecb-tree-buffer</a>:              Customizing the general tree layout
 <li><a href="ecb_002ddirectories.html#ecb_002ddirectories">ecb-directories</a>:              Customizing the ECB-directories-tree
-<li><a href="ecb_002dsources.html#ecb_002dsources">ecb-sources</a>:                  Customizing the ECB-sources-tree
-<li><a href="ecb_002dmethods.html#ecb_002dmethods">ecb-methods</a>:                  Customizing the ECB-methods-tree
-<li><a href="ecb_002dhistory.html#ecb_002dhistory">ecb-history</a>:                  Customizing the ECB-history-tree
-<li><a href="ecb_002danalyse.html#ecb_002danalyse">ecb-analyse</a>:                  Customizing the ECB-analyse-interactor
+<li><a href="ecb_002dsources.html#ecb_002dsources">ecb-sources</a>:                  Customizing the ECB-sources-window
+<li><a href="ecb_002dmethods.html#ecb_002dmethods">ecb-methods</a>:                  Customizing the ECB-methods-window
+<li><a href="ecb_002dhistory.html#ecb_002dhistory">ecb-history</a>:                  Customizing the ECB-history-window
+<li><a href="ecb_002danalyse.html#ecb_002danalyse">ecb-analyse</a>:                  Customizing the ECB-analyse-window
+<li><a href="ecb_002dsymboldef.html#ecb_002dsymboldef">ecb-symboldef</a>:                Customizing the ECB-symboldef-window
 <li><a href="ecb_002dlayout.html#ecb_002dlayout">ecb-layout</a>:                   Customizing the ECB-layout
 <li><a href="ecb_002dcompilation.html#ecb_002dcompilation">ecb-compilation</a>:              Customizing the compile-window
 <li><a href="ecb_002dcreate_002dlayout.html#ecb_002dcreate_002dlayout">ecb-create-layout</a>:            Customizing options for creating layouts
 <li><a href="ecb_002dface_002doptions.html#ecb_002dface_002doptions">ecb-face-options</a>:             Customizing options for faces
 <li><a href="ecb_002dfaces.html#ecb_002dfaces">ecb-faces</a>:                    Customizing the faces
-<li><a href="ecb_002ddownload.html#ecb_002ddownload">ecb-download</a>:                 Customizing how to download ECB
 <li><a href="ecb_002dhelp.html#ecb_002dhelp">ecb-help</a>:                     Customizing the online help of ECB
 <li><a href="ecb_002deshell.html#ecb_002deshell">ecb-eshell</a>:                   Customizing the eshell-integration
 <li><a href="ecb_002dspeedbar.html#ecb_002dspeedbar">ecb-speedbar</a>:                 Customizing the speedbar-integration
@@ -300,7 +318,7 @@ how to do this.
 <li><a href="Background-information.html#Background-information">Background information</a>:       Maybe some interesting informations
 
 </li></ul>
-<p>Tips and tricks
+<p>Handling of common use-cases
 
 </p>
 <ul class="menu">
@@ -319,7 +337,7 @@ how to do this.
 <li><a href="Non_002dsemantic-sources.html#Non_002dsemantic-sources">Non-semantic sources</a>:         Parsing and displaying non-semantic sources
 <li><a href="Hide_002dshow.html#Hide_002dshow">Hide-show</a>:                    Using hide-show from the methods-buffer-menu
 <li><a href="Window_002dmanagers-and-ECB.html#Window_002dmanagers-and-ECB">Window-managers and ECB</a>:      Support of several Emacs-window-managers
-<li><a href="Using-semanticdb.html#Using-semanticdb">Using semanticdb</a>:             Using semanticdb for going to external nodes
+<li><a href="Virtual-folders-in-History.html#Virtual-folders-in-History">Virtual folders in History</a>:   Simulating something like virtual folders
 
 </li></ul>
 <p>Supporting Version control systems
@@ -340,7 +358,7 @@ how to do this.
 <ul class="menu">
 <li><a href="List-of-variables.html#List-of-variables">List of variables</a>:            Which variables an Elisp-program can use
 <li><a href="List-of-hooks.html#List-of-hooks">List of hooks</a>:                All available hooks
-<li><a href="tree_002dbuffer.html#tree_002dbuffer">tree-buffer</a>:                  Some words to the tree-buffer-library
+<li><a href="tree_002dbuffer.html#tree_002dbuffer">tree-buffer</a>:                  Full description of the tree-buffer-library
 <li><a href="Adviced-functions.html#Adviced-functions">Adviced functions</a>:            How to deal with the adviced functions
 <li><a href="The-layout_002dengine.html#The-layout_002dengine">The layout-engine</a>:            Programming new layouts and special windows
 
@@ -354,7 +372,7 @@ how to do this.
 <li><a href="A-new-tree_002dnode.html#A-new-tree_002dnode">A new tree-node</a>:              How to add new tree-nodes to a tree-buffer
 <li><a href="Updating-a-tree_002dbuffer.html#Updating-a-tree_002dbuffer">Updating a tree-buffer</a>:       How to update a tree-buffer after changes
 <li><a href="Tree_002dbuffer-keybindings.html#Tree_002dbuffer-keybindings">Tree-buffer keybindings</a>:      Default and customizable keybindings
-<li><a href="The-tree_002dbuffer_002dAPI.html#The-tree_002dbuffer_002dAPI">The tree-buffer-API</a>:          All functions available for tree-buffers
+<li><a href="The-tree_002dbuffer_002dAPI.html#The-tree_002dbuffer_002dAPI">The tree-buffer-API</a>:          All functions for tree-buffers and -nodes
 <li><a href="Do-not-with-tree_002dbuffer.html#Do-not-with-tree_002dbuffer">Do not with tree-buffer</a>:      Things which are strictly forbidden
 <li><a href="Tree_002dbuffer-How-to.html#Tree_002dbuffer-How-to">Tree-buffer How to</a>:           Dealing with special situations
 

@@ -3,7 +3,7 @@
 <title>ecb-directories - ECB - the Emacs Code Browser</title>
 <meta http-equiv="Content-Type" content="text/html">
 <meta name="description" content="ECB - the Emacs Code Browser">
-<meta name="generator" content="makeinfo 4.13">
+<meta name="generator" content="makeinfo 4.8">
 <link title="Top" rel="start" href="ecb.html#Top">
 <link rel="up" href="Customizable-options.html#Customizable-options" title="Customizable options">
 <link rel="prev" href="ecb_002dtree_002dbuffer.html#ecb_002dtree_002dbuffer" title="ecb-tree-buffer">
@@ -24,9 +24,9 @@
 </head>
 <body>
 <div class="node">
+<p>
 <a name="ecb-directories"></a>
 <a name="ecb_002ddirectories"></a>
-<p>
 Next:&nbsp;<a rel="next" accesskey="n" href="ecb_002dsources.html#ecb_002dsources">ecb-sources</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="ecb_002dtree_002dbuffer.html#ecb_002dtree_002dbuffer">ecb-tree-buffer</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="Customizable-options.html#Customizable-options">Customizable options</a>
@@ -38,7 +38,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="Customizable-options.html#Customizable-
 <p class="noindent">This group contains settings for the directories-buffer in the ECB:
 
 <div class="defun">
-&mdash; User Option: <b>add-path-for-not-matching-files</b><var><a name="index-add_002dpath_002dfor_002dnot_002dmatching_002dfiles-166"></a></var><br>
+&mdash; User Option: <b>add-path-for-not-matching-files</b><var><a name="index-add_002dpath_002dfor_002dnot_002dmatching_002dfiles-168"></a></var><br>
 <blockquote><p>Add path of a file to <code>ecb-source-path</code> if not already contained. 
 This is done during the auto. windows synchronization which happens if
 a file is opened not via the file/directory-browser of ECB. In such a
@@ -68,7 +68,7 @@ buffer of ECB.
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>auto-expand-directory-tree</b><var><a name="index-auto_002dexpand_002ddirectory_002dtree-167"></a></var><br>
+&mdash; User Option: <b>auto-expand-directory-tree</b><var><a name="index-auto_002dexpand_002ddirectory_002dtree-169"></a></var><br>
 <blockquote><p>Automatically expand the directory tree to the current source file. 
 There are three options:
 
@@ -80,17 +80,16 @@ There are three options:
         </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>after-directory-change-hook</b><var><a name="index-after_002ddirectory_002dchange_002dhook-168"></a></var><br>
-<blockquote><p>Hook which run directly after the selected directory has changed. This
-means not onyl after a click onto a directory in the directory-window
-of ECB but it means this hook runs always when the current directory
-changes regardless of the trigger of this change. So for example it
-runs also when you just switches from one buffer to another via
-<code>switch-to-buffer</code> or <code>switch-to-buffer-other-window</code> and
-the directory of these filebuffers is different but only when
-auto-synchronizing of the ECB-windows is on (see
-<code>ecb-window-sync</code>). It runs not when switching between buffers
-and the associated files reside in the same directory.
+&mdash; User Option: <b>after-directory-change-hook</b><var><a name="index-after_002ddirectory_002dchange_002dhook-170"></a></var><br>
+<blockquote><p>Hook which run directly after the selected directory has changed. This means
+not onyl after a click onto a directory in the directory-window of ECB but it
+means this hook runs always when the current directory changes regardless of
+the trigger of this change. So for example it runs also when you just switches
+from one buffer to another via <code>switch-to-buffer</code> or
+<code>switch-to-buffer-other-window</code> and the directory of these filebuffers is
+different but only when auto-synchronizing of the ECB-windows is on (see
+<code>ecb-basic-buffer-sync</code>). It runs not when switching between buffers and
+the associated files reside in the same directory.
 
         <p>Each function added to this hook will be called with two arguments:
 The directory which was current _before_ the directory-change-trigger
@@ -102,7 +101,7 @@ the two arguments &ldquo;~&rdquo; and &ldquo;/tmp&rdquo;.
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>cache-directory-contents</b><var><a name="index-cache_002ddirectory_002dcontents-169"></a></var><br>
+&mdash; User Option: <b>cache-directory-contents</b><var><a name="index-cache_002ddirectory_002dcontents-171"></a></var><br>
 <blockquote><p>Cache contents of directories.
 
         <p>This can be useful if <code>ecb-source-path</code> contains directories with
@@ -118,7 +117,7 @@ down dramatically so a caching increases speed a lot.
 and looks like:
 
      <pre class="example">          (&lt;dir-regexp&gt; . &lt;filenumber threshold&gt;) with
-</pre>
+   </pre>
           <dl>
 <dt><code>&lt;dir-regexp&gt;:</code><dd>Regular expression a directory must match to be cached. 
 <br><dt><code>&lt;filenumber threshold&gt;:</code><dd>Number of directory contents must exceed this number. 
@@ -157,7 +156,7 @@ use &ldquo;~&rdquo; because ECB tries always to match full path-names!
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>cache-directory-contents-not</b><var><a name="index-cache_002ddirectory_002dcontents_002dnot-170"></a></var><br>
+&mdash; User Option: <b>cache-directory-contents-not</b><var><a name="index-cache_002ddirectory_002dcontents_002dnot-172"></a></var><br>
 <blockquote><p>Do not cache the contents of certain directories. The value of this
 option is a list where the each element is a regular expression a
 directory must match if it should not being cached.
@@ -187,7 +186,7 @@ path-names!
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>directories-buffer-after-create-hook</b><var><a name="index-directories_002dbuffer_002dafter_002dcreate_002dhook-171"></a></var><br>
+&mdash; User Option: <b>directories-buffer-after-create-hook</b><var><a name="index-directories_002dbuffer_002dafter_002dcreate_002dhook-173"></a></var><br>
 <blockquote><p>Local hook running after the creation of the directories-buffer. Every
 function of this hook is called once without arguments direct after
 creating the directories-buffer of ECB and it's local key-map. So for
@@ -200,7 +199,7 @@ directories-buffer of ECB.
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>directories-buffer-name</b><var><a name="index-directories_002dbuffer_002dname-172"></a></var><br>
+&mdash; User Option: <b>directories-buffer-name</b><var><a name="index-directories_002dbuffer_002dname-174"></a></var><br>
 <blockquote><p>Name of the ECB directory buffer. Because it is not a normal buffer
 for editing you should enclose the name with stars, e.g. &ldquo; *ECB
 Directories*&rdquo;.
@@ -213,7 +212,7 @@ deactivating and then activating ECB again!
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>directories-menu-sorter</b><var><a name="index-directories_002dmenu_002dsorter-173"></a></var><br>
+&mdash; User Option: <b>directories-menu-sorter</b><var><a name="index-directories_002dmenu_002dsorter-175"></a></var><br>
 <blockquote><p>Function which re-sorts the menu-entries of the directories buffer.
 
         <p>If a function then this function is called to re-arrange the
@@ -231,7 +230,7 @@ or add new entries.
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>directories-menu-user-extension</b><var><a name="index-directories_002dmenu_002duser_002dextension-174"></a></var><br>
+&mdash; User Option: <b>directories-menu-user-extension</b><var><a name="index-directories_002dmenu_002duser_002dextension-176"></a></var><br>
 <blockquote><p>Static user extensions for the popup-menu of the directories buffer. 
 Value is a list of elements of the following type: Each element
 defines a new menu-entry and is either:
@@ -271,7 +270,7 @@ for further details.
           "Prints the name of the directory of the node under point."
           (let ((node-data=dir (tree-node-get-data node)))
              (message ``Dir under node: %s'' node-data=dir)))
-</pre>
+   </pre>
         <p>Per default the static user-extensions are added at the beginning of
 the built-in menu-entries of <code>ecb-directories-menu</code> but the whole
 menu can be re-arranged with <code>ecb-directories-menu-sorter</code>.
@@ -281,7 +280,7 @@ achieved via <code>ecb-directories-menu-user-extension-function</code>.
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>directories-menu-user-extension-function</b><var><a name="index-directories_002dmenu_002duser_002dextension_002dfunction-175"></a></var><br>
+&mdash; User Option: <b>directories-menu-user-extension-function</b><var><a name="index-directories_002dmenu_002duser_002dextension_002dfunction-177"></a></var><br>
 <blockquote><p>Dynamic user extensions for the popup-menu of the directories buffer. 
 A function which has to return a list in the same format like the
 option <code>ecb-directories-menu-user-extension</code>. This function is
@@ -298,33 +297,25 @@ the whole menu can be re-arranged with
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>directories-show-node-info</b><var><a name="index-directories_002dshow_002dnode_002dinfo-176"></a></var><br>
-<blockquote><p>When to display which node-info in the directories-buffer. Define
-which node info should displayed after moving the mouse over a node
-(or after a shift click onto the node) in the directories-buffer.
+&mdash; User Option: <b>directories-show-node-info</b><var><a name="index-directories_002dshow_002dnode_002dinfo-178"></a></var><br>
+<blockquote><p>When to display which node-info in the directories-buffer. 
+Define which node info should be displayed after moving the mouse
+over a node (or after a shift click onto the node) in the
+directories-buffer.
 
         <p>You can define &ldquo;when&rdquo; a node-info should be displayed:
-
           <ul>
-<li>always:
-Node info is displayed by moving with the mouse over a node.
-
-          <li>if-too-long:
-Node info is only displayed by moving with the mouse over a node does
-not fit into the window-width of the tree-buffer window. In the ECB
-directories buffer this means also if a node is shortend or if the
-node has an alias (see <code>ecb-source-path</code>).
-
-          <li>shift-click:
-Node info is only displayed after a shift click with the primary mouse
-button onto the node.
-
-          <li>never:
-Node info is never displayed. 
+<li>always: Node info is displayed by moving with the mouse over a node. 
+<li>if-too-long: Node info is only displayed by moving with the mouse over a
+node does not fit into the window-width of the tree-buffer window. 
+In the ECB directories buffer this means also if a node is shortend or if
+the node has an alias (see <code>ecb-source-path</code>). 
+<li>shift-click: Node info is only displayed after a shift click with the
+primary mouse button onto the node. 
+<li>never: Node info is never displayed. 
 </ul>
 
-        <p>You can define what info should be displayed:
-
+        <p>You can define &ldquo;which&rdquo; info should be displayed:
           <ul>
 <li>name: Only the full node-name is displayed. 
 <li>path: The full-path of the node is displayed. 
@@ -334,12 +325,12 @@ Node info is never displayed.
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>display-default-dir-after-start</b><var><a name="index-display_002ddefault_002ddir_002dafter_002dstart-177"></a></var><br>
+&mdash; User Option: <b>display-default-dir-after-start</b><var><a name="index-display_002ddefault_002ddir_002dafter_002dstart-179"></a></var><br>
 <blockquote><p>Automatically display current default-directory after activating ECB.
 
         <p>If a file-buffer is displayed in the current active edit-window then
-ECB synchronizes its tree-buffers to this file-buffer - at least if
-the option <code>ecb-window-sync</code> it not nil. So for this situation
+ECB synchronizes its basic tree-buffers to this file-buffer - at least if
+the option <code>ecb-basic-buffer-sync</code> it not nil. So for this situation
 <code>ecb-display-default-dir-after-start</code> takes no effect but this
 option is for the case if no file-buffer is displayed in the
 edit-window after startup:
@@ -354,13 +345,13 @@ contents of this directory.
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>excluded-directories-regexps</b><var><a name="index-excluded_002ddirectories_002dregexps-178"></a></var><br>
+&mdash; User Option: <b>excluded-directories-regexps</b><var><a name="index-excluded_002ddirectories_002dregexps-180"></a></var><br>
 <blockquote><p>Directories that should not be included in the directories list. The
 value of this variable should be a list of regular expression. 
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>prescan-directories-for-emptyness</b><var><a name="index-prescan_002ddirectories_002dfor_002demptyness-179"></a></var><br>
+&mdash; User Option: <b>prescan-directories-for-emptyness</b><var><a name="index-prescan_002ddirectories_002dfor_002demptyness-181"></a></var><br>
 <blockquote><p>Prescan directories for emptyness. ECB does this so directories are
 displayed as empty in the directories-buffer even without
 user-interaction (i.e. in previous ECB-versions the emptyness of a
@@ -400,7 +391,7 @@ prescan.
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>host-accessible-check-valid-time</b><var><a name="index-host_002daccessible_002dcheck_002dvalid_002dtime-180"></a></var><br>
+&mdash; User Option: <b>host-accessible-check-valid-time</b><var><a name="index-host_002daccessible_002dcheck_002dvalid_002dtime-182"></a></var><br>
 <blockquote><p>Time in seconds a cached accessible-state of a remote host is valid. 
 This option is a list where each element specifies how long for a
 certain remote host the cached ping-state (i.e. if the host is
@@ -422,7 +413,7 @@ would be pinged only once during 5 minutes.
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>ping-options</b><var><a name="index-ping_002doptions-181"></a></var><br>
+&mdash; User Option: <b>ping-options</b><var><a name="index-ping_002doptions-183"></a></var><br>
 <blockquote><p>List of options for the ping program. These options can be used to
 limit how many ICMP packets are emitted. Ping is used to test if a
 remote host of a remote path (e.g. a tramp-, ange-ftp- or efs-path) is
@@ -430,13 +421,13 @@ accessible See also <code>ecb-ping-program</code>.
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>ping-program</b><var><a name="index-ping_002dprogram-182"></a></var><br>
+&mdash; User Option: <b>ping-program</b><var><a name="index-ping_002dprogram-184"></a></var><br>
 <blockquote><p>Program to send network test packets to a host. See also
 <code>ecb-ping-options</code>. 
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>prescan-directories-exclude-regexps</b><var><a name="index-prescan_002ddirectories_002dexclude_002dregexps-183"></a></var><br>
+&mdash; User Option: <b>prescan-directories-exclude-regexps</b><var><a name="index-prescan_002ddirectories_002dexclude_002dregexps-185"></a></var><br>
 <blockquote><p>Which directories should be excluded from the empty-prescan. If a
 directory matches any of the regexps of this option it will not be
 prescanned for emptyness - This option takes only effect if
@@ -444,19 +435,12 @@ prescanned for emptyness - This option takes only effect if
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>show-sources-in-directories-buffer</b><var><a name="index-show_002dsources_002din_002ddirectories_002dbuffer-184"></a></var><br>
+&mdash; User Option: <b>show-sources-in-directories-buffer</b><var><a name="index-show_002dsources_002din_002ddirectories_002dbuffer-186"></a></var><br>
 <blockquote><p>Show source files in directories buffer. 
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>source-path</b><var><a name="index-source_002dpath-185"></a></var><br>
-<blockquote><p>Paths where to find code sources. Each path can have an optional alias
-that is used as it's display name. If no alias is set, the path is
-used as display name. 
-</p></blockquote></div>
-
-<div class="defun">
-&mdash; User Option: <b>source-path</b><var><a name="index-source_002dpath-186"></a></var><br>
+&mdash; User Option: <b>source-path</b><var><a name="index-source_002dpath-187"></a></var><br>
 <blockquote><p>Paths where to find code sources. Each path can have an optional alias
 that is used as it's display name. If no alias is set, the path is
 used as display name.
@@ -467,7 +451,7 @@ element of L is either
 <li>a simple string which has to be the full path of a directory (this
 string is displayed in the directory-browser of ECB) or
 
-          <li>a 2-element list whereas the first element is the full path of a
+          <li>a 2-elemet list whereas the first element is the full path of a
 directory (string) and the second element is an arbitrary alias
 (string) for this directory which is then displayed instead of the
 underlying directory. 
@@ -475,7 +459,7 @@ underlying directory.
         </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>use-speedbar-instead-native-tree-buffer</b><var><a name="index-use_002dspeedbar_002dinstead_002dnative_002dtree_002dbuffer-187"></a></var><br>
+&mdash; User Option: <b>use-speedbar-instead-native-tree-buffer</b><var><a name="index-use_002dspeedbar_002dinstead_002dnative_002dtree_002dbuffer-188"></a></var><br>
 <blockquote><p>If true then uses speedbar for directories, sources or methods. This
 means that speedbar is integrated in the ECB-frame and is displayed in
 that window normally displaying the standard ECB-directories-buffer,

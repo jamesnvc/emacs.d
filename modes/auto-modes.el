@@ -16,6 +16,7 @@
                        ("\\.java$" . java-mode)
                        ("\\.js$" . js2-mode)
                        ("\\.lhs$" . literate-haskell-mode)
+                       ("\\.md$" . markdown-mode)
                        ("\\.mli?$" . tuareg-mode)
                        ("\\.org$" . org-mode)
                        ("\\.pde$" . c-mode)

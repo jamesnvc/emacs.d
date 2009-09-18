@@ -3,7 +3,7 @@
 <title>The layout-engine API - ECB - the Emacs Code Browser</title>
 <meta http-equiv="Content-Type" content="text/html">
 <meta name="description" content="ECB - the Emacs Code Browser">
-<meta name="generator" content="makeinfo 4.13">
+<meta name="generator" content="makeinfo 4.8">
 <link title="Top" rel="start" href="ecb.html#Top">
 <link rel="up" href="The-layout_002dengine.html#The-layout_002dengine" title="The layout-engine">
 <link rel="prev" href="Possible-layout_002doutlines.html#Possible-layout_002doutlines" title="Possible layout-outlines">
@@ -23,9 +23,9 @@
 </head>
 <body>
 <div class="node">
+<p>
 <a name="The-layout-engine-API"></a>
 <a name="The-layout_002dengine-API"></a>
-<p>
 Previous:&nbsp;<a rel="previous" accesskey="p" href="Possible-layout_002doutlines.html#Possible-layout_002doutlines">Possible layout-outlines</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="The-layout_002dengine.html#The-layout_002dengine">The layout-engine</a>
 <hr>
@@ -41,7 +41,7 @@ detailed description.
    <p>Functions and macros for programming with layouts and special
 ecb-windows:
      <ul>
-<li><code>defecb-window-dedicator</code>
+<li><code>defecb-window-dedicator-to-ecb-buffer</code>
 <li><code>ecb-available-layouts-member-p</code>
 <li><code>ecb-canonical-ecb-windows-list</code>
 <li><code>ecb-canonical-edit-windows-list</code>
@@ -54,8 +54,8 @@ ecb-windows:
 <li><code>ecb-layout-switch</code>
 <li><code>ecb-layout-undefine</code>
 <li><code>ecb-point-in-compile-window</code>
-<li><code>ecb-point-in-ecb-window</code>
-<li><code>ecb-point-in-edit-window</code>
+<li><code>ecb-point-in-ecb-window-number</code>
+<li><code>ecb-point-in-edit-window-number</code>
 <li><code>ecb-select-edit-window</code>
 <li><code>ecb-split-hor</code>
 <li><code>ecb-split-ver</code>
@@ -92,7 +92,7 @@ YOUR PROGRAMS!
 
    <p>User-options and hooks related to the layout-engine API:
      <ul>
-<li><code>ecb-current-buffer-sync-hook</code>
+<li><code>ecb-basic-buffer-sync-hook</code>
 <li><code>ecb-hide-ecb-windows-after-hook</code>
 <li><code>ecb-hide-ecb-windows-before-hook</code>
 <li><code>ecb-redraw-layout-after-hook</code>
@@ -107,9 +107,9 @@ YOUR PROGRAMS!
    <div class="footnote">
 <hr>
 <h4>Footnotes</h4><p class="footnote"><small>[<a name="fn-1" href="#fnd-1">1</a>]</small> Normally not needed because
-<code>defecb-window-dedicator</code> does all necessary.</p>
+<code>defecb-window-dedicator-to-ecb-buffer</code> does all necessary.</p>
 
-   <hr></div>
+   <p><hr></div>
 
    </body></html>
 

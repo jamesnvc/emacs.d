@@ -3,7 +3,7 @@
 <title>ecb-non-semantic - ECB - the Emacs Code Browser</title>
 <meta http-equiv="Content-Type" content="text/html">
 <meta name="description" content="ECB - the Emacs Code Browser">
-<meta name="generator" content="makeinfo 4.13">
+<meta name="generator" content="makeinfo 4.8">
 <link title="Top" rel="start" href="ecb.html#Top">
 <link rel="up" href="Customizable-options.html#Customizable-options" title="Customizable options">
 <link rel="prev" href="ecb_002dspeedbar.html#ecb_002dspeedbar" title="ecb-speedbar">
@@ -24,9 +24,9 @@
 </head>
 <body>
 <div class="node">
+<p>
 <a name="ecb-non-semantic"></a>
 <a name="ecb_002dnon_002dsemantic"></a>
-<p>
 Next:&nbsp;<a rel="next" accesskey="n" href="ecb_002dwinman.html#ecb_002dwinman">ecb-winman</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="ecb_002dspeedbar.html#ecb_002dspeedbar">ecb-speedbar</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="Customizable-options.html#Customizable-options">Customizable options</a>
@@ -38,7 +38,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="Customizable-options.html#Customizable-
 <p class="noindent">This group contains settings for parsing and displaying non-semantic files:
 
 <div class="defun">
-&mdash; User Option: <b>auto-save-before-etags-methods-rebuild</b><var><a name="index-auto_002dsave_002dbefore_002detags_002dmethods_002drebuild-319"></a></var><br>
+&mdash; User Option: <b>auto-save-before-etags-methods-rebuild</b><var><a name="index-auto_002dsave_002dbefore_002detags_002dmethods_002drebuild-336"></a></var><br>
 <blockquote><p>Automatic saving of current buffer before rebuilding its methods.
 
         <p>This option is only relevant for sources which are supported and
@@ -57,7 +57,7 @@ effect.
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>non-semantic-exclude-modes</b><var><a name="index-non_002dsemantic_002dexclude_002dmodes-320"></a></var><br>
+&mdash; User Option: <b>non-semantic-exclude-modes</b><var><a name="index-non_002dsemantic_002dexclude_002dmodes-337"></a></var><br>
 <blockquote><p>Exclude modes from parsing with imenu or etags. Per default, ECB tries
 to parse all file-types not supported by semantic with imenu or etags
 or some other method (for details see the option
@@ -72,7 +72,7 @@ tried to parsed.
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>non-semantic-methods-initial-expand</b><var><a name="index-non_002dsemantic_002dmethods_002dinitial_002dexpand-321"></a></var><br>
+&mdash; User Option: <b>non-semantic-methods-initial-expand</b><var><a name="index-non_002dsemantic_002dmethods_002dinitial_002dexpand-338"></a></var><br>
 <blockquote><p>Initially expand all tags for not by semantic supported sources. 
 This option can be customized on a major-mode basis, i.e. if a
 <code>major-mode</code> is contained in this option then all tags for this
@@ -80,7 +80,7 @@ modes will be initially expanded - otherwise not.
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>non-semantic-parsing-function</b><var><a name="index-non_002dsemantic_002dparsing_002dfunction-322"></a></var><br>
+&mdash; User Option: <b>non-semantic-parsing-function</b><var><a name="index-non_002dsemantic_002dparsing_002dfunction-339"></a></var><br>
 <blockquote><p>Define mode-dependent parsing functions for non-semantic files. This
 is an alist where the car is a major-mode symbol and the cdr is a
 function-symbol of a function which should be used for parsing a
@@ -111,13 +111,13 @@ results
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>process-non-semantic-files</b><var><a name="index-process_002dnon_002dsemantic_002dfiles-323"></a></var><br>
+&mdash; User Option: <b>process-non-semantic-files</b><var><a name="index-process_002dnon_002dsemantic_002dfiles-340"></a></var><br>
 <blockquote><p>Display content of non-semantic-files in the ECB-methods-buffer. See
 also <code>ecb-non-semantic-parsing-function</code>. 
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>rebuild-non-semantic-methods-before-hook</b><var><a name="index-rebuild_002dnon_002dsemantic_002dmethods_002dbefore_002dhook-324"></a></var><br>
+&mdash; User Option: <b>rebuild-non-semantic-methods-before-hook</b><var><a name="index-rebuild_002dnon_002dsemantic_002dmethods_002dbefore_002dhook-341"></a></var><br>
 <blockquote><p>Hook running at beginning of the function
 <code>ecb-rebuild-methods-buffer-for-non-semantic</code>. This function is
 always called by the command <code>ecb-rebuild-methods-buffer</code> for not

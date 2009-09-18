@@ -1,4 +1,9 @@
 (defconst use-backup-dir t)
+(setenv "JAVA_HOME" "/System/Library/Frameworks/JavaVM.framework/Versions/1.5")
+(setenv "JAVACMD" "/System/Library/Frameworks/JavaVM.framework/Versions/1.5/Home/bin/java")
+(setenv "PATH" (concat (getenv "PATH") ":/usr/local/git/bin:/opt/local/bin:" (expand-file-name "~/bin")))
+(push "/usr/local/git/bin" exec-path)
+(push (expand-file-name "~/bin") exec-path)
 
 (require 'auto-complete)
 (require 'appt)
@@ -82,7 +87,6 @@
 (setq appt-time-msg-list nil)
 (org-agenda-to-appt)
 
-
 (defadvice  org-agenda-redo (after org-agenda-redo-add-appts)
   "Pressing `r' on the agenda will also add appointments."
   (progn
@@ -98,16 +102,16 @@
     (call-process "/home/james/bin/popup.py" nil 0 nil min-to-app msg new-time)))
 
 ;; Webjumps
-(setq webjump-sites
-      (append '(
-                ("Reddit Search" .
-                 [simple-query "www.reddit.com" "http://www.reddit.com/search?q=" ""])
-                ("Google Image Search" .
-                 [simple-query "images.google.com" "images.google.com/images?hl=en&q=" ""])
-                ("Flickr Search" .
-                 [simple-query "www.flickr.com" "flickr.com/search/?q=" ""])
-                )
-              webjump-sample-sites))
+;; (setq webjump-sites
+;;       (append '(
+;;                 ("Reddit Search" .
+;;                  [simple-query "www.reddit.com" "http://www.reddit.com/search?q=" ""])
+;;                 ("Google Image Search" .
+;;                  [simple-query "images.google.com" "images.google.com/images?hl=en&q=" ""])
+;;                 ("Flickr Search" .
+;;                  [simple-query "www.flickr.com" "flickr.com/search/?q=" ""])
+;;                 )
+;;               webjump-sample-sites))
 ;; BBDB
 (bbdb-initialize 'gnus 'message 'sendmail 'vm 'w3)
 (require 'bbdb-human-names)
@@ -127,7 +131,7 @@
 (add-hook 'bbdb-notice-hook 'bbdb-auto-notes-hook)
 (setq bbdb-auto-notes-alist '(("X-ML-Name" (".*$" ML 0))))
 
-(load-library "wicked") ;; Stuff from wicked cool emacs for bbdb
+;; (load-library "wicked") ;; Stuff from wicked cool emacs for bbdb
 
 (setenv "PYTHONPATH" "$HOME/Programming/python")
 
@@ -144,7 +148,7 @@
           :visit-link planner-visit-link))))
 
 ;;; Wanderlust mail stuff
-(load-library "wanderlust-conf")
+;; (load-library "wanderlust-conf")
 
 (require 'emacs-goodies-el)
 
@@ -311,17 +315,17 @@ MANDATORY_MANPATH" "/usr/share/man" "/usr/local/man")))
 (load-library "sacha")
 
 (require 'filecache)
-(require 'anything)
-(require 'anything-config)
+;; (require 'anything)
+;; (require 'anything-config)
 
-(setq anything-sources
-      (list anything-c-source-buffers+
-            anything-c-source-locate
-            anything-c-source-recentf   
-            anything-c-source-org-headline
-            anything-c-source-info-pages
-            anything-c-source-man-pages
-            anything-c-source-buffer-not-found))
+;; (setq anything-sources
+;;       (list anything-c-source-buffers+
+;;             anything-c-source-locate
+;;             anything-c-source-recentf   
+;;             anything-c-source-org-headline
+;;             anything-c-source-info-pages
+;;             anything-c-source-man-pages
+;;             anything-c-source-buffer-not-found))
 
 ;; Load stuff from M-x customize from a different file, to keep .emacs cleaner
 (setq custom-file (concat emacs-root "custom/custom.el"))

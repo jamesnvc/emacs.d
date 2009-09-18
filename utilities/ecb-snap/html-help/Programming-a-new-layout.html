@@ -3,7 +3,7 @@
 <title>Programming a new layout - ECB - the Emacs Code Browser</title>
 <meta http-equiv="Content-Type" content="text/html">
 <meta name="description" content="ECB - the Emacs Code Browser">
-<meta name="generator" content="makeinfo 4.13">
+<meta name="generator" content="makeinfo 4.8">
 <link title="Top" rel="start" href="ecb.html#Top">
 <link rel="up" href="The-layout_002dengine.html#The-layout_002dengine" title="The layout-engine">
 <link rel="prev" href="The-layout_002dengine.html#The-layout_002dengine" title="The layout-engine">
@@ -24,8 +24,8 @@
 </head>
 <body>
 <div class="node">
-<a name="Programming-a-new-layout"></a>
 <p>
+<a name="Programming-a-new-layout"></a>
 Next:&nbsp;<a rel="next" accesskey="n" href="Programming-special-windows.html#Programming-special-windows">Programming special windows</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="The-layout_002dengine.html#The-layout_002dengine">The layout-engine</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="The-layout_002dengine.html#The-layout_002dengine">The layout-engine</a>
@@ -53,7 +53,7 @@ macro <code>ecb-layout-define</code> (the following definition has stripped
 the prefix &ldquo;ecb-&rdquo; for better indexing this manual):
 
 <div class="defun">
-&mdash; Macro: <b>layout-define</b><var> name type doc &amp;rest create-code<a name="index-layout_002ddefine-349"></a></var><br>
+&mdash; Macro: <b>layout-define</b><var> name type doc &amp;rest create-code<a name="index-layout_002ddefine-365"></a></var><br>
 <blockquote><p>Creates a new ECB-layout with name <var>NAME</var>. <var>TYPE</var> is the type
 of the new layout and is literal, i.e. not evaluated. It can be left,
 right, top or left-right. <var>DOC</var> is the docstring for the new
@@ -102,23 +102,25 @@ one of the following functions:
 <li><code>ecb-set-methods-buffer</code>
 <li><code>ecb-set-history-buffer</code>
 <li><code>ecb-set-speedbar-buffer</code>
+<li><code>ecb-set-analyse-buffer</code>
+<li><code>ecb-set-symboldef-buffer</code>
 </ul>
           Each layout can only contain one of each tree-buffer-type!
 
           <p>In addition to these functions there is a general macro:
-<code>defecb-window-dedicator</code>: This macro defines a so called
-&ldquo;window-dedicator&rdquo; which is a function registered at ECB and called
-by ECB to perform any arbitrary code in current window and makes the
-window autom. dedicated at the end. This can be used by third party
-packages like JDEE to create arbitrary ECB-windows besides the
-standard tree-windows.
+<code>defecb-window-dedicator-to-ecb-buffer</code>: This macro defines a so called
+&ldquo;window-dedicator&rdquo; which is a function registered at ECB and called by ECB
+to perform any arbitrary code in current window and makes the window autom. 
+dedicated to the special ecb-buffer at the end. This can be used by third
+party packages like JDEE to create arbitrary ECB-windows besides the standard
+special ecb-windows.
 
-          <p>To make a special ECB-window a dedicated window either one of the five
+          <p>To make a special ECB-window a dedicated window either one of the seven
 functions above must be used or a new &ldquo;window-dedicator&rdquo;-function
-has to be defined with `defecb-window-dedicator' and must be used
+has to be defined with <code>defecb-window-dedicator-to-ecb-buffer</code> and must be used
 within the layout-definition.
 
-          <li>Every(!) special ECB-window must be dedicated as described in 2.
+          <li>Every(!) special ECB-window must be dedicated to a buffer as described in 2.
 
           <li><var>CREATE-CODE</var> must work correctly regardless if there is already a
 compile-window (stored in <code>ecb-compile-window</code>) or not
@@ -162,7 +164,7 @@ command <code>ecb-change-layout</code>.
 from the list of available layouts:
 
 <div class="defun">
-&mdash; Function: <b>layout-undefine</b><var> name<a name="index-layout_002dundefine-350"></a></var><br>
+&mdash; Function: <b>layout-undefine</b><var> name<a name="index-layout_002dundefine-366"></a></var><br>
 <blockquote><p>Unbind ecb-layout-function-&lt;NAME&gt; and
 ecb-delete-window-ecb-windows-&lt;NAME&gt; and remove <code>NAME</code> from
 <code>ecb-available-layouts</code>. 

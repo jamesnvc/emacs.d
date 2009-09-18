@@ -1,10 +1,10 @@
 ;;; autoconf-edit.el --- Keymap for autoconf
 
-;;  Copyright (C) 1998, 1999, 2000  Eric M. Ludlam
+;;  Copyright (C) 1998, 1999, 2000, 2009  Eric M. Ludlam
 
 ;; Author: Eric M. Ludlam <zappo@gnu.org>
 ;; Keywords: project
-;; RCS: $Id: autoconf-edit.el,v 1.8 2005/09/30 20:16:17 zappo Exp $
+;; RCS: $Id: autoconf-edit.el,v 1.11 2009/08/08 21:33:24 zappo Exp $
 
 ;; This software is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -43,7 +43,7 @@
   "dnl Process this file with autoconf to produce a configure script
 
 AC_INIT(%s)
-AM_INIT_AUTOMAKE(%s, 0)
+AM_INIT_AUTOMAKE([%s], 0)
 AM_CONFIG_HEADER(config.h)
 
 dnl End the configure script.
@@ -59,16 +59,18 @@ ROOTDIR is the root directory of a given autoconf controlled project.
 PROGRAM is the program to be configured.
 TESTFILE is the file used with AC_INIT.
 configure the initial configure script using `autoconf-new-automake-string'"
-  (interactive "dRoot Dir: \nsProgram: \nsTest File: ")
+  (interactive "DRoot Dir: \nsProgram: \nsTest File: ")
   (if (bufferp rootdir)
       (set-buffer rootdir)
-    (if (not (string-match "\\(/\\|\\\\)$" rootdir))
-	(setq rootdir (concat rootdir "/")))
-    (let ((cf (concat rootdir "configure.in")))
-      (if (and (file-exists-p cf)
-	       (not (y-or-n-p (format "File %s exists.  Start Over? " cf))))
+    (let ((cf1 (expand-file-name "configure.in" rootdir))
+	  (cf2 (expand-file-name "configure.ac" rootdir)))
+      (if (and (or (file-exists-p cf1) (file-exists-p cf2))
+	       (not (y-or-n-p (format "File %s exists.  Start Over? "
+				      (if (file-exists-p cf1)
+					  cf1 cf2)
+				      ))))
 	  (error "Quit"))
-      (find-file cf)))
+      (find-file cf2)))
   ;; Note, we only ask about overwrite if a string/path is specified.
   (erase-buffer)
   (insert (format autoconf-new-automake-string testfile program)))
@@ -172,6 +174,31 @@ items such as CHECK_HEADERS."
 	  (point))
       (goto-char op)
       nil)))
+
+(defun autoconf-parameter-strip (param)
+  "Strip the parameter PARAM  of whitespace and misc characters."
+  (when (string-match "^\\s-*\\[?\\s-*" param)
+    (setq param (substring param (match-end 0))))
+  (when (string-match "\\s-*\\]?\\s-*$" param)
+    (setq param (substring param 0  (match-beginning 0))))
+  param)
+
+;;;###autoload
+(defun autoconf-parameters-for-macro (macro)
+  "Retrieve the parameters to MACRO.
+Returns a list of the arguments passed into MACRO as strings."
+  (save-excursion
+    (when (autoconf-find-last-macro macro)
+      (forward-sexp 1)
+      (mapcar
+       #'autoconf-parameter-strip
+       (when (looking-at "(")
+	 (let* ((start (+ (point) 1))
+		(end (save-excursion
+		       (forward-sexp 1)
+		       (- (point) 1)))
+		(ans (buffer-substring-no-properties start end)))
+	   (split-string ans "," t)))))))
 
 (defun autoconf-position-for-macro (macro)
   "Position the cursor where a new MACRO could be inserted.

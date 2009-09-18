@@ -3,7 +3,7 @@
 <title>Using the mouse - ECB - the Emacs Code Browser</title>
 <meta http-equiv="Content-Type" content="text/html">
 <meta name="description" content="ECB - the Emacs Code Browser">
-<meta name="generator" content="makeinfo 4.13">
+<meta name="generator" content="makeinfo 4.8">
 <link title="Top" rel="start" href="ecb.html#Top">
 <link rel="up" href="Usage-of-ECB.html#Usage-of-ECB" title="Usage of ECB">
 <link rel="prev" href="Usage-of-ECB.html#Usage-of-ECB" title="Usage of ECB">
@@ -24,8 +24,8 @@
 </head>
 <body>
 <div class="node">
-<a name="Using-the-mouse"></a>
 <p>
+<a name="Using-the-mouse"></a>
 Next:&nbsp;<a rel="next" accesskey="n" href="Using-the-keyboard.html#Using-the-keyboard">Using the keyboard</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="Usage-of-ECB.html#Usage-of-ECB">Usage of ECB</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="Usage-of-ECB.html#Usage-of-ECB">Usage of ECB</a>
@@ -95,13 +95,15 @@ Narrowing to the clicked method/variable/ect... (see
 parsed by semantic, not by imenu or etags! 
 </ul>
 
-   <p>Per default the complete node-name of an item in a tree-buffer is
-displayed in the echo-area if the mouse moves over it, regardless if
-the related window is the active one or not. You get the same effect
-always after a POWER-click. In general: Via
-<code>ecb-show-node-info-in-minibuffer</code> you can specify in a detailed
-manner for every ECB tree-buffer when and which node-info should be
-displayed in the minibuffer.
+   <p>Per default the complete node-name of an item in a tree-buffer is displayed in
+the echo-area if the mouse moves over it, regardless if the related window is
+the active one or not. You get the same effect always after a POWER-click. In
+general: For each tree-buffer there is an option <code>ecb-*-show-node-info</code>
+(replace &ldquo;*&rdquo; with directories, sources, methods, history or analyse, e.g. 
+<code>ecb-directories-show-node-info</code> is the option for the
+ECB-directories-window.): you can specify in a detailed manner for the named
+ECB tree-buffer when and which node-info should be displayed in the
+minibuffer.
 
 <h4 class="subsection">6.1.3 The secondary mouse-button</h4>
 
@@ -174,7 +176,7 @@ the horizontal scrollbars.
 <h4>Footnotes</h4><p class="footnote"><small>[<a name="fn-1" href="#fnd-1">1</a>]</small> means mouse-2 while CTRL-key
 is pressed.</p>
 
-   <hr></div>
+   <p><hr></div>
 
    </body></html>
 

@@ -11,10 +11,11 @@
 (require 'css-mode)
 (require 'distel)
 (require 'erlang)
-(require 'ess-site) ;; R
+;; (require 'ess-site) ;; R
 (autoload 'flyspell-mode "flyspell" "On-the-fly spelling checker." t)
-(require 'gambit)
-(require 'gst-mode)
+;; (require 'gambit)
+;; (require 'gst-mode)
+(require 'haml-mode)
 (require 'haskell-doc)
 (require 'haskell-indent)
 (require 'haskell-mode)
@@ -33,11 +34,13 @@
 (require 'nxml-mode)
 (require 'paredit)
 (require 'php-mode)
-(require 'ipython)
-(require 'pymacs)
+;; (require 'ipython)
+;; (require 'pymacs)
 (require 'remember)
 (require 'ruby-electric)
 (require 'ruby-mode)
+(require 'rinari)
+(require 'sass-mode)
 (require 'scala-mode-auto)
 (require 'slime)
 (require 'smalltalk-mode)
@@ -77,22 +80,22 @@
 (require 'eassist)
 ;; gnu global support
 (require 'semanticdb-global)
-(semanticdb-enable-gnu-global-databases 'c-mode)
-(semanticdb-enable-gnu-global-databases 'c++-mode)
+;; (semanticdb-enable-gnu-global-databases 'c-mode)
+;; (semanticdb-enable-gnu-global-databases 'c++-mode)
 
-;; (require 'semantic-load)
+(require 'semantic-load)
 (autoload 'jde-mode "jde" nil t)
-
+(setq jde-build-function '(jde-ant-build))
 
 ;;; Pymacs
-(setenv "PYMACS_PYTHON" "python2.5")
-(autoload 'pymacs-apply "pymacs")
-(autoload 'pymacs-call "pymacs")
-(autoload 'pymacs-eval "pymacs" nil t)
-(autoload 'pymacs-exec "pymacs" nil t)
-(autoload 'pymacs-load "pymacs" nil t)
-
-(pymacs-load "ropemacs" "rope-")
+;; (setenv "PYMACS_PYTHON" "python2.5")
+;; (autoload 'pymacs-apply "pymacs")
+;; (autoload 'pymacs-call "pymacs")
+;; (autoload 'pymacs-eval "pymacs" nil t)
+;; (autoload 'pymacs-exec "pymacs" nil t)
+;; (autoload 'pymacs-load "pymacs" nil t)
+;; 
+;; (pymacs-load "ropemacs" "rope-")
 
 (display-battery-mode 1)
 (setq battery-update-interval 30)
@@ -156,9 +159,9 @@
  :ignore-case t
  :doc-spec '(("(ansicl)Symbol Index" nil nil nil)))
 ;;; Slime
-(setq sbcl-program "/home/james/bin/sbcl")
+(setq sbcl-program "/opt/local/bin/sbcl")
 (setq slime-lisp-implementations
-      `((sbcl (,sbcl-program  "--core" "/home/james/lib/sbcl/sbcl.core") :coding-system utf-8-unix)))
+      `((sbcl (,sbcl-program) :coding-system utf-8-unix)))
 (setq slime-backend (concat emacs-root "modes/slime/swank-loader.lisp"))
 (setq slime-use-autodoc-mode t)
 (setq slime-complete-symbol*-fancy t)

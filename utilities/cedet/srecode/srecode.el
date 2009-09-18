@@ -1,15 +1,15 @@
 ;;; srecode.el --- Semantic buffer evaluator.
 
-;;; Copyright (C) 2005, 2007, 2008 Eric M. Ludlam
+;;; Copyright (C) 2005, 2007, 2008, 2009 Eric M. Ludlam
 
 ;; Author: Eric M. Ludlam <zappo@gnu.org>
 ;; Keywords: codegeneration
-;; X-RCS: $Id: srecode.el,v 1.5 2008/12/30 22:35:12 zappo Exp $
+;; X-RCS: $Id: srecode.el,v 1.7 2009/08/30 16:44:55 zappo Exp $
 
 (eval-and-compile
   ;; Other package depend on this value at compile time via inversion.
 
-  (defvar srecode-version "0.1"
+  (defvar srecode-version "1.0pre7"
     "Current version of the Semantic Recoder.")
 
   )

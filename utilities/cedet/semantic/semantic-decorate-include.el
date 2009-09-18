@@ -3,7 +3,7 @@
 ;; Copyright (C) 2008, 2009 Eric M. Ludlam
 
 ;; Author: Eric M. Ludlam <eric@siege-engine.com>
-;; X-RCS: $Id: semantic-decorate-include.el,v 1.22 2009/01/29 00:04:03 zappo Exp $
+;; X-RCS: $Id: semantic-decorate-include.el,v 1.25 2009/07/12 14:26:57 zappo Exp $
 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
@@ -318,7 +318,9 @@ Argument EVENT is the mouse clicked event."
 	 (file (semantic-dependency-tag-file tag))
 	 (table (when file
 		  (semanticdb-file-table-object file t))))
-    (with-output-to-temp-buffer "*Help*"
+    (with-output-to-temp-buffer (help-buffer) ; "*Help*"
+      (help-setup-xref (list #'semantic-decoration-include-describe)
+		       (interactive-p))
       (princ "Include File: ")
       (princ (semantic-format-tag-name tag nil t))
       (princ "\n")
@@ -415,7 +417,9 @@ Argument EVENT is the mouse clicked event."
   (interactive)
   (let ((tag (semantic-current-tag))
 	(mm major-mode))
-    (with-output-to-temp-buffer "*Help*"
+    (with-output-to-temp-buffer (help-buffer) ; "*Help*"
+      (help-setup-xref (list #'semantic-decoration-unknown-include-describe)
+		       (interactive-p))
       (princ "Include File: ")
       (princ (semantic-format-tag-name tag nil t))
       (princ "\n\n")
@@ -495,7 +499,10 @@ Argument EVENT describes the event that caused this function to be called."
 Argument EVENT is the mouse clicked event."
   (interactive)
   (let ((tag (semantic-current-tag)))
-    (with-output-to-temp-buffer "*Help*"
+    (with-output-to-temp-buffer (help-buffer); "*Help*"
+      (help-setup-xref (list #'semantic-decoration-unparsed-include-describe)
+		       (interactive-p))
+
       (princ "Include File: ")
       (princ (semantic-format-tag-name tag nil t))
       (princ "\n")
@@ -573,7 +580,10 @@ Argument EVENT describes the event that caused this function to be called."
 	 (tags (semantic-fetch-tags))
 	 (inc (semantic-find-tags-by-class 'include table))
 	 )
-    (with-output-to-temp-buffer "*Help*"
+    (with-output-to-temp-buffer (help-buffer) ;"*Help*"
+      (help-setup-xref (list #'semantic-decoration-all-include-summary)
+		       (interactive-p))
+
       (princ "Include Summary for File: ")
       (princ (file-truename (buffer-file-name)))
       (princ "\n")
@@ -617,13 +627,22 @@ Argument EVENT describes the event that caused this function to be called."
 	(when (not (eq ede-object ede-object-project))
 	  (princ "    Buffer Project: ")
 	  (princ (object-print ede-object-project))
-	  (princ "\n"))
+	  (princ "\n")
+	  )
 	(when ede-object-project
 	  (let ((loc (ede-get-locator-object ede-object-project)))
-	    (princ "    Backup Locator: ")
+	    (princ "    Backup in-project Locator: ")
 	    (princ (object-print loc))
 	    (princ "\n")))
-	)
+	(let ((syspath (ede-system-include-path ede-object-project)))
+	  (if (not syspath)
+	      (princ "    EDE Project system include path: Empty\n")
+	    (princ "    EDE Project system include path:\n")
+	    (dolist (dir syspath)
+	      (princ "        ")
+	      (princ dir)
+	      (princ "\n"))
+	    )))
 
       (princ "\n  This file's system include path is:\n")
       (dolist (dir semantic-dependency-system-include-path)

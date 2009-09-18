@@ -3,7 +3,7 @@
 ;; Copyright (C) 2008, 2009 Eric M. Ludlam
 
 ;; Author: Eric M. Ludlam <eric@siege-engine.com>
-;; X-RCS: $Id: cedet-build.el,v 1.8 2009/02/05 01:30:16 zappo Exp $
+;; X-RCS: $Id: cedet-build.el,v 1.11 2009/07/01 02:15:05 zappo Exp $
 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
@@ -36,6 +36,10 @@
 ;;       or, if -Q isn't supported
 ;;
 ;;     emacs -q --no-site-file -l cedet-build.el -f cedet-build
+;;
+;;       or, if you have minimal make available, this is in the Makefile
+;;
+;;     make ebuild
 ;;
 ;;   or
 ;;
@@ -173,7 +177,7 @@ OVERRIDE-CHECK to override cedet short-cicuit."
       (set-buffer buf)
       (insert-file-contents "Makefile" nil)
       (goto-char (point-min))
-      (re-search-forward "CEDET_PACKAGES\\s-*=\\s-*\\\\\n")
+      (re-search-forward "CEDET_ELISP_PACKAGES\\s-*=\\s-*\\\\\n")
       (while (looking-at "\\(\\w+\\)\\s-*\\\\?\n")
 	(setq subdirs (cons (buffer-substring-no-properties
 			     (match-beginning 1) (match-end 1))
@@ -218,8 +222,8 @@ OVERRIDE-CHECK to override cedet short-cicuit."
 				     (car ans) (cdr ans))
 		  (cedet-build-msg "done.\n"))
 		))
-	    )))
-      )))
+	    ))))
+    (cedet-build-msg "\n\nDone.\n")))
 
 
 (provide 'cedet-build)

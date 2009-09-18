@@ -9,7 +9,6 @@
 ;;         Klaus Berndl <klaus.berndl@sdm.de>
 ;;         Kevin A. Burton <burton@openprivacy.org>
 ;; Maintainer: Klaus Berndl <klaus.berndl@sdm.de>
-;;             Kevin A. Burton <burton@openprivacy.org>
 ;; Keywords: browser, code, programming, tools
 ;; Created: 2000
 
@@ -26,7 +25,7 @@
 ;; GNU Emacs; see the file COPYING.  If not, write to the Free Software
 ;; Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-;; $Id: ecb-util.el,v 1.139 2007/07/08 16:42:04 berndl Exp $
+;; $Id: ecb-util.el,v 1.162 2009/06/26 11:30:57 berndl Exp $
 
 ;;; Commentary:
 ;;
@@ -50,6 +49,7 @@
 ;;; ----- Silentcomp-Defs ----------------------------------
 
 ;; XEmacs
+(silentcomp-defun symbol-value-in-buffer)
 (silentcomp-defun button-release-event-p)
 (silentcomp-defun button-press-event-p)
 (silentcomp-defun event-key)
@@ -69,6 +69,7 @@
 (silentcomp-defun posn-point)
 (silentcomp-defun posn-window)
 (silentcomp-defun event-start)
+(silentcomp-defun set-window-vscroll)
 ;; XEmacs
 (silentcomp-defun make-dialog-box)
 (silentcomp-defun display-message)
@@ -81,6 +82,8 @@
 (silentcomp-defun display-images-p)
 (silentcomp-defvar tar-subfile-mode)
 (silentcomp-defvar archive-subfile-mode)
+(silentcomp-defun count-screen-lines)
+(silentcomp-defvar header-line-format)
 
 ;; timer stuff for Xemacs
 (silentcomp-defun delete-itimer)
@@ -94,17 +97,22 @@
 ;;; ----- Some constants -----------------------------------
 
 ;;;###autoload
-;;(defconst ecb-running-xemacs (string-match "XEmacs\\|Lucid" emacs-version))
 (defconst ecb-running-xemacs (featurep 'xemacs))
+
+(defconst ecb-running-gnu-emacs (not ecb-running-xemacs))
 
 (defconst ecb-running-unsupported-emacs (condition-case nil
                                             (<= emacs-major-version 20)
                                           (error t))
-  "True if running XEmacs or Emacs < 21.")
+  "True if running XEmacs or Gnu Emacs < 21.")
 
-(defconst ecb-running-version-22 (and (not ecb-running-unsupported-emacs)
-                                      (>= emacs-major-version 22))
-  "True if running \(X)Emacs >= version 22")
+(defconst ecb-running-gnu-emacs-version-22 (and ecb-running-gnu-emacs
+                                                (>= emacs-major-version 22))
+  "True if running Gnu Emacs >= version 22")
+
+(defconst ecb-running-gnu-emacs-version-23 (and ecb-running-gnu-emacs
+                                                (>= emacs-major-version 23))
+  "True if running Gnu Emacs >= version 23")
 
 (defconst ecb-temp-dir
   (file-name-as-directory
@@ -127,18 +135,28 @@
   (and ecb-running-xemacs
        (file-exists-p (expand-file-name (concat ecb-ecb-dir "_pkg.el")))
        (file-exists-p (expand-file-name (concat ecb-ecb-dir "auto-autoloads.el")))))
-(defconst ecb-semantic-regular-xemacs-package-p
-  (and ecb-running-xemacs
-       ecb-semantic-dir
-       (file-exists-p (expand-file-name (concat ecb-semantic-dir "_pkg.el")))
-       (file-exists-p (expand-file-name (concat ecb-semantic-dir "auto-autoloads.el")))))
 
-(defconst ecb-images-can-be-used
-  (and (or (fboundp 'defimage)
-           (fboundp 'make-image-specifier))
-       (if (fboundp 'display-images-p)
-           (display-images-p)
-         window-system)))
+;; image support possible with current Emacs setup?
+;; This will first checked at activation-time of ECB because otherwise usage
+;; of emacs --deamon could fail...
+
+(defvar ecb-images-can-be-used nil
+  "INTERNAL - DO NOT USE AND CHANGE!")
+(defvar ecb-images-can-be-used-init-p nil
+  "INTERNAL - DO NOT USE AND CHANGE!")
+
+(defun ecb-images-can-be-used ()
+  "Not nil if images can be used with current Emacs setup."
+  (if ecb-images-can-be-used-init-p
+      ecb-images-can-be-used
+    (setq ecb-images-can-be-used-init-p t)
+    (setq ecb-images-can-be-used
+          (and (or (fboundp 'defimage)
+                   (fboundp 'make-image-specifier))
+               (if (fboundp 'display-images-p)
+                   (display-images-p)
+                 window-system)))))
+
 
 ;;; ----- Tracing ------------------------------------------
 
@@ -156,10 +174,24 @@ want the BODY being parsed by semantic!. If not use the variable
      ,@body))
 
 (defmacro when-ecb-running-emacs (&rest body)
-  "Evaluates BODY when `ecb-running-xemacs' is false. Use this macro when you
-want the BODY being parsed by semantic!. If not use the form
-\(unless ecb-running-xemacs)."
-  `(unless ecb-running-xemacs
+  "Evaluates BODY when `ecb-running-gnu-emacs' is false. Use this
+macro when you want the BODY being parsed by semantic!. If not
+use the form \(unless ecb-running-xemacs)."
+  `(when ecb-running-gnu-emacs
+     ,@body))
+
+(defmacro when-ecb-running-emacs-22 (&rest body)
+  "Evaluates BODY when `ecb-running-gnu-emacs-version-22' is
+true. Use this macro when you want the BODY being parsed by
+semantic!. If not use the form \(when ecb-running-gnu-emacs-version-22)."
+  `(when ecb-running-gnu-emacs-version-22
+     ,@body))
+
+(defmacro when-ecb-running-emacs-23 (&rest body)
+  "Evaluates BODY when `ecb-running-gnu-emacs-version-23' is
+true. Use this macro when you want the BODY being parsed by
+semantic!. If not use the form \(when ecb-running-gnu-emacs-version-23)."
+  `(when ecb-running-gnu-emacs-version-23
      ,@body))
 
 ;; I do not want all this compatibitly stuff being parsed by semantic,
@@ -190,6 +222,13 @@ Unless optional argument INPLACE is non-nil, return a new string."
         (if (eq (aref newstr i) fromchar)
             (aset newstr i tochar)))
       newstr))
+  (defun ecb-substring-no-properties (string &optional start end)
+    (let* ((start (or start 0))
+           (end (or end (length string)))
+           (string (substring string start end)))
+      (set-text-properties start end nil string)
+      string))
+    
   (defun ecb-derived-mode-p (&rest modes)
     "Non-nil if the current major mode is derived from one of MODES.
 Uses the `derived-mode-parent' property of the symbol to trace backwards."
@@ -197,8 +236,16 @@ Uses the `derived-mode-parent' property of the symbol to trace backwards."
       (while (and (not (memq parent modes))
                   (setq parent (get parent 'derived-mode-parent))))
       parent))
+  (defsubst ecb-count-screen-lines (&optional beg end)
+    (let ((b (or beg (point-min)))
+          (e (or end (point-max))))
+      (count-lines b e)))
   (defalias 'ecb-frame-parameter 'frame-property)
   (defalias 'ecb-line-beginning-pos 'point-at-bol)
+  (defalias 'ecb-bolp 'bolp)
+  (defalias 'ecb-eolp 'eolp)
+  (defalias 'ecb-bobp 'bobp)
+  (defalias 'ecb-eobp 'eobp)
   (defalias 'ecb-line-end-pos 'point-at-eol)
   (defalias 'ecb-event-window 'event-window)
   (defalias 'ecb-event-point 'event-point)
@@ -229,10 +276,17 @@ Uses the `derived-mode-parent' property of the symbol to trace backwards."
     "Return non-nil if running non-interactively, i.e. in batch mode."
     noninteractive)
   (defalias 'ecb-subst-char-in-string 'subst-char-in-string)
+  (defalias 'ecb-substring-no-properties 'substring-no-properties)
   (defalias 'ecb-derived-mode-p 'derived-mode-p)
+  (defsubst ecb-count-screen-lines (&optional beg end)
+    (count-screen-lines beg end))
   (defalias 'ecb-frame-parameter 'frame-parameter)
   (defalias 'ecb-line-beginning-pos 'line-beginning-position)
   (defalias 'ecb-line-end-pos 'line-end-position)
+  (defalias 'ecb-bolp 'bolp)
+  (defalias 'ecb-eolp 'eolp)
+  (defalias 'ecb-bobp 'bobp)
+  (defalias 'ecb-eobp 'eobp)
   (defun ecb-event-window (event)
     (posn-window (event-start event)))
   (defun ecb-event-point (event)
@@ -277,13 +331,17 @@ Uses the `derived-mode-parent' property of the symbol to trace backwards."
 (if (not ecb-running-xemacs)
     (progn
       (defalias 'ecb-make-overlay            'make-overlay)
+      (defalias 'ecb-overlay-p               'overlayp)
       (defalias 'ecb-overlay-put             'overlay-put)
+      (defalias 'ecb-overlay-get             'overlay-get)
       (defalias 'ecb-overlay-move            'move-overlay)
       (defalias 'ecb-overlay-delete          'delete-overlay)
       (defalias 'ecb-overlay-kill            'delete-overlay))
   ;; XEmacs
   (defalias 'ecb-make-overlay            'make-extent)
+  (defalias 'ecb-overlay-p               'extentp)
   (defalias 'ecb-overlay-put             'set-extent-property)
+  (defalias 'ecb-overlay-get             'extent-property)
   (defalias 'ecb-overlay-move            'set-extent-endpoints)
   (defalias 'ecb-overlay-delete          'detach-extent)
   (defalias 'ecb-overlay-kill            'delete-extent))
@@ -306,200 +364,6 @@ Uses the `derived-mode-parent' property of the symbol to trace backwards."
   (defun ecb-cancel-timer (timer)
     (delete-itimer timer))
   )
-
-;;; ----- advice stuff -------------------------------------
-
-(defvar ecb-adviced-function-sets nil
-  "A list of adviced-function sets defined with `defecb-advice-set'.
-Each element is a cons-cell where car is the advice-set-var and cdr is an
-indicator if the caller of `ecb-with-original-adviced-function-set' is the
-outmost caller.
-
-DO NOT CHANGE THIS!")
-
-(defvar ecb-adviced-functions nil
-  "A list of all advices defined with `defecb-advice'.
-This list is the set union of the values of all function-sets of
-`ecb-adviced-function-sets'.
-
-DO NOT CHANGE THIS!")
-
-(defmacro defecb-advice-set (advice-set docstring)
-  "Defines an advice-set for ECB.
-This defines a variable which will contain adviced functions defined by
-`defecb-advice-set'. This is a set of advices which can be enabled or disabled
-\"en block\" which must be done either by `ecb-enable-advices',
-`ecb-disable-advices' or `ecb-with-original-adviced-function-set'.
-
-Before defining a new advice-set it's recommended to take a look at the value
-of `ecb-adviced-function-sets' if there is already a suitable advice-set.
-
-IMPORTANT: Each advice in ECB must be defined by `defecb-advice' and must
-belong to an advice-set previously defined by `defecb-advice-set'!
-
-All advice-sets of ECB will be automatically\(!) disabled at load-time of the
-ecb-library and at deactivation-time of ECB. But: Enabling of a certain
-advice-set must be done appropriately.
-
-Example:
-
-\(defecb-advice-set ecb-always-disabled-advices
-  \"These advices are always disabled.\")"
-  `(eval-and-compile
-     (add-to-list 'ecb-adviced-function-sets (cons (quote ,advice-set), nil))
-     (defvar ,advice-set nil ,docstring)))
-
-(put 'defecb-advice-set 'lisp-indent-function 1)
-
-(defmacro defecb-advice (adviced-function advice-class advice-set advice-docstring &rest body)
-  "Defines an advice for ADVICED-FUNCTION with ADVICE-CLASS for ADVICE-SET.
-ADVICED-FUNCTION must be an advicable object \(e.g. a function, a subr
-etc...). ADVICE-CLASS must be one of around, after or before. ADVICE-SET must
-ba an advice-set previously defined by `defecb-advice-set'. ADVICE-DOCSTRING
-ist the docstring for the advice. BODY is the program-code for the advice as
-it would be written with `defadvice'.
-
-Do not quote ADVICED-FUNCTION, ADVICE-CLASS and ADVICE-SET.
-
-Example:
-
-\(defecb-advice delete-frame around ecb-basic-adviced-functions
-  \"If FRAME is equal to the ECB frame then...\"
-  \(let \(\(frame \(or \(ad-get-arg 0) \(selected-frame))))
-    \(if \(and ecb-minor-mode
-             \(equal frame ecb-frame))
-        \(when \(ecb-confirm \"Attempt to delete the ECB-frame....Proceed? \")
-	  \(ecb-deactivate-internal) 
-	  ad-do-it)
-      ad-do-it)))"
-  `(progn
-     (if (assoc (quote ,advice-set) ecb-adviced-function-sets)
-         (add-to-list (quote ,advice-set)
-                      (cons (quote ,adviced-function) (quote ,advice-class)))
-       (error "The advice-set %s does not exist!"
-              (symbol-name (quote ,advice-set))))
-     (if (not (member (quote ,advice-class)
-                      '(around after before)))
-         (error "The advice-class %s is not allowed - only around, after and before!"
-                (symbol-name (quote ,advice-class))))
-     (add-to-list 'ecb-adviced-functions (cons (quote ,adviced-function) (quote ,advice-class)))
-     (eval-and-compile
-       (defadvice ,adviced-function (,advice-class ecb)
-         ,advice-docstring
-         ,@body))))
-
-(put 'defecb-advice 'lisp-indent-function 3)
-
-(defun ecb-enable-ecb-advice (function-symbol advice-class arg)
-  "If ARG is greater or equal zero then enable the adviced version of
-FUNCTION-SYMBOL. Otherwise disable the adviced version. The advice must be
-defined with class ADVICE-CLASS by `defecb-advice'.
-
-IMPORTANT: Do not use the function directly. Always use `ecb-enable-advices',
-ecb-disable-advices or `ecb-with-original-adviced-function-set'!."
-  (if (< arg 0)
-      (progn
-        (ad-disable-advice function-symbol advice-class 'ecb)
-        (ad-activate function-symbol))
-    (ad-enable-advice function-symbol advice-class 'ecb)
-    (ad-activate function-symbol)))
-
-(defun ecb-enable-advices (adviced-function-set-var)
-  "Enable all advices of ADVICED-FUNCTION-SET-VAR, which must be defined by
-`defecb-advice-set'."
-  (if (eq adviced-function-set-var 'ecb-always-disabled-advices)
-      (error "The advice-set ecb-always-disabled-advices must not be enabled!"))
-  (if (not (assq adviced-function-set-var ecb-adviced-function-sets))
-      (error "The adviced function set %s is not defined by defecb-advice-set!"
-             (symbol-name adviced-function-set-var)))
-  (dolist (elem (symbol-value adviced-function-set-var))
-    (ecb-enable-ecb-advice (car elem) (cdr elem) 1)))
-  
-(defun ecb-disable-advices (adviced-function-set-var)
-  "Disable all advices of ADVICED-FUNCTION-SET-VAR, which must be defined by
-`defecb-advice-set'"
-  (if (not (assq adviced-function-set-var ecb-adviced-function-sets))
-      (error "The adviced function set %s is not defined by defecb-advice-set!"
-             (symbol-name adviced-function-set-var)))
-  (dolist (elem (symbol-value adviced-function-set-var))
-    (ecb-enable-ecb-advice (car elem) (cdr elem) -1)))
-
-;; TODO: Klaus Berndl <klaus.berndl@sdm.de>: Generally we have here the same
-;; problem as we had for `ecb-with-original-adviced-function-set' concerning
-;; nested calls. But for now we do nothing because...
-(defmacro ecb-with-ecb-advice (function-symbol advice-class &rest body)
-  "Evaluates BODY with the adviced version of FUNCTION-SYMBOL. The advice must
-be defined by `defecb-advice' with class ADVICE-CLASS for the advice-set
-`ecb-always-disabled-advices'. Otherwise an error occurs. The advice is only
-active during BODY. BODY is protected by `unwind-protect' so in each
-case the advice will be disabled after finishing this macro.
-Returns the value of BODY.
-
-Example where this macro is used for `walk-windows' within another advice:
-
-\(ecb-with-ecb-advice 'walk-windows 'around
-   ad-do-it)"
-  `(progn
-     (if (not (member (cons ,function-symbol ,advice-class)
-                      ecb-always-disabled-advices))
-         (error "Advice for %s with class %s not registered in ecb-always-disabled-advices!"
-                (symbol-name ,function-symbol)
-                (symbol-name ,advice-class)))
-     (unwind-protect
-         (progn
-           (ecb-enable-ecb-advice ,function-symbol ,advice-class 1)
-           ,@body)
-       (ecb-enable-ecb-advice ,function-symbol ,advice-class -1))))
-
-(put 'ecb-with-ecb-advice 'lisp-indent-function 2)
-
-(defmacro ecb-with-original-adviced-function-set (adviced-function-set-var &rest body)
-  "Evaluates BODY with all adviced functions of ADVICED-FUNCTION-SET-VAR
-being disabled \(means with their original definition). Restores always \(even
-if an error occurs during evaluating BODY) the previous state of the adviced
-functions, means it depends if the call to this macro is the outermost call:
-Only if it is the outermost-call the advices of the used advice-set will be
-disabled after finishing. So full BODY is guaranted being evaluated with
-disabled advices of ADVICED-FUNCTION-SET-VAR.
-
-ADVICED-FUNCTION-SET-VAR must be defined by `defecb-advice-set' and all
-advices of this set must be defined by `defecb-advice'. Otherwise an error
-occurs.
-
-Example:
-
-\(ecb-with-original-adviced-function-set 'ecb-basic-adviced-functions
-   \(do-something..))"
-  (let ((outmost-caller-p (make-symbol "outmost-caller-p")))
-    `(let ((,outmost-caller-p 
-            (unless (equal (cdr (assq ,adviced-function-set-var ecb-adviced-function-sets))
-                           'outmost-caller)
-              ;; if we are the outmost caller of this macro we store this
-              ;; for
-              ;; a) following callers
-              ;; b) ourself, so we can later reset is
-              (setcdr (assq ,adviced-function-set-var ecb-adviced-function-sets) 'outmost-caller))
-            ))
-       (unwind-protect
-           (progn
-             (when ,outmost-caller-p
-               (ecb-disable-advices ,adviced-function-set-var))
-             ,@body)
-         (when ,outmost-caller-p
-           ;; Only if we are the outmost caller we are allowed to re-enable the
-           ;; disabled advice-set
-           (setcdr (assq ,adviced-function-set-var ecb-adviced-function-sets) nil)
-           (ecb-enable-advices ,adviced-function-set-var))))))
-
-
-(put 'ecb-with-original-adviced-function-set 'lisp-indent-function 1)
-
-(defecb-advice-set ecb-always-disabled-advices
-  "These advices are always disabled.
-This advice-set can notbe enabled by `ecb-enable-advices' but such an
-advice has to be activated 'on demand' by the caller. Such an advice must be
-used with the macro `ecb-with-ecb-advice'.")
-
 
 
 ;;; ----- Customize stuff ----------------------------------
@@ -587,20 +451,23 @@ The elements of the list are not copied, just the list structure itself."
           (prog1 (nreverse res) (setcdr res list)))
       (car list))))
 
-(defun ecb-set-difference (list1 list2)
+(defun ecb-set-difference (list1 list2 &optional test-fcn)
   "Combine LIST1 and LIST2 using a set-difference operation.
 The result list contains all items that appear in LIST1 but not LIST2.
 This is a non-destructive function; it makes a copy of the data if necessary
-to avoid corrupting the original LIST1 and LIST2."
+to avoid corrupting the original LIST1 and LIST2.
+If TEST-FCN is not nil then it must be a function which is used to check if an
+item of LIST1 is an element of LIST2. If TEST-FCN is nil then `memq' is used."
   (if (or (null list1) (null list2)) list1
     (let ((res nil))
       (while list1
-        (or (if (numberp (car list1))
-                (apply 'ecb-member (car list1) list2)
+        (or (if test-fcn
+                (funcall test-fcn (car list1) list2)
               (memq (car list1) list2))
             (push (car list1) res))
         (pop list1))
       res)))
+
 
 (defun ecb-member (item list &optional test-fcn)
   "Find the first occurrence of ITEM in LIST.
@@ -759,25 +626,105 @@ returned."
                    (length list))
               list))))
 
+(defun ecb-aggregate-alist (alist same-predicate sort-predicate)
+  "Return ALIST as a sorted, aggregated alist.
+
+In the result all items with the same car element (according to
+SAME-PREDICATE) are aggregated together.  The alist is first sorted by
+SORT-PREDICATE which is called with two items of the alist and has to return
+not nil if item1 should be precede item2.
+
+Please note: SAME-PREDICATE gets the car of an item as argument, whereas
+SORT-PREDICATE gets two complete items as arguments!
+
+Example:
+\(ecb-aggregate-alist
+ '((a . a1) (a . a2) (b . b1) (c . c3) (a . a4) (a . a3) (b . b3) (b . b2))
+ (function string=)
+ (lambda (item1 item2)
+   (string< (symbol-name (car item1)) (symbol-name (car item2)))))
+results in
+\((a a1 a2 a4 a3) (b b1 b3 b2) (c c3))"
+  (when (not (null alist))
+    (let (same
+	  tmp-old-car
+	  tmp-same
+	  (first-time-p t)
+	  old-car)
+      (nconc
+       (apply #'nconc
+	      (mapcar
+	       (lambda (item)
+		 (cond
+		  (first-time-p
+		   (push (cdr item) same)
+		   (setq first-time-p nil)
+		   (setq old-car (car item))
+		   nil)
+		  ((funcall same-predicate (car item) old-car)
+		   (push (cdr item) same)
+		   nil)
+		  (t
+		   (setq tmp-same same
+			 tmp-old-car old-car)
+		   (setq same (list (cdr item))
+			 old-car (car item))
+		   (list (cons tmp-old-car (nreverse tmp-same))))))
+	       (sort alist (lambda (item1 item2)
+			     (funcall sort-predicate
+                                      item1 item2)))))
+       (list (cons old-car (nreverse same)))))))
+
+;; test
+;; (ecb-aggregate-alist
+;;  '((a . a1) (a . a2) (b . b1) (c . c3) (a . a4) (a . a3) (b . b3) (b . b2))
+;;  'string=
+;;  (lambda (item1 item2)
+;;    (if (string= (car item1) (car item2))
+;;        (string< (symbol-name (cdr item1)) (symbol-name (cdr item2)))
+;;      (string< (car item1) (car item2)))))
+
+(defun ecb-values-of-symbol/value-list (list &optional elem-accessor)
+  "Return a list of values build from the members of LIST.
+The result-list is a list which is build from LIST by using the
+symbol-value if a list-member is a symbol and otherwise the
+list-member itself.
+
+If ELEM-ACCESSOR is a function then it is used to get that part of an elem
+of LIST for which the rule above should be applied."
+  (let ((elem-acc (or elem-accessor 'identity)))
+    (mapcar (function (lambda (elem)
+                        (let ((e (funcall elem-acc elem)))
+                          (if (symbolp e)
+                              (symbol-value e)
+                            e))))
+            list)))
+
 ;; Maybe we should enhance this docstring ;-)
 (defun ecb-member-of-symbol/value-list (value list &optional elem-accessor
-                                              return-accessor)
+                                              return-accessor compare-fcn)
   "Returns not nil when VALUE is a member of that list which is build from
 LIST by using the symbol-value if a list-member is a symbol and otherwise the
 list-member itself. If a member then the matching elem of LIST is returned.
-But if ELEM-ACCESSOR is a function then it is used to get that part of a elem
+
+Per default comparison between VALUE and such a list-elem is done by `equal'
+unless third optional argument COMPARE-FCN is not nil: Then this function is
+used.
+
+If ELEM-ACCESSOR is a function then it is used to get that part of an elem
 of LIST for which the rule above should be applied. If RETURN-ACCESSOR is a
 function then it is used to get that part of that list-elem which is equal
 according to the rules above."
   (let ((elem-acc (or elem-accessor 'identity))
-        (return-acc (or return-accessor 'identity)))
+        (return-acc (or return-accessor 'identity))
+        (cmp-fcn (or compare-fcn 'equal)))
     (catch 'exit
       (dolist (elem list)
         (let ((case-fold-search t)
               (e (funcall elem-acc elem)))
-          (if (equal value (if (symbolp e)
-                               (symbol-value e)
-                             e))
+          (if (funcall cmp-fcn value (if (symbolp e)
+                                         (symbol-value e)
+                                       e))
               (throw 'exit (funcall return-acc elem)))
           nil)))))
 
@@ -1395,14 +1342,18 @@ should stopped but no debugging is senseful."
 
 ;;; ----- Text and string-stuff ----------------------------
 
-(defun ecb-merge-face-into-text (text face)
-  "Merge FACE to the already precolored TEXT so the values of all
-face-attributes of FACE take effect and but the values of all face-attributes
-of TEXT which are not set by FACE are preserved."
+(defun ecb-merge-face (face start end &optional text)
+  "Merge FACE either to a buffer-part or to TEXT.
+In both cases START and END define the region which should be
+faced. The FACE is merged, i.e. the values of all face-attributes
+of FACE take effect and the values of all face-attributes of the
+buffer-part or TEXT which are not set by FACE are preserved.
+
+If always returns TEXT \(if not nil then modified with FACE)."
   (if (null face)
       text
     (if ecb-running-xemacs
-        (put-text-property 0 (length text) 'face
+        (put-text-property start end 'face
                            (let* ((current-face (get-text-property 0
                                                                    'face
                                                                    text))
@@ -1418,9 +1369,13 @@ of TEXT which are not set by FACE are preserved."
                                      (otherwise nil))))
                              ;; we must add the new-face in front of
                              ;; current-face to get the right merge!
-                             (append nf cf))
+                             (if (member face cf)
+                                 cf
+                               (append nf cf)
+                               )
+                             )
                            text)
-      (alter-text-property 0 (length text) 'face
+      (alter-text-property start end 'face
                            (lambda (current-face)
                              (let ((cf
                                     (typecase current-face
@@ -1434,9 +1389,20 @@ of TEXT which are not set by FACE are preserved."
                                       (otherwise nil))))
                                ;; we must add the new-face in front of
                                ;; current-face to get the right merge!
-                               (append nf cf)))
+                               (if (member face cf)
+                                   cf
+                                 (append nf cf))))
                            text))
     text))
+
+(defun ecb-merge-face-into-text (text face)
+  "Merge FACE to the already precolored TEXT so the values of all
+face-attributes of FACE take effect and but the values of all face-attributes
+of TEXT which are not set by FACE are preserved.
+If FACE or TEXT is nil then simply original TEXT is returned."
+  (if (or (null face) (null text))
+      text
+    (ecb-merge-face face 0 (length text) text)))
 
 (if (fboundp 'compare-strings)
     (defalias 'ecb-compare-strings 'compare-strings)
@@ -1562,9 +1528,6 @@ then an empty string is returned because stripping makes no sense here."
 ;; ECB has thrown away all code which is not needed by ECB
 ;; The original code is written by Eric M. Ludlam <zappo@gnu.org>
 
-;; we need this here so we are independent of the semantic-package so we can
-;; download eieio and semantic even if the user has not installed any version
-;; of semantic.
 
 ;; Variables used in stages
 (defvar ecb-working-message nil
@@ -1684,6 +1647,18 @@ It returns the exit-status of the called PROGRAM."
   "Return the current line-number - the first line in a buffer has number 1."
   (+ (count-lines 1 (point)) (if (= (current-column) 0) 1 0)))
 
+(defun ecb-goto-line (line)
+  "Goto LINE, counting from line 1 at beginning of buffer.
+
+This function doesn't set the mark."
+  ;; Move to the specified line number in that buffer.
+  (save-restriction
+    (widen)
+    (goto-char 1)
+    (if (eq selective-display t)
+        (re-search-forward "[\n\C-m]" nil 'end (1- line))
+      (forward-line (1- line)))))
+
 (defmacro ecb-with-readonly-buffer (buffer &rest body)
   "Make buffer BUFFER current but do not display it. Evaluate BODY in buffer
 BUFFER \(not read-only an evaluation-time of BODY) and make afterwards BUFFER
@@ -1743,18 +1718,25 @@ or a buffer-object."
     (if (file-exists-p exp-file)
         (delete-file exp-file))))
 
-(defun ecb-buffer-name (buffer-or-name)
-  "Return the buffer-name of BUFFER-OR-NAME."
-  (typecase buffer-or-name
-    (string buffer-or-name)
-    (buffer (buffer-name buffer-or-name))
+(defun ecb-buffer-name (buffer-or-window)
+  "Return the buffer-name of BUFFER-OR-WINDOW.
+BUFFER-OR-WINDOW can be a buffer-name, a buffer or a window. If a
+window then the name of the buffer curently displayed in this
+window is returned."
+  (typecase buffer-or-window
+    (string buffer-or-window)
+    (buffer (buffer-name buffer-or-window))
+    (window (buffer-name (window-buffer buffer-or-window)))
     (otherwise nil)))
 
-(defun ecb-buffer-obj (buffer-or-name)
-  "Return the buffer-object of BUFFER-OR-NAME."
-  (typecase buffer-or-name
-    (string (get-buffer buffer-or-name))
-    (buffer buffer-or-name)
+(defun ecb-buffer-obj (buffer-or-window)
+  "Return the buffer-object of BUFFER-OR-WINDOW.
+BUFFER-OR-WINDOW can be a buffer-name, a buffer or a window.
+If a window then the buffer curently displayed in this window is returned."
+  (typecase buffer-or-window
+    (string (get-buffer buffer-or-window))
+    (buffer buffer-or-window)
+    (window (window-buffer buffer-or-window))
     (otherwise nil)))
 
 (defun ecb-buffer-local-value (sym buffer)
@@ -1762,10 +1744,12 @@ or a buffer-object."
 buffer-local value in BUFFER then the global value of SYM is used."
   (if (fboundp 'buffer-local-value)
       (buffer-local-value sym buffer)
-    (or (cdr (assoc sym (buffer-local-variables buffer)))
-        (save-excursion
-          (set-buffer buffer)
-          (symbol-value sym)))))
+    (when ecb-running-xemacs
+      (symbol-value-in-buffer sym buffer))))
+;;     (or (cdr (assoc sym (buffer-local-variables buffer)))
+;;         (save-excursion
+;;           (set-buffer buffer)
+;;           (symbol-value sym)))))
 
 
 (defun ecb-file-content-as-string (file)
@@ -1789,12 +1773,26 @@ minor-mode `tar-subfile-mode' or `archive-subfile-mode'."
       (and (boundp 'archive-subfile-mode)
            archive-subfile-mode)))
 
+(defun ecb-buffer-file-name (&optional buffer no-indirect-buffers)
+  "Return filename of file represented by BUFFER.
+BUFFER can also be an indirect buffer - if its base buffer points to a file
+then this filename is returned.
+BUFFER can be a buffer-object or a buffer-name.
+If BUFFER is nil then current buffer is used.
+If NO-INDIRECT-BUFFERS is not nil then for indirect buffers always nil is
+returned."
+  (or (buffer-file-name buffer)
+      (and (not no-indirect-buffers)
+           (buffer-base-buffer buffer)
+           (buffer-file-name (buffer-base-buffer buffer)))))
+
+
 (defun ecb-buffer-or-file-readable-p (&optional filename)
   "Checks if a buffer or a file is a readable file in the sense of ECB which
 means either a real physical file or an auto-extracted file from an archive.
 See `ecb-current-buffer-archive-extract-p'. FILENAME is either a filename or
 nil whereas in the latter case the current-buffer is assumed."
-  (let* ((file (or filename (buffer-file-name (current-buffer)))))
+  (let* ((file (or filename (ecb-buffer-file-name (current-buffer)))))
     (or (and file (file-readable-p file))
         (and (not ecb-running-xemacs)
              (if filename
@@ -1834,7 +1832,7 @@ means not to count the minibuffer even if it is active."
        ;; `window-list' because it returns an ordered list
        (window-list frame minibuf window)
      ;; TODO: Klaus Berndl <klaus.berndl@sdm.de>: the following is needed for
-     ;; XEmacs >= 21.5 - but the best would be if we would not need
+     ;; XEmacs - but the best would be if we would not need
      ;; implementing window-list, means the best would be if window-list
      ;; returns an ordered list!
      (ecb-with-original-basic-functions
@@ -1843,10 +1841,12 @@ means not to count the minibuffer even if it is active."
       (if (not (eq (window-frame window) frame))
           (error "Window must be on frame."))
       (let ((current-frame (selected-frame))
+            (current-window (selected-window))
+            (current-buf (current-buffer))
             (current-point (point))
             list)
         (unwind-protect
-            (save-window-excursion
+            (progn ;;save-window-excursion
               (select-frame frame)
               ;; this is needed for correct start-point
               (select-window window)
@@ -1861,6 +1861,8 @@ means not to count the minibuffer even if it is active."
               (setq list (nreverse list))
               (setq list (cons window list)))
           (select-frame current-frame)
+          (select-window current-window)
+          (set-buffer current-buf)
           ;; we must reset the point of the buffer which was current at call-time
           ;; of this function
           (goto-char current-point))))))
@@ -1888,6 +1890,120 @@ height is that fraction of the frame."
               (enlarge-window enlargement))))
     (error "Window is not alive!")))
 
+(defun ecb-window-safely-shrinkable-p (&optional window)
+  "Non-nil if the WINDOW can be shrunk without shrinking other windows.
+If WINDOW is nil or omitted, it defaults to the currently selected window."
+  (with-selected-window (or window (selected-window))
+    (let ((edges (ecb-window-edges)))
+      (or (= (nth 2 edges) (nth 2 (ecb-window-edges (previous-window))))
+	  (= (nth 0 edges) (nth 0 (ecb-window-edges (next-window))))))))
+
+(defun ecb-fit-window-to-buffer (&optional window max-height min-height)
+  "Make WINDOW the right height to display its contents exactly.
+If WINDOW is omitted or nil, it defaults to the selected window.
+If the optional argument MAX-HEIGHT is supplied, it is the maximum height
+  the window is allowed to be, defaulting to the frame height.
+If the optional argument MIN-HEIGHT is supplied, it is the minimum
+  height the window is allowed to be, defaulting to `window-min-height'.
+
+MAX-HEIGHT and MIN-HEIGHT can be also afraction between 0 and 1: then this is
+interpreted as that fraction of the frame-height of WINDOW \(or the selected
+window if WINDOW is nil).
+
+The heights in MAX-HEIGHT and MIN-HEIGHT include the mode-line and/or
+header-line."
+  (interactive)
+
+  (when (null window)
+    (setq window (selected-window)))
+  (when (null max-height)
+    (setq max-height (frame-height (window-frame window))))
+
+  (let* ((buf
+	  ;; Buffer that is displayed in WINDOW
+	  (window-buffer window))
+	 (window-height
+	  ;; The current height of WINDOW
+	  (ecb-window-full-height window)) ;; KB: was window-height
+         (max-height-norm (ecb-normalize-number max-height
+                                                (frame-height (window-frame window))))
+         (min-height-norm (and min-height
+                               (ecb-normalize-number min-height
+                                                     (frame-height (window-frame window)))))
+	 (desired-height
+	  ;; The height necessary to show the buffer displayed by WINDOW
+	  ;; (`count-screen-lines' always works on the current buffer).
+	  (with-current-buffer buf
+	    (+ (ecb-count-screen-lines)
+	       ;; If the buffer is empty, (count-screen-lines) is
+	       ;; zero.  But, even in that case, we need one text line
+	       ;; for cursor.
+	       (if (= (point-min) (point-max))
+		   1 0)
+	       ;; For non-minibuffers, count the mode-line, if any
+	       (if (and (not (window-minibuffer-p window))
+			mode-line-format)
+		   1 0)
+	       ;; Count the header-line, if any
+               (if ecb-running-xemacs
+                   0
+                 (if header-line-format 1 0)))))
+	 (delta
+	  ;; Calculate how much the window height has to change to show
+	  ;; desired-height lines, constrained by MIN-HEIGHT and MAX-HEIGHT.
+	  (- (max (min desired-height max-height-norm)
+		  (or min-height-norm window-min-height))
+	     window-height))
+	 ;; We do our own height checking, so avoid any restrictions due to
+	 ;; window-min-height.
+	 (window-min-height 1))
+
+    ;; Don't try to redisplay with the cursor at the end
+    ;; on its own line--that would force a scroll and spoil things.
+    (when (with-current-buffer buf
+	    (and (ecb-eobp) (ecb-bolp) (not (ecb-bobp))))
+      (set-window-point window (1- (window-point window))))
+
+    (save-selected-window
+      (select-window window)
+
+      ;; Adjust WINDOW to the nominally correct size (which may actually
+      ;; be slightly off because of variable height text, etc).
+      (unless (zerop delta)
+	(enlarge-window delta))
+
+      ;; Check if the last line is surely fully visible.  If not,
+      ;; enlarge the window.
+      (let ((end (with-current-buffer buf
+		   (save-excursion
+		     (goto-char (point-max))
+		     (when (and (ecb-bolp) (not (ecb-bobp)))
+		       ;; Don't include final newline
+		       (backward-char 1))
+		     (when truncate-lines
+		       ;; If line-wrapping is turned off, test the
+		       ;; beginning of the last line for visibility
+		       ;; instead of the end, as the end of the line
+		       ;; could be invisible by virtue of extending past
+		       ;; the edge of the window.
+		       (forward-line 0))
+		     (point)))))
+        (unless ecb-running-xemacs
+          (set-window-vscroll window 0))
+	(while (and (< desired-height max-height-norm)
+		    (= desired-height (window-height window))
+		    (not (pos-visible-in-window-p end window)))
+	  (enlarge-window 1)
+	  (setq desired-height (1+ desired-height)))))))
+
+(defun ecb-test-fit-window-to-buffer ()
+  (interactive)
+  (ecb-fit-window-to-buffer
+   (selected-window)
+   (if (functionp temp-buffer-max-height)
+       (funcall temp-buffer-max-height (current-buffer))
+     temp-buffer-max-height)))
+
 (defun ecb-scroll-window (point window-start)
   "Scrolls window of current buffer. The window will start at WINDOW-START and
 point will stay on POINT."
@@ -1909,11 +2025,13 @@ nothing happens and nil is returned."
 which can be either a buffer-object or a buffer-name. If that window is not
 visible then BODY is not evaluated and the symbol 'window-not-visible is
 returned. Otherwise the return value of BODY is returned. Runs encapsulated in
-`save-selected-window'."
+`save-selected-window' and `save-excursion'."
   `(save-selected-window
      (if (not (ecb-window-select ,buffer-or-name))
          'window-not-visible
-       ,@body)))
+       (save-excursion
+         (set-buffer ,buffer-or-name)
+         ,@body))))
 
 (put 'ecb-exec-in-window 'lisp-indent-function 1)
 
@@ -1941,8 +2059,6 @@ the same ordering as `other-window' would walk through the frame.
 If WINDOW is nil then the currently selected window is used."
   (let ((win-number (ecb-position win-list (or window (selected-window)))))
     (if win-number (1+ win-number) nil)))
-
-
 
 ;;; ----- Time  stuff -----------------------------------------
 
@@ -2061,7 +2177,8 @@ interrupted..
 
 Example: \(ecb-throw-on-input 'test-inner-loop \"test\") would throw a
 cons-cell \('test-inner-loop . \"test\")"
-  `(when (and ecb-current-input-throw-symbol (input-pending-p))
+  `(when (and ecb-current-input-throw-symbol
+              (or (input-pending-p) (accept-process-output)))
      (throw ecb-current-input-throw-symbol (cons ,from ,value))))
 
 
@@ -2085,6 +2202,19 @@ cons-cell \('test-inner-loop . \"test\")"
 		 (ecb-throw-on-input 'test-inner-loop "test")
                  )
 	       'exit))))
+
+;; (defun ecb-test-throw-on-input-new ()
+;;   "Test that while-no-input will work even better."
+;;   (interactive)
+;;   (message "Exit Code: %s"
+;; 	   (while-no-input
+;; 	     (let ((inhibit-quit nil)
+;; 		   (message-log-max nil))
+;; 	       (while t
+;; 		 (message "Looping ...")
+;;                  (while t nil)
+;; 		 "test")
+;; 	       'exit))))
 
 
 ;;; ----- Provide ------------------------------------------

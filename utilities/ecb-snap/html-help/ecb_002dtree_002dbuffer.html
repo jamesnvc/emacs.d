@@ -3,7 +3,7 @@
 <title>ecb-tree-buffer - ECB - the Emacs Code Browser</title>
 <meta http-equiv="Content-Type" content="text/html">
 <meta name="description" content="ECB - the Emacs Code Browser">
-<meta name="generator" content="makeinfo 4.13">
+<meta name="generator" content="makeinfo 4.8">
 <link title="Top" rel="start" href="ecb.html#Top">
 <link rel="up" href="Customizable-options.html#Customizable-options" title="Customizable options">
 <link rel="prev" href="ecb_002dgeneral.html#ecb_002dgeneral" title="ecb-general">
@@ -24,9 +24,9 @@
 </head>
 <body>
 <div class="node">
+<p>
 <a name="ecb-tree-buffer"></a>
 <a name="ecb_002dtree_002dbuffer"></a>
-<p>
 Next:&nbsp;<a rel="next" accesskey="n" href="ecb_002ddirectories.html#ecb_002ddirectories">ecb-directories</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="ecb_002dgeneral.html#ecb_002dgeneral">ecb-general</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="Customizable-options.html#Customizable-options">Customizable options</a>
@@ -39,7 +39,92 @@ Up:&nbsp;<a rel="up" accesskey="u" href="Customizable-options.html#Customizable-
 ECB:
 
 <div class="defun">
-&mdash; User Option: <b>common-tree-buffer-after-create-hook</b><var><a name="index-common_002dtree_002dbuffer_002dafter_002dcreate_002dhook-153"></a></var><br>
+&mdash; User Option: <b>basic-buffer-sync</b><var><a name="index-basic_002dbuffer_002dsync-148"></a></var><br>
+<blockquote><p>Synchronize the basic ECB-buffers automatically with current edit buffer.
+
+        <p>The basic ECB-buffers are the buffers for directories, sources, methods and
+history.
+
+        <p>If 'always then the synchronization takes place always a buffer changes in the
+edit window, if nil then never. If a list of major-modes then only if the
+<code>major-mode</code> of the new buffer belongs NOT to this list.
+
+        <p>But in every case the synchronization takes only place if the current-buffer
+in the edit-window has a relation to files or directories. Examples for the
+former one are all programming-language-modes, <code>Info-mode</code> too, an
+example for the latter one is <code>dired-mode</code>. For all major-modes related
+to non-file/directory-buffers like <code>help-mode</code>, <code>customize-mode</code> and
+others never an autom. synchronization will be done!
+
+        <p>It's recommended to exclude at least <code>Info-mode</code> because it makes no
+sense to synchronize the ECB-windows after calling the Info help. Per default
+also <code>dired-mode</code> is excluded but it can also making sense to synchronize
+the ECB-directories/sources windows with the current directory in the
+dired-buffer.
+
+        <p>IMPORTANT NOTE: Every time the synchronization is done the hook
+<code>ecb-basic-buffer-sync-hook</code> is evaluated. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; User Option: <b>basic-buffer-sync-delay</b><var><a name="index-basic_002dbuffer_002dsync_002ddelay-149"></a></var><br>
+<blockquote><p>Time Emacs must be idle before the special ECB-buffers are synchronized. 
+Synchronizing is done with the current source displayed in the edit window. If
+nil then there is no delay, means synchronization takes place immediately. A
+small value of about 0.25 seconds saves CPU resources and you get even though
+almost the same effect as if you set no delay. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; User Option: <b>basic-buffer-sync-hook</b><var><a name="index-basic_002dbuffer_002dsync_002dhook-150"></a></var><br>
+<blockquote><p>Hook run at the end of <code>ecb-basic-buffer-sync</code>. 
+See documentation of <code>ecb-basic-buffer-sync</code> for conditions when
+synchronization takes place and so in turn these hooks are evaluated.
+
+        <p>Precondition for such a hook:
+Current buffer is the buffer of the currently selected edit-window.
+
+        <p>Postcondition for such a hook:
+Point must stay in the same edit-window as before evaluating the hook.
+
+        <p>Important note: If the option <code>ecb-basic-buffer-sync</code> is not nil
+the function <code>ecb-basic-buffer-sync</code> is running either every time
+Emacs is idle or even after every command (see
+<code>ecb-basic-buffer-sync-delay</code>). So these hooks can be really
+called very often! Therefore each function of this hook
+should/must check in an efficient way at beginning if its task
+have to be really performed and then do them only if really
+necessary! Otherwise performance of Emacs could slow down
+dramatically!
+
+        <p>It is strongly recommended that each function added to this hook uses the
+macro <code>ecb-do-if-buffer-visible-in-ecb-frame</code> at beginning! See
+<code>ecb-speedbar-buffer-sync</code> and <code>ecb-eshell-buffer-sync</code> for
+examples how to use this macro! 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; User Option: <b>bucket-node-display</b><var><a name="index-bucket_002dnode_002ddisplay-151"></a></var><br>
+<blockquote><p>How ECB displays bucket-nodes in a ECB tree-buffer. 
+Bucket-nodes have only one job: Nodes with similar properties will be dropped
+into one bucket for such a common property and all these nodes will be added
+as children to the bucket-node. Besides being expandable and collapsable a
+bucket-node has no senseful action assigned. Examples for bucket-nodes are
+&rdquo;[+] Variables&rdquo;, &ldquo;[+] Dependencies&rdquo; etc. in the Methods-buffer or buckets
+which combine filenames with same extension under a bucket-node with name this
+extension.
+
+        <p>This option defines how bucket-node should be displayed. The name of the
+bucket-node is computed by ECB but you can define a prefix, a suffix and a
+special face for the bucket-node
+
+        <p>The default are empty prefix/suffix-strings and <code>ecb-bucket-node-face</code>. But
+an alternative can be for example '(&rdquo;[&rdquo; &ldquo;]&rdquo; nil) which means no special
+face and a display like &ldquo;[+] [&lt;bucket-name&gt;]&rdquo;. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; User Option: <b>common-tree-buffer-after-create-hook</b><var><a name="index-common_002dtree_002dbuffer_002dafter_002dcreate_002dhook-152"></a></var><br>
 <blockquote><p>Local hook running at the end of each tree-buffer creation. Every
 function of this hook is called once without arguments direct after
 creating a tree-buffer of ECB and it's local key-map. So for example a
@@ -53,6 +138,40 @@ to define new keybindings for EVERY tree-buffer.
 <li><code>C-t</code>
 </ul>
         </p></blockquote></div>
+
+<div class="defun">
+&mdash; User Option: <b>mouse-click-destination</b><var><a name="index-mouse_002dclick_002ddestination-153"></a></var><br>
+<blockquote><p>Destination of a mouse-button click. Defines in which edit-window (if
+splitted) ECB does the &ldquo;right&rdquo; action (opening a source, jumping to
+a method/variable etc.) after clicking with the primary mouse-button
+(see <code>ecb-primary-secondary-mouse-buttons</code>) onto a node. There
+are two possible choices:
+
+          <ul>
+<li><code>left-top</code>:
+Does the &ldquo;right&rdquo; action always in the left/topmost edit-window. 
+<li><code>last-point</code>:
+Does the &ldquo;right&rdquo; action always in that edit-window which had the point
+before. 
+</ul>
+        This is if the user has clicked either with the primary mouse-button or
+has activated a popup-menu in the tree-buffer.
+
+        <p>If the edit-area is not splitted this setting doesn't matter.
+
+        <p>A click with the secondary mouse-button (see again
+<code>ecb-primary-secondary-mouse-buttons</code> does the &ldquo;right&rdquo; action
+always in another edit-window related to the setting in this option:
+If there are two edit-windows then the &ldquo;other&rdquo; edit-window is used
+and for more than 2 edit-windows the &ldquo;next&rdquo; edit-window is used
+(whereas the next edit-window of the last edit-window is the first
+edit-window).
+
+        <p>Note: If the tree-buffers are used with the keyboard instead with the
+mouse then this option takes effect too because <kbd>RET</kbd> is
+interpreted as primary mouse-button and <kbd>C-RET</kbd> as secondary
+mouse-button! 
+</p></blockquote></div>
 
 <div class="defun">
 &mdash; User Option: <b>primary-secondary-mouse-buttons</b><var><a name="index-primary_002dsecondary_002dmouse_002dbuttons-154"></a></var><br>
@@ -93,7 +212,7 @@ supported sources but not for imenu- or etags-supported ones!
 </ul>
 
         <p>In addition always the whole node-name is displayed in the minibuffer after a
-POWER-click \(for this see also `ecb-show-node-info-in-minibuffer').
+POWER-click (for this see also <code>ecb-methods-show-node-info</code>).
 
         <p>The secondary mouse-button is for opening (jumping to) the file in
 another edit-window (see the documentation
@@ -121,11 +240,13 @@ activate ECB again to take effect
 <blockquote><p>The style of the tree-buffers. 
 There are three different styles available:
 
-        <p>Image-style (value <code>image</code>): Very nice and modern - just try it. 
-For this style the options <code>ecb-tree-indent</code> and
-<code>ecb-tree-expand-symbol-before</code> have no effect! Note: GNU Emacs
-&lt;= 21.3.X for Windows does not support image-display so ECB uses
-always 'ascii-guides even when here 'image is set!
+        <p>Image-style (value <code>image</code>): Very nice and modern - just try it. For this
+style the options <code>ecb-tree-indent</code> and
+<code>ecb-tree-expand-symbol-before</code> have no effect! The value 'image means
+use image-style if images can be displayed with current Emacs-setup
+\(otherwise auto. 'ascii-style is used). Note: GNU Emacs &lt;= 21.3.X for Windows
+does not support image-display so ECB uses always 'ascii-guides even when here
+'image is set!
 
         <p>Ascii-style with guide-lines (value <code>ascii-guides</code>):
      <pre class="example">        [-] ECB
@@ -143,7 +264,7 @@ always 'ascii-guides even when here 'image is set!
              |  [x] history
              |  [x] methods
              `- [x] sources
-</pre>
+   </pre>
         <p>Ascii-style without guide-lines (value <code>ascii-no-guides</code>) - this
 is the style used by ECB &lt;= 1.96:
      <pre class="example">        [-] ECB
@@ -161,7 +282,7 @@ is the style used by ECB &lt;= 1.96:
                 [x] history
                 [x] methods
                 [x] sources
-</pre>
+   </pre>
         <p>With both ascii-styles the tree-layout can be affected with the
 options <code>ecb-tree-indent</code> and
 <code>ecb-tree-expand-symbol-before</code>. 
@@ -235,14 +356,14 @@ expand-symbol is located before the items then the tree looks like:
             [+] code-save
             [-] ecb-images
                 [-] directories
-</pre>
+   </pre>
         <p>When located after then the tree looks like:
 
      <pre class="example">        ECB [-]
           code-save [+]
           ecb-images [-]
             directories [-]
-</pre>
+   </pre>
         <p>The after-example above use a value of 2 for <code>ecb-tree-indent</code>
 whereas the before-example uses a value of 4.
 
@@ -303,7 +424,23 @@ activated you must deactivate and activate ECB again to take effect.
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>tree-mouse-action-trigger</b><var><a name="index-tree_002dmouse_002daction_002dtrigger-162"></a></var><br>
+&mdash; User Option: <b>tree-make-parent-node-sticky</b><var><a name="index-tree_002dmake_002dparent_002dnode_002dsticky-162"></a></var><br>
+<blockquote><p>Make the parent-node sticky in the headerline of the tree-buffer.
+
+        <p>If not nil then the first line of the tree-buffer is used as header-line which
+is used to display the next unvisible parent of the first visible node as
+sticky, so always the parent of a node is visible and clickable. If a node has
+no parent then just the next node above is displayed in the header-line. The
+node displayed in the header-line is exactly in the same manner clickable as
+all other nodes.
+
+        <p>See also <code>ecb-tree-stickynode-indent-string</code>.
+
+        <p>This feature is only available with Gnu Emacs, not with XEmacs. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; User Option: <b>tree-mouse-action-trigger</b><var><a name="index-tree_002dmouse_002daction_002dtrigger-163"></a></var><br>
 <blockquote><p>When the tree-buffer mouse-action should be triggered. This option
 determines the moment a mouse-action in a tree-buffer is triggered. 
 This can be either direct after pressing a mouse-button (value
@@ -315,7 +452,7 @@ activate ECB again to take effect!
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>tree-navigation-by-arrow</b><var><a name="index-tree_002dnavigation_002dby_002darrow-163"></a></var><br>
+&mdash; User Option: <b>tree-navigation-by-arrow</b><var><a name="index-tree_002dnavigation_002dby_002darrow-164"></a></var><br>
 <blockquote><p>Enable smart navigation in the tree-windows by horiz. arrow-keys. If
 not nil then the left- and right-arrow keys work in the ECB
 tree-window in the following smart way if onto an expandable node:
@@ -338,7 +475,23 @@ ECB and then activating it again!
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>tree-truncate-lines</b><var><a name="index-tree_002dtruncate_002dlines-164"></a></var><br>
+&mdash; User Option: <b>tree-stickynode-indent-string</b><var><a name="index-tree_002dstickynode_002dindent_002dstring-165"></a></var><br>
+<blockquote><p>String used to indent the stickynode. 
+This string is used to match the space used by scrollbars and
+fringe so it does not appear that the node-name is moving left/right
+when it lands in the sticky line.
+
+        <p>Normally the needed value is computed automatically by ECB. But if the result
+is not matching this option allows to customize the indent-string. The default
+value is computed by the function
+<code>tree-buffer-sticky-default-indent-string</code>, so you can change the needed
+value with that starting-point.
+
+        <p>Changing this option takes only effect after restarting Emacs! 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; User Option: <b>tree-truncate-lines</b><var><a name="index-tree_002dtruncate_002dlines-166"></a></var><br>
 <blockquote><p>Truncate lines in ECB buffers. If a buffer (either its name or the
 variable-symbol which holds the name) is contained in this list then
 line-truncation is switched on for this buffer otherwise it is off.
@@ -355,7 +508,7 @@ activate ECB again to take effect.
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>truncate-long-names</b><var><a name="index-truncate_002dlong_002dnames-165"></a></var><br>
+&mdash; User Option: <b>truncate-long-names</b><var><a name="index-truncate_002dlong_002dnames-167"></a></var><br>
 <blockquote><p>Truncate long names that don't fit in the width of the ECB windows. If
 you change this during ECB is activated you must deactivate and
 activate ECB again to take effect. 

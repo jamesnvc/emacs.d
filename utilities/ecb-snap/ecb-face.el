@@ -5,11 +5,9 @@
 ;;                           Kevin A. Burton,
 ;;                           Free Software Foundation, Inc.
 
-;; Author: Jesper Nordenberg <mayhem@home.se>
-;;         Klaus Berndl <klaus.berndl@sdm.de>
+;; Author: Klaus Berndl <klaus.berndl@sdm.de>
 ;;         Kevin A. Burton <burton@openprivacy.org>
 ;; Maintainer: Klaus Berndl <klaus.berndl@sdm.de>
-;;             Kevin A. Burton <burton@openprivacy.org>
 ;; Keywords: browser, code, programming, tools
 ;; Created: 2001
 
@@ -26,7 +24,7 @@
 ;; GNU Emacs; see the file COPYING.  If not, write to the Free Software
 ;; Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-;; $Id: ecb-face.el,v 1.23 2005/02/28 11:31:58 berndl Exp $
+;; $Id: ecb-face.el,v 1.26 2009/06/04 08:38:15 berndl Exp $
 
 ;;; Commentary:
 
@@ -223,6 +221,108 @@ Changes take first effect after finishing and reactivating ECB!"
                 (face :tag "Special face"
                       :value ecb-history-general-face)))
 
+(defface ecb-history-bucket-node-face (ecb-face-default nil nil nil
+                                                        'ecb-bucket-node-face)
+  "*Face used for displaying a bucket-node in the ECB-history-buffer.
+
+In GNU Emacs 21.X this face inherits from the face 'ecb-bucket-node-face'.
+
+With XEmacs and GNU Emacs 20.X there is no inheritance-feature so if the
+buckets in the ECB-history-buffer should be displayed with the same basic
+attributes set by 'ecb-bucket-node-face' this set of basic attributes have
+to be set in 'ecb-history-bucket-node-face' too!"
+  :group 'ecb-faces)
+
+(defcustom ecb-history-bucket-node-face 'ecb-history-bucket-node-face
+  "*Basic face for displaying a bucket-node in the ECB-history-buffer.
+This defines the basic face for the bucket-nodes used to bucketize the
+history-entries as defined with the option `ecb-history-make-buckets'.
+
+Changes take first effect after finishing and reactivating ECB!"
+  :group 'ecb-face-options
+  :group 'ecb-history
+  :type '(radio (const :tag "Use ecb-bucket-node-face"
+                       :value ecb-bucket-node-face)
+                (face :tag "Special face"
+                      :value ecb-history-bucket-node-face)))
+
+(defface ecb-history-bucket-node-dir-soure-path-face (ecb-face-default nil nil nil
+                                                                       'ecb-history-bucket-node-face
+                                                                       ;; DarkCyan would be good too
+                                                                       "DarkMagenta"
+                                                                       "DarkMagenta")
+  "*Face used for displaying the source-path part in a directory-bucket.
+
+In GNU Emacs 21.X this face inherits from the face 'ecb-history-bucket-node-face'.
+
+With XEmacs and GNU Emacs 20.X there is no inheritance-feature so if the
+buckets in the ECB-history-buffer should be displayed with the same basic
+attributes set by 'ecb-history-bucket-node-face' this set of basic attributes have
+to be set in 'ecb-history-bucket-node-dir-soure-path-face' too!"
+  :group 'ecb-faces)
+
+(defcustom ecb-history-bucket-node-dir-soure-path-face 'ecb-history-bucket-node-dir-soure-path-face
+  "*Basic face for displaying the source-path part in a directory bucket.
+This defines the face for the source-path part in a bucket-node of the
+history-buffer if `ecb-history-make-buckets' is set to
+'directory-with-source-path. For all other values of
+`ecb-history-make-buckets' this option takes no effect.
+
+Changes take first effect after finishing and reactivating ECB!"
+  :group 'ecb-face-options
+  :group 'ecb-history
+  :type '(radio (const :tag "Use ecb-history-bucket-node-face"
+                       :value ecb-history-bucket-node-face)
+                (face :tag "Special face"
+                      :value ecb-history-bucket-node-dir-soure-path-face)))
+
+(defface ecb-history-indirect-buffer-face (ecb-face-default nil nil t
+                                                            'ecb-history-general-face)
+  "*Define a face for displaying indirect buffers in the history buffer.
+
+In GNU Emacs 21.X this face inherits from the face 'ecb-history-general-face'.
+
+With XEmacs and GNU Emacs 20.X there is no inheritance-feature so if the
+buckets in the ECB-history-buffer should be displayed with the same basic
+attributes set by 'ecb-history-general-face' this set of basic attributes have
+to be set in 'ecb-history-indirect-buffer-face' too!"
+  :group 'ecb-faces)
+ 
+(defcustom ecb-history-indirect-buffer-face 'ecb-history-indirect-buffer-face
+  "*Face for indirect buffers in the history buffer."
+  :group 'ecb-history
+  :group 'ecb-face-options
+  :type '(radio (const :tag "Use ecb-history-general-face"
+                       :value ecb-history-general-face)
+                (face :tag "Special face"
+                      :value ecb-history-indirect-buffer-face)))
+
+(defface ecb-history-dead-buffer-face (ecb-face-default nil nil nil
+                                                        'ecb-history-general-face
+                                                        "gray60"
+                                                        "gray60"
+                                                        nil nil
+                                                        nil "gray60")
+  "*Define a face for history entries pointing to dead buffers.
+
+In GNU Emacs 21.X this face inherits from the face 'ecb-history-general-face'.
+
+With XEmacs and GNU Emacs 20.X there is no inheritance-feature so if the
+buckets in the ECB-history-buffer should be displayed with the same basic
+attributes set by 'ecb-history-general-face' this set of basic attributes have
+to be set in 'ecb-history-dead-buffer-face' too!"
+  :group 'ecb-faces)
+ 
+(defcustom ecb-history-dead-buffer-face 'ecb-history-dead-buffer-face
+  "*Face for history entries pointing to dead buffers."
+  :group 'ecb-history
+  :group 'ecb-face-options
+  :type '(radio (const :tag "Use ecb-history-general-face"
+                       :value ecb-history-general-face)
+                (face :tag "Special face"
+                      :value ecb-history-dead-buffer-face)))
+
+
 (defface ecb-default-highlight-face (ecb-face-default nil nil nil
                                                       nil ;'ecb-default-general-face
                                                       "yellow" nil
@@ -393,7 +493,7 @@ Changes take first effect after finishing and reactivating ECB!"
                       :value ecb-analyse-general-face)))
 
 (defface ecb-analyse-bucket-element-face (ecb-face-default nil nil nil
-                                                           'ecb-default-general-face
+                                                           'ecb-analyse-general-face
                                                            "brown")
   "*Face used for displaying elements of buckets in the ECB-analyse-buffer.
 
@@ -419,14 +519,14 @@ Changes take first effect after finishing and reactivating ECB!"
                       :value ecb-analyse-bucket-element-face)))
 
 (defface ecb-analyse-bucket-node-face (ecb-face-default nil t nil
-                                                           'ecb-default-general-face)
+                                                        'ecb-bucket-node-face)
   "*Face used for displaying a bucket-node in the ECB-analyse-buffer.
 
-In GNU Emacs 21.X this face inherits from the face 'ecb-default-general-face'.
+In GNU Emacs >= 21.X this face inherits from the face 'ecb-bucket-node-face'.
 
 With XEmacs and GNU Emacs 20.X there is no inheritance-feature so if the
 buckets in the ECB-buffers should be displayed with the same basic
-attributes set by 'ecb-default-general-face' this set of basic attributes have
+attributes set by 'ecb-bucket-node-face' this set of basic attributes have
 to be set in 'ecb-analyse-bucket-node-face' too!"
   :group 'ecb-faces)
 
@@ -438,10 +538,62 @@ Completions etc. in the ECB-analyse-buffer.
 Changes take first effect after finishing and reactivating ECB!"
   :group 'ecb-face-options
   :group 'ecb-analyse
-  :type '(radio (const :tag "Use ecb-default-general-face"
-                       :value ecb-default-general-face)
+  :type '(radio (const :tag "Use ecb-bucket-node-face"
+                       :value ecb-bucket-node-face)
                 (face :tag "Special face"
                       :value ecb-analyse-bucket-node-face)))
+
+(defface ecb-symboldef-symbol-face (ecb-face-default nil t nil
+                                                     'ecb-default-general-face)
+  "*Define face used for the symbol itself in the symboldef-buffer.
+
+In GNU Emacs >= 21.X this face inherits from the face 'ecb-default-general-face'.
+
+With XEmacs and GNU Emacs 20.X there is no inheritance-feature so if the
+buckets in the ECB-buffers should be displayed with the same basic
+attributes set by 'ecb-default-general-face' this set of basic attributes have
+to be set in 'ecb-analyse-bucket-node-face' too!"
+  :group 'ecb-faces)
+
+(defcustom ecb-symboldef-symbol-face 'use-font-lock-face
+  "*Which face should be used for the symbol itself in the symboldef-buffer.
+
+There are two choices: Either a face or the special symbol 'use-font-lock-face
+whereas the latter one means that ECB uses that face font-lock uses for
+fontifying the symbol \(e.g. font-lock-function-name-face for a function
+symbol or font-lock-variable-name-face for a variable symbol)."
+  :group 'ecb-face-options
+  :group 'ecb-symboldef
+  :type '(radio (const :tag "No special face" :value nil)
+                (const :tag "Use font-lock face"
+                       :value use-font-lock-face)
+                (face :tag "Use face"
+                      :value ecb-symboldef-symbol-face)))
+  
+(defface ecb-symboldef-prototype-face (ecb-face-default nil t nil
+                                                        'ecb-default-general-face)
+  "*Define face used for the prototype of symbol in the symboldef-buffer.
+
+In GNU Emacs >= 21.X this face inherits from the face 'ecb-default-general-face'.
+
+With XEmacs and GNU Emacs 20.X there is no inheritance-feature so if the
+buckets in the ECB-buffers should be displayed with the same basic
+attributes set by 'ecb-default-general-face' this set of basic attributes have
+to be set in 'ecb-analyse-bucket-node-face' too!"
+  :group 'ecb-faces)
+
+(defcustom ecb-symboldef-prototype-face nil
+  "*Which face should be used for the symbol prototype in the symboldef-buffer.
+
+The prototype can be the function prototype in case of a function or method or
+- in case of a variable - the type of the variable \(in case of a typed
+language)."
+  :group 'ecb-face-options
+  :group 'ecb-symboldef
+  :type '(radio (const :tag "No special face" :value nil)
+                (const :tag "Use ecb-symboldef-prototype-face"
+                       :value ecb-symboldef-prototype-face)
+                (face :tag "Special face")))
 
 (defface ecb-tag-header-face (ecb-face-default nil nil nil nil nil nil
                                                "SeaGreen1" "SeaGreen1"
@@ -460,7 +612,7 @@ jumping to it by clicking onto a node in the methods buffer."
   :type 'face)
 
 (defface ecb-source-in-directories-buffer-face (ecb-face-default nil nil nil
-                                                                 'ecb-default-general-face
+                                                                 'ecb-directories-general-face
                                                                  "medium blue"
                                                                  "LightBlue1"
                                                                  nil nil
@@ -468,19 +620,18 @@ jumping to it by clicking onto a node in the methods buffer."
   "*Define a face for displaying sources in the directories buffer."
   :group 'ecb-faces)
  
-(defcustom ecb-source-in-directories-buffer-face
-  'ecb-source-in-directories-buffer-face
+(defcustom ecb-source-in-directories-buffer-face 'ecb-source-in-directories-buffer-face
   "*Face for source files in the directories buffer."
   :group 'ecb-directories
   :group 'ecb-face-options
   :type 'face)
 
-(defface ecb-source-read-only-face (ecb-face-default nil nil t)
+(defface ecb-source-read-only-face (ecb-face-default nil nil t
+                                                     'ecb-default-general-face)
   "*Define a face for displaying read-only sources."
   :group 'ecb-faces)
  
-(defcustom ecb-source-read-only-face
-  'ecb-source-read-only-face
+(defcustom ecb-source-read-only-face 'ecb-source-read-only-face
   "*Face for read-only sources."
   :group 'ecb-sources
   :group 'ecb-directories
@@ -488,7 +639,7 @@ jumping to it by clicking onto a node in the methods buffer."
   :type 'face)
 
 (defface ecb-directory-not-accessible-face (ecb-face-default nil nil nil
-                                                             'ecb-default-general-face
+                                                             'ecb-directories-general-face
                                                              "gray60"
                                                              "gray60"
                                                              nil nil
@@ -496,8 +647,7 @@ jumping to it by clicking onto a node in the methods buffer."
   "*Define a face for displaying not accessible dirs in the directories buffer."
   :group 'ecb-faces)
  
-(defcustom ecb-directory-not-accessible-face
-  'ecb-directory-not-accessible-face
+(defcustom ecb-directory-not-accessible-face 'ecb-directory-not-accessible-face
   "*Face for not accessible dirs in the directories buffer."
   :group 'ecb-directories
   :group 'ecb-face-options
@@ -612,8 +762,6 @@ See `ecb-mode-line-data'. For XEmacs the face should inherit from the face
   :group 'ecb-mode-line
   :group 'ecb-face-options
   :type 'face)
-
-
 
 (silentcomp-provide 'ecb-face)
 

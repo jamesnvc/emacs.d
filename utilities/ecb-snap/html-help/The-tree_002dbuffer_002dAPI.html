@@ -3,7 +3,7 @@
 <title>The tree-buffer-API - ECB - the Emacs Code Browser</title>
 <meta http-equiv="Content-Type" content="text/html">
 <meta name="description" content="ECB - the Emacs Code Browser">
-<meta name="generator" content="makeinfo 4.13">
+<meta name="generator" content="makeinfo 4.8">
 <link title="Top" rel="start" href="ecb.html#Top">
 <link rel="up" href="tree_002dbuffer.html#tree_002dbuffer" title="tree-buffer">
 <link rel="prev" href="Tree_002dbuffer-keybindings.html#Tree_002dbuffer-keybindings" title="Tree-buffer keybindings">
@@ -24,9 +24,9 @@
 </head>
 <body>
 <div class="node">
+<p>
 <a name="The-tree-buffer-API"></a>
 <a name="The-tree_002dbuffer_002dAPI"></a>
-<p>
 Next:&nbsp;<a rel="next" accesskey="n" href="Do-not-with-tree_002dbuffer.html#Do-not-with-tree_002dbuffer">Do not with tree-buffer</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="Tree_002dbuffer-keybindings.html#Tree_002dbuffer-keybindings">Tree-buffer keybindings</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="tree_002dbuffer.html#tree_002dbuffer">tree-buffer</a>
@@ -35,7 +35,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="tree_002dbuffer.html#tree_002dbuffer">t
 
 <h4 class="subsection">11.3.6 All functions available for tree-buffers and tree-nodes</h4>
 
-<p>This chapter lists the complete AI available for tree-buffers and
+<p>This chapter lists the complete API available for tree-buffers and
 tree-nodes.
 
    <p><strong>IMPORTANT</strong>: These are the only functions and macros of
@@ -60,7 +60,8 @@ the details how to use it.
 <li><code>tree-buffer-get-node-at-point</code>
 <li><code>tree-buffer-node-data-equal-p</code>
 <li><code>tree-buffer-recenter</code>
-<li><code>tree-buffer-highlight-node-data</code>
+<li><code>tree-buffer-highlight-node-by-data/name</code>
+<li><code>tree-buffer-find-displayed-node-by-data/name</code>
 <li><code>tree-buffer-remove-highlight</code>
 <li><code>tree-buffer-remove-node</code>
 <li><code>tree-buffer-clear-tree</code>
@@ -83,13 +84,15 @@ the details how to use it.
      <ul>
 <li><code>tree-node-add-children</code>
 <li><code>tree-node-linelength</code>
+<li><code>tree-node-map-subtree</code>
 <li><code>tree-node-new</code>
 <li><code>tree-node-new-root</code>
 <li><code>tree-node-remove-child</code>
-<li><code>tree-node-remove-child-by-data</code>
-<li><code>tree-node-find-child-by-data</code>
+<li><code>tree-node-remove-child-by-data/name</code>
+<li><code>tree-node-find-child-by-data/name</code>
 <li><code>tree-node-find-child-by-name</code>
 <li><code>tree-node-search-subtree-by-data</code>
+<li><code>tree-node-search-subtree-by-id</code>
 <li><code>tree-node-sort-children</code>
 <li><code>tree-node-toggle-expanded</code>
 </ul>
@@ -106,7 +109,7 @@ the documentation!</p>
    <p class="footnote"><small>[<a name="fn-2" href="#fnd-2">2</a>]</small> Not needed when
 <code>defecb-tree-buffer-creator</code> has been used for creation.</p>
 
-   <hr></div>
+   <p><hr></div>
 
    </body></html>
 

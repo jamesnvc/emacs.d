@@ -2,7 +2,7 @@
 
 ;;; Copyright (C) 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009 Eric M. Ludlam
 
-;; X-CVS: $Id: semantic-fw.el,v 1.73 2009/02/24 00:57:29 zappo Exp $
+;; X-CVS: $Id: semantic-fw.el,v 1.77 2009/05/16 11:45:33 zappo Exp $
 
 ;; This file is not part of GNU Emacs.
 
@@ -38,12 +38,22 @@
 ;;
 (if (featurep 'xemacs)
     (progn
+      (defalias 'semantic-buffer-local-value 'symbol-value-in-buffer)
       (defalias 'semantic-overlay-live-p
         (lambda (o)
           (and (extent-live-p o)
                (not (extent-detached-p o))
                (bufferp (extent-buffer o)))))
-      (defalias 'semantic-make-overlay            'make-extent)
+      (defalias 'semantic-make-overlay
+	(lambda (beg end &optional buffer &rest rest)
+	  "Xemacs `make-extent', supporting the front/rear advance options."
+	  (let ((ol (make-extent beg end buffer)))
+	    (when rest
+	      (set-extent-property ol 'start-open (car rest))
+	      (setq rest (cdr rest)))
+	    (when rest
+	      (set-extent-property ol 'end-open (car rest)))
+	    ol)))
       (defalias 'semantic-overlay-put             'set-extent-property)
       (defalias 'semantic-overlay-get             'extent-property)
       (defalias 'semantic-overlay-properties      'extent-properties)
@@ -81,6 +91,8 @@
 	;; Wait...
 	(while (popup-up-p) (dispatch-event (next-event))))
       )
+  ;; Emacs Bindings
+  (defalias 'semantic-buffer-local-value      'buffer-local-value) 
   (defalias 'semantic-overlay-live-p          'overlay-buffer)
   (defalias 'semantic-make-overlay            'make-overlay)
   (defalias 'semantic-overlay-put             'overlay-put)
@@ -404,8 +416,10 @@ calling this one."
 		 (message "Looping ... press a key to test")
 		 (semantic-throw-on-input 'test-inner-loop))
 	       'exit)))
-  (when (input-pending-p) 
-    (when (fboundp 'read-event) (read-event) (read-char)))
+  (when (input-pending-p)
+    (if (fboundp 'read-event)
+	(read-event)
+      (read-char)))
   )
 
 ;;; Special versions of Find File
@@ -414,7 +428,7 @@ calling this one."
   "Call `find-file-noselect' with various features turned off.
 Use this when referencing a file that will be soon deleted.
 FILE, NOWARN, RAWFILE, and WILDCARDS are passed into `find-file-noselect'"
-  (let* ((recentf-exclude '(ignore))
+  (let* ((recentf-exclude '( (lambda (f) t) ))
 	 ;; This is a brave statement.  Don't waste time loading in
 	 ;; lots of modes.  Especially decoration mode can waste a lot
 	 ;; of time for a buffer we intend to kill.

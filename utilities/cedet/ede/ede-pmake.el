@@ -1,10 +1,10 @@
-;;; ede-pmake.el --- EDE Generic Project Makefile code generator.
+;; ede-pmake.el --- EDE Generic Project Makefile code generator.
 
 ;;;  Copyright (C) 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2007, 2008, 2009  Eric M. Ludlam
 
 ;; Author: Eric M. Ludlam <zappo@gnu.org>
 ;; Keywords: project, make
-;; RCS: $Id: ede-pmake.el,v 1.53 2009/02/21 12:11:52 zappo Exp $
+;; RCS: $Id: ede-pmake.el,v 1.58 2009/08/08 21:41:15 zappo Exp $
 
 ;; This software is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -79,16 +79,16 @@ MFILENAME is the makefile to generate."
       (if (and
 	   (not (eobp))
 	   (not (looking-at "# Automatically Generated \\w+ by EDE.")))
-	  (if (not (y-or-n-p (format "Really replace %s?" mfilename)))
-	      (error "Not replacing Makefile."))
+	  (if (not (y-or-n-p (format "Really replace %s? " mfilename)))
+	      (error "Not replacing Makefile"))
 	(message "Replace EDE Makefile"))
       (erase-buffer)
       (ede-srecode-setup)
       ;; Insert a giant pile of stuff that is common between
       ;; one of our Makefiles, and a Makefile.in
-      (ede-srecode-insert 
+      (ede-srecode-insert
        "file:ede-empty"
-       "MAKETYPE" 
+       "MAKETYPE"
        (with-slots (makefile-type) this
 	 (cond ((eq makefile-type 'Makefile) "make")
 	       ((eq makefile-type 'Makefile.in) "autoconf")
@@ -103,6 +103,9 @@ MFILENAME is the makefile to generate."
 
       (cond
        ((eq (oref this makefile-type) 'Makefile)
+	;; Make sure the user has the right kind of make
+	(ede-make-check-version)
+
 	(let* ((targ (if isdist (oref this targets) mt))
 	       (sp (oref this subproj))
 	       (df (apply 'append
@@ -171,6 +174,8 @@ MFILENAME is the makefile to generate."
 		(oref this include-file))
 	  ;; Some C inference rules
 	  ;; Dependency rules borrowed from automake.
+	  ;;
+	  ;; NOTE: This is GNU Make specific.
 	  (if (and (oref this automatic-dependencies) df)
 	      (insert "DEPS_MAGIC := $(shell mkdir .deps > /dev/null "
 		      "2>&1 || :)\n"
@@ -250,7 +255,8 @@ Execute BODY in a location where a value can be placed."
 ;;
 ;;;###autoload
 (defun ede-pmake-varname (obj)
-  "Convert OBJ into a variable name name, which converts .  to _."
+  "Convert OBJ into a variable name name.
+Change .  to _ in the variable name."
   (let ((name (oref obj name)))
     (while (string-match "\\." name)
       (setq name (replace-match "_" nil t name)))
@@ -280,55 +286,55 @@ Use CONFIGURATION as the current configuration to query."
 
 NOTE: Not yet in use!  This is part of an SRecode conversion of
       EDE that is in progress."
-  (let ((conf-table (ede-proj-makefile-configuration-variables
-		     this (oref this configuration-default)))
-	(conf-done nil))
-
-    (ede-srecode-insert-with-dictionary
-     "declaration:ede-vars"
-
-     ;; Insert all variables, and augment them with details from
-     ;; the current configuration.
-     (mapc (lambda (c)
-
-	     (let ((ldict (srecode-dictionary-add-section-dictionary
-			   dict "VARIABLE"))
-		   )
-	       (srecode-dictionary-set-value ldict "NAME" (car c))
-	       (if (assoc (car c) conf-table)
-		   (let ((vdict (srecode-dictionary-add-section-dictionary
-				 ldict "VALUE")))
-		     (srecode-dictionary-set-value 
-		      vdict "VAL" (cdr (assoc (car c) conf-table)))
-		     (setq conf-done (cons (car c) conf-done))))
-	       (let ((vdict (srecode-dictionary-add-section-dictionary
-			     ldict "VALUE")))
-		 (srecode-dictionary-set-value vdict "VAL" (cdr c))))
-	     )
-
-	   (oref this variables))
-
-     ;; Add in all variables from the configuration not allready covered.
-     (mapc (lambda (c)
-
-	     (if (member (car c) conf-done)
-		 nil
-	       (let* ((ldict (srecode-dictionary-add-section-dictionary
-			      dict "VARIABLE"))
-		      (vdict (srecode-dictionary-add-section-dictionary
-			      ldict "VALUE"))
-		      )
-		 (srecode-dictionary-set-value ldict "NAME" (car c))
-		 (srecode-dictionary-set-value vdict "VAL" (cdr c))))
-	     )
-
-	   conf-table)
-
+;  (let ((conf-table (ede-proj-makefile-configuration-variables
+;		     this (oref this configuration-default)))
+;	(conf-done nil))
+;
+;    (ede-srecode-insert-with-dictionary
+;     "declaration:ede-vars"
+;
+;     ;; Insert all variables, and augment them with details from
+;     ;; the current configuration.
+;     (mapc (lambda (c)
+;
+;	     (let ((ldict (srecode-dictionary-add-section-dictionary
+;			   dict "VARIABLE"))
+;		   )
+;	       (srecode-dictionary-set-value ldict "NAME" (car c))
+;	       (if (assoc (car c) conf-table)
+;		   (let ((vdict (srecode-dictionary-add-section-dictionary
+;				 ldict "VALUE")))
+;		     (srecode-dictionary-set-value
+;		      vdict "VAL" (cdr (assoc (car c) conf-table)))
+;		     (setq conf-done (cons (car c) conf-done))))
+;	       (let ((vdict (srecode-dictionary-add-section-dictionary
+;			     ldict "VALUE")))
+;		 (srecode-dictionary-set-value vdict "VAL" (cdr c))))
+;	     )
+;
+;	   (oref this variables))
+;
+;     ;; Add in all variables from the configuration not allready covered.
+;     (mapc (lambda (c)
+;
+;	     (if (member (car c) conf-done)
+;		 nil
+;	       (let* ((ldict (srecode-dictionary-add-section-dictionary
+;			      dict "VARIABLE"))
+;		      (vdict (srecode-dictionary-add-section-dictionary
+;			      ldict "VALUE"))
+;		      )
+;		 (srecode-dictionary-set-value ldict "NAME" (car c))
+;		 (srecode-dictionary-set-value vdict "VAL" (cdr c))))
+;	     )
+;
+;	   conf-table)
+;
      
      ;; @TODO - finish off this function, and replace the below fcn
 
-     )
-  ))
+;     ))
+  )
 
 (defmethod ede-proj-makefile-insert-variables ((this ede-proj-project))
   "Insert variables needed by target THIS."
@@ -466,9 +472,7 @@ These are removed with make clean."
   (newline)
   (insert (ede-name this) ":")
   (newline)
-  (insert "\tcd "
-	  (directory-file-name (ede-subproject-relative-path this))
-	  "; $(MAKE)")
+  (insert "\t$(MAKE) -C " (directory-file-name (ede-subproject-relative-path this)))
   (newline)
   (newline)
   )
@@ -505,6 +509,8 @@ Argument THIS is the target that should insert stuff."
 		"\trm -f "
 		(mapconcat (lambda (c) c) junk " ")
 		"\n\n"))
+    ;; @TODO: ^^^ Clean should also recurse. ^^^
+
     (insert ".PHONY: dist\n")
     (insert "\ndist:")
     (ede-proj-makefile-insert-dist-dependencies this)
@@ -541,8 +547,7 @@ Argument THIS is the target that should insert stuff."
     (ede-map-subprojects
      this (lambda (sproj)
 	    (let ((rp (directory-file-name (ede-subproject-relative-path sproj))))
-	      (insert "\tcd " rp
-		      "; $(MAKE) $(MFLAGS) DISTDIR=$(DISTDIR)/" rp
+	      (insert "\t$(MAKE) -C " rp " $(MFLAGS) DISTDIR=$(DISTDIR)/" rp
 		      " dist"
 		      "\n"))))
 
@@ -585,7 +590,9 @@ Argument THIS is the target that should insert stuff."
   "Insert the commands needed by target THIS.
 For targets, insert the commands needed by the chosen compiler."
   (mapc 'ede-proj-makefile-insert-commands (ede-proj-compilers this))
-  (mapc 'ede-proj-makefile-insert-commands (ede-proj-linkers this)))
+  (when (object-assoc t :uselinker (ede-proj-compilers this))
+    (mapc 'ede-proj-makefile-insert-commands (ede-proj-linkers this))))
+
 
 (defmethod ede-proj-makefile-insert-user-rules ((this ede-proj-project))
   "Insert user specified rules needed by THIS target.
@@ -643,7 +650,7 @@ Argument TARGETS are the targets we should depend on for TAGS."
     ;; Now recurse into all subprojects
     (setq tg (oref this subproj))
     (while tg
-      (insert "\tcd " (ede-subproject-relative-path (car tg)) "; make $(MFLAGS) $@\n")
+      (insert "\t$(MAKE) -C " (ede-subproject-relative-path (car tg)) " $(MFLAGS) $@\n")
       (setq tg (cdr tg)))
     (insert "\n")))
 

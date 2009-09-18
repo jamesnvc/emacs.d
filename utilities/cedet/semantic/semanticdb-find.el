@@ -4,7 +4,7 @@
 
 ;; Author: Eric M. Ludlam <zappo@gnu.org>
 ;; Keywords: tags
-;; X-RCS: $Id: semanticdb-find.el,v 1.75 2009/01/10 00:10:57 zappo Exp $
+;; X-RCS: $Id: semanticdb-find.el,v 1.81 2009/08/31 01:49:35 zappo Exp $
 
 ;; This file is not part of GNU Emacs.
 
@@ -382,7 +382,7 @@ Default action as described in `semanticdb-find-translate-path'."
   (let ((table (cond ((null path)
 		      semanticdb-current-table)
 		     ((bufferp path)
-		      (buffer-local-value 'semanticdb-current-table path))			
+		      (semantic-buffer-local-value 'semanticdb-current-table path))			
 		     ((and (stringp path) (file-exists-p path))
 		      (semanticdb-file-table-object path t))
 		     ((semanticdb-abstract-table-child-p path)
@@ -421,6 +421,14 @@ where ACTION is one of 'scanned, 'duplicate, 'lost.
 and TAG is a clone of the include tag that was found.")
 (make-variable-buffer-local 'semanticdb-find-scanned-include-tags)
 
+(defvar semanticdb-implied-include-tags nil
+  "Include tags implied for all files of a given mode.
+Set this variable with `defvar-mode-local' for a particular mode so
+that any symbols that exist for all files for that mode are included.
+
+Note: This could be used as a way to write a file in a langauge
+to declare all the built-ins for that language.")
+
 (defun semanticdb-find-translate-path-includes--internal (path)
   "Internal implementation of `semanticdb-find-translate-path-includes-default'.
 This routine does not depend on the cache, but will always derive
@@ -435,7 +443,9 @@ a new path from the provided PATH."
 	nexttable)
     (cond ((null path)
 	   (semantic-refresh-tags-safe)
-	   (setq includetags (semantic-find-tags-included (current-buffer))
+	   (setq includetags (append
+			      (semantic-find-tags-included (current-buffer))
+			      semanticdb-implied-include-tags)
 		 curtable semanticdb-current-table
 		 incfname (buffer-file-name))
 	   )
@@ -819,7 +829,7 @@ Examines the variable `semanticdb-find-lost-includes'."
 	(message "There are no includes scanned %s"
 		 (buffer-name))
     
-      (setq ab (data-debug-new-buffer "*SEMANTICDB scanned-includes ADEBUG*"))
+      (data-debug-new-buffer "*SEMANTICDB scanned-includes ADEBUG*")
       (data-debug-insert-stuff-list scanned "*")
       )))
 
@@ -1289,6 +1299,18 @@ associated with that tag should be loaded into a buffer."
    (lambda (table tags)
      (semanticdb-find-tags-external-children-of-type-method table type tags))
    path find-file-match))
+
+;;;###autoload
+(defun semanticdb-find-tags-subclasses-of-type
+  (type &optional path find-file-match)
+  "Search for all tags of class type defined that subclass TYPE.
+See `semanticdb-find-translate-path' for details on PATH.
+FIND-FILE-MATCH indicates that any time a match is found, the file
+associated with that tag should be loaded into a buffer."
+  (semanticdb-find-tags-collector
+   (lambda (table tags)
+     (semanticdb-find-tags-subclasses-of-type-method table type tags))
+   path find-file-match t))
 
 ;;; METHODS
 ;;
@@ -1321,10 +1343,16 @@ Returns a table of all matching tags."
   (semantic-find-tags-by-class class (or tags (semanticdb-get-tags table))))
 
 (defmethod semanticdb-find-tags-external-children-of-type-method ((table semanticdb-abstract-table) parent &optional tags)
-   "In TABLE, find all occurances of tags whose TYPE is PARENT.
+   "In TABLE, find all occurances of tags whose parent is the PARENT type.
 Optional argument TAGS is a list of tags to search.
 Returns a table of all matching tags."
    (semantic-find-tags-external-children-of-type parent (or tags (semanticdb-get-tags table))))
+
+(defmethod semanticdb-find-tags-subclasses-of-type-method ((table semanticdb-abstract-table) parent &optional tags)
+   "In TABLE, find all occurances of tags whose parent is the PARENT type.
+Optional argument TAGS is a list of tags to search.
+Returns a table of all matching tags."
+   (semantic-find-tags-subclasses-of-type parent (or tags (semanticdb-get-tags table))))
 
 ;;; Deep Searches
 (defmethod semanticdb-deep-find-tags-by-name-method ((table semanticdb-abstract-table) name &optional tags)

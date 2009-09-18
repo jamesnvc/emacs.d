@@ -7,7 +7,7 @@
 ;;         David Ponce <david@dponce.com>
 ;;         Klaus Berndl <klaus.berndl@sdm.de>
 ;;
-;; X-RCS: $Id: c.by,v 1.53 2009/02/12 16:14:25 zappo Exp $
+;; X-RCS: $Id: c.by,v 1.60 2009/09/01 22:24:24 zappo Exp $
 ;;
 ;; c.by is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -24,6 +24,23 @@
 ;; Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
 ;; Boston, MA 02110-1301, USA.
 ;;
+
+;; TODO:  From Nate Schley
+;; >  * Can't parse signature element: "const char* const rmc_ClrTxt"
+;; >  * Can't parse signature element: "char* const dellog_ClrTxt"
+;; >  * Can't parse signature element: "const char* dellog_SetTxt"
+;; >  * Can't parse signature element: "const RmcCmdSSPADetailedStatus& status"
+;; > 
+;; > And FWIW I have seen the following argument cases not handled, even
+;; > with no leading/trailing spaces in the split:
+;; > 
+;; >  * Can't parse signature element: "const bool currentAlarmStatus"
+;; >  * Can't parse signature element: "unsigned char mode"
+;; >  * Can't parse signature element: "TskTimingTask* tsktimingtask"
+;; >  * Can't parse signature element: "unsigned char htrStatus"
+;; >  * Can't parse signature element: "char trackPower[]"
+;; >  * Can't parse signature element: "const RmcCmdMCDetailedStatus& status"
+;; >  * Can't parse signature element: "RmcBucStatus* rftBucStatus"
 
 %package semantic-c-by
 
@@ -50,6 +67,7 @@
 %token <punctuation>   HAT        "\\`\\^\\'"
 %token <punctuation>   OR         "\\`[|]\\'"
 %token <string>        C          "\"C\""
+%token <string>        CPP        "\"C\\+\\+\""
 %token <number>        ZERO       "^0$"
 %token <symbol>        RESTRICT   "\\<\\(__\\)?restrict\\>"
 %token <open-paren>    LPAREN     "("
@@ -183,10 +201,6 @@
 %put UNDERP summary "Common macro to eliminate prototype compatibility on some compilers"
 %put UNDERUNDERP summary "Common macro to eliminate prototype compatibility on some compilers"
 
-;; GCC
-%token __ATTRIBUTE__ "__attribute__"
-%put __ATTRIBUTE__ summary "<cdecl> __attribute__ ((<attributeoption>))"
-
 %%
 
 declaration
@@ -199,13 +213,13 @@ declaration
   | extern-c
   | template
   | using
-    (TAG (car (car $1)) 'using :type (car $1))
   ;
 
 codeblock
   : define
   | codeblock-var-or-fun
   | type ;; type is less likely to be used here.
+  | using
   ;
 
 extern-c-contents
@@ -223,9 +237,13 @@ extern-c
  ;; list of entries.  This must be done via the function
  ;; that expands singular nonterminals, such as int x,y;
     (TAG "C" 'extern :members (EXPANDFULL $3 extern-c-contents) )
+  | EXTERN CPP semantic-list
+    (TAG "C" 'extern :members (EXPANDFULL $3 extern-c-contents) )
   | EXTERN C
  ;; A plain extern "C" call should add something to the token,
  ;; but just strip it from the buffer here for now.
+    ( nil )
+  | EXTERN CPP
     ( nil )
   ;
 
@@ -356,7 +374,6 @@ namespacesubparts
  ;; PUBLIC or PRIVATE bits.  Ignore them for now.
   | template
   | using
-    (TAG (car (car $1)) 'using :type (car $1))
   | ;;EMPTY
   ;
 
@@ -380,12 +397,6 @@ opt-name
   : symbol
   | ;;EMPTY
     ( "" )
-  ;
-
-opt-class-declmods
-  : symbol declespec semantic-list
-  | symbol
-  | ;;EMPTY
   ;
 
 typesimple
@@ -437,7 +448,7 @@ struct-or-class
   ;
 
 type
-  : typesimple opt-attribute SEMICOLON
+  : typesimple SEMICOLON
     ( ,$1 )
  ;; named namespaces like "namespace XXX {"
   | NAMESPACE symbol namespaceparts
@@ -445,24 +456,28 @@ type
  ;; unnamed namespaces like "namespace {"
   | NAMESPACE namespaceparts
     (TYPE-TAG "unnamed" $1 $2 nil )
-  ;
-
-opt-attribute
-  : __ATTRIBUTE__ semantic-list
-    ( nil )
-  | ;; EMPTY
-    ( nil )
+ ;; David Engster: namespace alias like "namespace foo = bar;"
+  | NAMESPACE symbol EQUAL typeformbase SEMICOLON
+    (TYPE-TAG $2 $1 (list (TYPE-TAG (car $4) $1 nil nil)) nil :kind 'alias )
   ;
 
 ;; Klaus Berndl: We must parse "using namespace XXX" too
 
 ;; Using is vaguely like an include statement in the named portions
 ;; of the code.  We should probably specify a new token type for this.
+
 using
-  : USING typeformbase SEMICOLON
-    ( TYPE-TAG ,$2 "class" nil nil :prototype t)
-  | USING NAMESPACE typeformbase SEMICOLON
-    ( TYPE-TAG ,$3 "class" nil nil :prototype t)
+  : USING usingname SEMICOLON
+    (TAG (car $2) 'using :type ,$2 )
+  ;
+
+;; Jan Moringen: Differentiate between 'using' and 'using namespace'
+;; Adapted to creating type tags by EML.
+usingname
+  : typeformbase
+    (TYPE-TAG (car $1) "class" nil nil :prototype t)
+  | NAMESPACE typeformbase
+    (TYPE-TAG (car $2) "namespace" nil nil :prototype t)
   ;
 
 template
@@ -533,6 +548,12 @@ template-var
  ;; (*).  Example map<ClassX, ClassY, *size_var_ptr> sized_map_var.
   | opt-stars opt-ref namespace-symbol
     ( ,$3 )
+ ;; Some code can compile down into a number, but starts out as an
+ ;; expression, such as "sizeof(a)", or (sizeof(a)/sizeof(b))
+  | semantic-list
+    ( $1 )
+  | SIZEOF semantic-list
+    ( $2 )
   ;
 
 opt-template-equal
@@ -1078,7 +1099,7 @@ function-pointer
   ;
 
 fun-or-proto-end
-  : opt-attribute SEMICOLON
+  : SEMICOLON
     ( t )
   | semantic-list
     ( nil )
@@ -1112,16 +1133,16 @@ type-cast-list
   : open-paren typeformbase close-paren
   ;
 
-;; Klaus Berndl: symbol -> namespace-symbol!
-opt-function-call-args
+opt-stuff-after-symbol
   : PAREN_BLCK
+  | BRACK_BLCK
   | ;; EMPTY 
   ;
 
 multi-stage-dereference
-  : namespace-symbol opt-function-call-args PERIOD multi-stage-dereference ;; method call
-  | namespace-symbol opt-function-call-args MINUS GREATER multi-stage-dereference ;;method call
-  | namespace-symbol opt-function-call-args
+  : namespace-symbol opt-stuff-after-symbol PERIOD multi-stage-dereference ;; method call
+  | namespace-symbol opt-stuff-after-symbol MINUS GREATER multi-stage-dereference ;;method call
+  | namespace-symbol opt-stuff-after-symbol
   ;
 
 string-seq

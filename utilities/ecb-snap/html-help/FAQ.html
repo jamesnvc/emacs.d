@@ -3,7 +3,7 @@
 <title>FAQ - ECB - the Emacs Code Browser</title>
 <meta http-equiv="Content-Type" content="text/html">
 <meta name="description" content="ECB - the Emacs Code Browser">
-<meta name="generator" content="makeinfo 4.13">
+<meta name="generator" content="makeinfo 4.8">
 <link title="Top" rel="start" href="ecb.html#Top">
 <link rel="prev" href="Conflicts-and-bugs.html#Conflicts-and-bugs" title="Conflicts and bugs">
 <link rel="next" href="Command-Index.html#Command-Index" title="Command Index">
@@ -23,8 +23,8 @@
 </head>
 <body>
 <div class="node">
-<a name="FAQ"></a>
 <p>
+<a name="FAQ"></a>
 Next:&nbsp;<a rel="next" accesskey="n" href="Command-Index.html#Command-Index">Command Index</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="Conflicts-and-bugs.html#Conflicts-and-bugs">Conflicts and bugs</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="ecb.html#Top">Top</a>
@@ -45,7 +45,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="ecb.html#Top">Top</a>
 <!-- <The text of the question?> -->
 <!-- @tab @tab -->
 <!-- <The text of the answer> -->
-   <p><table summary="">
+<p><table summary="">
 <tr align="left"><td valign="top" width="40%"><strong>Question</strong>
 </td><td valign="top" width="1%"></td><td valign="top" width="59%">
 <strong>Answer</strong>
@@ -102,8 +102,8 @@ active ECB. This can be done with the hooks of ECB.
 
 <p><br></td></tr><tr align="left"><td valign="top" width="40%">Does ECB support C++ as well as Java? 
 </td><td valign="top" width="1%"></td><td valign="top" width="59%">
-This depends strongly on the used semantic-version, but all
-semantic-versions &gt;= semantic-1.4.3 support C++ really well.
+In general C++ is supported very well. But it depends on the used
+cedet-version, but cedet-version &gt;= 1.0pre6 support C++ really well.
 
 <p><br></td></tr><tr align="left"><td valign="top" width="40%"></td><td valign="top" width="1%"></td><td valign="top" width="59%">
 
@@ -138,19 +138,6 @@ c++-mode in <code>auto-mode-alist</code> and/or your own Emacs-setup has
 &ldquo;destroyed&rdquo; the correct value of the hook-variable
 <code>c++-mode-hook</code>. 
 See <a href="Setting-up-Emacs.html#Setting-up-Emacs">Setting up Emacs</a>.
-
-<p><br></td></tr><tr align="left"><td valign="top" width="40%"></td><td valign="top" width="1%"></td><td valign="top" width="59%">
-
-<p><br></td></tr><tr align="left"><td valign="top" width="40%">Why doesn't ECB display the node name in the echo area if mouse moves
-over it? 
-</td><td valign="top" width="1%"></td><td valign="top" width="59%">
-There can be several reasons: First the value of the option
-<code>ecb-show-node-name-in-minibuffer</code> must be either <code>always</code> or
-<code>if-too-long</code>. If this is OK, then maybe you have turned on
-follow-mouse AFTER activating ECB; follow-mouse must be turned on
-BEFORE ECB is activated, e.g. in the <code>ecb-activate-hook</code>! But with
-Emacs 21.X and XEmacs there are no problems with this feature, just
-activate it.
 
 <p><br></td></tr><tr align="left"><td valign="top" width="40%"></td><td valign="top" width="1%"></td><td valign="top" width="59%">
 
@@ -240,7 +227,7 @@ Yes, see <a href="Using-the-mouse.html#Using-the-mouse">Using the mouse</a>.
 
 <p><br></td></tr><tr align="left"><td valign="top" width="40%">Can ECB display the compile-window &ldquo;on demand&rdquo;? 
 </td><td valign="top" width="1%"></td><td valign="top" width="59%">
-Yes, see <a href="Tips-and-tricks.html#Tips-and-tricks">Tips and tricks</a>.
+Yes, see <a href="Common-use_002dcases.html#Common-use_002dcases">Common use-cases</a>.
 
 <p><br></td></tr><tr align="left"><td valign="top" width="40%"></td><td valign="top" width="1%"></td><td valign="top" width="59%">
 
@@ -470,12 +457,69 @@ See also <a href="Version_002dcontrol-support.html#Version_002dcontrol-support">
 
 <p><br></td></tr><tr align="left"><td valign="top" width="40%"></td><td valign="top" width="1%"></td><td valign="top" width="59%">
 
-<p><br></td></tr><tr align="left"><td valign="top" width="40%">I get errors when trying to download new ECB with
-<code>ecb-download-ecb</code>. 
+<p><br></td></tr><tr align="left"><td valign="top" width="40%">The state of the files under version control seems to be not accurate. What is
+the reason and what can i do? 
 </td><td valign="top" width="1%"></td><td valign="top" width="59%">
-Ensure that the ECB-configuration of these tools is correct for your
-system (see <code>ecb-wget-setup</code>, <code>ecb-gzip-setup</code> and
-<code>ecb-tar-setup</code>).
+The option <code>ecb-vc-supported-backends</code> offers now also a accurate
+recompute-state function. This is by offering <code>ecb-vc-recompute-state</code> as
+an alias to the function <code>vc-recompute-state</code> as state-check function for
+this option. See also <a href="Version_002dcontrol-support.html#Version_002dcontrol-support">Version-control support</a>
+
+<p><br></td></tr><tr align="left"><td valign="top" width="40%"></td><td valign="top" width="1%"></td><td valign="top" width="59%">
+
+<p><br></td></tr><tr align="left"><td valign="top" width="40%">With Emacs 23 ECB shows a odd split-behavior when calling help or displaying
+completion-output or compilation- or grep-output. What is the reason. 
+</td><td valign="top" width="1%"></td><td valign="top" width="59%">
+Check the values of the options <code>split-width-threshold</code> and
+<code>split-height-threshold</code>. ECBs split-behavior depends fully on the
+Emacs-logic and that one depends mainly on these two options. So adjust them
+to match (at least nearly) the sizes of the edit-area of ECB.
+
+<p><br></td></tr><tr align="left"><td valign="top" width="40%"></td><td valign="top" width="1%"></td><td valign="top" width="59%">
+
+<p><br></td></tr><tr align="left"><td valign="top" width="40%">When using a layout with the special ecb-window for the semantic analyzer then
+Emacs seems to be blocked when typing pauses. What is the reason and what can
+i do? 
+</td><td valign="top" width="1%"></td><td valign="top" width="59%">
+This comes from the idle-mechanism ECB/semantic uses to offer some
+intellisense like displaying possible completions and local variables
+depending on current context (ie. location of point). So if point stays on a
+location within your code where hundreds (or even thousands) of completions
+are possible then parsing and displaying them can last annoying time. But in
+general a keypress interupts. If not then you have to possibilities offered by
+the options <code>ecb-analyse-buffer-sync</code> and
+<code>ecb-analyse-buffer-sync-delay</code>: You can increase the delay of the latter
+one so parsing current context starts later after Emacs goes idle (ie. after
+you pause typing). Or you can disable the automatic synchronizing the
+analyser-window with the former one - see the docstring. Then you have to
+synchronize (ie. start parsing context) on demand via the command
+<code>ecb-analyse-buffer-sync</code><a rel="footnote" href="#fn-3" name="fnd-3"><sup>3</sup></a>.
+
+<p><br></td></tr><tr align="left"><td valign="top" width="40%"></td><td valign="top" width="1%"></td><td valign="top" width="59%">
+
+<p><br></td></tr><tr align="left"><td valign="top" width="40%">How can i change the bucketizing method of the history-window? 
+</td><td valign="top" width="1%"></td><td valign="top" width="59%">
+Either via popup context-menu (right mouse-button) or with the option
+<code>ecb-history-make-buckets</code>.
+
+<p><br></td></tr><tr align="left"><td valign="top" width="40%"></td><td valign="top" width="1%"></td><td valign="top" width="59%">
+
+<p><br></td></tr><tr align="left"><td valign="top" width="40%">How can i disable this grey headerline in the tree-buffers? 
+</td><td valign="top" width="1%"></td><td valign="top" width="59%">
+See the option <code>ecb-tree-make-parent-node-sticky</code>.
+
+<p><br></td></tr><tr align="left"><td valign="top" width="40%"></td><td valign="top" width="1%"></td><td valign="top" width="59%">
+
+<p><br></td></tr><tr align="left"><td valign="top" width="40%">When clicking onto a parent-node in the methods-window then ECB doesn't jump
+to the definition of this parent-type. 
+</td><td valign="top" width="1%"></td><td valign="top" width="59%">
+ECB uses completely the smartness of the semanticdb and the semantic-analyzer. 
+So if you have customized semantic accordingly to the needs of your project
+(ie. mainly setting up all so semantic can find files in your
+directory-structure) then ECB will find the parent-definition and also jump to
+it. See <a href="ECB-Methods_002dwindow.html#ECB-Methods_002dwindow">ECB Methods-window</a> and the subsection &ldquo;Jumping to the
+definition of external tags&rdquo; and see the option
+<code>ecb-find-external-tag-functions</code>.
 
    <br></td></tr></table>
 
@@ -487,7 +531,10 @@ system (see <code>ecb-wget-setup</code>, <code>ecb-gzip-setup</code> and
 
    <p class="footnote"><small>[<a name="fn-2" href="#fnd-2">2</a>]</small> Nes is a combination of No and Yes :-)</p>
 
-   <hr></div>
+   <p class="footnote"><small>[<a name="fn-3" href="#fnd-3">3</a>]</small> Yes, both the option and the command
+have the same name</p>
+
+   <p><hr></div>
 
    </body></html>
 

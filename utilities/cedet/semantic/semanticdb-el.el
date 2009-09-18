@@ -4,7 +4,7 @@
 
 ;; Author: Eric M. Ludlam <zappo@gnu.org>
 ;; Keywords: tags
-;; X-RCS: $Id: semanticdb-el.el,v 1.31 2009/01/24 04:52:45 zappo Exp $
+;; X-RCS: $Id: semanticdb-el.el,v 1.34 2009/08/31 01:52:50 zappo Exp $
 
 ;; This file is not part of GNU Emacs.
 
@@ -33,7 +33,6 @@
 ;; to also work in Emacs Lisp with no compromises.
 ;;
 
-(require 'semanticdb-search)
 (eval-when-compile
   ;; For generic function searching.
   (require 'eieio)
@@ -48,7 +47,7 @@
    )
   "A table for returning search results from Emacs.")
 
-(defmethod semanticdb-refresh-table ((obj semanticdb-table-emacs-lisp))
+(defmethod semanticdb-refresh-table ((obj semanticdb-table-emacs-lisp) &optional force)
   "Do not refresh Emacs Lisp table.
 It does not need refreshing."
   nil)
@@ -149,7 +148,8 @@ If Emacs cannot resolve this symbol to a particular file, then return nil."
 	 )
     (if (or (not file) (not (file-exists-p file)))
 	;; The file didn't exist.  Return nil.
-	nil
+	;; We can't normalize this tag.  Fake it out.
+	(cons obj tag)
       (when (string-match "\\.elc" file)
 	(setq file (concat (file-name-sans-extension file)
 			   ".el"))
@@ -157,6 +157,7 @@ If Emacs cannot resolve this symbol to a particular file, then return nil."
 		   (file-exists-p (concat file ".gz")))
 	  ;; Is it a .gz file?
 	  (setq file (concat file ".gz"))))
+
       (let* ((tab (semanticdb-file-table-object file))
 	     (alltags (semanticdb-get-tags tab))
 	     (newtags (semanticdb-find-tags-by-name-method

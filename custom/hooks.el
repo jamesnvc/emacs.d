@@ -21,7 +21,7 @@
                  '(("\\<\\(FIXME\\|TODO\\|BUG\\):" 1 font-lock-warning-face t)))))
 
 ;; Python
-(add-hook 'python-mode-hook 'ropemacs-mode)
+;; (add-hook 'python-mode-hook 'ropemacs-mode)
 ;; turn off yas for python, since we really want tab to indent (use hippie-expand for yas)
 (add-hook 'python-mode-hook 'yas/minor-mode-off)
 (add-hook 'python-mode-hook (lambda ()
@@ -41,6 +41,7 @@
 
 ;; Javascript
 (add-hook 'javascript-mode-hook 'javascript-custom-setup)
+
 (add-hook 'js2-mode-hook 'yas/minor-mode-on)
 
 ;; Perl
@@ -67,12 +68,16 @@
 
 ;; Ruby
 (add-hook 'ruby-mode-hook 'ruby-electric-mode)
-
+(add-hook 'ruby-mode-hook
+               (lambda ()
+                (font-lock-add-keywords nil
+                 '(("\\<\\(FIXME\\|TODO\\|BUG\\):" 1 font-lock-warning-face t)))))
 
 ;; Latex
 (add-hook 'latex-mode-hook '(lambda () (flyspell-mode 1)))
 (add-hook 'yatex-mode-hook 'flyspell-mode)
 (add-hook 'latex-mode-hook 'pretty-greek)
+(add-hook 'latex-mode-hook 'reftex-mode)
 (add-hook 'doc-view-mode-hook 'auto-revert-mode)
 
 ;; Eshell

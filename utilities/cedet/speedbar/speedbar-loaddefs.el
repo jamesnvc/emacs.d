@@ -3,21 +3,21 @@
 ;;; Code:
 
 
-;;;### (autoloads (rpm) "rpm" "rpm.el" (17213 40778))
+;;;### (autoloads (rpm) "rpm" "rpm.el" (19076 52922))
 ;;; Generated autoloads from rpm.el
 
-(autoload 'rpm "rpm" "\
+(autoload (quote rpm) "rpm" "\
 Red Hat Package Management in Emacs.
 
 \(fn)" t nil)
 
 ;;;***
 
-;;;### (autoloads (gud-speedbar-buttons) "sb-gud" "sb-gud.el" (16232
-;;;;;;  37556))
+;;;### (autoloads (gud-speedbar-buttons) "sb-gud" "sb-gud.el" (19076
+;;;;;;  52919))
 ;;; Generated autoloads from sb-gud.el
 
-(autoload 'gud-speedbar-buttons "sb-gud" "\
+(autoload (quote gud-speedbar-buttons) "sb-gud" "\
 Create a speedbar display based on the current state of GUD.
 If the GUD BUFFER is not running a supported debugger, then turn
 off the specialized speedbar mode.
@@ -27,30 +27,30 @@ off the specialized speedbar mode.
 ;;;***
 
 ;;;### (autoloads (Info-speedbar-buttons Info-speedbar-browser) "sb-info"
-;;;;;;  "sb-info.el" (17563 42408))
+;;;;;;  "sb-info.el" (19102 25316))
 ;;; Generated autoloads from sb-info.el
 
-(autoload 'Info-speedbar-browser "sb-info" "\
+(autoload (quote Info-speedbar-browser) "sb-info" "\
 Initialize speedbar to display an info node browser.
 This will add a speedbar major display mode.
 
 \(fn)" t nil)
 
-(autoload 'Info-speedbar-buttons "sb-info" "\
+(autoload (quote Info-speedbar-buttons) "sb-info" "\
 Create a speedbar display to help navigation in an Info file.
 BUFFER is the buffer speedbar is requesting buttons for.
 
 \(fn BUFFER)" nil nil)
 
-(eval-after-load "info" '(require 'sb-info))
+(eval-after-load "info" (quote (require (quote sb-info))))
 
 ;;;***
 
 ;;;### (autoloads (rmail-speedbar-buttons) "sb-rmail" "sb-rmail.el"
-;;;;;;  (15958 27182))
+;;;;;;  (19076 52920))
 ;;; Generated autoloads from sb-rmail.el
 
-(autoload 'rmail-speedbar-buttons "sb-rmail" "\
+(autoload (quote rmail-speedbar-buttons) "sb-rmail" "\
 Create buttons for BUFFER containing rmail messages.
 Click on the address under Reply to: to reply to this person.
 Under Folders: Click a name to read it, or on the <M> to move the
@@ -60,11 +60,11 @@ current message into that RMAIL folder.
 
 ;;;***
 
-;;;### (autoloads (w3-speedbar-buttons) "sb-w3" "sb-w3.el" (17213
-;;;;;;  40805))
+;;;### (autoloads (w3-speedbar-buttons) "sb-w3" "sb-w3.el" (19076
+;;;;;;  52918))
 ;;; Generated autoloads from sb-w3.el
 
-(autoload 'w3-speedbar-buttons "sb-w3" "\
+(autoload (quote w3-speedbar-buttons) "sb-w3" "\
 Create speedbar buttons for the current web BUFFER displayed in w3 mode.
 
 \(fn BUFFER)" nil nil)
@@ -72,12 +72,12 @@ Create speedbar buttons for the current web BUFFER displayed in w3 mode.
 ;;;***
 
 ;;;### (autoloads (speedbar-get-focus speedbar-frame-mode) "speedbar"
-;;;;;;  "speedbar.el" (18435 29472))
+;;;;;;  "speedbar.el" (19102 25316))
 ;;; Generated autoloads from speedbar.el
 
-(defalias 'speedbar 'speedbar-frame-mode)
+(defalias (quote speedbar) (quote speedbar-frame-mode))
 
-(autoload 'speedbar-frame-mode "speedbar" "\
+(autoload (quote speedbar-frame-mode) "speedbar" "\
 Enable or disable speedbar.  Positive ARG means turn on, negative turn off.
 A nil ARG means toggle.  Once the speedbar frame is activated, a buffer in
 `speedbar-mode' will be displayed.  Currently, only one speedbar is
@@ -87,7 +87,7 @@ supported at a time.
 
 \(fn &optional ARG)" t nil)
 
-(autoload 'speedbar-get-focus "speedbar" "\
+(autoload (quote speedbar-get-focus) "speedbar" "\
 Change frame focus to or from the speedbar frame.
 If the selected frame is not speedbar, then speedbar frame is
 selected.  If the speedbar frame is active, then select the attached frame.
@@ -98,15 +98,13 @@ selected.  If the speedbar frame is active, then select the attached frame.
 
 ;;;### (autoloads nil nil ("bigclock.el" "dframe.el" "fsum.el" "sb-ant.el"
 ;;;;;;  "sb-html.el" "sb-image.el" "sb-texinfo.el" "speedbar-load.el")
-;;;;;;  (18858 42812 646354))
+;;;;;;  (19102 26023 496975))
 
 ;;;***
 
-(provide 'speedbar-loaddefs)
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t
 ;; no-update-autoloads: t
-;; coding: utf-8
 ;; End:
 ;;; speedbar-loaddefs.el ends here

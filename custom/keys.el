@@ -1,15 +1,13 @@
 ;; Global Keyconfigs
 
 ;; Other keys
-(global-set-key [up] 'increment-number-at-point)
-(global-set-key [down] 'decrement-number-at-point)
-(global-set-key [XF86Back] 'next-buffer)
-(global-set-key [XF86Forward] 'previous-buffer)
-(global-set-key [(S XF86Forward)] 'winring-next-configuration)
-(global-set-key [(S XF86Back)] 'winring-prev-configuration)
+(global-set-key [up] 'winring-next-configuration)
+(global-set-key [down] 'winring-prev-configuration)
+(global-set-key [left] 'next-buffer)
+(global-set-key [right] 'previous-buffer)
 
 ;; F keys
-(global-set-key [f2] 'webjump)
+;; (global-set-key [f2] 'webjump)
 (global-set-key [f3] 'eshell)
 (global-set-key [f4] 'replace-regexp)
 (global-set-key [f5]
@@ -17,7 +15,10 @@
 (global-set-key [f9] 'slime-selector)
 (global-set-key [f10] 'run-clojure)
 (global-set-key (kbd "<f7> t") 'planner-create-task-from-buffer)
+
+;; Super keys
 (global-set-key (kbd "s-h") 'help-command)
+(global-set-key (kbd "s-x") 'execute-extended-command)
 (global-set-key (kbd "s-SPC") 'hippie-expand)
 
 ;; Shift
@@ -116,7 +117,6 @@
 (define-key c++-mode-map (kbd "C-c C-v") 'my-flymake-show-next-error)
 
 ;; Java
-(define-key java-mode-map (kbd "C-c C-v") 'my-flymake-show-next-error)
 
 ;; Lisp
 (define-key emacs-lisp-mode-map (kbd "C-c C-c") 'comment-region)
@@ -139,12 +139,12 @@
 (define-key smalltalk-mode-map (kbd "C-c t s") 'smalltalk-subclass-template)
 
 ;; w3m
-(define-key w3m-mode-map (kbd "C-S-t") 'w3m-goto-new-session-url)
-(define-key w3m-mode-map [(control XF86Back)] 'w3m-previous-buffer)
-(define-key w3m-mode-map [(control XF86Forward)] 'w3m-next-buffer)
-(define-key w3m-mode-map "," 'w3m-previous-buffer)
-(define-key w3m-mode-map "." 'w3m-next-buffer)
-(define-key w3m-mode-map "'" 'w3m-close-window)
+;; (define-key w3m-mode-map (kbd "C-S-t") 'w3m-goto-new-session-url)
+;; (define-key w3m-mode-map [(control XF86Back)] 'w3m-previous-buffer)
+;; (define-key w3m-mode-map [(control XF86Forward)] 'w3m-next-buffer)
+;; (define-key w3m-mode-map "," 'w3m-previous-buffer)
+;; (define-key w3m-mode-map "." 'w3m-next-buffer)
+;; (define-key w3m-mode-map "'" 'w3m-close-window)
 
 ;; Perl
 (define-key cperl-mode-map (kbd "C-j") 'newline-and-indent)

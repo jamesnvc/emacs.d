@@ -5,7 +5,7 @@
 ## Author: David Ponce <david@dponce.com>
 ## Maintainer: CEDET developers <http://sf.net/projects/cedet>
 ## Created: 12 Sep 2003
-## X-RCS: $Id: Makefile,v 1.21 2009/02/24 03:17:19 zappo Exp $
+## X-RCS: $Id: Makefile,v 1.25 2009/08/08 21:48:32 zappo Exp $
 ##
 ## This program is free software; you can redistribute it and/or
 ## modify it under the terms of the GNU General Public License as
@@ -28,7 +28,7 @@
 CEDET_HOME="$(CURDIR)"
 
 ## The CEDET's packages installed
-CEDET_PACKAGES=\
+CEDET_ELISP_PACKAGES=\
 common \
 speedbar \
 eieio \
@@ -36,7 +36,10 @@ semantic \
 srecode \
 ede \
 cogre \
-contrib \
+contrib
+
+CEDET_PACKAGES=\
+$(CEDET_ELISP_PACKAGES) \
 tests
 
 ## Path to your Emacs
@@ -65,7 +68,7 @@ DIST_ROOT=cedet-$(CEDET_VERSION)
 DIST_DIR=$(CEDET_HOME)/$(DIST_ROOT)
 DIST_FILE=$(DIST_DIR).tar.gz
 
-__BUILD_AUTOLOADS=$(patsubst %,%-autoloads,$(CEDET_PACKAGES))
+__BUILD_AUTOLOADS=$(patsubst %,%-autoloads,$(CEDET_ELISP_PACKAGES))
 __CLEAN_AUTOLOADS=$(patsubst %,clean-%,$(__BUILD_AUTOLOADS))
 __DOMAKE=$(MAKE) $(MFLAGS) EMACS="$(EMACS)" EMACSFLAGS="$(EMACSFLAGS)" SHELL="$(SHELL)"
 
@@ -81,6 +84,10 @@ packages: $(CEDET_PACKAGES)
 .PHONY: $(CEDET_PACKAGES)
 $(CEDET_PACKAGES):
 	cd $(CEDET_HOME)/$@ && $(__DOMAKE)
+
+.PHONY: ebuild
+ebuild:
+	$(EMACS) -q -batch --no-site-file -l cedet-build.el -f cedet-build
 
 ## Update
 ##
@@ -133,9 +140,14 @@ clean-all: clean clean-elc clean-info clean-grammars clean-autoloads
 
 ### UNIT TEST Harness
 ## Run the master CEDET unit-test suite.
-.PHONY: utest
+.PHONY: utest itest
 utest:
 	$(EMACS) $(EMACSFLAGS) -l "common/cedet.el" -f cedet-utest-batch
+
+itest:
+	cd tests; ./cit-test.sh Make
+	cd tests; ./cit-test.sh Automake
+	cd tests; ./cit-test.sh GNUStep
 
 ### Install info files
 ## Thanks Stefano Sabatini for the info install patch.

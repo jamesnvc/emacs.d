@@ -1,4 +1,16 @@
 ;; Some things that I'm working on here...
+(defun sudo-edit (&optional arg)
+  "Prompt for a file and open it as root"
+  (interactive "p")
+  (if arg
+      (find-file (concat "/sudo:root@localhost:" (ido-read-file-name "File: ")))
+      (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
+
+(defun sudo-edit-current-file ()
+  "Edit the current file as root"
+  (interactive)
+  (find-alternate-file (concat "/sudo:root@localhost:" (buffer-file-name (current-buffer)))))
+
 (defun set-longlines-mode ()
   (interactive)
   (text-mode)

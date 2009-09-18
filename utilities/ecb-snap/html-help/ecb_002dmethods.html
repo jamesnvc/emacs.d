@@ -3,7 +3,7 @@
 <title>ecb-methods - ECB - the Emacs Code Browser</title>
 <meta http-equiv="Content-Type" content="text/html">
 <meta name="description" content="ECB - the Emacs Code Browser">
-<meta name="generator" content="makeinfo 4.13">
+<meta name="generator" content="makeinfo 4.8">
 <link title="Top" rel="start" href="ecb.html#Top">
 <link rel="up" href="Customizable-options.html#Customizable-options" title="Customizable options">
 <link rel="prev" href="ecb_002dsources.html#ecb_002dsources" title="ecb-sources">
@@ -24,9 +24,9 @@
 </head>
 <body>
 <div class="node">
+<p>
 <a name="ecb-methods"></a>
 <a name="ecb_002dmethods"></a>
-<p>
 Next:&nbsp;<a rel="next" accesskey="n" href="ecb_002dhistory.html#ecb_002dhistory">ecb-history</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="ecb_002dsources.html#ecb_002dsources">ecb-sources</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="Customizable-options.html#Customizable-options">Customizable options</a>
@@ -38,7 +38,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="Customizable-options.html#Customizable-
 <p class="noindent">This group contains settings for the methods-buffer in the ECB:
 
 <div class="defun">
-&mdash; User Option: <b>auto-expand-tag-tree</b><var><a name="index-auto_002dexpand_002dtag_002dtree-201"></a></var><br>
+&mdash; User Option: <b>auto-expand-tag-tree</b><var><a name="index-auto_002dexpand_002dtag_002dtree-202"></a></var><br>
 <blockquote><p>Expand the methods-tag-tree automatically if node invisible.
 
         <p>This option has only an effect if option <code>ecb-highlight-tag-with-point</code> is
@@ -61,7 +61,7 @@ supported by semantic!
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>auto-expand-tag-tree-collapse-other</b><var><a name="index-auto_002dexpand_002dtag_002dtree_002dcollapse_002dother-202"></a></var><br>
+&mdash; User Option: <b>auto-expand-tag-tree-collapse-other</b><var><a name="index-auto_002dexpand_002dtag_002dtree_002dcollapse_002dother-203"></a></var><br>
 <blockquote><p>Auto. expanding the tag-tree collapses all not related nodes. There
 are several choices:
 
@@ -83,12 +83,12 @@ Do not automatically collapse the methods-buffer.
         </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>auto-update-methods-after-save</b><var><a name="index-auto_002dupdate_002dmethods_002dafter_002dsave-203"></a></var><br>
+&mdash; User Option: <b>auto-update-methods-after-save</b><var><a name="index-auto_002dupdate_002dmethods_002dafter_002dsave-204"></a></var><br>
 <blockquote><p>Automatically updating the ECB method buffer after saving a source. 
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>default-tag-filter</b><var><a name="index-default_002dtag_002dfilter-204"></a></var><br>
+&mdash; User Option: <b>default-tag-filter</b><var><a name="index-default_002dtag_002dfilter-205"></a></var><br>
 <blockquote><p>Default tag-filters for certain files. This option allow to define
 default tag-filters for certain files which are applied automatically
 after loading such a file into a buffer. The possible filters are the
@@ -110,7 +110,7 @@ regardless of the filters of this option!
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>disable-semantic-threshold-alist</b><var><a name="index-disable_002dsemantic_002dthreshold_002dalist-205"></a></var><br>
+&mdash; User Option: <b>disable-semantic-threshold-alist</b><var><a name="index-disable_002dsemantic_002dthreshold_002dalist-206"></a></var><br>
 <blockquote><p>Threshold for disabling semantic-parsing Define a threshold fpr
 buffer-size. Exceeding this threshold disables parsing current buffer
 by semantic.
@@ -131,7 +131,7 @@ this major-mode.
 
      <pre class="example">          ((default . 1000000)
             (c-mode . 200000))
-</pre>
+   </pre>
         <p>This example whould not parse c-mode buffers exceeding a buffer-size
 of 200000. And buffers of all other modes would be only parsed if
 smaller than 1000000.
@@ -142,14 +142,14 @@ regardless their size.
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>display-image-icons-for-semantic-tags</b><var><a name="index-display_002dimage_002dicons_002dfor_002dsemantic_002dtags-206"></a></var><br>
-<blockquote><p>Display nice and pretty icons for semantic-tags in the Methods-buffer. 
-This option takes only effect if Emacs can display images and if
+&mdash; User Option: <b>display-image-icons-for-semantic-tags</b><var><a name="index-display_002dimage_002dicons_002dfor_002dsemantic_002dtags-207"></a></var><br>
+<blockquote><p>Display nice and pretty icons for semantic-tags in the Methods-buffer. A non
+nil value takes only effect if Emacs can display images and if
 <code>ecb-tree-buffer-style</code> is set to <code>image</code>. 
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>exclude-parents-regexp</b><var><a name="index-exclude_002dparents_002dregexp-207"></a></var><br>
+&mdash; User Option: <b>exclude-parents-regexp</b><var><a name="index-exclude_002dparents_002dregexp-208"></a></var><br>
 <blockquote><p>Regexps which parent classes should not be shown in the methods buffer
 (see also <code>ecb-show-parents</code>). If nil then all parents will be
 shown if <code>ecb-show-parents</code> is not nil.
@@ -159,7 +159,7 @@ supported by semantic!
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>expand-methods-switch-off-auto-expand</b><var><a name="index-expand_002dmethods_002dswitch_002doff_002dauto_002dexpand-208"></a></var><br>
+&mdash; User Option: <b>expand-methods-switch-off-auto-expand</b><var><a name="index-expand_002dmethods_002dswitch_002doff_002dauto_002dexpand-209"></a></var><br>
 <blockquote><p>Switch off auto expanding in the ECB-method buffer. If on then auto
 expanding is switched off after explicit expanding or collapsing by
 <code>ecb-expand-methods-nodes</code>.
@@ -177,7 +177,89 @@ the explicitly set expand-level.
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>font-lock-tags</b><var><a name="index-font_002dlock_002dtags-209"></a></var><br>
+&mdash; User Option: <b>find-external-tag-functions</b><var><a name="index-find_002dexternal_002dtag_002dfunctions-210"></a></var><br>
+<blockquote><p>Functions used for searching external tags clicked in the methods buffer.
+
+        <p>The methods buffer displays for oo-languages the parents of a type under a
+special bucket &ldquo;Parents&rdquo;. Languages like C++, CLOS and Eieio allow to define
+the implementation of a method outside of the class definition and even in
+another file. In the methods-buffer of ECB such externaly defined methods are
+collected and displayed under a <code>virtual</code> faux type-tag named as the
+class-qualifier of the methods. This faux-tag is virtual because it does not
+extist in the parsed buffer.
+
+        <p>If a user clicks either onto such a faux-type-tag or onto a parent-tag then
+ECB tries to find the definition of the underlying type on a name-basis,
+displaying the containing file as buffer in the current edit-window and
+jumping to the start of the type-definition in this buffer.
+
+        <p>Finding such external types can be very complex and there are several roads to
+success. ECB uses per default methods based on the semantic-analyzer. But this
+option allows to define own find-functions and tell ECB to uses them.
+
+        <p>This functionality is set on a <code>major-mode</code> base, i.e. for every
+<code>major-mode</code> a different setting can be used. The value of this option is
+a list of cons-cells: The car is either a <code>major-mode</code> symbol or the
+special symbol 'default. The cdr is a list of find-functions or nil.
+
+        <p>ECB first performs all find-functions defined for current <code>major-mode</code>
+(if any) anf then all find-functions defined for the special symbol 'default
+(if any).
+
+        <p>ECB offers some predefined senseful finding-functions. Currently there are:
+          <ul>
+<li><code>ecb-search-type-tag-by-semantic-analyzer</code> (most powerful)
+<li><code>ecb-search-type-tag-by-semanticdb</code>
+<li><code>ecb-jde-show-class-source</code> (for major-mode <code>jde-mode</code> when
+coding in java)
+</ul>
+
+        <p>This function does not only the searching but displays the founded tag. See
+the documentation of these function for details how they work.
+
+        <p>But you can add any arbitrary function if the following conditions are
+fulfilled:
+
+          <ul>
+<li>The function gets a semantic tag representing the external type which should
+be found. This is a positionless-tag (otherwise it would not be hard to go
+to it) and it's either a faux-tag (for which <code>ecb--semantic-faux-tag-p</code> is
+not nil; the function can use this check if necessary) or a simple tag
+containing only a name an a tag-class. The tag-class for both is 'type.
+
+          <li>The return value of the function must be one of:
+               <ul>
+<li><code>nil</code>: No tag is found
+<li><code>t</code>: A tag has been found and also be displayed in the edit-window (this
+prevents ECB from running further function of this option because the searched
+tag is already displayed. So a function should only return <code>t</code> if all is
+fine and no further actions are needed. 
+<li>A positioned semantic tag (for which <code>ecb--semantic-tag-with-position-p</code>
+returns not <code>nil</code>) which represents the found external type-tag. 
+</ul>
+          </ul>
+
+        <p>It's strongly recommended for the function not to display the found location
+for itself but to return a positioned semantic tag! But sometimes the
+displaying is integrated in a third-party find-function like
+<code>jde-show-class-source</code> which is used by
+<code>ecb-jde-show-class-source</code>. In these cases the function has to return t
+if the searched tag has been successfully displayed.
+
+        <p>Precondition for a find-function:
+Current buffer is the buffer the clicked faux- or parent tag belongs to
+Current point depends on the clicked tag:
+          <ul>
+<li>In case of a faux-tag it's the start of the first child of the
+faux-tag. There must be at least one adopted child-tag because
+otherwise we would not have the faux-tag
+<li>In case of an external parent-tag its the the start of the
+external tag itself. 
+</ul>
+        </p></blockquote></div>
+
+<div class="defun">
+&mdash; User Option: <b>font-lock-tags</b><var><a name="index-font_002dlock_002dtags-211"></a></var><br>
 <blockquote><p>Adds font-locking (means highlighting) to the ECB-method buffer.
 
         <p>This options takes only effect for semantic-sources - means sources
@@ -185,7 +267,7 @@ supported by semantic!
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>highlight-tag-with-point</b><var><a name="index-highlight_002dtag_002dwith_002dpoint-210"></a></var><br>
+&mdash; User Option: <b>highlight-tag-with-point</b><var><a name="index-highlight_002dtag_002dwith_002dpoint-212"></a></var><br>
 <blockquote><p>How to highlight the method or variable under the cursor.
 
           <ul>
@@ -206,7 +288,7 @@ supported by semantic!
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>highlight-tag-with-point-delay</b><var><a name="index-highlight_002dtag_002dwith_002dpoint_002ddelay-211"></a></var><br>
+&mdash; User Option: <b>highlight-tag-with-point-delay</b><var><a name="index-highlight_002dtag_002dwith_002dpoint_002ddelay-213"></a></var><br>
 <blockquote><p>Time Emacs must be idle before current tag is highlighted. If nil
 then there is no delay, means current tag is highlighted
 immediately. A small value of about 0.25 seconds saves CPU resources
@@ -221,7 +303,7 @@ supported by semantic!
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>methods-buffer-after-create-hook</b><var><a name="index-methods_002dbuffer_002dafter_002dcreate_002dhook-212"></a></var><br>
+&mdash; User Option: <b>methods-buffer-after-create-hook</b><var><a name="index-methods_002dbuffer_002dafter_002dcreate_002dhook-214"></a></var><br>
 <blockquote><p>Local hook running after the creation of the methods-buffer. Every
 function of this hook is called once without arguments direct after
 creating the methods-buffer of ECB and it's local key-map. So for
@@ -231,7 +313,7 @@ methods-buffer of ECB.
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>methods-buffer-name</b><var><a name="index-methods_002dbuffer_002dname-213"></a></var><br>
+&mdash; User Option: <b>methods-buffer-name</b><var><a name="index-methods_002dbuffer_002dname-215"></a></var><br>
 <blockquote><p>Name of the ECB methods buffer. Because it is not a normal buffer for
 editing you should enclose the name with stars, e.g. &ldquo; *ECB
 Methods*&rdquo;.
@@ -245,7 +327,7 @@ deactivating and then activating ECB again!
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>methods-filter-replace-existing</b><var><a name="index-methods_002dfilter_002dreplace_002dexisting-214"></a></var><br>
+&mdash; User Option: <b>methods-filter-replace-existing</b><var><a name="index-methods_002dfilter_002dreplace_002dexisting-216"></a></var><br>
 <blockquote><p>How the methods-filter should be applied to existing filters. There
 are three different choices:
 
@@ -268,7 +350,7 @@ ECB asks if the new filter should replace the existing ones.
         </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>methods-menu-sorter</b><var><a name="index-methods_002dmenu_002dsorter-215"></a></var><br>
+&mdash; User Option: <b>methods-menu-sorter</b><var><a name="index-methods_002dmenu_002dsorter-217"></a></var><br>
 <blockquote><p>Function which re-sorts the menu-entries of the directories buffer.
 
         <p>If a function then this function is called to sort the menu-entries of
@@ -282,7 +364,7 @@ and the user-extensions are placed in front of the built-in-entries.
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>methods-menu-user-extension</b><var><a name="index-methods_002dmenu_002duser_002dextension-216"></a></var><br>
+&mdash; User Option: <b>methods-menu-user-extension</b><var><a name="index-methods_002dmenu_002duser_002dextension-218"></a></var><br>
 <blockquote><p>Static user extensions for the popup-menu of the methods buffer. For
 further explanations see <code>ecb-directories-menu-user-extension</code>.
 
@@ -295,7 +377,7 @@ menu can be re-arranged with <code>ecb-methods-menu-sorter</code>.
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>methods-menu-user-extension-function</b><var><a name="index-methods_002dmenu_002duser_002dextension_002dfunction-217"></a></var><br>
+&mdash; User Option: <b>methods-menu-user-extension-function</b><var><a name="index-methods_002dmenu_002duser_002dextension_002dfunction-219"></a></var><br>
 <blockquote><p>Dynamic user extensions for the popup-menu of the methods buffer. A
 function which has to return a list in the same format like the option
 <code>ecb-methods-menu-user-extension</code>. This function is called when
@@ -313,7 +395,7 @@ whole menu can be re-arranged with <code>ecb-methods-menu-sorter</code>.
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>methods-nodes-collapse-spec</b><var><a name="index-methods_002dnodes_002dcollapse_002dspec-218"></a></var><br>
+&mdash; User Option: <b>methods-nodes-collapse-spec</b><var><a name="index-methods_002dnodes_002dcollapse_002dspec-220"></a></var><br>
 <blockquote><p>Semantic tag-types collapsed by <code>ecb-expand-methods-nodes</code>. 
 For valid values of this option see <code>ecb-methods-nodes-expand-spec</code>!
 
@@ -322,7 +404,7 @@ supported by semantic!
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>methods-nodes-expand-spec</b><var><a name="index-methods_002dnodes_002dexpand_002dspec-219"></a></var><br>
+&mdash; User Option: <b>methods-nodes-expand-spec</b><var><a name="index-methods_002dnodes_002dexpand_002dspec-221"></a></var><br>
 <blockquote><p>Semantic tag-types expanded by <code>ecb-expand-methods-nodes</code>.
 
         <p>The value of this option is either the symbol <code>all</code> (all tags
@@ -348,7 +430,7 @@ supported by semantic!
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>methods-separate-prototypes</b><var><a name="index-methods_002dseparate_002dprototypes-220"></a></var><br>
+&mdash; User Option: <b>methods-separate-prototypes</b><var><a name="index-methods_002dseparate_002dprototypes-222"></a></var><br>
 <blockquote><p>Separate function-prototypes from the real functions. This is for
 example useful for C++ and C because these languages distinct between
 a method-prototype (rsp. function-prototype for C) and the method
@@ -365,7 +447,7 @@ documentation of this option.
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>methods-show-node-info</b><var><a name="index-methods_002dshow_002dnode_002dinfo-221"></a></var><br>
+&mdash; User Option: <b>methods-show-node-info</b><var><a name="index-methods_002dshow_002dnode_002dinfo-223"></a></var><br>
 <blockquote><p>When to display which node-info in the methods-buffer. Define which
 node info should displayed after moving the mouse over a node (or
 after a shift click onto the node) in the methods-buffer.
@@ -387,7 +469,7 @@ displayed.
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>post-process-semantic-taglist</b><var><a name="index-post_002dprocess_002dsemantic_002dtaglist-222"></a></var><br>
+&mdash; User Option: <b>post-process-semantic-taglist</b><var><a name="index-post_002dprocess_002dsemantic_002dtaglist-224"></a></var><br>
 <blockquote><p>Define mode-dependent post-processing for the semantic-taglist. This
 is an alist where the car is a major-mode symbol and the cdr is a list
 of function-symbols of functions which should be used for
@@ -413,7 +495,7 @@ supported by semantic!
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>show-only-positioned-tags</b><var><a name="index-show_002donly_002dpositioned_002dtags-223"></a></var><br>
+&mdash; User Option: <b>show-only-positioned-tags</b><var><a name="index-show_002donly_002dpositioned_002dtags-225"></a></var><br>
 <blockquote><p>Show only nodes in the method-buffer which are &ldquo;jump-able&rdquo;. If not nil
 then ECB displays in the method-buffer only nodes which are
 &ldquo;jump-able&rdquo;, i.e. after selecting it by clicking or with RET then ECB
@@ -428,7 +510,7 @@ supported by semantic!
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>show-tags</b><var><a name="index-show_002dtags-224"></a></var><br>
+&mdash; User Option: <b>show-tags</b><var><a name="index-show_002dtags-226"></a></var><br>
 <blockquote><p>How to show tags in the methods buffer first time after find-file. 
 This functionality is set on a major-mode base, i.e. for every
 major-mode a different setting can be used. The value of this option
@@ -442,7 +524,7 @@ contain a default-setting!
         <p>The cdr is a list where each element represents a type of tags:
 
      <pre class="example">        (&lt;tag type&gt; &lt;display type&gt; &lt;sort method&gt;)
-</pre>
+   </pre>
         <p>There can be more than 1 element for a certain &lt;tag type&gt;. This is for
 example useful for C++ and C because these languages distinct between
 a method-prototype (rsp. function-prototype for C) and the method
@@ -494,7 +576,7 @@ supported by semantic!
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>tag-display-function</b><var><a name="index-tag_002ddisplay_002dfunction-225"></a></var><br>
+&mdash; User Option: <b>tag-display-function</b><var><a name="index-tag_002ddisplay_002dfunction-227"></a></var><br>
 <blockquote><p>Function to use for displaying tags in the methods buffer. This
 functionality is set on major-mode base, i.e. for every major-mode a
 different function can be used. The value of this option is a list of
@@ -568,13 +650,13 @@ supported by semantic!
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>tag-jump-sets-mark</b><var><a name="index-tag_002djump_002dsets_002dmark-226"></a></var><br>
+&mdash; User Option: <b>tag-jump-sets-mark</b><var><a name="index-tag_002djump_002dsets_002dmark-228"></a></var><br>
 <blockquote><p>Set the mark after jumping to a tag from the ECB-method buffer. If
 set the user can easily jump back. 
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>tag-visit-post-actions</b><var><a name="index-tag_002dvisit_002dpost_002dactions-227"></a></var><br>
+&mdash; User Option: <b>tag-visit-post-actions</b><var><a name="index-tag_002dvisit_002dpost_002dactions-229"></a></var><br>
 <blockquote><p>Actions to perform after visiting a tag from the Method-buffer. With
 this option actions can be added which will be performed after
 visiting the start of the tag in the source-buffer.
@@ -608,7 +690,7 @@ point outside the tag-boundaries of the tag-argument.
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>type-tag-display</b><var><a name="index-type_002dtag_002ddisplay-228"></a></var><br>
+&mdash; User Option: <b>type-tag-display</b><var><a name="index-type_002dtag_002ddisplay-230"></a></var><br>
 <blockquote><p>How to display semantic type-tags in the methods buffer. Normally
 all tag displaying, colorizing and facing is done by semantic
 according to the value returned by
@@ -667,7 +749,7 @@ does. But a value like the following could be a useful setting:
          (c-mode
           ("struct" nil ecb-type-tag-struct-face)
           ("typedef" nil ecb-type-tag-typedef-face)))
-</pre>
+   </pre>
         <p>This means that in <code>c-mode</code> only &ldquo;struct&rdquo;s and &ldquo;typedef&rdquo;s are
 displayed with special faces (the specifiers itself are not removed)
 and in all other modes &ldquo;class&rdquo;s and grouping-tags (see
@@ -680,7 +762,7 @@ supported by semantic!
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>type-tag-expansion</b><var><a name="index-type_002dtag_002dexpansion-229"></a></var><br>
+&mdash; User Option: <b>type-tag-expansion</b><var><a name="index-type_002dtag_002dexpansion-231"></a></var><br>
 <blockquote><p>Default expansion of semantic type-tags. Semantic groups type-tags in
 different type-specifiers. Current available type specifiers are for
 example &ldquo;class&rdquo;, &ldquo;interface&rdquo;, &ldquo;struct&rdquo;, &ldquo;typedef&rdquo;, &ldquo;union&rdquo;

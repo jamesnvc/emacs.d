@@ -3,7 +3,7 @@
 <title>A new tree-buffer - ECB - the Emacs Code Browser</title>
 <meta http-equiv="Content-Type" content="text/html">
 <meta name="description" content="ECB - the Emacs Code Browser">
-<meta name="generator" content="makeinfo 4.13">
+<meta name="generator" content="makeinfo 4.8">
 <link title="Top" rel="start" href="ecb.html#Top">
 <link rel="up" href="tree_002dbuffer.html#tree_002dbuffer" title="tree-buffer">
 <link rel="prev" href="Introduction.html#Introduction" title="Introduction">
@@ -24,9 +24,9 @@
 </head>
 <body>
 <div class="node">
+<p>
 <a name="A-new-tree-buffer"></a>
 <a name="A-new-tree_002dbuffer"></a>
-<p>
 Next:&nbsp;<a rel="next" accesskey="n" href="A-new-tree_002dnode.html#A-new-tree_002dnode">A new tree-node</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="Introduction.html#Introduction">Introduction</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="tree_002dbuffer.html#tree_002dbuffer">tree-buffer</a>
@@ -36,8 +36,8 @@ Up:&nbsp;<a rel="up" accesskey="u" href="tree_002dbuffer.html#tree_002dbuffer">t
 <h4 class="subsection">11.3.2 How to create a new tree-buffer</h4>
 
 <p>The creator-function for a new tree-buffer depends on the fact if the
-new tree-buffer should be used as an ECB-interactor or not. For a new
-ECB-interactor the macro <code>defecb-tree-buffer-creator</code> has to be
+new tree-buffer should be used as an ECB-window or not. For a new
+ECB-window the macro <code>defecb-tree-buffer-creator</code> has to be
 used, otherwise the function <code>tree-buffer-create</code>. In the end
 both methods use <code>tree-buffer-create</code> because the BODY-argument
 of <code>defecb-tree-buffer-creator</code> must contain a call to this
@@ -123,13 +123,13 @@ callback-function:
                    (list (if control-pressed 2 1) shift-pressed meta-pressed
                          'mouse)))
                 (otherwise nil)))))
-</pre>
+   </pre>
      <p>This example would be passed as parameter as follows:
 
      <pre class="example">        (tree-buffer-create "myname"
                             :is-click-valid-fn 'ecb-interpret-mouse-click
                             ...)
-</pre>
+   </pre>
      <br><dt><var>NODE-SELECTED-FN</var><dd>Function to call if a node has been selected. This function
 is called with the following parameters:
 
@@ -183,13 +183,13 @@ callback-function:
         	     (ecb-analyse-node-clicked node ecb-button nil shift-mode
                                                meta-mode))
         	    (t nil)))))
-</pre>
+   </pre>
      <p>This example would be passed as parameter as follows:
 
      <pre class="example">        (tree-buffer-create "myname"
                             :node-selected-fn 'ecb-tree-buffer-node-select-callback
                             ...)
-</pre>
+   </pre>
      <p><strong>IMPORTANT</strong>: This callback must not modify the slot
 <var>EXPANDED</var> of the passed node because this is done automatically
 by the tree-buffer-library!
@@ -269,7 +269,7 @@ callback-function:
             (prog1 str
               (unless no-message
                 (ecb-nolog-message str)))))
-</pre>
+   </pre>
      <br><dt><var>MOUSE-HIGHLIGHT-FN</var><dd>If nil then in this tree-buffer no node is highlighted when the mouse
 moves over it. If t then each node is highlighted when the mouse moves
 over it. If a function then it is called with the node as argument and
@@ -289,7 +289,7 @@ callback-function:
           (and (equal (nth 2 left) (nth 2 right))
                (ecb-compare-methods-buffer-node-data (car left)
                                                      (car right))))
-</pre>
+   </pre>
      <p>Often a suitable value for this parameter is <code>equal</code>.
 
      <br><dt><var>MAYBE-EMPTY-NODE-TYPES</var><dd>Nil or a list of node-types (a node-type is an integer which must be
@@ -370,13 +370,13 @@ popup-menu should be opened.
                         ,ecb-analyse-nodetype-assignee
                         ,ecb-analyse-nodetype-function
                         ,ecb-analyse-nodetype-function-arg)))))
-</pre>
+   </pre>
      <p>This example would be passed as parameter as follows:
 
      <pre class="example">        (tree-buffer-create "myname"
                             :menu-creator 'ecb-analyse-menu-creator
                             ...)
-</pre>
+   </pre>
      <br><dt><var>MENU-TITLES</var><dd>Nil or a list conses, each cons for a node-type. See
 <var>MENU-CREATOR</var>. The cdr of a cons must be either a string or a
 function which will be called with current node under point and must
@@ -389,6 +389,21 @@ argument: The name of the tree-buffer. If the function returns a menu
 then this menu will be displayed when the user clicks with
 mouse-button 3 at the modeline of the tree-buffer. The menu-title will
 be &ldquo;Tree-buffer modeline-menu&rdquo;.
+
+     <br><dt><var>sticky-parent-p</var><dd>If not nil then with GNU Emacs &gt;= 21 the tree-buffer displays in its
+header-line the unvisible parent-node if there is any. sticky-parent-fn is
+used to get this parent node.
+
+     <br><dt><var>sticky-indent-string</var><dd>String used for indendation of the sticky node in the header-line so it
+matches the tree-display.
+
+     <br><dt><var>sticky-parent-fn</var><dd>Function used to get that parent node which should be sticky. This function
+gets as argument a node and should either return nil (if there is not suitable
+parent node) or a node. This node will be displayed as sticky in the
+header-line of the tree-buffer. If nil is returned and sticky-parent-p is not
+nil then just the node under the header-line is displayed. If this argument is
+nil and sticky-parent-p is not nil then always the next unvisible parent node
+will be displayed in the header-line.
 
      <br><dt><var>TRUNC-LINES</var><dd>Should lines in this tree buffer be truncated (not nil).
 
@@ -510,7 +525,7 @@ tree-buffer local keymap (use <code>local-set-key</code> for this).
                 'ecb-toggle-maximize-ecb-window-with-mouse)
             (local-set-key [mode-line mouse-2]
                            'ecb-toggle-maximize-ecb-window-with-mouse)))
-</pre>
+   </pre>
      <br><dt><var>AFTER-UPDATE-HOOK</var><code>:</code><dd>A function or a list of functions (with no arguments) called each time
 after the tree-buffer has been updated via <code>tree-buffer-update</code>.
 

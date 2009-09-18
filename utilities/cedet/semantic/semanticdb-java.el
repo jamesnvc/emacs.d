@@ -1,10 +1,11 @@
 ;;; semanticdb-java.el --- Semantic database extensions for Java
 
-;;; Copyright (C) 2003, 2007, 2008 Eric M. Ludlam
+;;; Copyright (C) 2003, 2007, 2008, 2009 Eric M. Ludlam
 
 ;; Author: Eric M. Ludlam <zappo@gnu.org>
+;;Joakim Verona joakim@verona.se
 ;; Keywords: tags
-;; X-RCS: $Id: semanticdb-java.el,v 1.4 2008/10/06 16:51:39 zappo Exp $
+;; X-RCS: $Id: semanticdb-java.el,v 1.7 2009/08/31 01:53:13 zappo Exp $
 
 ;; This file is not part of GNU Emacs.
 
@@ -31,11 +32,11 @@
 ;; these class files is needed.
 ;;
 ;; The `semantic-project-database-java' class inherits from the
-;; the database base class.  It uses the JDEE BeanShell installation to
-;; query the class files, and create token compatible with Semantic.
+;; database base class.  It uses Clojure to query the class files, and
+;; create token compatible with Semantic.
 ;;
 
-(require 'semanticdb-search)
+;;see semanticdb-clojure-link-create how to start the backend.
 
 ;;; Code:
 
@@ -43,7 +44,7 @@
 (defclass semanticdb-table-java (semanticdb-search-results-table)
   ((major-mode :initform java-mode)
    )
-  "A table for returning search results from Beanshell.")
+  "A table for returning search results from Java.")
 
 (defclass semanticdb-project-database-java
   (semanticdb-project-database eieio-singleton)
@@ -72,33 +73,11 @@ It is not necessary to do system or recursive searching because of
 the omniscience database.")
 
 
-;;; just a hack...
-;;(define-mode-local-override semanticdb-find-translate-path java-mode (path brutish)
-;;  "brutish hack" 
-;;  (progn 
-;;    (message "semanticdb-find-translate-path java-mode %s " path)
-;;    (semanticdb-find-translate-path-default path t); always do brutish search. its a hack.
-;;    )
+;; ;;; just a hack...
+;; (define-mode-local-override semanticdb-find-translate-path java-mode (path brutish)
+;;     (message "semanticdb-find-translate-path java-mode %s " path)
+;;     (semanticdb-find-translate-path-default path t); always do brutish search. its a hack.
 ;;  )
-
-
-
-;;; Filename based methods
-;;
-;; (defmethod semanticdb-file-table ((obj semanticdb-project-database-java) filename)
-;;   "From OBJ, return FILENAME's associated table object."
-;;   ;; Creates one table for all of the compiled java environment.
-;;   ;; Query the environment each time?
-;;   ;; Perhaps it should instead keep a group of tables for each file
-;;   ;; actually queried and cache the results.
-;;   (message "semanticdb-file-table")
-;;   (if (slot-boundp obj 'tables)
-;;       (car (oref obj tables))
-;;     (let ((newtable (semanticdb-table-java "javatable")))
-;;       (oset obj tables (list newtable))
-;;       (oset newtable parent-db obj)
-;;       (oset newtable tags nil)
-;;       newtable)))
 
 
 
@@ -109,9 +88,9 @@ the omniscience database.")
 Create one of our special tables that can act as an intermediary."
   ;; We need to return something since there is always the "master table"
   ;; The table can then answer file name type questions.
-  (message "semanticdb-get-database-tables java")
+  (message "semanticdb-get-database-tables java: %s" obj)
   (when (not (slot-boundp obj 'tables))
-    (let ((newtable (semanticdb-table-java "javatmp")))
+    (let ((newtable (semanticdb-table-java "java")))
       (oset obj tables (list newtable))
       (oset newtable parent-db obj)
       (oset newtable tags nil)
@@ -121,6 +100,7 @@ Create one of our special tables that can act as an intermediary."
 (defmethod semanticdb-file-table ((obj semanticdb-project-database-java) filename)
   "From OBJ, return FILENAME's associated table object.
 For Emacs Lisp, creates a specialized table."
+  (message "semanticdb-file-table java: %s %s" obj filename)  
   (car (semanticdb-get-database-tables obj))
   )
 
@@ -132,7 +112,7 @@ For Emacs Lisp, creates a specialized table."
 (defmethod semanticdb-get-tags ((table semanticdb-table-java ))
   "Return the list of tags belonging to TABLE."
   ;; specialty table ?  Probably derive tags at request time?
-  (message "semanticdb-get-tags")
+  (message "semanticdb-get-tags %s" table)
   )
 
 (defmethod semanticdb-equivalent-mode ((table semanticdb-table-java) &optional buffer)
@@ -151,7 +131,7 @@ local variable."
   ((table semanticdb-table-java) name  &optional tags)
   "Find all tags name NAME in TABLE.
 Return a list of tags."
-  (message "semanticdb-find-tags-by-name-method %s" name)
+  (message "semanticdb-find-tags-by-name-method %s %s" name tags)
   
   (list (semantic-tag name 'type))
   )
@@ -187,7 +167,7 @@ Returns a table of all matching tags."
   "Find all tags name NAME in TABLE.
 Optional argument TAGS is a list of tags t
 Like `semanticdb-find-tags-by-name-method' for java."
-  (message "semanticdb-deep-find-tags-by-name-method")
+  (message "semanticdb-deep-find-tags-by-name-method %s %s" name tags)
   (semanticdb-find-tags-by-name-method table name tags))
 
 (defmethod semanticdb-deep-find-tags-by-name-regexp-method
@@ -195,7 +175,7 @@ Like `semanticdb-find-tags-by-name-method' for java."
   "Find all tags with name matching REGEX in TABLE.
 Optional argument TAGS is a list of tags to search.
 Like `semanticdb-find-tags-by-name-method' for java."
-  (message " semanticdb-deep-find-tags-by-name-regexp-method")
+  (message " semanticdb-deep-find-tags-by-name-regexp-method %s %s" regex tags)
   (semanticdb-find-tags-by-name-regexp-method table regex tags))
 
 (defmethod semanticdb-deep-find-tags-for-completion-method
@@ -203,11 +183,12 @@ Like `semanticdb-find-tags-by-name-method' for java."
   "In TABLE, find all occurances of tags matching PREFIX.
 Optional argument TAGS is a list of tags to search.
 Like `semanticdb-find-tags-for-completion-method' for java."
-  (message " semanticdb-deep-find-tags-for-completion-method")
+  (message " semanticdb-deep-find-tags-for-completion-method %s %s" prefix tags)
   (semanticdb-find-tags-for-completion-method table prefix tags))
 
 ;;; Advanced Searches
 ;;
+
 (defmethod semanticdb-find-tags-external-children-of-type-method
   ((table semanticdb-table-java) type &optional tags)
   "Find all nonterminals which are child elements of TYPE
@@ -215,42 +196,104 @@ Optional argument TAGS is a list of tags to search.
 Return a list of tags."
   (message "semanticdb-find-tags-external-children-of-type-method 2 %s %s" type tags)
   (if tags (call-next-method)
-    ;; YOUR IMPLEMENTATION HERE
-    ;;
-    ;; OPTIONAL: This could be considered an optional function.  It is
-    ;;       used for `semantic-adopt-external-members' and may not
-    ;;       be possible to do in your language.
-    ;;
-    ;; If it is optional, you can just delete this method.
-
-    ; use the jde to call the bsh to ge classinfo
-    ; see also jde-complete-get-classinfo
-    (let* ((classinfo (nth 2 (car  (jde-complete-invoke-get-class-info type jde-complete-public)))) ; all method names and argument types, last is exception type:  ("wait" "void" "long" "int"  ("java.lang.InterruptedException"))
-           (classinfo2 (mapcar
-                        (lambda (el) (semantic-tag-new-function (car el) ;method name name
-                                                                nil; (cadr (nreverse el)) ;returntype; seems to confuse completion
-
-                                                                (mapcar
-                                                                 (lambda (argtype) (semantic-tag-new-variable argtype argtype  ""))
-                                                                 (cdr (nreverse (cdr (nreverse el)))) ;skip 1st and last element, these are the argument types for the function
-                                                                 )
-
-
-                                                                ));arglist
+    ;; Call Clojure to ge classinfo, and build semantic tags
+    (let* ((classinfo (semanticdb-clojure-get-class-info))
+           (classtags (mapcar
+                        (lambda (el) (semantic-tag-new-function
+                                      (car el) ;method name
+                                      nil;returntype; seems to confuse completion
+                                      (mapcar
+                                       (lambda (argtype) (semantic-tag-new-variable argtype argtype  ""))
+                                       (cadr el))))
                         classinfo))
-           )
-      classinfo2
-;TODO convert this: ("replace(int, int, java.lang.String) : java.lang.StringBuffer" . "replace(int, int, java.lang.String)")
-;to a proper semantic tag
-;also consider vars, like:  ("count : int" . "count")      
-    )))
+      classtags))))
 
 
 
-;;; Bean Shell Queries
-;;
+;;clojure interface
+(defvar semanticdb-clojure-process nil)
+(defvar semanticdb-clojure-end-marker "clojure.core=> "
+  "a tag that separates results from clojure")
+(defvar semanticdb-clojure-buffer-name "*semantic-clojure*"
+  "name of semanticdb:s clojure interaction buffer")
 
+(defun semanticdb-clojure-filter (proc string)
+  (with-current-buffer (process-buffer proc)
+      (save-excursion
+        ;; Insert the text, advancing the process marker.
+        (goto-char (process-mark proc))
+        (insert string)
+        (set-marker (process-mark proc) (point)))
+       (goto-char (process-mark proc))))
+
+
+
+
+(defun semanticdb-clojure-link-create ()
+  (unless (eq 'open (process-status semanticdb-clojure-process))
+    ;;TODO start the clojure listener automatically.
+    ;; for now, start it from a shell like below.
+
+    ;;WARNING the socket is currently unauthenticted, so use only for testing ATM!
+
+    ;;clojure # starts a clojure REPL in a shell
+    ;;(use 'semanticdb-clojure) 
+    ;;(use 'clojure.contrib.server-socket) 
+    ;;(create-repl-server 9000) ;;create a new socket REPL on port 9000
+    
+    ;;the socket REPL will be separate from the stdio REPL, so "nc
+    ;;localhost 9000" to talk to it
+    (setq semanticdb-clojure-process (open-network-stream "semantic-clojure" semanticdb-clojure-buffer-name "localhost" 9000))
+    (set-process-filter semanticdb-clojure-process 'semanticdb-clojure-filter)
+  
+))
+
+(defun semanticdb-clojure-send (msg)
+  "Send MSG to Clojure for evaluation, return as lisp objects."
+  (semanticdb-clojure-link-create)
+  (process-send-string semanticdb-clojure-process (concat msg "\n" ))
+  (accept-process-output semanticdb-clojure-process 10)
+  (read (semanticdb-clojure-mark-result-region))
+)
+
+(defun semanticdb-clojure-mark-result-region ()
+  "Return the last value from Clojure."
+  ;:now the filter is supposed to have been run
+    (with-current-buffer (process-buffer semanticdb-clojure-process)
+      (save-excursion
+        (goto-char (point-max))
+        (search-backward semanticdb-clojure-end-marker)
+        (setq myend (- (point) 1))
+        (search-backward semanticdb-clojure-end-marker)
+        (setq mystart (+ (length semanticdb-clojure-end-marker) (point)))
+        (buffer-substring mystart myend)
+      )))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;,
+;;call clojure backend methods
+;; TODO some clever macros to build the interface methods
+
+(defun semanticdb-clojure-add-classpath (url)
+  "Add URL to the classpath of the Clojure instance.
+Example url: file:///opt/mmx/jmf/lib/jmf.jar
+"
+  (semanticdb-clojure-send (format "(add-classpath \"%s\")" url)))
+
+(defun semanticdb-clojure-get-class-info (classname)
+  "Return a list of members of CLASSNAME.
+Each entry looks like:(method-name (argument_type,...) return_type)"
+  
+ (semanticdb-clojure-send (format "(get-class-info \"%s\")" classname)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;test code
+(defun semanticdb-java-test ()
+  (semantic-find-tags-by-name
+   "java.lang.String"
+   (mode-local-value  'java-mode 'semanticdb-project-system-databases)))
+;(semanticdb-java-test)
 
 
 (provide 'semanticdb-java)
 ;;; semanticdb-java.el ends here
+

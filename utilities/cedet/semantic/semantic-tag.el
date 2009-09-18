@@ -2,7 +2,7 @@
 
 ;;; Copyright (C) 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2007, 2008, 2009 Eric M. Ludlam
 
-;; X-CVS: $Id: semantic-tag.el,v 1.68 2009/02/12 16:14:06 zappo Exp $
+;; X-CVS: $Id: semantic-tag.el,v 1.70 2009/05/29 00:49:03 zappo Exp $
 
 ;; This file is not part of GNU Emacs.
 
@@ -337,9 +337,10 @@ If TAG is unlinked, but has a :filename property, then that is used."
 
 (defun semantic-equivalent-tag-p (tag1 tag2)
   "Compare TAG1 and TAG2 and return non-nil if they are equivalent.
-Use `eq' to test if two tags are the same.  Use this function if tags
-are being copied and regrouped to test for if two tags represent the
-same thing, but may be constructed of different cons cells."
+Use `equal' on elements the name, class, and position.
+Use this function if tags are being copied and regrouped to test
+for if two tags represent the same thing, but may be constructed
+of different cons cells."
   (and (equal (semantic-tag-name tag1) (semantic-tag-name tag2))
        (semantic-tag-of-class-p tag1 (semantic-tag-class tag2))
        (or (and (not (semantic-tag-overlay tag1))
@@ -753,7 +754,11 @@ struct or union."
   "Return the documentation of TAG.
 That is the value defined by the `:documentation' attribute.
 Optional argument BUFFER indicates where to get the text from.
-If not provided, then only the POSITION can be provided."
+If not provided, then only the POSITION can be provided.
+
+If you want to get documentation for languages that do not store
+the documentation string in the tag itself, use
+`semantic-documentation-for-tag' instead."
   (let ((p (semantic-tag-get-attribute tag :documentation)))
     (cond
      ((stringp p) p) ;; it is the doc string.

@@ -3,7 +3,7 @@
 <title>Temp- and compile-buffers - ECB - the Emacs Code Browser</title>
 <meta http-equiv="Content-Type" content="text/html">
 <meta name="description" content="ECB - the Emacs Code Browser">
-<meta name="generator" content="makeinfo 4.13">
+<meta name="generator" content="makeinfo 4.8">
 <link title="Top" rel="start" href="ecb.html#Top">
 <link rel="up" href="Usage-of-ECB.html#Usage-of-ECB" title="Usage of ECB">
 <link rel="prev" href="The-edit_002darea.html#The-edit_002darea" title="The edit-area">
@@ -24,9 +24,9 @@
 </head>
 <body>
 <div class="node">
+<p>
 <a name="Temp--and-compile-buffers"></a>
 <a name="Temp_002d-and-compile_002dbuffers"></a>
-<p>
 Next:&nbsp;<a rel="next" accesskey="n" href="The-other-window.html#The-other-window">The other window</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="The-edit_002darea.html#The-edit_002darea">The edit-area</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="Usage-of-ECB.html#Usage-of-ECB">Usage of ECB</a>
@@ -41,20 +41,38 @@ result-buffer in another window. This behavior you have also in ECB.
 
 <h4 class="subsection">6.4.1 Standard Emacs behavior</h4>
 
-<p>If the edit-area is already splitted into at least two edit-windows
-then the temp-buffer is displayed in another edit-window otherwise the
-edit-area will be splitted first into two edit-windows, one above the
-other. The variables <code>temp-buffer-max-height</code> and
-<code>temp-buffer-resize-mode</code> (for GNU Emacs) and
-<code>temp-buffer-shrink-to-fit</code> (for XEmacs) work also correctly with
-ECB.
+<h5 class="subsubsection">6.4.1.1 Gnu Emacs 21.x, 22.x and XEmacs 21.4:</h5>
 
-   <p>Same for all compilation output-buffers (e.g. after a <code>compile</code> or
-<code>grep</code>) and the variable <code>compilation-window-height</code>.
+<p>If the edit-area is already splitted into at least two edit-windows then the
+temp-buffer is displayed in another edit-window otherwise the edit-area will
+be splitted first vertically into two edit-windows, one above the other. The
+variables <code>temp-buffer-max-height</code> and <code>temp-buffer-resize-mode</code>
+(for GNU Emacs) and <code>temp-buffer-shrink-to-fit</code> (for XEmacs) work also
+correctly with ECB.
+
+   <p>Same for all completion-buffer and &ldquo;compile&rdquo;-like output-buffers (e.g. after
+a <code>compile</code> or <code>grep</code>) and the variable
+<code>compilation-window-height</code><a rel="footnote" href="#fn-1" name="fnd-1"><sup>1</sup></a>.
+
+<h5 class="subsubsection">6.4.1.2 Gnu Emacs 23.x</h5>
+
+<p>Gnu Emacs 23 has a much smarter window-manager for displaying temporary
+buffers (like help-buffers) and &ldquo;compile&rdquo;-buffers (like real compilation
+outputs but also grep-outputs, completions etc.). Therefore ECB uses
+completely the logic of Emacs 23 and does exactly what Emacs 23 would do
+without activated ECB: This means mainly that the split-behavior depends on
+the settings of the options <code>split-width-threshold</code> and
+<code>split-height-threshold</code>.
+
+   <p><strong>Please note</strong>: If you are wondering why displaying temporary-buffers
+(like help, compile, grep, completion etc.) shows different behavior compared
+to deactivated ECB, then you probably have to adjust the values of the options
+<code>split-width-threshold</code> and <code>split-height-threshold</code> to the sizes of
+the edit-area of ECB (at least nearly).
 
    <p>This is default behavior of ECB. But there is also another way to
 display such buffers: Using a persistent extra window at the bottom of
-the ECB-frame:
+the ECB-frame, named the &ldquo;compile-window&rdquo;:
 
 <h4 class="subsection">6.4.2 Using a persistent compile window</h4>
 
@@ -136,7 +154,8 @@ reproducing the problem so you can begin from the beginning!
 further debugging output in the *Messages* buffer"
         </ol>
 
-   <p><a name="Using-special_002ddisplay-with-ECB"></a><a name="index-special_002ddisplay-43"></a>
+   <p><a name="Using-special_002ddisplay-with-ECB"></a>
+<a name="index-special_002ddisplay-43"></a>
 
 <h4 class="subsection">6.4.4 Handling special-display-buffers</h4>
 
@@ -158,6 +177,13 @@ or that they should be never igored regardless if a persistent
 compile-window is set or not. In the latter case using
 <code>display-buffer</code> or <code>pop-to-buffer</code> takes always account for
 the values of these options - like the original behavior of Emacs.
+
+   <div class="footnote">
+<hr>
+<h4>Footnotes</h4><p class="footnote"><small>[<a name="fn-1" href="#fnd-1">1</a>]</small> It goes without saying that is is
+also true for <code>grep-window-height</code> and all other &ldquo;compile&rdquo;-modes.</p>
+
+   <p><hr></div>
 
    </body></html>
 

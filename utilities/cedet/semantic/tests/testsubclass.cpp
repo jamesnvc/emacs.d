@@ -23,7 +23,8 @@ void animal::moose::doNothing() //^3^
 {
   animal::moose foo();
 
-  fFeet = 3;
+  fFeet = N// -15-
+    ; // #15# ( "NAME1" "NAME2" "NAME3" )
 }
 
 
@@ -33,7 +34,7 @@ void deer::moose::setAntlers(bool have_antlers) //^4^
 }
 
 bool deer::moose::getAntlers() //^5^
-// %1% ( ( "testsubclass.cpp" "testsubclass.hh" ) ( "deer::moose::getAntlers" "deer::moose::doSomething" "moose" ) )
+// %1% ( ( "testsubclass.cpp" "testsubclass.hh" ) ( "deer::moose::doSomething" "deer::moose::getAntlers" "moose" ) )
 {
   return fAntlers;
 }
@@ -191,8 +192,16 @@ int otherFunction()
     // #10# ( "fBunnyPublic" "testAccess")
     ;
 
+  Jackalope// @1@ 6
+    ;
+  Jackalope;
+  Jackalope;
+  Jackalope;
+
   Bugalope.// -11-
     // #11# ( "fBugPublic" "testAccess")
+    ;
+  Bugalope// @2@ 3
     ;
 }
 

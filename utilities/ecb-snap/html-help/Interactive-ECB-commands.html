@@ -3,7 +3,7 @@
 <title>Interactive ECB commands - ECB - the Emacs Code Browser</title>
 <meta http-equiv="Content-Type" content="text/html">
 <meta name="description" content="ECB - the Emacs Code Browser">
-<meta name="generator" content="makeinfo 4.13">
+<meta name="generator" content="makeinfo 4.8">
 <link title="Top" rel="start" href="ecb.html#Top">
 <link rel="up" href="Usage-of-ECB.html#Usage-of-ECB" title="Usage of ECB">
 <link rel="prev" href="Stealthy-background-tasks.html#Stealthy-background-tasks" title="Stealthy background tasks">
@@ -23,8 +23,8 @@
 </head>
 <body>
 <div class="node">
-<a name="Interactive-ECB-commands"></a>
 <p>
+<a name="Interactive-ECB-commands"></a>
 Previous:&nbsp;<a rel="previous" accesskey="p" href="Stealthy-background-tasks.html#Stealthy-background-tasks">Stealthy background tasks</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="Usage-of-ECB.html#Usage-of-ECB">Usage of ECB</a>
 <hr>
@@ -59,12 +59,15 @@ calling <code>ecb-minor-mode</code> with a positive argument.
 
 <div class="defun">
 &mdash; Command: <b>add-all-buffers-to-history</b><var><a name="index-add_002dall_002dbuffers_002dto_002dhistory-58"></a></var><br>
-<blockquote><p>Add all current file-buffers to the history-buffer of ECB. Dependend
-on the value of <code>ecb-history-sort-method</code> afterwards the history
-is sorted either by name or by extension. If
+<blockquote><p>Add all current file-buffers to the history-buffer of ECB. 
+Dependend on the values of <code>ecb-history-make-buckets</code> and
+<code>ecb-history-sort-method</code> afterwards the history is bucketized or
+not and sorted either by name or by extension (if bucketized
+then the sorting is only within each bucket). If
 <code>ecb-history-sort-method</code> is nil the most recently used buffers
 are on the top of the history and the seldom used buffers at the
-bottom. 
+bottom (again: when bucketized then this holds only within each
+bucket). 
 </p></blockquote></div>
 
 <div class="defun">
@@ -171,61 +174,7 @@ customization-file!
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; Command: <b>download-ecb</b><var><a name="index-download_002decb-71"></a></var><br>
-<blockquote><p>Download ECB from the ECB-website and install it. For this the option
-<code>ecb-download-url</code> must be set correct, whereas the default value of
-this option should always be correct.
-
-        <p>If <code>ecb-download-package-version-type</code> is set to -1 (means asking
-for a version) then you will be ask in the minibuffer for the version
-to download. Otherwise ECB downloads autom. the latest version
-available for the type specified in
-<code>ecb-download-package-version-type</code>. If no newer version than the
-current one is available no download will be done.
-
-        <p>For details about downloading and what requirements must be satisfied
-see function <code>ecb-package-download</code> and option
-<code>ecb-download-package-version-type</code>!
-
-        <p>After successful downloading the new ECB will be installed in a
-subdirectory of <code>ecb-download-install-parent-dir</code>. After adding
-this subdirectory to <code>load-path</code> and restarting Emacs the new ECB
-version can be activated by <code>ecb-activate</code>.
-
-        <p>If current running ECB is installed as regular XEmacs-package and not
-with the archive available at the ECB website then this function asks
-for proceeding! 
-</p></blockquote></div>
-
-<div class="defun">
-&mdash; Command: <b>download-semantic</b><var><a name="index-download_002dsemantic-72"></a></var><br>
-<blockquote><p>Download semantic from the semantic-website and install it. For this
-the variable <code>ecb-cedet-url</code> must be set correct,
-whereas the default value of this variable should always be correct.
-
-        <p>If <code>ecb-download-package-version-type</code> is set to -1 (means asking
-for a version) then you will be ask in the minibuffer for the version
-to download. Otherwise ECB downloads autom. the latest version
-available for the type specified in
-<code>ecb-download-package-version-type</code>. If no newer version than the
-current one is available no download will be done.
-
-        <p>For details about downloading and what requirements must be satisfied
-see function <code>ecb-package-download</code> and option
-<code>ecb-download-package-version-type</code>!
-
-        <p>After successful downloading the new semantic will be installed in a
-subdirectory of <code>ecb-download-install-parent-dir</code>. After adding
-this new subdirectory to <code>load-path</code> and restarting Emacs the new
-semantic version is loaded and is used after next start of ECB.
-
-        <p>If current running semantic is installed as regular XEmacs-package and
-not with the archive available at the semantic website then this
-function asks for proceeding! 
-</p></blockquote></div>
-
-<div class="defun">
-&mdash; Command: <b>expand-methods-nodes</b><var> &amp;optional force-all<a name="index-expand_002dmethods_002dnodes-73"></a></var><br>
+&mdash; Command: <b>expand-methods-nodes</b><var> &amp;optional force-all<a name="index-expand_002dmethods_002dnodes-71"></a></var><br>
 <blockquote><p>Set the expand level of the nodes in the ECB-methods-buffer.
 
         <p>This command asks in the minibuffer for an indentation level LEVEL. With this
@@ -267,25 +216,25 @@ other file types which are parsed by imenu or etags (see
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; Command: <b>dump-semantic-toplevel</b><var><a name="index-dump_002dsemantic_002dtoplevel-74"></a></var><br>
+&mdash; Command: <b>dump-semantic-toplevel</b><var><a name="index-dump_002dsemantic_002dtoplevel-72"></a></var><br>
 <blockquote><p>Dump the current semantic-tags in special buffer and display them. 
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; Command: <b>eshell-current-buffer-sync</b><var><a name="index-eshell_002dcurrent_002dbuffer_002dsync-75"></a></var><br>
+&mdash; Command: <b>eshell-current-buffer-sync</b><var><a name="index-eshell_002dcurrent_002dbuffer_002dsync-73"></a></var><br>
 <blockquote><p>Synchronize the eshell with the directory of current source-buffer. 
 This is only done if the eshell is currently visible in the
 compile-window of ECB and if either this function is called
-interactively or <code>ecb-eshell-synchronize</code> is not nil. 
+interactively or <code>ecb-eshell-buffer-sync</code> is not nil. 
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; Command: <b>eshell-recenter</b><var><a name="index-eshell_002drecenter-76"></a></var><br>
+&mdash; Command: <b>eshell-recenter</b><var><a name="index-eshell_002drecenter-74"></a></var><br>
 <blockquote><p>Recenter the eshell window so that the prompt is at the buffer-end. 
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; Command: <b>expand-directory-nodes</b><var><a name="index-expand_002ddirectory_002dnodes-77"></a></var><br>
+&mdash; Command: <b>expand-directory-nodes</b><var><a name="index-expand_002ddirectory_002dnodes-75"></a></var><br>
 <blockquote><p>Set the expand level of the nodes in the ECB-directories-buffer. For
 argument LEVEL see <code>ecb-expand-methods-nodes</code>.
 
@@ -295,20 +244,63 @@ disk-performance.
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; Command: <b>goto-window-analyse</b><var><a name="index-goto_002dwindow_002danalyse-78"></a></var><br>
+&mdash; Command: <b>goto-window-analyse</b><var><a name="index-goto_002dwindow_002danalyse-76"></a></var><br>
 <blockquote><p>Make the ECB-analyse window the current window. 
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; Command: <b>goto-window-compilation</b><var><a name="index-goto_002dwindow_002dcompilation-79"></a></var><br>
+&mdash; Command: <b>goto-window-compilation</b><var><a name="index-goto_002dwindow_002dcompilation-77"></a></var><br>
 <blockquote><p>Goto the ecb compilation window <code>ecb-compile-window</code>. 
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; Command: <b>goto-window-directories</b><var><a name="index-goto_002dwindow_002ddirectories-80"></a></var><br>
+&mdash; Command: <b>goto-window-directories</b><var><a name="index-goto_002dwindow_002ddirectories-78"></a></var><br>
 <blockquote><p>Make the ECB-directories window the current window. If
 <code>ecb-use-speedbar-instead-native-tree-buffer</code> is <code>dir</code> then
 goto to the speedbar-window. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Command: <b>goto-window-ecb-by-smart-selection</b><var><a name="index-goto_002dwindow_002decb_002dby_002dsmart_002dselection-79"></a></var><br>
+<blockquote><p>selects a special ecb-browsing-window by smart selection. The command offers a
+list of all special ecb-windows by buffer-name. Selecting the buffer-name will
+select the displaying window. Which special ecb-windows are offered depends on
+the currently selected window: If not a special ecb-window is the currently
+selected-window then all edit-windows are offered in canonical order (means
+from top-left to button-right). If an ecb-window is the currently
+selected-window then all other(!) special ecb-windows are offered, beginning
+with the next special ecb-window to the current ecb-window (the following
+special ecb-windows also in canonical order). If there is only one senseful
+destination-ecb-window then this window is immediately selected, without
+confirmation (e.g.: There are two special ecb-windows and point stays in one
+of them. Or there is only one ecb-window and point stays either in one of the
+edit-windows or in the compile-window).
+
+        <p>If optional argument USE-IMMEDIATE-COMPLETION is nil then all possible
+destination-windows are displayed in the message-area and only hitting TAB
+offers completion. If USE-IMMEDIATE-COMPLETION is not nil then all possible
+destinations are immediately shown in a completion-buffer. 
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Command: <b>goto-window-edit-by-smart-selection</b><var><a name="index-goto_002dwindow_002dedit_002dby_002dsmart_002dselection-80"></a></var><br>
+<blockquote><p>Selects an edit-window by smart selection. The command offers a list of all
+edit-windows by buffer-name. Selecting the buffer-name will select the
+displaying window. Which edit-windows are offered depends on the currently
+selected window: If not an edit-window is the currently selected-window then
+all edit-windows are offered in canonical order (means from top-left to
+button-right). If an edit-window is the currently selected-window then all
+other(!) edit-windows are offered, beginning with the next edit-window to the
+current edit-window (the following edit-windows also in canonical order). If
+there is only one senseful destination-edit-window then this window is
+immediately selected, without confirmation (e.g.: There are two edit-windows
+and point stays in one of them. Or there is only one edit-window and point
+stays either in one of the special ecb-windows or in the compile-window).
+
+        <p>If optional argument USE-IMMEDIATE-COMPLETION is nil then all possible
+destination-windows are displayed in the message-area and only hitting TAB
+offers completion. If USE-IMMEDIATE-COMPLETION is not nil then all possible
+destinations are immediately shown in a completion-buffer. 
 </p></blockquote></div>
 
 <div class="defun">
@@ -821,22 +813,12 @@ see the advice documentation of <code>other-window-for-scrolling</code>.
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; Command: <b>toggle-window-sync</b><var> &amp;optional arg<a name="index-toggle_002dwindow_002dsync-123"></a></var><br>
-<blockquote><p>Toggle auto synchronizing of the ECB-windows. With prefix argument
-<var>ARG</var>, switch on if positive, otherwise switch off. If the effect
-is that auto-synchronizing is switched off then the current value of
-the option <code>ecb-window-sync</code> is saved so it can be used for the
-next switch on by this command. See also the option
-<code>ecb-window-sync</code>. 
-</p></blockquote></div>
-
-<div class="defun">
-&mdash; Command: <b>update-directories-buffer</b><var><a name="index-update_002ddirectories_002dbuffer-124"></a></var><br>
+&mdash; Command: <b>update-directories-buffer</b><var><a name="index-update_002ddirectories_002dbuffer-123"></a></var><br>
 <blockquote><p>Updates the ECB directories buffer. 
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; Command: <b>upgrade-options</b><var><a name="index-upgrade_002doptions-125"></a></var><br>
+&mdash; Command: <b>upgrade-options</b><var><a name="index-upgrade_002doptions-124"></a></var><br>
 <blockquote><p>Check for all ECB-options if their current value is compatible to the
 defined type. If not upgrade it to the new type or reset it to the
 default-value of current ECB. Try also to upgrade renamed options. 
@@ -845,23 +827,28 @@ upgrade/reset) and new values.
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; Command: <b>window-sync</b><var><a name="index-window_002dsync-126"></a></var><br>
-<blockquote><p>Synchronizes all special ECB-buffers with current buffer.
-
-        <p>Depending on the contents of current buffer this command performs different
+&mdash; Command: <b>window-sync</b><var><a name="index-window_002dsync-125"></a></var><br>
+<blockquote><p>ynchronizes all special ECB-buffers with current buffer. 
+Depending on the contents of current buffer this command performs different
 synchronizing tasks but only if ECB is active and point stays in an
 edit-window.
 
           <ul>
-<li>If current buffer is a file-buffer then all special ECB-tree-buffers are
-synchronized with current buffer.
+<li>If current buffer is a file-buffer (or an indirect-buffer with a file-buffer
+as base-buffer) then all basic ECB-windows (directories, sources, methods and
+history) are synchronized with current buffer.
 
           <li>If current buffer is a dired-buffer then the directory- and
 the sources-tree-buffer are synchronized if visible
 </ul>
 
-        <p>In addition to this the hooks in <code>ecb-current-buffer-sync-hook</code>
-run. 
+        <p>In addition to this the hooks in <code>ecb-basic-buffer-sync-hook</code> run.
+
+        <p>If optional argument ONLY-BASIC-WINDOWS is not nil then only the basic
+tree-buffer directories, sources, methods and history are synchronized. 
+Otherwise all registered special ecb-buffers are synchronized too.
+
+        <p>See <a href="ECB_002dwindow-synchronizing.html#ECB_002dwindow-synchronizing">ECB-window synchronizing</a>. 
 </p></blockquote></div>
 
    <p>Most of these functions are also available via the menu &ldquo;ECB&rdquo; and

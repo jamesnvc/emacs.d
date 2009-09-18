@@ -5,7 +5,7 @@
 ;; Author: Eric M. Ludlam <zappo@gnu.org>
 ;; Version: 0.0.3
 ;; Keywords: project, make
-;; RCS: $Id: project-am.el,v 1.41 2009/02/15 13:16:23 zappo Exp $
+;; RCS: $Id: project-am.el,v 1.47 2009/07/22 11:31:31 zappo Exp $
 
 ;; This file is NOT part of GNU Emacs.
 
@@ -36,8 +36,6 @@
 ;; information during edits, automatically updating the automake file
 ;; where appropriate.
 
-;;; History:
-;; 
 
 (eval-and-compile
   ;; Compatibility for makefile mode.
@@ -49,10 +47,13 @@
   (require 'eieio "eieio.el")
   (require 'ede "ede.el"))
 
+(require 'ede-make)
+(require 'makefile-edit)
+
 (eval-when-compile (require 'ede-speedbar "ede-speedbar.el"))
 (eval-when-compile (require 'compile))
 
-;; customization stuff
+;;; Code:
 (defgroup project-am nil
   "File and tag browser frame."
   :group 'tools
@@ -64,7 +65,7 @@
   :group 'project-am
   :type 'string)
 
-(defcustom project-am-compile-target-command "make -k %s"
+(defcustom project-am-compile-target-command (concat ede-make-command " -k %s")
   "*Default command used to compile a project."
   :group 'project-am
   :type 'string)
@@ -77,20 +78,38 @@
 (defconst project-am-type-alist
   '(("bin" project-am-program "bin_PROGRAMS" t)
     ("sbin" project-am-program "sbin_PROGRAMS" t)
-    ("lib" project-am-lib "noinst_LIBS" t)
-    ("libraries" project-am-lib "noinst_LIBRARIES" t)
+    ("noinstbin" project-am-program "noinst_PROGRAMS" t)
+    ("checkbin" project-am-program "check_PROGRAMS" t)
+    ("lib" project-am-lib "lib_LIBS" t)
+    ("libraries" project-am-lib "lib_LIBRARIES" t)
+    ("librariesnoinst" project-am-lib "noinst_LIBRARIES" t)
+    ("pkglibraries" project-am-lib "pkglib_LIBRARIES" t)
+    ("checklibs" project-am-lib "check_LIBRARIES" t)
+    ("ltlibraries" project-am-lib "lib_LTLIBRARIES" t)
+    ("ltlibrariesnoinst" project-am-lib "noinst_LTLIBRARIES" t)
+    ("pkgltlibraries" project-am-lib "pkglib_LTLIBRARIES" t)
+    ("checkltlibs" project-am-lib "check_LTLIBRARIES" t)
     ("headernoinst" project-am-header-noinst "noinst_HEADERS")
-    ("headerinst" project-am-header-inst "pgkinclude_HEADERS")
-    ("texinfo" project-am-texinfo "info_TEXINFOS")
+    ("headerinst" project-am-header-inst "include_HEADERS")
+    ("headerpkg" project-am-header-pkg "pkginclude_HEADERS")
+    ("headerpkg" project-am-header-chk "check_HEADERS")
+    ("texinfo" project-am-texinfo "info_TEXINFOS" t)
     ("man" project-am-man "man_MANS")
     ("lisp" project-am-lisp "lisp_LISP")
+    ;; for other global files track EXTRA_
+    ("extrabin" project-am-program "EXTRA_PROGRAMS" t)
+    ("builtsrcs" project-am-built-src "BUILT_SOURCES")
+    ("extradist" project-am-extra-dist "EXTRA_DIST")
+    ;; Custom libraries targets?
+    ;; ("ltlibcustom" project-am-lib ".*?_LTLIBRARIES" t)
     )
   "Alist of type names and the type of object to create for them.
 Each entry is of th form:
   (EMACSNAME CLASS AUToMAKEVAR INDIRECT)
 where EMACSNAME is a name for Emacs to use.
-CLASS is the EDE project class to represent the target.
-AUTOMAKEVAR is the Automake variable to identify.
+CLASS is the EDE target class to represent the target.
+AUTOMAKEVAR is the Automake variable to identify.  This cannot be a
+   regular expression.
 INDIRECT is optional.  If it is non-nil, then the variable in
 question lists other variables that need to be looked up.")
 
@@ -119,6 +138,14 @@ question lists other variables that need to be looked up.")
   ()
   "A group of header files that are not installed.")
 
+(defclass project-am-header-pkg (project-am-header)
+  ()
+  "A group of header files that are not installed.")
+
+(defclass project-am-header-chk (project-am-header)
+  ()
+  "A group of header files that are not installed.")
+
 (defclass project-am-lib (project-am-objectcode)
   nil
   "A top level library to build")
@@ -137,10 +164,23 @@ question lists other variables that need to be looked up.")
   nil
   "A top level man file to build.")
 
+;; For generic files tracker like EXTRA_DIST
+(defclass project-am-built-src (project-am-target)
+  ()
+  "A group of Emacs Lisp programs to byte compile.")
+
+(defclass project-am-extra-dist (project-am-target)
+  ()
+  "A group of Emacs Lisp programs to byte compile.")
+
 (defclass project-am-makefile (ede-project)
   ((targets :initarg :targets
 	    :initform nil
 	    :documentation "Top level targets in this makefile.")
+   (configureoutputfiles
+    :initform nil
+    :documentation
+    "List of files output from configure system.")
    )
   "Encode one makefile.")
 
@@ -291,7 +331,7 @@ Argument COMMAND is the command to use when compiling."
   (let* ((default-directory (project-am-find-topmost-level default-directory)))
     (compile command)))
 
-(defmethod project-compile-project ((obj project-am-makefile) 
+(defmethod project-compile-project ((obj project-am-makefile)
 				    &optional command)
   "Compile the entire current project.
 Argument COMMAND is the command to use when compiling."
@@ -392,7 +432,7 @@ Optional ROOTPROJ is the root EDE project."
 			    'file ede-projects))
     (if amo
 	(error "Synchronous error in ede/project-am objects")
-      (let ((project-am-constructiong t))
+      (let ((project-am-constructing t))
 	(setq amo (project-am-load-makefile fn))))
     (if (not amo)
 	nil
@@ -414,7 +454,10 @@ Optional ROOTPROJ is the root EDE project."
 (defun project-am-find-topmost-level (dir)
   "Find the topmost automakefile starting with DIR."
   (let ((newdir dir))
-    (while (file-exists-p (concat newdir "Makefile.am"))
+    (while (or (file-exists-p (concat newdir "Makefile.am"))
+	       (file-exists-p (concat newdir "configure.ac"))
+	       (file-exists-p (concat newdir "configure.in"))
+	       )
       (setq dir newdir newdir
 	    (file-name-directory (directory-file-name newdir))))
     (expand-file-name dir)))
@@ -447,15 +490,23 @@ Kill the makefile if it was not loaded before the load."
  
 
 (defun project-am-load-makefile (path)
-  "Convert PATH into a project Makefile, and return it's object object.
+  "Convert PATH into a project Makefile, and return its project object.
 It does not check for existing project objects.  Use `project-am-load'."
   (project-am-with-makefile-current path
     (if (and ede-object (project-am-makefile-p ede-object))
 	ede-object
-      (let ((ampf (project-am-makefile (project-am-last-dir fn)
-				       :name (project-am-last-dir fn)
-				       :file fn)))
+      (let* ((pi (project-am-package-info path))
+	     (pn (or (nth 0 pi) (project-am-last-dir fn)))
+	     (ver (or (nth 1 pi) "0.0"))
+	     (bug (nth 2 pi))
+	     (cof (nth 3 pi))
+	     (ampf (project-am-makefile
+		    pn :name pn
+		    :version ver
+		    :mailinglist (or bug "")
+		    :file fn)))
 	(oset ampf :directory (file-name-directory fn))
+	(oset ampf configureoutputfiles cof)
 	(make-local-variable 'ede-object)
 	(setq ede-object ampf)
 	;; Move the rescan after we set ede-object to prevent recursion
@@ -481,13 +532,6 @@ It does not check for existing project objects.  Use `project-am-load'."
 (defmethod project-targets-for-file ((proj project-am-makefile))
   "Return a list of targets the project PROJ."
   (oref proj targets))
-
-(defun project-am-extract-varname (text)
-  "Extract the variable name from TEXT if it is a variable reference.
-Return nil if it isn't a variable."
-  (save-match-data
-    (when (string-match "\\$\\s(\\([A-Za-z0-9_]+\\)\\s)" text)
-      (match-string 1 text))))
 
 (defun project-am-scan-for-targets (currproj dir)
   "Scan the current Makefile.am for targets.
@@ -535,7 +579,12 @@ DIR is the directory to apply to new targets."
   "Rescan the makefile for all targets and sub targets."
   (project-am-with-makefile-current (file-name-directory (oref this file))
     ;;(message "Scanning %s..." (oref this file))
-    (let* ((osubproj (oref this subproj))
+    (let* ((pi (project-am-package-info (oref this directory)))
+	   (pn (nth 0 pi))
+	   (pv (nth 1 pi))
+	   (bug (nth 2 pi))
+	   (cof (nth 3 pi))
+	   (osubproj (oref this subproj))
 	   (csubproj (or
 		      ;; If DIST_SUBDIRS doesn't exist, then go for the
 		      ;; static list of SUBDIRS.  The DIST version should
@@ -550,6 +599,16 @@ DIR is the directory to apply to new targets."
 	   (tmp nil)
 	   (ntargets (project-am-scan-for-targets this dir))
 	   )
+
+      (and pn (string= (directory-file-name
+			(oref this directory))
+		       (directory-file-name
+			(project-am-find-topmost-level
+			 (oref this directory))))
+	   (oset this name pn)
+	   (and pv (oset this version pv))
+	   (and bug (oset this mailinglist bug))
+	   (oset this configureoutputfiles cof))
 
 ;      ;; LISP is different.  Here there is only one kind of lisp (that I know of
 ;      ;; anyway) so it doesn't get mapped when it is found.
@@ -569,7 +628,7 @@ DIR is the directory to apply to new targets."
       ;; FIGURE THIS OUT
      
       (mapc (lambda (sp)
- 	      (let ((var (project-am-extract-varname sp))
+ 	      (let ((var (makefile-extract-varname-from-text sp))
  		    )
  		(if (not var)
  		    (setq csubprojexpanded (cons sp csubprojexpanded))
@@ -583,7 +642,7 @@ DIR is the directory to apply to new targets."
       ;; Ok, now lets look at all our sub-projects.
       (mapc (lambda (sp)
  	      (let* ((subdir (file-name-as-directory
- 			      (expand-file-name 
+ 			      (expand-file-name
  			       sp (file-name-directory (oref this :file)))))
  		     (submake (expand-file-name
  			       "Makefile.am"
@@ -598,7 +657,7 @@ DIR is the directory to apply to new targets."
  			     submake
  			     'file osubproj))
  		  (if (not tmp)
- 		      (setq tmp 
+ 		      (setq tmp
  			    (condition-case nil
  				;; In case of problem, ignore it.
  				(project-am-load-makefile subdir)
@@ -634,19 +693,40 @@ DIR is the directory to apply to new targets."
 
 (defmethod project-rescan ((this project-am-man))
   "Rescan object THIS."
-  nil)
+  (oset this :source (makefile-macro-file-list (project-am-macro this))))
 
 (defmethod project-rescan ((this project-am-lisp))
   "Rescan the lisp sources."
   (oset this :source (makefile-macro-file-list (project-am-macro this))))
 
 (defmethod project-rescan ((this project-am-header))
-  "Rescan the Header sources."
+  "Rescan the Header sources for object THIS."
   (oset this :source (makefile-macro-file-list (project-am-macro this))))
+
+(defmethod project-rescan ((this project-am-built-src))
+  "Rescan built sources for object THIS."
+  (oset this :source (makefile-macro-file-list "BUILT_SOURCES")))
+
+(defmethod project-rescan ((this project-am-extra-dist))
+  "Rescan object THIS."
+  (oset this :source (makefile-macro-file-list "EXTRA_DIST")))
+  ;; NOTE: The below calls 'file' then checks that it is some sort of
+  ;; text file.  The  file command may not be available on all platforms
+  ;; and some files may not exist yet.  (ie - auto-generated)
+
+  ;;(mapc
+  ;; (lambda (f)
+  ;;   ;; prevent garbage to be parsed, could we use :aux ?
+  ;;   (if (and (not (member f (oref this :source)))
+  ;;	      (string-match-p "ASCII\\|text"
+  ;;			      (shell-command-to-string
+  ;;			       (concat "file " f))))
+  ;;	 (oset this :source (cons f (oref this :source)))))
+  ;; (makefile-macro-file-list "EXTRA_DIST")))
 
 (defmethod project-am-macro ((this project-am-objectcode))
   "Return the default macro to 'edit' for this object type."
-  (concat (oref this :name) "_SOURCES"))
+  (concat (subst-char-in-string ?- ?_ (oref this :name)) "_SOURCES"))
 
 (defmethod project-am-macro ((this project-am-header-noinst))
   "Return the default macro to 'edit' for this object."
@@ -654,15 +734,23 @@ DIR is the directory to apply to new targets."
 
 (defmethod project-am-macro ((this project-am-header-inst))
   "Return the default macro to 'edit' for this object."
-  "pgkinclude_HEADERS")
+  "include_HEADERS")
+
+(defmethod project-am-macro ((this project-am-header-pkg))
+  "Return the default macro to 'edit' for this object."
+  "pkginclude_HEADERS")
+
+(defmethod project-am-macro ((this project-am-header-chk))
+  "Return the default macro to 'edit' for this object."
+  "check_HEADERS")
 
 (defmethod project-am-macro ((this project-am-texinfo))
   "Return the default macro to 'edit' for this object type."
-  (concat (oref this :name) "_TEXINFOS"))
+  (concat (file-name-sans-extension (oref this :name)) "_TEXINFOS"))
 
 (defmethod project-am-macro ((this project-am-man))
   "Return the default macro to 'edit' for this object type."
-  (concat (oref this :name) "_MANS"))
+  (oref this :name))
 
 (defmethod project-am-macro ((this project-am-lisp))
   "Return the default macro to 'edit' for this object."
@@ -689,7 +777,18 @@ nil means that this buffer belongs to no-one."
   
 (defmethod ede-buffer-mine ((this project-am-makefile) buffer)
   "Return t if object THIS lays claim to the file in BUFFER."
-  (string= (oref this :file) (expand-file-name (buffer-file-name buffer))))
+  (let ((efn  (expand-file-name (buffer-file-name buffer))))
+    (or (string= (oref this :file) efn)
+	(string-match "/configure\\.ac$" efn)
+	(string-match "/configure\\.in$" efn)
+	(string-match "/configure$" efn)
+	;; Search output files.
+	(let ((ans nil))
+	  (dolist (f (oref this configureoutputfiles))
+	    (when (string-match (concat (regexp-quote f) "$") efn)
+	      (setq ans t)))
+	  ans)
+	)))
 
 (defmethod ede-buffer-mine ((this project-am-objectcode) buffer)
   "Return t if object THIS lays claim to the file in BUFFER."
@@ -784,90 +883,110 @@ files in the project."
     ;; return it
     out))
 
-
-;;; Makefile editing and scanning commands
+
+;;; Configure.in queries.
 ;;
-;; Formatting of a makefile
-;;
-;; 1) Creating an automakefile, stick in a top level comment about
-;;    being created by emacs
-;; 2) Leave order of variable contents alone, except for SOURCE
-;;    SOURCE always keep in the order of .c, .h, the other stuff.
+(defvar project-am-autoconf-file-options
+  '("configure.in" "configure.ac")
+  "List of possible configure files to look in for project info.")
 
-;; personal reference until I'm done
-; makefile-fill-paragraph -- refill a macro w/ backslashes
-; makefile-insert-macro -- insert "foo = "
+(defun project-am-autoconf-file (dir)
+  "Return the name of the autoconf file to use in DIR."
+  (let ((ans nil))
+    (dolist (L project-am-autoconf-file-options)
+      (when (file-exists-p (expand-file-name L dir))
+	(setq ans (expand-file-name L dir))))
+    ans))
 
-(defun makefile-beginning-of-command ()
-  "Move the the beginning of the current command."
-  (interactive)
-  (if (save-excursion
-	(forward-line -1)
-	(makefile-line-continued-p))
-      (forward-line -1))
-  (beginning-of-line)
-  (if (not (makefile-line-continued-p))
-      nil
-    (while (and (makefile-line-continued-p)
-		(not (bobp)))
-      (forward-line -1))
-    (forward-line 1)))
+(defmacro project-am-with-config-current (file &rest forms)
+  "Set the Configure FILE in the top most directory above DIR as current.
+Run FORMS in the configure file.
+Kill the Configure buffer if it was not already in a buffer."
+  `(save-excursion
+     (let ((fb (generate-new-buffer ,file)))
+       (set-buffer fb)
+       (erase-buffer)
+       (insert-file-contents ,file)
+       (prog1 ,@forms
+	 (kill-buffer fb)))))
 
-(defun makefile-end-of-command ()
-  "Move the the beginning of the current command."
-  (interactive)
-  (end-of-line)
-  (while (and (makefile-line-continued-p)
-	      (not (eobp)))
-    (forward-line 1)
-    (end-of-line)))
+(put 'project-am-with-config-current 'lisp-indent-function 1)
 
-(defun makefile-line-continued-p ()
-  "Return non-nil if the current line ends in continuation."
-  (save-excursion
-    (end-of-line)
-    (= (preceding-char) ?\\)))
+(add-hook 'edebug-setup-hook
+	  (lambda ()
+	    (def-edebug-spec project-am-with-config-current
+	      (form def-body))))
 
-;;; Programatic editing of a Makefile
-;;
-(defun makefile-move-to-macro (macro &optional next)
-  "Move to the definition of MACRO.  Return t if found.
-If NEXT is non-nil, move to the next occurance of MACRO."
-  (let ((oldpt (point)))
-    (when (not next) (goto-char (point-min)))
-    (if (re-search-forward (concat "^\\s-*" macro "\\s-*[+:?]?=") nil t)
-	t
-      (goto-char oldpt)
-      nil)))
-
-(defun makefile-navigate-macro (stop-before)
-  "In a list of files, move forward until STOP-BEFORE is reached.
-STOP-BEFORE is a regular expression matching a file name."
-  (save-excursion
-    (makefile-beginning-of-command)
-    (let ((e (save-excursion
-	       (makefile-end-of-command)
-	       (point))))
-      (if (re-search-forward stop-before nil t)
-	  (goto-char (match-beginning 0))
-	(goto-char e)))))
-
-(defun makefile-macro-file-list (macro)
-  "Return a list of all files in MACRO."
+(defmacro project-am-extract-shell-variable (var)
+  "Extract the value of the shell variable VAR from a shell script."
   (save-excursion
     (goto-char (point-min))
-    (let ((lst nil))
-      (while (makefile-move-to-macro macro t)
-	(let ((e (save-excursion
-		   (makefile-end-of-command)
-		   (point))))
-	  (while (re-search-forward "\\s-**\\([-a-zA-Z0-9./_@$%()]+\\)\\s-*" e t)
-	    (setq lst (cons
-		       (buffer-substring-no-properties
-			(match-beginning 1)
-			(match-end 1))
-		       lst)))))
-      (nreverse lst))))
+    (when (re-search-forward (concat "^" (regexp-quote var) "\\s-*=\\s-*")
+			     nil t)
+      (buffer-substring-no-properties (point) (point-at-eol)))))
+
+(defun project-am-extract-package-info (dir)
+  "Extract the package information for directory DIR."
+  (let ((conf-in (project-am-autoconf-file dir))
+	(conf-sh (expand-file-name "configure" dir))
+	(name (file-name-nondirectory
+	       (directory-file-name dir)))
+	(ver "1.0")
+	(bugrep nil)
+	(configfiles nil)
+	)
+    (cond
+     ;; Try configure.in or configure.ac
+     (conf-in
+      (project-am-with-config-current conf-in
+	(let ((aci (autoconf-parameters-for-macro "AC_INIT"))
+	      (aia (autoconf-parameters-for-macro "AM_INIT_AUTOMAKE"))
+	      (acf (autoconf-parameters-for-macro "AC_CONFIG_FILES"))
+	      (aco (autoconf-parameters-for-macro "AC_OUTPUT"))
+	      )
+	  (cond
+	   ;; AC init has more than 1 parameter
+	   ((> (length aci) 1)
+	    (setq name (nth 0 aci)
+		  ver (nth 1 aci)
+		  bugrep (nth 2 aci)))
+	   ;; The init automake has more than 1 parameter
+	   ((> (length aia) 1)
+	    (setq name (nth 0 aia)
+		  ver (nth 1 aia)
+		  bugrep (nth 2 aia)))
+	   )
+	  ;; AC_CONFIG_FILES, or AC_OUTPUT lists everything that
+	  ;; should be detected as part of this PROJECT, but not in a
+	  ;; particular TARGET.
+	  (let ((outfiles (cond (aco (list (car aco)))
+				(t acf))))
+	    (if (> (length outfiles) 1)
+		(setq configfiles outfiles)
+	      (setq configfiles (split-string (car outfiles) " " t)))
+	    )
+	  ))
+      )
+     ;; Else, try the script
+     ((file-exists-p conf-sh)
+      (project-am-with-config-current conf-sh
+	(setq name (project-am-extract-shell-variable "PACKAGE_NAME")
+	      ver (project-am-extract-shell-variable "PACKAGE_VERSION")
+	      )
+	))
+     ;; Don't know what else....
+     (t
+      nil))
+    ;; Return stuff
+    (list name ver bugrep configfiles)
+    ))
+
+(defun project-am-package-info (dir)
+  "Get the package information for directory topmost project dir over DIR.
+Calcultes the info with `project-am-extract-package-info'."
+  (let ((top (ede-toplevel)))
+    (when top (setq dir (oref top :directory)))
+    (project-am-extract-package-info dir)))
 
 (provide 'project-am)
 

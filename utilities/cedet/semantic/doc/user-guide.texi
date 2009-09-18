@@ -268,6 +268,16 @@ When called interactively you can combine the @var{IN-CONTEXT} and
 - @kbd{C-u} @kbd{C-u}   @var{IN-CONTEXT} + @var{NO-DEFAULT}.
 @end defun
 
+@defun senator-go-to-up-reference tag
+@anchor{senator-go-to-up-reference}
+Move up one reference from the current @var{TAG}.
+A ``reference'' could be any interesting feature of @var{TAG}.
+In @var{C}++, a function may have a 'parent' which is non-local.
+If that parent which is only a reference in the function tag
+is found, we can jump to it.
+Some tags such as includes have other reference features.
+@end defun
+
 @subsection Searching
 
 Searching using senator mode restricts the search only to the
@@ -375,6 +385,12 @@ semantic-complete-jump-local
 @item C-c , J
 (Upper case J)
 semantic-complete-jump
+@item C-c , u
+senator-go-to-up-reference
+@item C-c , g
+semantic-symref
+@item C-c , G
+semantic-symref-symbol
 @item C-c , TAB
 senator-complete-symbol
 @item C-c , SPC
@@ -574,6 +590,19 @@ Jump to the tag referred to by the code at @var{point}.
 Uses @dfn{semantic-analyze-current-context} output to identify an accurate
 origin of the code at point.
 @end deffn
+
+@defun semantic-ia-fast-mouse-jump evt
+@anchor{semantic-ia-fast-mouse-jump}
+Jump to the tag referred to by the point clicked on.
+This command is meant to be bound to a mouse event.
+@end defun
+
+You can use the mouse jump version by adding a configuration like this
+into your @file{.emacs} file.
+
+@example
+(global-set-key '[(S-mouse-1)] 'mouse-jump)
+@end example
 
 @node Speedbar Analysis
 @section Speedbar Analysis
@@ -1466,6 +1495,16 @@ Customize the include path for this @code{major-mode}.
 To create a customizable include path for a major @var{mode}, use the
 macro @dfn{defcustom-mode-local-semantic-dependency-system-include-path}.
 @end deffn
+
+@defun semanticdb-implied-include-tags
+@anchor{semanticdb-implied-include-tags}
+Include tags implied for all files of a given mode.
+Set this variable with @dfn{defvar-mode-local} for a particular mode so
+that any symbols that exist for all files for that mode are included.
+
+Note: This could be used as a way to write a file in a langauge
+to declare all the built-ins for that language.
+@end defun
 
 For a bit more on include paths, see the
 @inforef{Search Optimization, Search Optimization section, semantic}.

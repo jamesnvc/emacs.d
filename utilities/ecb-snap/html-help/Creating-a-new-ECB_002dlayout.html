@@ -3,7 +3,7 @@
 <title>Creating a new ECB-layout - ECB - the Emacs Code Browser</title>
 <meta http-equiv="Content-Type" content="text/html">
 <meta name="description" content="ECB - the Emacs Code Browser">
-<meta name="generator" content="makeinfo 4.13">
+<meta name="generator" content="makeinfo 4.8">
 <link title="Top" rel="start" href="ecb.html#Top">
 <link rel="up" href="The-ECB_002dlayout.html#The-ECB_002dlayout" title="The ECB-layout">
 <link rel="prev" href="Fixing-window-sizes.html#Fixing-window-sizes" title="Fixing window sizes">
@@ -23,9 +23,9 @@
 </head>
 <body>
 <div class="node">
+<p>
 <a name="Creating-a-new-ECB-layout"></a>
 <a name="Creating-a-new-ECB_002dlayout"></a>
-<p>
 Previous:&nbsp;<a rel="previous" accesskey="p" href="Fixing-window-sizes.html#Fixing-window-sizes">Fixing window sizes</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="The-ECB_002dlayout.html#The-ECB_002dlayout">The ECB-layout</a>
 <hr>
@@ -109,7 +109,7 @@ name of the user-defined type you have specified during
 layout-creation.
 
      <p>This function <code>ecb-set-X-buffer</code> must be defined with the macro
-<code>defecb-window-dedicator</code> and has to switch to the buffer you
+<code>defecb-window-dedicator-to-ecb-buffer</code> and has to switch to the buffer you
 want to display in this window. This macro automatically ensures that
 this window is dedicated to that buffer.
 
@@ -117,9 +117,9 @@ this window is dedicated to that buffer.
 then you have to define and load a function
 <code>ecb-set-example-buffer</code> which could be defined like follows:
 
-     <pre class="example">        (defecb-window-dedicator ecb-set-example-buffer " *ECB example-buf*"
+     <pre class="example">        (defecb-window-dedicator-to-ecb-buffer ecb-set-example-buffer " *ECB example-buf*"
           (switch-to-buffer (get-buffer-create " *ECB example-buf*")))
-</pre>
+   </pre>
      <p>If you forget to define such a function for the user-defined type then
 nevertheless ECB will draw this layout but it will use the
 default-function <code>ecb-set-default-ecb-buffer</code> instead. 
@@ -153,7 +153,7 @@ process you will be asked in the minibuffer for several options; here
 you can use TAB-completion and an &ldquo;empty&rdquo; RET chooses always the
 first option!</p>
 
-   <hr></div>
+   <p><hr></div>
 
    </body></html>
 

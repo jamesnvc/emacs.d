@@ -3,7 +3,7 @@
 ;; Copyright (C) 2008, 2009 Eric M. Ludlam
 
 ;; Author: Eric M. Ludlam <eric@siege-engine.com>
-;; X-RCS: $Id: ede-files.el,v 1.13 2009/02/28 02:40:10 zappo Exp $
+;; X-RCS: $Id: ede-files.el,v 1.17 2009/08/08 21:34:17 zappo Exp $
 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
@@ -98,16 +98,28 @@ the current buffer."
 (defmethod ede-find-subproject-for-directory ((proj ede-project-placeholder)
 					      dir)
   "Find a subproject of PROJ that corresponds to DIR."
-  (let ((ans nil)
-	(inode (ede--inode-for-dir dir)))
-    (ede-map-subprojects 
-     proj
-     (lambda (SP)
-       (when (not ans)
-	 (if (equal (ede--project-inode SP) inode)
-	     (setq ans SP)
-	   (ede-find-subproject-for-directory SP dir)))))
-    ans))
+  (if ede--disable-inode
+      (let ((ans nil))
+	;; Try to find the right project w/out inodes.
+	(ede-map-subprojects 
+	 proj
+	 (lambda (SP)
+	   (when (not ans)
+	     (if (string= (file-truename dir) (oref SP :directory))
+		 (setq ans SP)
+	       (ede-find-subproject-for-directory SP dir)))))
+	ans)
+    ;; We can use inodes, so lets try it.
+    (let ((ans nil)
+	  (inode (ede--inode-for-dir dir)))
+      (ede-map-subprojects 
+       proj
+       (lambda (SP)
+	 (when (not ans)
+	   (if (equal (ede--project-inode SP) inode)
+	       (setq ans SP)
+	     (ede-find-subproject-for-directory SP dir)))))
+      ans)))
 
 ;;; DIRECTORY IN OPEN PROJECT
 ;;
@@ -151,21 +163,25 @@ If DIR is the root project, then it is the same."
   (let* ((inode (ede--inode-for-dir dir))
 	 (ft (file-name-as-directory (expand-file-name dir)))
 	 (proj (ede--inode-get-toplevel-open-project inode))
-	 (ans proj))
+	 (ans nil))
     ;; Try file based search.
     (when (not proj)
       (setq proj (ede-directory-get-toplevel-open-project ft)))
+    ;; Default answer is this project
+    (setq ans proj)
     ;; Save.
     (when rootreturn (set rootreturn proj))
     ;; Find subprojects.
-    (when (and proj (not (equal inode (ede--project-inode proj))))
+    (when (and proj (or ede--disable-inode 
+			(not (equal inode (ede--project-inode proj)))))
       (setq ans (ede-find-subproject-for-directory proj ft)))
     ans))
 
 (defun ede--inode-get-toplevel-open-project (inode)
   "Return an already open toplevel project that is managing INODE.
 Does not check subprojects."
-  (when (and (numberp inode) (/= inode 0))
+  (when (or (and (numberp inode) (/= inode 0))
+	    (consp inode))
     (let ((all ede-projects)
 	  (found nil)
 	  )
@@ -194,7 +210,7 @@ Does not check subprojects."
 	 ;; Exact inode match.  Useful with symlinks or complex automounters.
 	 ((let ((pin (ede--project-inode (car all)))
 		(inode (ede--inode-for-dir dir)))
-	    (and (/= pin 0) (equal pin inode)))
+	    (and (not (eql pin 0)) (equal pin inode)))
 	  (setq ans (car all)))
 	 ;; Subdir via truename - slower by far, but faster than a traditional lookup.
 	 ((let ((ftn (file-truename ft))
@@ -286,8 +302,13 @@ nil is returned if the current directory is not a part ofa project."
       ;; Try the local buffer cache first.
       (oref ede-object-root-project :directory)
     ;; Otherwise do it the hard way.
-    (let* ((ans (ede-directory-get-toplevel-open-project dir)))
-      (if ans
+    (let* ((thisdir (ede-directory-project-p dir))
+	   (ans (ede-directory-get-toplevel-open-project dir)))
+      (if (and ans ;; We have an answer
+	       (or (not thisdir) ;; this dir isn't setup
+		   (and (object-of-class-p ;; Same as class for this dir?
+			 ans (oref thisdir :class-sym)))
+		   ))
 	  (oref ans :directory)
 	(let* ((toppath (expand-file-name dir))
 	       (newpath toppath)
@@ -381,26 +402,55 @@ Get it from the toplevel project.  If it doesn't have one, make one."
 FILENAME should be just a filename which occurs in a directory controlled
 by this project.
 Optional argument FORCE forces the default filename to be provided even if it
-doesn't exist."
+doesn't exist.
+If FORCE equals 'newfile, then the cache is ignored."
   (let* ((loc (ede-get-locator-object this))
 	 (ha (ede-locate-file-in-hash loc filename))
+	 (ans nil)
 	 )
-    (if ha
-	;; Save non-matches, but convert to nil.
-	(if (eq ha 'nomatch) nil ha)
-      ;; Calculate a new match.
+    ;; NOTE: This function uses a locator object, which keeps a hash
+    ;; table of files it has found in the past.  The hash table is
+    ;; used to make commonly found file very fast to location.  Some
+    ;; complex routines, such as smart completion asks this question
+    ;; many times, so doing this speeds things up, especially on NFS
+    ;; or other remote file systems.
+    
+    ;; As such, special care is needed to use the hash, and also obey
+    ;; the FORCE option, which is needed when trying to identify some
+    ;; new file that needs to be created, such as a Makefile.
+    (cond 
+     ;; We have a hash-table match, AND that match wasn't the 'nomatch
+     ;; flag, we can return it.
+     ((and ha (not (eq ha 'nomatch)))
+      (setq ans ha))
+     ;; If we had a match, and it WAS no match, then we need to look
+     ;; at the force-option to see what to do.  Since ans is already
+     ;; nil, then we do nothing.
+     ((and (eq ha 'nomatch) (not (eq force 'newfile)))
+      nil)
+     ;; We had no hash table match, so we have to look up this file
+     ;; using the usual EDE file expansion rules.
+     (t
       (let ((calc (ede-expand-filename-impl this filename)))
 	(if calc
-	    (ede-locate-add-file-to-hash loc filename calc)
-	  
-	  ;; Is it forced?
-	  (if force
-	      (let ((dir (ede-project-root-directory this)))
-		(setq calc (expand-file-name filename dir)))
+	    (progn
+	      (ede-locate-add-file-to-hash loc filename calc)
+	      (setq ans calc))
+	  ;; If we failed to calculate something, we
+	  ;; should add it to the hash, but ONLY if we are not
+	  ;; going to FORCE the file into existance.
+	  (when (not force)
+	    (ede-locate-add-file-to-hash loc filename 'nomatch))))
+      ))
+    ;; Now that all options have been queried, if the FORCE option is
+    ;; true, but ANS is still nil, then we can make up a file name.
 
-	    ;; Not in calc database
-	    (ede-locate-add-file-to-hash loc filename 'nomatch)
-	    nil))))))
+    ;; Is it forced?
+    (when (and force (not ans))
+      (let ((dir (ede-project-root-directory this)))
+	(setq ans (expand-file-name filename dir))))
+
+    ans))
 
 (defmethod ede-expand-filename-impl ((this ede-project) filename &optional force)
   "Return a fully qualified file name based on project THIS.

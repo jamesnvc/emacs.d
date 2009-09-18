@@ -3,7 +3,7 @@
 <title>ecb-general - ECB - the Emacs Code Browser</title>
 <meta http-equiv="Content-Type" content="text/html">
 <meta name="description" content="ECB - the Emacs Code Browser">
-<meta name="generator" content="makeinfo 4.13">
+<meta name="generator" content="makeinfo 4.8">
 <link title="Top" rel="start" href="ecb.html#Top">
 <link rel="up" href="Customizable-options.html#Customizable-options" title="Customizable options">
 <link rel="prev" href="Customizable-options.html#Customizable-options" title="Customizable options">
@@ -24,9 +24,9 @@
 </head>
 <body>
 <div class="node">
+<p>
 <a name="ecb-general"></a>
 <a name="ecb_002dgeneral"></a>
-<p>
 Next:&nbsp;<a rel="next" accesskey="n" href="ecb_002dtree_002dbuffer.html#ecb_002dtree_002dbuffer">ecb-tree-buffer</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="Customizable-options.html#Customizable-options">Customizable options</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="Customizable-options.html#Customizable-options">Customizable options</a>
@@ -38,7 +38,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="Customizable-options.html#Customizable-
 <p class="noindent">This group contains general settings for the Emacs code browser:
 
 <div class="defun">
-&mdash; User Option: <b>activate-before-layout-draw-hook</b><var><a name="index-activate_002dbefore_002dlayout_002ddraw_002dhook-127"></a></var><br>
+&mdash; User Option: <b>activate-before-layout-draw-hook</b><var><a name="index-activate_002dbefore_002dlayout_002ddraw_002dhook-126"></a></var><br>
 <blockquote><p>Normal hook run at the end of activating the ecb-package by running
 <code>ecb-activate</code>. This hooks are run after all the internal setup
 process but directly before(!) drawing the layout specified in
@@ -69,7 +69,7 @@ hooks:
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>activate-hook</b><var><a name="index-activate_002dhook-128"></a></var><br>
+&mdash; User Option: <b>activate-hook</b><var><a name="index-activate_002dhook-127"></a></var><br>
 <blockquote><p>Hook run at the end of activating ECB by <code>ecb-activate</code>. This
 hooks are run at the real end of the activating process, means after
 the layout has been drawn!. If you need hooks which are run direct
@@ -78,7 +78,7 @@ before the layout-drawing look at
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>activation-selects-ecb-frame-if-already-active</b><var><a name="index-activation_002dselects_002decb_002dframe_002dif_002dalready_002dactive-129"></a></var><br>
+&mdash; User Option: <b>activation-selects-ecb-frame-if-already-active</b><var><a name="index-activation_002dselects_002decb_002dframe_002dif_002dalready_002dactive-128"></a></var><br>
 <blockquote><p>Trying to activate an already activated ECB selects the ECB-frame. If
 t then the ECB-frame is selected, if nil then it is not. If 'ask then
 ECB asks if the ECB-frame should be selected if the current-frame is
@@ -86,13 +86,13 @@ not the <code>ecb-frame</code>.
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>auto-activate</b><var><a name="index-auto_002dactivate-130"></a></var><br>
+&mdash; User Option: <b>auto-activate</b><var><a name="index-auto_002dactivate-129"></a></var><br>
 <blockquote><p>Automatically startup ECB when Emacs starts up. This should only be
 true if you always want to run <code>ecb-activate</code>. 
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>auto-compatibility-check</b><var><a name="index-auto_002dcompatibility_002dcheck-131"></a></var><br>
+&mdash; User Option: <b>auto-compatibility-check</b><var><a name="index-auto_002dcompatibility_002dcheck-130"></a></var><br>
 <blockquote><p>Check at ECB-startup if all ECB-options have correct values. If not
 nil then all ECB-options are checked if their current value have the
 correct type. It the type is incorrect the option is either auto. 
@@ -109,7 +109,7 @@ See <a href="Auto_002e-option_002dupgrading.html#Auto_002e-option_002dupgrading"
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>before-activate-hook</b><var><a name="index-before_002dactivate_002dhook-132"></a></var><br>
+&mdash; User Option: <b>before-activate-hook</b><var><a name="index-before_002dactivate_002dhook-131"></a></var><br>
 <blockquote><p>Normal hook run at the beginning of activating the ecb-package by
 running <code>ecb-activate</code>. These hooks run before any other tasks of
 the activating process are performed. If any of these hooks returns
@@ -123,7 +123,7 @@ running.
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>before-deactivate-hook</b><var><a name="index-before_002ddeactivate_002dhook-133"></a></var><br>
+&mdash; User Option: <b>before-deactivate-hook</b><var><a name="index-before_002ddeactivate_002dhook-132"></a></var><br>
 <blockquote><p>Normal hook run at the beginning of deactivating ECB by running
 <code>ecb-deactivate</code>. These hooks run before any other tasks of the
 deactivating process are performed. If any of these hooks returns nil
@@ -132,7 +132,7 @@ then ECB will not be deactivated! See also
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>bucket-node-display</b><var><a name="index-bucket_002dnode_002ddisplay-134"></a></var><br>
+&mdash; User Option: <b>bucket-node-display</b><var><a name="index-bucket_002dnode_002ddisplay-133"></a></var><br>
 <blockquote><p>How ECB displays bucket-nodes in a ECB tree-buffer. Bucket-nodes have
 only one job: Nodes with similar properties will be dropped into one
 bucket for such a common property and all these nodes will be added as
@@ -153,7 +153,7 @@ suffix and a special face for the bucket-node
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>clear-caches-before-activate</b><var><a name="index-clear_002dcaches_002dbefore_002dactivate-135"></a></var><br>
+&mdash; User Option: <b>clear-caches-before-activate</b><var><a name="index-clear_002dcaches_002dbefore_002dactivate-134"></a></var><br>
 <blockquote><p>Clear all ECB internal caches before startup. If t then ECB clears all
 its internal caches before starting up. Caches are used for files- and
 subdirs (see <code>ecb-cache-directory-contents</code> and
@@ -169,42 +169,13 @@ the internal state of ECB should be preserved for next activation.
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>current-buffer-sync-hook</b><var><a name="index-current_002dbuffer_002dsync_002dhook-136"></a></var><br>
-<blockquote><p>Normal hook run at the end of <code>ecb-current-buffer-sync</code>.
-
-        <p>See documentation of <code>ecb-current-buffer-sync</code> for conditions when
-synchronization takes place and so in turn these hooks are evaluated.
-
-        <p>Precondition for such a hook:
-Current buffer is the buffer of the current selected edit-window.
-
-        <p>Postcondition for such a hook:
-Point must stay in the same edit-window as before evaluating the hook.
-
-        <p>Important note: If <code>ecb-window-sync</code> is not nil
-<code>ecb-current-buffer-sync</code> is running either every time Emacs is
-idle or even after every command (see <code>ecb-window-sync-delay</code>). 
-So these hooks can be really called very often! Therefore each
-function of this hook should/must check in an efficient way at
-beginning if its task have to be really performed and then do them
-only if really necessary! Otherwise performance of Emacs could slow
-down dramatically!
-
-        <p>It is strongly recommended that each function added to this hook uses
-the macro <code>ecb-do-if-buffer-visible-in-ecb-frame</code> at beginning! 
-See <code>ecb-speedbar-current-buffer-sync</code> and
-<code>ecb-eshell-current-buffer-sync</code> for examples how to use this
-macro! 
-</p></blockquote></div>
-
-<div class="defun">
-&mdash; User Option: <b>deactivate-hook</b><var><a name="index-deactivate_002dhook-137"></a></var><br>
+&mdash; User Option: <b>deactivate-hook</b><var><a name="index-deactivate_002dhook-135"></a></var><br>
 <blockquote><p>Normal hook run at the end of deactivating (but before the ecb-layout
 is cleared!) ECB by running <code>ecb-deactivate</code>. 
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>debug-mode</b><var><a name="index-debug_002dmode-138"></a></var><br>
+&mdash; User Option: <b>debug-mode</b><var><a name="index-debug_002dmode-136"></a></var><br>
 <blockquote><p>If not nil ECB displays debug-information in the Messages-buffer. This
 is done for some critical situations concerning semantic-tags and
 their overlays (or extends for XEmacs). Normally you should not need
@@ -216,7 +187,7 @@ error again!
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>grep-function</b><var><a name="index-grep_002dfunction-139"></a></var><br>
+&mdash; User Option: <b>grep-function</b><var><a name="index-grep_002dfunction-137"></a></var><br>
 <blockquote><p>Function used for performing a grep. The popup-menu of the
 tree-buffers &ldquo;Directories&rdquo;, &ldquo;Sources&rdquo; and &ldquo;History&rdquo; offer to
 grep the &ldquo;current&rdquo; directory:
@@ -230,21 +201,21 @@ popup-source after clicking the right mouse-button onto a node.
         </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>grep-recursive-function</b><var><a name="index-grep_002drecursive_002dfunction-140"></a></var><br>
+&mdash; User Option: <b>grep-recursive-function</b><var><a name="index-grep_002drecursive_002dfunction-138"></a></var><br>
 <blockquote><p>Function used for performing a recursive grep. For more Details see
 option `ecb-grep-function' and replace &ldquo;grep&rdquo; with &ldquo;recursive
 grep&rdquo;. 
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>key-map</b><var><a name="index-key_002dmap-141"></a></var><br>
+&mdash; User Option: <b>key-map</b><var><a name="index-key_002dmap-139"></a></var><br>
 <blockquote><p>Specifies all keybindings for the ECB minor-mode key-map. The value is
 a cons-cell where the car is a common-prefix key for all the
 keybindings. The cdr is a list of keybindings each of them a list
 again. A key-binding has the following form:
 
      <pre class="example">        '(&lt;common-prefix-flag&gt; &lt;keysequence&gt; &lt;function&gt;) where
-</pre>
+   </pre>
           <dl>
 <dt><code>&lt;common-prefix-flag&gt;</code><dd>If t then the common-prefix-key defined as car of the value (see above)
 is used.
@@ -299,7 +270,7 @@ optional minus sign: M&ndash;123 = M&ndash; M-1 M-2 M-3.
         </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>major-modes-show-or-hide</b><var><a name="index-major_002dmodes_002dshow_002dor_002dhide-142"></a></var><br>
+&mdash; User Option: <b>major-modes-show-or-hide</b><var><a name="index-major_002dmodes_002dshow_002dor_002dhide-140"></a></var><br>
 <blockquote><p>List of major-modes which show or hide the ecb-windows. The value is a
 cons-cell where the car contains all major-mode-symbols which should
 show the special ecb-windows and the cdr contains all
@@ -310,7 +281,7 @@ ecb-windows does not change.
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>minor-mode-text</b><var><a name="index-minor_002dmode_002dtext-143"></a></var><br>
+&mdash; User Option: <b>minor-mode-text</b><var><a name="index-minor_002dmode_002dtext-141"></a></var><br>
 <blockquote><p>String to display in the mode line when ECB minor mode is active. 
 (When the string is not empty, make sure that it has a leading space.)
 
@@ -320,41 +291,7 @@ the ECB-windows are hidden.
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>mouse-click-destination</b><var><a name="index-mouse_002dclick_002ddestination-144"></a></var><br>
-<blockquote><p>Destination of a mouse-button click. Defines in which edit-window (if
-splitted) ECB does the &ldquo;right&rdquo; action (opening a source, jumping to
-a method/variable etc.) after clicking with the primary mouse-button
-(see <code>ecb-primary-secondary-mouse-buttons</code>) onto a node. There
-are two possible choices:
-
-          <ul>
-<li><code>left-top</code>:
-Does the &ldquo;right&rdquo; action always in the left/topmost edit-window. 
-<li><code>last-point</code>:
-Does the &ldquo;right&rdquo; action always in that edit-window which had the point
-before. 
-</ul>
-        This is if the user has clicked either with the primary mouse-button or
-has activated a popup-menu in the tree-buffer.
-
-        <p>If the edit-area is not splitted this setting doesn't matter.
-
-        <p>A click with the secondary mouse-button (see again
-<code>ecb-primary-secondary-mouse-buttons</code> does the &ldquo;right&rdquo; action
-always in another edit-window related to the setting in this option:
-If there are two edit-windows then the &ldquo;other&rdquo; edit-window is used
-and for more than 2 edit-windows the &ldquo;next&rdquo; edit-window is used
-(whereas the next edit-window of the last edit-window is the first
-edit-window).
-
-        <p>Note: If the tree-buffers are used with the keyboard instead with the
-mouse then this option takes effect too because <kbd>RET</kbd> is
-interpreted as primary mouse-button and <kbd>C-RET</kbd> as secondary
-mouse-button! 
-</p></blockquote></div>
-
-<div class="defun">
-&mdash; User Option: <b>run-ediff-in-ecb-frame</b><var><a name="index-run_002dediff_002din_002decb_002dframe-145"></a></var><br>
+&mdash; User Option: <b>run-ediff-in-ecb-frame</b><var><a name="index-run_002dediff_002din_002decb_002dframe-142"></a></var><br>
 <blockquote><p>Run ediff-sessions in the same frame as ECB is running. 
 If not nil then ECB ensures that ediff runs in the same frame as ECB and ECB
 restores exactly the &ldquo;before-ediff&rdquo;-window-layout after quiting ediff. If
@@ -364,7 +301,7 @@ ecb-frame but this can also be a newly created frame or any other frame.
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>stealthy-tasks-delay</b><var><a name="index-stealthy_002dtasks_002ddelay-146"></a></var><br>
+&mdash; User Option: <b>stealthy-tasks-delay</b><var><a name="index-stealthy_002dtasks_002ddelay-143"></a></var><br>
 <blockquote><p>Time Emacs must be idle before ECB runs its stealthy tasks. Currently
 ECB performes the following stealthy tasks:
 
@@ -388,64 +325,27 @@ value can also be changed during running ECB.
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>tip-of-the-day</b><var><a name="index-tip_002dof_002dthe_002dday-147"></a></var><br>
+&mdash; User Option: <b>tip-of-the-day</b><var><a name="index-tip_002dof_002dthe_002dday-144"></a></var><br>
 <blockquote><p>Show tip of the day at start time of ECB. 
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>tip-of-the-day-file</b><var><a name="index-tip_002dof_002dthe_002dday_002dfile-148"></a></var><br>
+&mdash; User Option: <b>tip-of-the-day-file</b><var><a name="index-tip_002dof_002dthe_002dday_002dfile-145"></a></var><br>
 <blockquote><p>File where tip-of-the-day cursor is stored. 
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>use-recursive-edit</b><var><a name="index-use_002drecursive_002dedit-149"></a></var><br>
+&mdash; User Option: <b>use-recursive-edit</b><var><a name="index-use_002drecursive_002dedit-146"></a></var><br>
 <blockquote><p>Tell ECB to use a recursive edit. If set then it can easily be
 deactivated by (keyboard-escape-quit). 
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>version-check</b><var><a name="index-version_002dcheck-150"></a></var><br>
-<blockquote><p>Checks at start-time if the requirements are fulfilled. 
-It checks if the required versions of the libraries semantic, eieio and
-speedbar are installed and loaded into Emacs.
+&mdash; User Option: <b>version-check</b><var><a name="index-version_002dcheck-147"></a></var><br>
+<blockquote><p>Checks at start-time if the requirements are fulfilled. It checks if the
+required versions of CEDET is installed and loaded into Emacs.
 
         <p>It is strongly recommended to set this option to not <code>nil</code>! 
-</p></blockquote></div>
-
-<div class="defun">
-&mdash; User Option: <b>window-sync</b><var><a name="index-window_002dsync-151"></a></var><br>
-<blockquote><p>Synchronize the ECB-windows automatically with current edit window. If
-<code>always</code> then the synchronization takes place always a buffer
-changes in the edit window, if <code>nil</code> then never. If a list of
-major-modes then only if the <code>major-mode</code> of the new buffer
-belongs NOT to this list.
-
-        <p>But in every case the synchronization only takes place if the
-current-buffer in the current active edit-window has a relation to
-files or directories. Examples for the former one are all
-programming-language-modes, <code>Info-mode</code> too, an example for the
-latter one is <code>dired-mode</code>. For all major-modes related to
-non-file/directory-buffers like <code>help-mode</code>,
-<code>customize-mode</code> and others never an autom. synchronization will
-be done!
-
-        <p>It's recommended to exclude at least <code>Info-mode</code> because it makes
-no sense to synchronize the ECB-windows after calling the Info help. 
-Per default also <code>dired-mode</code> is excluded but it can also making
-sense to synchronize the ECB-directories/sources windows with the
-current directory in the dired-buffer.
-
-        <p>IMPORTANT NOTE: Every time the synchronization is done the hook
-<code>ecb-current-buffer-sync-hook</code> is evaluated. 
-</p></blockquote></div>
-
-<div class="defun">
-&mdash; User Option: <b>window-sync-delay</b><var><a name="index-window_002dsync_002ddelay-152"></a></var><br>
-<blockquote><p>Time Emacs must be idle before the ECB-windows are synchronized with
-current edit window. If nil then there is no delay, means
-synchronization takes place immediately. A small value of about 0.25
-seconds saves CPU resources and you get even though almost the same
-effect as if you set no delay. 
 </p></blockquote></div>
 
    </body></html>

@@ -2,7 +2,7 @@
 
 ;;; Copyright (C) 2006, 2007, 2008, 2009 Eric M. Ludlam
 
-;; X-CVS: $Id: semantic-lex-spp.el,v 1.36 2009/02/26 03:14:41 zappo Exp $
+;; X-CVS: $Id: semantic-lex-spp.el,v 1.44 2009/08/29 18:28:46 zappo Exp $
 
 ;; This file is not part of GNU Emacs.
 
@@ -91,6 +91,41 @@ tokens during lexical analysis.  During analysis symbols can be
 added and removed from this symbol table.")
 (make-variable-buffer-local 'semantic-lex-spp-dynamic-macro-symbol-obarray)
 
+(defvar semantic-lex-spp-dynamic-macro-symbol-obarray-stack nil
+  "A stack of obarrays for temporarilly scoped macro values.")
+(make-variable-buffer-local 'semantic-lex-spp-dynamic-macro-symbol-obarray-stack)
+
+(defvar semantic-lex-spp-expanded-macro-stack nil
+  "The stack of lexical SPP macros we have expanded.")
+;; The above is not buffer local.  Some macro expansions need to be
+;; dumped into a secondary buffer for re-lexing.
+
+;;; NON-RECURSIVE MACRO STACK
+;; C Pre-processor does not allow recursive macros.  Here are some utils
+;; for managing the symbol stack of where we've been.
+
+(defmacro semantic-lex-with-macro-used (name &rest body)
+  "With the macro NAME currently being expanded, execute BODY.
+Pushes NAME into the macro stack.  The above stack is checked
+by `semantic-lex-spp-symbol' to not return true for any symbol
+currently being expanded."
+  `(unwind-protect
+       (progn
+	 (push ,name semantic-lex-spp-expanded-macro-stack)
+	 ,@body)
+     (pop semantic-lex-spp-expanded-macro-stack)))
+(put 'semantic-lex-with-macro-used 'lisp-indent-function 1)
+
+(add-hook
+ 'edebug-setup-hook
+ #'(lambda ()
+
+     (def-edebug-spec semantic-lex-with-macro-used
+       (symbolp def-body)
+       )
+
+     ))
+
 ;;; MACRO TABLE UTILS
 ;;
 ;; The dynamic macro table is a buffer local variable that is modified
@@ -104,7 +139,11 @@ The searcy priority is:
   2. PROJECT specified symbols.
   3. SYSTEM specified symbols."
   (and
+   ;; Only strings...
    (stringp name)
+   ;; Make sure we don't recurse.
+   (not (member name semantic-lex-spp-expanded-macro-stack))
+   ;; Do the check of the various tables.
    (or
     ;; DYNAMIC
     (and (arrayp semantic-lex-spp-dynamic-macro-symbol-obarray)
@@ -129,6 +168,12 @@ The searcy priority is:
       (setq semantic-lex-spp-dynamic-macro-symbol-obarray
 	    (make-vector 13 0))))
 
+(defsubst semantic-lex-spp-dynamic-map-stack ()
+  "Return the dynamic macro map for the current buffer."
+  (or semantic-lex-spp-dynamic-macro-symbol-obarray-stack
+      (setq semantic-lex-spp-dynamic-macro-symbol-obarray-stack
+	    (make-vector 13 0))))
+
 (defun semantic-lex-spp-symbol-set (name value &optional obarray-in)
   "Set value of spp symbol with NAME to VALUE and return VALUE.
 If optional OBARRAY-IN is non-nil, then use that obarray instead of
@@ -144,6 +189,43 @@ If optional OBARRAY is non-nil, then use that obarray instead of
 the dynamic map."
   (unintern name (or obarray
 		     (semantic-lex-spp-dynamic-map))))
+
+(defun semantic-lex-spp-symbol-push (name value)
+  "Push macro NAME with VALUE into the map.
+Reverse with `semantic-lex-spp-symbol-pop'."
+  (let* ((map (semantic-lex-spp-dynamic-map))
+	 (stack (semantic-lex-spp-dynamic-map-stack))
+	 (mapsym (intern name map))
+	 (stacksym (intern name stack))
+	 (mapvalue (when (boundp mapsym) (symbol-value mapsym)))
+	 )
+    (when (boundp mapsym)
+      ;; Make sure there is a stack
+      (if (not (boundp stacksym)) (set stacksym nil))
+      ;; If there is a value to push, then push it.
+      (set stacksym (cons mapvalue (symbol-value stacksym)))
+      )
+    ;; Set our new value here.
+    (set mapsym value)
+    ))
+
+(defun semantic-lex-spp-symbol-pop (name)
+  "Pop macro NAME from the stackmap into the orig map.
+Reverse with `semantic-lex-spp-symbol-pop'."
+  (let* ((map (semantic-lex-spp-dynamic-map))
+	 (stack (semantic-lex-spp-dynamic-map-stack))
+	 (mapsym (intern name map))
+	 (stacksym (intern name stack))
+	 (oldvalue nil)
+	 )
+    (if (or (not (boundp stacksym) )
+	    (= (length (symbol-value stacksym)) 0))
+	;; Nothing to pop, remove it.
+	(unintern name map)
+      ;; If there is a value to pop, then add it to the map.
+      (set mapsym (car (symbol-value stacksym)))
+      (set stacksym (cdr (symbol-value stacksym)))
+      )))
 
 (defsubst semantic-lex-spp-symbol-stream (name)
   "Return replacement stream of macro with NAME."
@@ -217,9 +299,12 @@ For use with semanticdb restoration of state."
 In this case, reset the dynamic macro symbol table if
 START is (point-min).
 END is not used."
-  (if (= start (point-min))
-      (setq semantic-lex-spp-dynamic-macro-symbol-obarray nil))
-  )
+  (when (= start (point-min))
+    (setq semantic-lex-spp-dynamic-macro-symbol-obarray nil
+	  semantic-lex-spp-dynamic-macro-symbol-obarray-stack nil
+	  ;; This shouldn't not be nil, but reset just in case.
+	  semantic-lex-spp-expanded-macro-stack nil)
+    ))
 
 ;;; MACRO EXPANSION: Simple cases
 ;;
@@ -294,42 +379,53 @@ ARGVALUES are values for any arg list, or nil."
 ;; Argument lists are saved as a lexical token at the beginning
 ;; of a replacement value.
 
-(defun semantic-lex-spp-one-token-to-txt (tok)
+(defun semantic-lex-spp-one-token-to-txt (tok &optional blocktok)
   "Convert the token TOK into a string.
 If TOK is made of multiple tokens, convert those to text.  This
 conversion is needed if a macro has a merge symbol in it that
 combines the text of two previously distinct symbols.  For
 exampe, in c:
 
-#define (a,b) a ## b;"
+#define (a,b) a ## b;
+
+If optional string BLOCKTOK matches the expanded value, then do not
+continue processing recursively."
   (let ((txt (semantic-lex-token-text tok))
 	(sym nil)
 	)
-    (cond ((and (eq (car tok) 'symbol)
-		(setq sym (semantic-lex-spp-symbol txt))
-		(not (semantic-lex-spp-macro-with-args (symbol-value sym)))
-		)
-	   ;; Now that we have a symbol,
-	   (let ((val (symbol-value sym)))
-	     (cond ((and (consp val)
-			 (symbolp (car val)))
-		    (semantic-lex-spp-one-token-to-txt val))
-		   ((and (consp val)
-			 (consp (car val))
-			 (symbolp (car (car val))))
-		    (mapconcat (lambda (subtok)
-				 (semantic-lex-spp-one-token-to-txt subtok))
-			       val
-			       ""))
-		   ;; If val is nil, that's probably wrong.
-		   ;; Found a system header case where this was true.
-		   ((null val) "")
-		   ;; Debug wierd stuff.
-		   (t (debug)))
-	     ))
-	  ((stringp txt)
-	   txt)
-	  (t nil))
+    (cond
+     ;; Recursion prevention
+     ((and (stringp blocktok) (string= txt blocktok))
+      blocktok)
+     ;; A complex symbol
+     ((and (eq (car tok) 'symbol)
+	   (setq sym (semantic-lex-spp-symbol txt))
+	   (not (semantic-lex-spp-macro-with-args (symbol-value sym)))
+	   )
+      ;; Now that we have a symbol,
+      (let ((val (symbol-value sym)))
+	(cond
+	 ;; This is another lexical token.
+	 ((and (consp val)
+	       (symbolp (car val)))
+	  (semantic-lex-spp-one-token-to-txt val txt))
+	 ;; This is a list of tokens.
+	 ((and (consp val)
+	       (consp (car val))
+	       (symbolp (car (car val))))
+	  (mapconcat (lambda (subtok)
+		       (semantic-lex-spp-one-token-to-txt subtok))
+		     val
+		     ""))
+	 ;; If val is nil, that's probably wrong.
+	 ;; Found a system header case where this was true.
+	 ((null val) "")
+	 ;; Debug wierd stuff.
+	 (t (debug)))
+	))
+     ((stringp txt)
+      txt)
+     (t nil))
     ))
 
 (defun semantic-lex-spp-macro-with-args (val)
@@ -413,9 +509,11 @@ and what valid VAL values are."
       ;; Push args into the replacement list.
       (let ((AV argvalues))
 	(dolist (A arglist)
-	  (semantic-lex-spp-symbol-set A (car AV))
-	  (setq argalist (cons (cons A (car AV)) argalist))
-	  (setq AV (cdr AV))))
+	  (let* ((argval (car AV)))
+
+	    (semantic-lex-spp-symbol-push A argval)
+	    (setq argalist (cons (cons A argval) argalist))
+	    (setq AV (cdr AV)))))
       )
 
     ;; Set val-tmp after stripping arguments.
@@ -473,11 +571,12 @@ and what valid VAL values are."
 	      (setq val-tmp (cdr val-tmp))
 	      )
 
-	    ;; Don't recurse directly into this same fcn, because it is
-	    ;; convenient to have plain string replacements too.
-	    (semantic-lex-spp-macro-to-macro-stream
-	     (symbol-value txt-macro-or-nil)
-	     beg end AV)
+	    (semantic-lex-with-macro-used txt
+	      ;; Don't recurse directly into this same fcn, because it is
+	      ;; convenient to have plain string replacements too.
+	      (semantic-lex-spp-macro-to-macro-stream
+	       (symbol-value txt-macro-or-nil)
+	       beg end AV))
 	    ))
 
 	 ;; This is a HACK for the C parser.  The 'macros text
@@ -503,7 +602,7 @@ and what valid VAL values are."
     ;; CASE 2: The arg list we pushed onto the symbol table
     ;;         must now be removed.
     (dolist (A arglist)
-      (semantic-lex-spp-symbol-remove A))
+      (semantic-lex-spp-symbol-pop A))
     ))
 
 ;;; Macro Merging
@@ -629,23 +728,35 @@ STR occurs in the current buffer between BEG and END."
      ((and semantic-lex-spp-replacements-enabled
 	   (semantic-lex-spp-symbol-p str))
       (setq sym (semantic-lex-spp-symbol str)
-	    val (symbol-value sym))
+	    val (symbol-value sym)
+	    count 0)
 
-      ;; Do direct replacements of single value macros of macros.
-      ;; This solves issues with a macro containing one symbol that
-      ;; is another macro, and get arg lists passed around.
-      (while (and val (consp val)
-		  (semantic-lex-token-p (car val))
-		  (eq (length val) 1)
-		  (eq (semantic-lex-token-class (car val)) 'symbol)
-		  (semantic-lex-spp-symbol-p (semantic-lex-token-text (car val)))
-		  )
-	(setq str (semantic-lex-token-text (car val)))
-	(setq sym (semantic-lex-spp-symbol str)
-	      val (symbol-value sym))
-	)
+      (let ((semantic-lex-spp-expanded-macro-stack
+	     semantic-lex-spp-expanded-macro-stack))
 
-      (semantic-lex-spp-anlyzer-do-replace sym val beg end))
+	(semantic-lex-with-macro-used str
+	  ;; Do direct replacements of single value macros of macros.
+	  ;; This solves issues with a macro containing one symbol that
+	  ;; is another macro, and get arg lists passed around.
+	  (while (and val (consp val)
+		      (semantic-lex-token-p (car val))
+		      (eq (length val) 1)
+		      (eq (semantic-lex-token-class (car val)) 'symbol)
+		      (semantic-lex-spp-symbol-p (semantic-lex-token-text (car val)))
+		      (< count 10)
+		      )
+	    (setq str (semantic-lex-token-text (car val)))
+	    (setq sym (semantic-lex-spp-symbol str)
+		  val (symbol-value sym))
+	    ;; Prevent recursion
+	    (setq count (1+ count))
+	    ;; This prevents a different kind of recursion.
+	    (push str semantic-lex-spp-expanded-macro-stack)
+	    )
+
+	  (semantic-lex-spp-anlyzer-do-replace sym val beg end))
+
+	))
      ;; Anything else.
      (t
       ;; A regular keyword.
@@ -699,19 +810,124 @@ Don't go past MAX."
 (defun semantic-lex-spp-stream-for-arglist (token)
   "Lex up the contents of the arglist TOKEN.
 Parsing starts inside the parens, and ends at the end of TOKEN."
-  (save-excursion
-    (let ((end (semantic-lex-token-end token))
-	  (fresh-toks nil)
-	  (toks nil))
-      (goto-char (semantic-lex-token-start token))
-      ;; A cheat for going into the semantic list.
-      (forward-char 1)
-      (setq fresh-toks (semantic-lex-spp-stream-for-macro (1- end)))
-      (dolist (tok fresh-toks)
-	(when (memq (semantic-lex-token-class tok) '(symbol semantic-list))
-	  (setq toks (cons tok toks))))
-      (nreverse toks))
-    ))
+  (let ((end (semantic-lex-token-end token))
+	(fresh-toks nil)
+	(toks nil))
+    (save-excursion
+
+      (if (stringp (nth 1 token))
+	  ;; If the 2nd part of the token is a string, then we have
+	  ;; a token specifically extracted from a buffer.  Possibly
+	  ;; a different buffer.  This means we need to do something
+	  ;; nice to parse its contents.
+	  (let ((txt (semantic-lex-token-text token)))
+	    (semantic-lex-spp-lex-text-string
+	     (substring txt 1 (1- (length txt)))))
+
+	;; This part is like the original
+	(goto-char (semantic-lex-token-start token))
+	;; A cheat for going into the semantic list.
+	(forward-char 1)
+	(setq fresh-toks (semantic-lex-spp-stream-for-macro (1- end)))
+	(dolist (tok fresh-toks)
+	  (when (memq (semantic-lex-token-class tok) '(symbol semantic-list))
+	    (setq toks (cons tok toks))))
+
+	(nreverse toks)))))
+
+(defun semantic-lex-spp-lex-text-string (text)
+  "Lex the text string TEXT using the current buffer's state.
+Use this to parse text extracted from a macro as if it came from
+the current buffer.  Since the lexer is designed to only work in
+a buffer, we need to create a new buffer, and populate it with rules
+and variable state from the current buffer."
+  ;; @TODO - will this fcn recurse?
+  (let* ((buf (get-buffer-create " *SPP parse hack*"))
+	 (mode major-mode)
+	 (fresh-toks nil)
+	 (toks nil)
+	 (origbuff (current-buffer))
+	 (important-vars '(semantic-lex-spp-macro-symbol-obarray
+			   semantic-lex-spp-project-macro-symbol-obarray
+			   semantic-lex-spp-dynamic-macro-symbol-obarray
+			   semantic-lex-spp-dynamic-macro-symbol-obarray-stack
+			   semantic-lex-spp-expanded-macro-stack
+			   ))
+	 )
+    (save-excursion
+      (set-buffer buf)
+      (erase-buffer)
+      ;; Below is a painful hack to make sure everything is setup correctly.
+      (when (not (eq major-mode mode))
+	(funcall mode)
+	;; Hack in mode-local
+	(activate-mode-local-bindings)
+	;; CHEATER!  The following 3 lines are from
+	;; `semantic-new-buffer-fcn', but we don't want to turn
+	;; on all the other annoying modes for this little task.
+	(setq semantic-new-buffer-fcn-was-run t)
+	(semantic-lex-init)
+	(semantic-clear-toplevel-cache)
+	(remove-hook 'semantic-lex-reset-hooks 'semantic-lex-spp-reset-hook
+		     t)
+	)
+
+      ;; Second Cheat: copy key variables reguarding macro state from the
+      ;; the originating buffer we are parsing.  We need to do this every time
+      ;; since the state changes.
+      (dolist (V important-vars)
+	(set V (semantic-buffer-local-value V origbuff)))
+      (insert text)
+      (goto-char (point-min))
+
+      (setq fresh-toks (semantic-lex-spp-stream-for-macro (point-max))))
+
+    (dolist (tok fresh-toks)
+      (when (memq (semantic-lex-token-class tok) '(symbol semantic-list))
+	(setq toks (cons tok toks))))
+
+    (nreverse toks)))
+
+;;;; FIRST DRAFT
+;; This is the fist version of semantic-lex-spp-stream-for-arglist
+;; that worked pretty well.  It doesn't work if the TOKEN was derived
+;; from some other buffer, in which case it can get the wrong answer
+;; or throw an error if the token location in the originating buffer is
+;; larger than the current buffer.
+;;(defun semantic-lex-spp-stream-for-arglist-orig (token)
+;;  "Lex up the contents of the arglist TOKEN.
+;; Parsing starts inside the parens, and ends at the end of TOKEN."
+;;  (save-excursion
+;;    (let ((end (semantic-lex-token-end token))
+;;	  (fresh-toks nil)
+;;	  (toks nil))
+;;      (goto-char (semantic-lex-token-start token))
+;;      ;; A cheat for going into the semantic list.
+;;      (forward-char 1)
+;;      (setq fresh-toks (semantic-lex-spp-stream-for-macro (1- end)))
+;;      (dolist (tok fresh-toks)
+;;	(when (memq (semantic-lex-token-class tok) '(symbol semantic-list))
+;;	  (setq toks (cons tok toks))))
+;;      (nreverse toks))
+;;    ))
+
+;;;; USING SPLIT
+;; This doesn't work, because some arguments passed into a macro
+;; might contain non-simple symbol words, which this doesn't handle.
+;;
+;; Thus, you need a full lex to occur.
+;; (defun semantic-lex-spp-stream-for-arglist-split (token)
+;;   "Lex up the contents of the arglist TOKEN.
+;; Parsing starts inside the parens, and ends at the end of TOKEN."
+;;   (let* ((txt (semantic-lex-token-text token))
+;; 	 (split (split-string (substring txt 1 (1- (length txt)))
+;; 			      "(), " t))
+;; 	 ;; Hack for lexing.
+;; 	 (semantic-lex-spp-analyzer-push-tokens-for-symbol nil))
+;;     (dolist (S split)
+;;       (semantic-lex-spp-analyzer-push-tokens-for-symbol S 0 1))
+;;     (reverse semantic-lex-spp-analyzer-push-tokens-for-symbol)))
+
 
 (defun semantic-lex-spp-stream-for-macro (eos)
   "Lex up a stream of tokens for a #define statement.
@@ -890,6 +1106,8 @@ The VALUE is a spp lexical table."
       (prin1 (car sym))
       (let* ((first (car (cdr sym)))
 	     (rest (cdr sym)))
+	(when (not (listp first))
+	  (error "Error in macro \"%s\"" (car sym)))
 	(when (eq (car first) 'spp-arg-list)
 	  (princ " ")
 	  (prin1 first)

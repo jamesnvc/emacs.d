@@ -1,9 +1,587 @@
-This is ecb.info, produced by makeinfo version 4.13 from ecb.texi.
+This is ecb.info, produced by makeinfo version 4.8 from ecb.texi.
 
 INFO-DIR-SECTION GNU Emacs Lisp
 START-INFO-DIR-ENTRY
 * ECB: (ecb).           Emacs Code Browser
 END-INFO-DIR-ENTRY
+
+
+File: ecb.info,  Node: ecb-directories,  Next: ecb-sources,  Prev: ecb-tree-buffer,  Up: Customizable options
+
+7.3.3 Group ecb-directories
+---------------------------
+
+This group contains settings for the directories-buffer in the ECB:
+
+ -- User Option: add-path-for-not-matching-files
+     Add path of a file to `ecb-source-path' if not already contained.  This
+     is done during the auto. windows synchronization which happens if a file
+     is opened not via the file/directory-browser of ECB. In such a situation
+     ECB adds the path of the new file auto. to `ecb-source-path' at least
+     temporally for the current Emacs session. This option defines two things:
+
+       1. Should only the root-part (which means for Unix-like systems always
+          '/' and for windows-like systems the drive) of the new file be added
+          as source-path to `ecb-source-path' or the whole directory-part?
+          For remote-files (e.g. tramp, ange-ftp- or efs-files) the root-part
+          is the complete host-part + the root-dir at that host (example:
+          /berndl@ecb.sourceforge.net:/ would be the root-part of
+          /berndl@ecb.sourceforge.net:/tmp/test.txt).
+
+       2. Should this path be added for future sessions too?
+
+     The value of this option is a cons-cell where the car is a boolean for
+     1. and the cdr is a boolean for 2.
+
+     A value of not nil for the car (1.) is reasonably if a user often opens
+     files not via the ECB-browser which are not located in any of the paths
+     of `ecb-source-path' because then only one path for each drive (windows)
+     or the root-path (Unix) is added to the directory buffer of ECB.
+
+ -- User Option: auto-expand-directory-tree
+     Automatically expand the directory tree to the current source file.
+     There are three options:
+
+        - `best': Expand the best-matching source-path
+
+        - `first': Expand the first matching source-path
+
+        - `nil': Do not automatically expand the directory tree.
+
+ -- User Option: after-directory-change-hook
+     Hook which run directly after the selected directory has changed. This
+     means not onyl after a click onto a directory in the directory-window of
+     ECB but it means this hook runs always when the current directory
+     changes regardless of the trigger of this change. So for example it runs
+     also when you just switches from one buffer to another via
+     `switch-to-buffer' or `switch-to-buffer-other-window' and the directory
+     of these filebuffers is different but only when auto-synchronizing of
+     the ECB-windows is on (see `ecb-basic-buffer-sync'). It runs not when
+     switching between buffers and the associated files reside in the same
+     directory.
+
+     Each function added to this hook will be called with two arguments: The
+     directory which was current _before_ the directory-change-trigger and
+     the directory which was now the current (i.e. after the trigger).
+
+     Example: If you switch from a filebuffer "~/.emacs" to a filebuffer
+     "/tmp/test.txt" then the functions of this hook will be called with the
+     two arguments "~" and "/tmp".
+
+ -- User Option: cache-directory-contents
+     Cache contents of directories.
+
+     This can be useful if `ecb-source-path' contains directories with many
+     files and subdirs, especially if these directories are mounted
+     net-drives ("many" means here something > 500, dependent of the speed of
+     the net-connection and the machine). Or if it contains
+     remote-source-paths which means paths in the sense of tramp, ange-ftp or
+     efs. For these directories actualizing the sources- and/or directories-
+     buffer of ECB (if displayed in current layout!) can slow down
+     dramatically so a caching increases speed a lot.
+
+     The value of this option is a list where each element is a cons-cell and
+     looks like:
+
+          (<dir-regexp> . <filenumber threshold>) with
+
+    `<dir-regexp>:'
+          Regular expression a directory must match to be cached.
+
+    `<filenumber threshold>:'
+          Number of directory contents must exceed this number.
+
+     A directory will only be cached if and only if the directory-name
+     matches at least one rexexp of this option and its content-number
+     exceeds the related threshold AND the directory-name matches NOT any
+     regexp of `ecb-cache-directory-contents-not'!
+
+     The cache entry for a certain directory will be refreshed and actualized
+     only by using the POWER-click (see
+     `ecb-primary-secondary-mouse-buttons') in the directories-buffer of ECB
+     (*note Using the mouse::).
+
+     Default-value: ECB caches the contents of all remote directories
+     regardless of the size and all other directories if more than 50 entries
+     are contained.
+
+     Examples:
+
+     An entry `("/usr/home/john_smith/bigdir*" . 1000)' means the contents of
+     every subdirectory of the home-directory of John Smith will be cached if
+     the directory contains more than 1000 entries and its name begins with
+     "bigdir".
+
+     An entry `(".*" . 1000)' caches every directory which has more than 1000
+     entries.
+
+     An entry `("^/\\([^:/]*@\\)?\\([^@:/]*\\):.*" . 0)' caches every remote
+     (in the sense of tramp, ange-ftp or efs) directory regardless of the
+     number of entries."
+
+     Please note: If you want your home-dir being cached then you MUST NOT
+     use "~" because ECB tries always to match full path-names!
+
+ -- User Option: cache-directory-contents-not
+     Do not cache the contents of certain directories. The value of this
+     option is a list where the each element is a regular expression a
+     directory must match if it should not being cached.
+
+     If a directory-name matches at least one of the regexps of this option
+     the directory-contents will never being cached. See
+     `ecb-cache-directory-contents' to see when a directory will be cached.
+
+     This option can be useful when normally all directories with a certain
+     amount of content (files and subdirs) should be cached but some special
+     directories not. This can be achieved by:
+
+        - Setting `ecb-cache-directory-contents' to ((".*" . 500)): Caches
+          all directories with more then 500 entries
+
+        - Setting `ecb-cache-directory-contents-not' to a value which matches
+          these directories which should not being cached (e.g.
+          ("/usr/home/john_smith") excludes the HOME-directory of John Smith
+          from being cached).
+
+     Please note: If you want your home-dir exclude from being cached then
+     you MUST NOT use "~" because ECB tries always to match full path-names!
+
+ -- User Option: directories-buffer-after-create-hook
+     Local hook running after the creation of the directories-buffer. Every
+     function of this hook is called once without arguments direct after
+     creating the directories-buffer of ECB and it's local key-map. So for
+     example a function could be added which performs calls of
+     `local-set-key' to define new keybindings only for the
+     directories-buffer of ECB.
+
+     The following keys must not be rebind in the directories-buffer: `F2',
+     `F3' and `F4'
+
+ -- User Option: directories-buffer-name
+     Name of the ECB directory buffer. Because it is not a normal buffer for
+     editing you should enclose the name with stars, e.g. " *ECB
+     Directories*".
+
+     If it is necessary for you you can get emacs-lisp access to the
+     buffer-object of the ECB-directory-buffer by this name, e.g. by a call
+     of `set-buffer'.
+
+     Changes for this option at runtime will take affect only after
+     deactivating and then activating ECB again!
+
+ -- User Option: directories-menu-sorter
+     Function which re-sorts the menu-entries of the directories buffer.
+
+     If a function then this function is called to re-arrange the
+     menu-entries of the combined menu-entries of the user-menu-extensions of
+     `ecb-directories-menu-user-extension' and the built-in-menu
+     `ecb-directories-menu'. If nil then no special sorting will be done and
+     the user-extensions are placed in front of the built-in-entries.
+
+     The function get one argument, a list of menu-entries. For the format of
+     this argument see `ecb-directories-menu-user-extension'. The function
+     must return a new list in the same format. Of course this function can
+     not only re-arrange the entries but also delete entries or add new
+     entries.
+
+ -- User Option: directories-menu-user-extension
+     Static user extensions for the popup-menu of the directories buffer.
+     Value is a list of elements of the following type: Each element defines
+     a new menu-entry and is either:
+
+       1. Menu-command: A list containing two sub-elements, whereas the first
+          is the function (a function symbol) being called if the menu-entry
+          is selected and the second is the name of the menu-entry.
+
+       2. Separator: A one-element-list and the element is the string "--":
+          Then a non-selectable menu-separator is displayed.
+
+       3. Submenu: A list where the first element is the title of the submenu
+          displayed in the main-menu and all other elements are either
+          menu-commands (see 1) or separators (see 2) or another submenu (see
+          c). This allows deep nested menu-submenu-structures. Currently a
+          level of 4 is allowed but in general there could be an infinite
+          depth of nesting but it makes no sense - if possible at all - to
+          define infinite nested defcustom-types. So there is a limit of 4
+          levels but tis is not a hard limit: Just increase the value of the
+          `ecb-max-submenu-depth' *BEFORE* first loading ECB!
+
+     The function of a menu-command must follow the following guidelines:
+     Such a function must be defined with the macro
+     `tree-buffer-defpopup-command'! This macro defines a new popup-command
+     whereas the newly defined command gets one argument NODE. See the
+     docstring of `tree-buffer-defpopup-command' for further details.
+
+     Example for the definition of such a menu-function:
+
+        (tree-buffer-defpopup-command ecb-my-special-dir-popup-function
+          "Prints the name of the directory of the node under point."
+          (let ((node-data=dir (tree-node-get-data node)))
+             (message ``Dir under node: %s'' node-data=dir)))
+
+     Per default the static user-extensions are added at the beginning of the
+     built-in menu-entries of `ecb-directories-menu' but the whole menu can
+     be re-arranged with `ecb-directories-menu-sorter'.
+
+     These menu-extensions are static. A dynamic menu-extension can be
+     achieved via `ecb-directories-menu-user-extension-function'.
+
+ -- User Option: directories-menu-user-extension-function
+     Dynamic user extensions for the popup-menu of the directories buffer.  A
+     function which has to return a list in the same format like the option
+     `ecb-directories-menu-user-extension'. This function is called when the
+     user opens the popup-menu for the directories buffer.
+
+     If no dynamically evaluated menu-extensions should be added to the
+     directories-buffer the function has to return nil. Therefore the
+     default-value of this option is `ignore'.
+
+     Per default the dynamic user-extensions are added in front of the static
+     extensions of `ecb-directories-menu-user-extension' but the whole menu
+     can be re-arranged with `ecb-directories-menu-sorter'.
+
+ -- User Option: directories-show-node-info
+     When to display which node-info in the directories-buffer.  Define which
+     node info should be displayed after moving the mouse over a node (or
+     after a shift click onto the node) in the directories-buffer.
+
+     You can define "when" a node-info should be displayed:
+        - always: Node info is displayed by moving with the mouse over a node.
+
+        - if-too-long: Node info is only displayed by moving with the mouse
+          over a node does not fit into the window-width of the tree-buffer
+          window.  In the ECB directories buffer this means also if a node is
+          shortend or if the node has an alias (see `ecb-source-path').
+
+        - shift-click: Node info is only displayed after a shift click with
+          the primary mouse button onto the node.
+
+        - never: Node info is never displayed.
+
+     You can define "which" info should be displayed:
+        - name: Only the full node-name is displayed.
+
+        - path: The full-path of the node is displayed.
+
+     Do NOT set this option directly via setq but use always customize!
+
+ -- User Option: display-default-dir-after-start
+     Automatically display current default-directory after activating ECB.
+
+     If a file-buffer is displayed in the current active edit-window then ECB
+     synchronizes its basic tree-buffers to this file-buffer - at least if
+     the option `ecb-basic-buffer-sync' it not nil. So for this situation
+     `ecb-display-default-dir-after-start' takes no effect but this option is
+     for the case if no file-buffer is displayed in the edit-window after
+     startup:
+
+     If true then ECB selects autom. the current default-directory after
+     activation even if no file-buffer is displayed in the current active
+     edit-window. This is useful if ECB is autom. activated after startup of
+     Emacs and Emacs is started without a file-argument. So the directory
+     from which the startup has performed is auto. selected in the
+     ECB-directories buffer and the ECB-sources buffer displays the contents
+     of this directory.
+
+ -- User Option: excluded-directories-regexps
+     Directories that should not be included in the directories list. The
+     value of this variable should be a list of regular expression.
+
+ -- User Option: prescan-directories-for-emptyness
+     Prescan directories for emptyness. ECB does this so directories are
+     displayed as empty in the directories-buffer even without
+     user-interaction (i.e. in previous ECB-versions the emptyness of a
+     directory has been first checked when the user has clicked onto a
+     directory). ECB optimizes this check as best as possible but if a
+     directory contains a lot of subdirectories which contain in turn a lot
+     of entries, then expanding such a directory or selecting it would take
+     of course more time as without this check - at least at the first time
+     (all following selects of a directory uses the cached information if its
+     subdirectories are empty or not). Therefore ECB performs this check
+     stealthy (see `ecb-stealthy-tasks-delay') so normally there should no
+     performance-decrease or additional waiting-time for the user. There is
+     one exception: For remote directories (in the sense of tramp, ange-ftp,
+     or efs) this check can descrease performance even if performed stealthy
+     and interruptable. Therefore this option offers three possible settings:
+
+        * `t' Switch on this feature
+
+        * `unless-remote' Switch on this feature but not for remote
+          directories. The term "remote" means here directories which are
+          used via tramp, ange-ftp or efs. So mounted directories are counted
+          not as remote directories here even if such a directory is maybe
+          hosted on a remote machine. But normally only directories in a LAN
+          are mounted so there should be no performance-problems with such
+          mounted directories.
+
+        * `nil' Switch off this feature completely.
+
+     The option `ecb-prescan-directories-exclude-regexps' offers are more
+     fine granularity to exclude certain directories from this prescan.
+
+ -- User Option: host-accessible-check-valid-time
+     Time in seconds a cached accessible-state of a remote host is valid.
+     This option is a list where each element specifies how long for a
+     certain remote host the cached ping-state (i.e. if the host is
+     accessible or not) should be valid. During this time-intervall ECB pings
+     such a remote host only once, all other checks use the cached value of
+     that real check. But it the cached value is older than the value of this
+     option ECB will ping again.
+
+     Per default ECB discards after 1 minute the cached ping-state of each
+     remote host. But if you are sure that a certain remote host is always
+     accessible (i.e. means in consequence that you are always online when
+     working with ECB and remote-paths) then add an entry to this option with
+     a high valid-interval.
+
+     Examples: An entry (".*sourceforge.*" . 3600) ensures that all remote
+     hosts machting the string "sourceforge" will only once pinged during one
+     hour. Or (".*" . 300) would ensure that every remote host would be
+     pinged only once during 5 minutes.
+
+ -- User Option: ping-options
+     List of options for the ping program. These options can be used to limit
+     how many ICMP packets are emitted. Ping is used to test if a remote host
+     of a remote path (e.g. a tramp-, ange-ftp- or efs-path) is accessible
+     See also `ecb-ping-program'.
+
+ -- User Option: ping-program
+     Program to send network test packets to a host. See also
+     `ecb-ping-options'.
+
+ -- User Option: prescan-directories-exclude-regexps
+     Which directories should be excluded from the empty-prescan. If a
+     directory matches any of the regexps of this option it will not be
+     prescanned for emptyness - This option takes only effect if
+     `ecb-prescan-directories-for-emptyness' is not nil.
+
+ -- User Option: show-sources-in-directories-buffer
+     Show source files in directories buffer.
+
+ -- User Option: source-path
+     Paths where to find code sources. Each path can have an optional alias
+     that is used as it's display name. If no alias is set, the path is used
+     as display name.
+
+     Lisp-type of tis option: The value must be a list L whereas each element
+     of L is either
+        - a simple string which has to be the full path of a directory (this
+          string is displayed in the directory-browser of ECB) or
+
+        - a 2-elemet list whereas the first element is the full path of a
+          directory (string) and the second element is an arbitrary alias
+          (string) for this directory which is then displayed instead of the
+          underlying directory.
+
+ -- User Option: use-speedbar-instead-native-tree-buffer
+     If true then uses speedbar for directories, sources or methods. This
+     means that speedbar is integrated in the ECB-frame and is displayed in
+     that window normally displaying the standard ECB-directories-buffer,
+     ECB-sources-buffer or ECB-methods-buffer.
+
+     This option takes effect in all layouts which contain either a directory
+     window, a sources window or a method window.
+
+     This option can have four valid values:
+        - `nil': Do not use speedbar (default)
+
+        - `dir': Use speedbar instead of the standard directories-buffer
+
+        - `source': Use speedbar instead of the standard sources-buffer
+
+        - `method': Use speedbar instead of the standard methods-buffer
+
+     Note: For directories and sources a similar effect and usability is
+     available by setting this option to `nil' (or `method') and setting
+     `ecb-show-sources-in-directories-buffer' to not `nil', because this
+     combination displays also directories and sources in one window.
+
+     `ecb-use-speedbar-instead-native-tree-buffer' is for people who like the
+     speedbar way handling directories and source-files or methods and want
+     it in conjunction with ECB.
+
+
+File: ecb.info,  Node: ecb-sources,  Next: ecb-methods,  Prev: ecb-directories,  Up: Customizable options
+
+7.3.4 Group ecb-sources
+-----------------------
+
+This group contains settings for the sources-buffer in the ECB:
+
+ -- User Option: read-only-check-exclude-regexps
+     Which directories should be excluded from the sources-read-only-check.
+     If a directory matches any of the regexps of this option their sources
+     will not be checked if they are writable - This option takes only effect
+     if `ecb-sources-perform-read-only-check' is not nil.
+
+ -- User Option: show-source-file-extension
+     Show the file extension of source files.
+
+ -- User Option: source-file-regexps
+     Specifies which files are shown as source files.
+
+     This is done on directory-base, which means for each directory-regexp
+     the files to display can be specified. If more than one directory-regexp
+     matches the current selected directory then always the first one (and
+     its related file-exclude/include-regexps) is used! If no
+     directory-regexp matches then all files are displayed for the currently
+     selected directory.
+
+     Important note: It is recommended that the *LAST* element of this list
+     should contain an always matching directory-regexp (`".*"')!
+
+     So the value of this option is a list of cons-cells where the car is a
+     directory regexp and the cdr is a 2 element list where the first element
+     is a list of exclude regexps and the second element is a list of include
+     regexps. A file is displayed in the source-buffer of ECB iff: The file
+     does not match any of the exclude regexps OR the file matches at least
+     one of the include regexps.
+
+     But regardless of the value of this option a file F is never displayed
+     in the sources-buffer if the directory matches
+     `ecb-sources-exclude-cvsignore' and the directory contains a file
+     .cvsignore which contains F as an entry!
+
+     There are three predefined and useful combinations of an exclude and
+     include regexp:
+
+        * All files
+
+        * All, but no backup, object, lib or ini-files (except .emacs and
+          .gnus). This means all files except those starting with ".", "#" or
+          ending with "~", ".elc", ".obj", ".o", ".lib", ".dll", ".a", ".so".
+          (but including .emacs and .gnus)
+
+        * Common source file types (.c, .java etc.)
+
+     In addition to these predefined values a custom exclude and include
+     combination can be defined.
+
+     Tips for the directory- and file-rexexps: `"$^"' matches no
+     files/directories, `".*"' matches all files/directories.
+
+ -- User Option: sources-buffer-after-create-hook
+     Local hook running after the creation of the sources-buffer. Every
+     function of this hook is called once without arguments direct after
+     creating the sources-buffer of ECB and it's local key-map. So for
+     example a function could be added which performs calls of
+     `local-set-key' to define new keybindings only for the sources-buffer of
+     ECB.
+
+ -- User Option: sources-buffer-name
+     Name of the ECB sources buffer. Because it is not a normal buffer for
+     editing you should enclose the name with stars, e.g. "*ECB Sources*".
+
+     If it is necessary for you you can get emacs-lisp access to the
+     buffer-object of the ECB-sources-buffer by this name, e.g. by a call of
+     `set-buffer'.
+
+     Changes for this option at runtime will take affect only after
+     deactivating and then activating ECB again!
+
+ -- User Option: sources-exclude-cvsignore
+     Specify if files contained in a `.cvsignore' should be excluded.
+
+     Value is a list of regular expressions or nil. If you want to exclude
+     files listed in a `.cvsignore'-file from being displayed in the
+     ecb-sources-buffer then specify a regexp for such a directory.
+
+     If you want to exclude the contents of `.cvsignore'-files for every
+     directory then you should add one regexp ".*" which matches every
+     directory.
+
+     If you never want to exclude the contents of `.cvsignore'-files then set
+     this option to nil.
+
+ -- User Option: sources-menu-sorter
+     Function which re-sorts the menu-entries of the directories buffer.
+
+     If a function then this function is called to sort the menu-entries of
+     the combined menu-entries of the user-menu-extensions of
+     `ecb-sources-menu-user-extension' and the built-in-menu
+     `ecb-sources-menu'. If nil then no special sorting will be done and the
+     user-extensions are placed in front of the built-in-entries.
+
+     For the guidelines for such a sorter-function see
+     `ecb-directories-menu-sorter'.
+
+ -- User Option: sources-menu-user-extension
+     Static user extensions for the popup-menu of the sources buffer.  For
+     further explanations see `ecb-directories-menu-user-extension'.
+
+     The node-argument of a menu-function contains as data the source for
+     which the popup-menu has been opened. Use always `ecb-source-get-*' to
+     extract whatever you need from the node-data. E.g. use
+     `ecb-source-get-filename' to get the full filename of the source of the
+     node.
+
+     Per default the static user-extensions are added at the beginning of the
+     built-in menu-entries of `ecb-sources-menu' but the whole menu can be
+     re-arranged with `ecb-sources-menu-sorter'.
+
+ -- User Option: sources-menu-user-extension-function
+     Dynamic user extensions for the popup-menu of the sources buffer. A
+     function which has to return a list in the same format like the option
+     `ecb-sources-menu-user-extension'. This function is called when the user
+     opens the popup-menu for the sources buffer.
+
+     If no dynamically evaluated menu-extensions should be added to the
+     sources-buffer the function has to return nil. Therefore the
+     default-value of this option is `ignore'.
+
+     Per default the dynamic user-extensions are added in front of the static
+     extensions of `ecb-sources-menu-user-extension' but the whole menu can
+     be re-arranged with `ecb-sources-menu-sorter'.
+
+ -- User Option: sources-perform-read-only-check
+     Check if source-items in the tree-buffers are read-only. If a sourcefile
+     is read-only then it will be displayed with that face set in the option
+     `ecb-source-read-only-face'.
+
+     Because this check can be take some time if files are used via a mounted
+     net-drive ECB performs this check stealthily (see
+     `ecb-stealthy-tasks-delay') so normally the user should not see a
+     performance-decrease or additional waiting-time. But to get sure this
+     option offers three choices: `t', `unless-remote' and `nil'. See
+     `ecb-prescan-directories-for-emptyness' for an explanation for these
+     three choices.
+
+     The option `ecb-read-only-check-exclude-regexps' offers are more fine
+     granularity to exclude the sources of certain directories from the
+     read-only state-check.
+
+ -- User Option: sources-show-node-info
+     When to display which node-info in the sources-buffer.  Define which
+     node info should be displayed after moving the mouse over a node (or
+     after a shift click onto the node) in the sources-buffer.
+
+     You can define "when" a node-info should be displayed: See
+     `ecb-directories-show-node-info' for the possible choices.
+
+        - name: Only the full node-name is displayed.
+
+        - file-info: File infos for this file are displayed.
+
+        - file-info-full: Fill infos incl. full path for this file are
+          displayed.
+
+     Do NOT set this option directly via setq but use always customize!
+
+ -- User Option: sources-sort-ignore-case
+     Ignore case for sorting the source-files of the Sources-buffer. See also
+     `ecb-sources-sort-method'.
+
+ -- User Option: sources-sort-method
+     Defines how the source files are sorted.
+
+        - `name': Sorting by name.
+
+        - `extension': Sorting first by extension and then by name.
+
+        - `nil': No sorting, means source files are displayed in the sequence
+          returned by `directory-files' (called without sorting).
+
+     See also `ecb-sources-sort-ignore-case'
 
 
 File: ecb.info,  Node: ecb-methods,  Next: ecb-history,  Prev: ecb-sources,  Up: Customizable options
@@ -100,8 +678,8 @@ This group contains settings for the methods-buffer in the ECB:
      a size of 200000 but would parse all other buffer regardless their size.
 
  -- User Option: display-image-icons-for-semantic-tags
-     Display nice and pretty icons for semantic-tags in the Methods-buffer.
-     This option takes only effect if Emacs can display images and if
+     Display nice and pretty icons for semantic-tags in the Methods-buffer. A
+     non nil value takes only effect if Emacs can display images and if
      `ecb-tree-buffer-style' is set to `image'.
 
  -- User Option: exclude-parents-regexp
@@ -126,6 +704,89 @@ This group contains settings for the methods-buffer in the ECB:
      is invisible after `ecb-expand-methods-nodes' - then the auto.  expand
      feature would make this node immediately visible and destroys the
      explicitly set expand-level.
+
+ -- User Option: find-external-tag-functions
+     Functions used for searching external tags clicked in the methods buffer.
+
+     The methods buffer displays for oo-languages the parents of a type under
+     a special bucket "Parents". Languages like C++, CLOS and Eieio allow to
+     define the implementation of a method outside of the class definition
+     and even in another file. In the methods-buffer of ECB such externaly
+     defined methods are collected and displayed under a `virtual' faux
+     type-tag named as the class-qualifier of the methods. This faux-tag is
+     virtual because it does not extist in the parsed buffer.
+
+     If a user clicks either onto such a faux-type-tag or onto a parent-tag
+     then ECB tries to find the definition of the underlying type on a
+     name-basis, displaying the containing file as buffer in the current
+     edit-window and jumping to the start of the type-definition in this
+     buffer.
+
+     Finding such external types can be very complex and there are several
+     roads to success. ECB uses per default methods based on the
+     semantic-analyzer. But this option allows to define own find-functions
+     and tell ECB to uses them.
+
+     This functionality is set on a `major-mode' base, i.e. for every
+     `major-mode' a different setting can be used. The value of this option is
+     a list of cons-cells: The car is either a `major-mode' symbol or the
+     special symbol 'default. The cdr is a list of find-functions or nil.
+
+     ECB first performs all find-functions defined for current `major-mode'
+     (if any) anf then all find-functions defined for the special symbol
+     'default (if any).
+
+     ECB offers some predefined senseful finding-functions. Currently there
+     are:
+        * `ecb-search-type-tag-by-semantic-analyzer' (most powerful)
+
+        * `ecb-search-type-tag-by-semanticdb'
+
+        * `ecb-jde-show-class-source' (for major-mode `jde-mode' when coding
+          in java)
+
+     This function does not only the searching but displays the founded tag.
+     See the documentation of these function for details how they work.
+
+     But you can add any arbitrary function if the following conditions are
+     fulfilled:
+
+        * The function gets a semantic tag representing the external type
+          which should be found. This is a positionless-tag (otherwise it
+          would not be hard to go to it) and it's either a faux-tag (for
+          which `ecb--semantic-faux-tag-p' is not nil; the function can use
+          this check if necessary) or a simple tag containing only a name an
+          a tag-class. The tag-class for both is 'type.
+
+        * The return value of the function must be one of:
+             - `nil': No tag is found
+
+             - `t': A tag has been found and also be displayed in the
+               edit-window (this prevents ECB from running further function
+               of this option because the searched tag is already displayed.
+               So a function should only return `t' if all is fine and no
+               further actions are needed.
+
+             - A positioned semantic tag (for which
+               `ecb--semantic-tag-with-position-p' returns not `nil') which
+               represents the found external type-tag.
+
+     It's strongly recommended for the function not to display the found
+     location for itself but to return a positioned semantic tag! But
+     sometimes the displaying is integrated in a third-party find-function
+     like `jde-show-class-source' which is used by
+     `ecb-jde-show-class-source'. In these cases the function has to return t
+     if the searched tag has been successfully displayed.
+
+     Precondition for a find-function: Current buffer is the buffer the
+     clicked faux- or parent tag belongs to Current point depends on the
+     clicked tag:
+        * In case of a faux-tag it's the start of the first child of the
+          faux-tag. There must be at least one adopted child-tag because
+          otherwise we would not have the faux-tag
+
+        * In case of an external parent-tag its the the start of the external
+          tag itself.
 
  -- User Option: font-lock-tags
      Adds font-locking (means highlighting) to the ECB-method buffer.
@@ -620,6 +1281,44 @@ This group contains settings for the history-buffer in the ECB:
  -- User Option: history-item-name
      The name to use for items in the history buffer.
 
+ -- User Option: history-make-buckets
+     Bucketize the entries of the history-buffer.
+
+     There are several options how the bucketizing should be done:
+        * 'never:
+
+          No bucketizing at all, ie. all entries of the history-buffer we be
+          displayed flat.
+
+        * 'directory:
+
+          All entries with related filesources residing in the same directory
+          will be contained in a bucket named with that directory.
+
+        * 'directory-with-source-path:
+
+          Same as 'directory but the best matching source-path of the
+          directory-window (see `ecb-source-path') substituts the matching
+          part of the directory.  For this a special face is used (see
+          `ecb-history-bucket-node-dir-soure-path-face').
+
+        * 'mode:
+
+          All entries with related buffers have the same major-mode will be
+          contained in a bucket named with that major-mode
+
+        * 'extension:
+
+          All entries with related filesources having the same extension will
+          be contained in a bucket named with that extension
+
+     If the value is a list of regular expressions then all entries where the
+     buffername matches the same regular expression will be contained in one
+     bucket. If the value is nil then this is interpreted as an empty list of
+     regular expressions!
+
+     The default value is 'directory.
+
  -- User Option: history-menu-sorter
      Function which re-sorts the menu-entries of the directories buffer.
 
@@ -633,11 +1332,18 @@ This group contains settings for the history-buffer in the ECB:
      `ecb-directories-menu-sorter'.
 
  -- User Option: history-menu-user-extension
-     Static user extensions for the popup-menu of the history buffer. For
+     Static user extensions for the popup-menu of the history buffer.  For
      further explanations see `ecb-directories-menu-user-extension'.
 
-     The node-argument of a menu-function contains as data the filename of
-     the source for which the popup-menu has been opened.
+     The node-argument of a menu-function contains as data a cons:
+
+     car is the filename of the source for which the popup-menu has been
+     opened. cdr is the related buffer-name; but be careful, because the node
+     can point to a dead buffer (see `ecb-kill-buffer-clears-history'). Use
+     always `ecb-source-get-*' to extract whatever you need from the
+     node-data. E.g. use `ecb-source-get-filename' to get the full filename
+     of the source of the node and use `ecb-source-get-buffername' or
+     `ecb-source-get-buffer' to get the buffername rsp. the buffer-object.
 
      Per default the static user-extensions are added at the beginning of the
      built-in menu-entries of `ecb-history-menu' but the whole menu can be
@@ -658,15 +1364,19 @@ This group contains settings for the history-buffer in the ECB:
      be re-arranged with `ecb-history-menu-sorter'.
 
  -- User Option: history-show-node-info
-     When to display which node-info in the history-buffer. Define which node
-     info should displayed after moving the mouse over a node (or after a
-     shift click onto the node) in the history-buffer.
+     When to display which node-info in the history-buffer.  Define which
+     node info should be displayed after moving the mouse over a node (or
+     after a shift click onto the node) in the history-buffer.
 
      You can define "when" a node-info should be displayed: See
      `ecb-directories-show-node-info' for the possible choices.
 
-     You can define what info should be displayed: See
-     `ecb-directories-show-node-info' for the possible choices.
+     You can define "which" info should be displayed:
+        * name: Only the full node-name is displayed.
+
+        * path: The full-path of the node is displayed.
+
+        * name-path: The full node-name and the full-path is displayed.
 
      Do NOT set this option directly via setq but use always customize!
 
@@ -685,6 +1395,24 @@ This group contains settings for the history-buffer in the ECB:
 
      See also `ecb-history-sort-ignore-case'.
 
+     If the history is bucketized (see `ecb-history-make-buckets') then this
+     sorting applies to the sorting within each bucket.
+
+ -- User Option: history-stick-indirect-buffers-to-basebuffer
+     Stick all indirect-buffers as subnodes to their base-buffer.
+
+     If nil then indirect-buffers are treated as non-indirect-buffers and
+     sorted into the history-buffer-sequence according to the setting of
+     `ecb-history-sort-method'.
+
+     If not nil then indirect-buffers are always sticked to their
+     base-buffer, ie.  the base-buffer is displayed as expandable node with
+     all its indirect-buffers as children-nodes, so the history looks like:
+
+        [-] <base-buffer BB>
+         |  <indirect-buffer 1 of BB>
+         `- <indirect-buffer 2 of BB>
+
  -- User Option: kill-buffer-clears-history
      Define if `kill-buffer' should also clear the history. There are three
      options:
@@ -698,7 +1426,7 @@ This group contains settings for the history-buffer in the ECB:
           default).
 
 
-File: ecb.info,  Node: ecb-analyse,  Next: ecb-layout,  Prev: ecb-history,  Up: Customizable options
+File: ecb.info,  Node: ecb-analyse,  Next: ecb-symboldef,  Prev: ecb-history,  Up: Customizable options
 
 7.3.7 Group ecb-analyse
 -----------------------
@@ -735,6 +1463,63 @@ File: ecb.info,  Node: ecb-analyse,  Next: ecb-layout,  Prev: ecb-history,  Up: 
 
      Changes for this option at runtime will take affect only after
      deactivating and then activating ECB again!
+
+ -- User Option: analyse-buffer-sync
+     Synchronize the analyse buffer automatically with current edit buffer.
+
+     If 'always then the synchronization takes place always a buffer changes
+     in the edit window, if nil then never. If a list of major-modes then
+     only if the `major-mode' of the new buffer belongs NOT to this list.
+
+     Normally it's not necessary to exclude some major-modes because with
+     not-semantic supported major-modes simply nothing happens. But maybe it
+     can be helpful for certain situations...
+
+     If the special value 'basic is set then ECB uses the setting of the
+     option `ecb-basic-buffer-sync'.
+
+     IMPORTANT NOTE: Every time the synchronization is done the hook
+     `ecb-analyse-buffer-sync-hook' is evaluated.
+
+ -- User Option: analyse-buffer-sync-delay
+     Time Emacs must be idle before the analyse-buffer is synchronized.
+     Synchronizing is done with the current source displayed in the edit
+     window. If nil then there is no delay, means synchronization takes place
+     immediately.
+
+     CAUTION: With analysing a value not too small is strongly recommended
+     because it can be very annoying if more or less after each typing the
+     current context is analysed. If set to nil then *each* keyboard hit
+     refreshes the analyse-buffer which will make ECB quite unusable!
+
+     If the special value 'basic is set then ECB uses the setting of the
+     option `ecb-basic-buffer-sync-delay'
+
+ -- User Option: analyse-buffer-sync-hook
+     ook run at the end of `ecb-analyse-buffer-sync'.  See documentation of
+     `ecb-analyse-buffer-sync' for conditions when synchronization takes
+     place and so in turn these hooks are evaluated.
+
+     Preconditions for such a hook:
+
+        * Current buffer is the buffer of the currently selected edit-window.
+
+        * The analyse-buffer is displayed in a visible window of the
+          ecb-frame (so no check for visibilty of the analyse-buffer in the
+          ecb-frame is necessary in a hook function)
+
+     Postcondition for such a hook: Point must stay in the same edit-window
+     as before evaluating the hook.
+
+     Important note: If the option `ecb-analyse-buffer-sync' is not nil the
+     function `ecb-analyse-buffer-sync' is running either every time Emacs is
+     idle or even after every command (see `ecb-analyse-buffer-sync-delay').
+     So if the anaylse-buffer is displayed in a window of the ecb-frame (see
+     preconditions above) these hooks can be really called very often!
+     Therefore each function of this hook should/must check in an efficient
+     way at beginning if its task have to be really performed and then do
+     them only if really necessary! Otherwise performance of Emacs could slow
+     down dramatically!
 
  -- User Option: analyse-collapsed-buckets
      Buckets collapsed when displaying the current semantic analysis. The
@@ -851,9 +1636,109 @@ File: ecb.info,  Node: ecb-analyse,  Next: ecb-layout,  Prev: ecb-history,  Up: 
      See also `ecb-analyse-gen-tag-info-fn'.
 
 
-File: ecb.info,  Node: ecb-layout,  Next: ecb-compilation,  Prev: ecb-analyse,  Up: Customizable options
+File: ecb.info,  Node: ecb-symboldef,  Next: ecb-layout,  Prev: ecb-analyse,  Up: Customizable options
 
-7.3.8 Group ecb-layout
+7.3.8 Group ecb-analyse
+-----------------------
+
+ -- User Option: symboldef-buffer-name
+     Name of the ECB-symbol-definition buffer.  Because it is not a normal
+     buffer for editing you should enclose the name with stars, e.g. "*ECB
+     Symboldefinition*".
+
+     If it is necessary for you you can get emacs-lisp access to the
+     buffer-object of the ECB-symbol-definition-buffer by this name, e.g. by
+     a call of `set-buffer'.
+
+     Changes for this option at runtime will take affect only after
+     deactivating and then activating ECB again!
+
+ -- User Option: symboldef-buffer-sync
+     Synchronize the symboldef buffer automatically with current edit buffer.
+
+     If `always' then the synchronization takes place always a buffer changes
+     in the edit window, if nil then never. If a list of major-modes then
+     only if the `major-mode' of the new buffer belongs NOT to this list.
+
+     If the special value `basic' is set then ECB uses the setting of the
+     option `ecb-basic-buffer-sync'.
+
+     IMPORTANT NOTE: Every time the synchronization is done the hook
+     `ecb-symboldef-buffer-sync-hook' is evaluated.
+
+ -- User Option: symboldef-buffer-sync-delay
+     Time Emacs must be idle before the symboldef-buffer is synchronized.
+     Synchronizing is done with the current source displayed in the edit
+     window. If nil then there is no delay, means synchronization takes place
+     immediately. A small value of about 0.25 seconds saves CPU resources and
+     you get even though almost the same effect as if you set no delay.
+
+     If the special value 'basic is set then ECB uses the setting of the
+     option `ecb-basic-buffer-sync-delay'.
+
+ -- User Option: symboldef-buffer-sync-hook
+     ook run at the end of the function `ecb-symboldef-buffer-sync'.  See
+     documentation of `ecb-symboldef-buffer-sync' for conditions when
+     synchronization takes place and so in turn these hooks are evaluated.
+
+     Preconditions for such a hook:
+
+        * Current buffer is the buffer of the currently selected edit-window.
+
+        * The symboldef-buffer is displayed in a visible window of the
+          ecb-frame (so no check for visibilty of the symboldef-buffer in the
+          ecb-frame is necessary in a hook function)
+
+     Postcondition for such a hook: Point must stay in the same edit-window
+     as before evaluating the hook.
+
+     Important note: If the option `ecb-symboldef-buffer-sync' is not nil the
+     function `ecb-symboldef-buffer-sync' is running either every time Emacs
+     is idle or even after every command (see
+     `ecb-symboldef-buffer-sync-delay'). So if the symboldef-buffer is
+     displayed in a window of the ecb-frame (see preconditions above) these
+     hooks can be really called very often! Therefore each function of this
+     hook should/must check in an efficient way at beginning if its task have
+     to be really performed and then do them only if really necessary!
+     Otherwise performance of Emacs could slow down dramatically!
+
+ -- User Option: symboldef-find-functions
+     Funtions to find the definition for current symbol under point.  This
+     functionality is set on a major-mode base, i.e. for every major-mode a
+     different setting can be used. The value of this option is a list of
+     cons-cells:
+
+        * The car is either a major-mode symbol or the special symbol
+          'default which means if no setting for a certain major-mode is
+          defined then the cdr of the 'default cons-cell is used.
+
+        * The car is a function intended to find the definition of a certain
+          symbol for files of this major-mode. Such a function will be called
+          with two arguments, the first is the symbol-name as string for
+          which the definition should be displayed and the second the current
+          edit-buffer as buffer-object, i.e. the current buffer of the
+          current edit-window. The function will be called with the special
+          ecb-symbol-definition-buffer as current buffer whereas this buffer
+          is empty. The function has to insert everything necessary to
+          display the symbol-definition and is also responsible to format the
+          displayed text. The buffer-local variable `fill-column is already
+          preset to the window-width of the special ecb-window minus 1. The
+          function is responsible to set the buffer-local variable
+          `truncate-lines' appropriate.  The function can either return nil
+          or a string which will be integrated in the modeline-display of
+          this ecb-window.
+
+     There are two prefined functions `ecb-symboldef-find-lisp-doc' and
+     `ecb-symboldef-find-definition' whereas the latter on is used a default
+     find-function.
+
+ -- User Option: symboldef-minimum-symbol-length
+     Minimum length a symbol must have so its definition or doc is displayed.
+
+
+File: ecb.info,  Node: ecb-layout,  Next: ecb-compilation,  Prev: ecb-symboldef,  Up: Customizable options
+
+7.3.9 Group ecb-layout
 ----------------------
 
 This group contains settings for the screen-layout of the ECB:
@@ -947,6 +1832,18 @@ This group contains settings for the screen-layout of the ECB:
         - never, the adviced version of `display-buffer' always uses the
           value of `display-buffer-function' if the value is a function.
 
+ -- User Option: ignore-pop-up-frames
+     Ignore setting of option `pop-up-frames'.  This means, that a value of
+     not nil for `pop-up-frames' is ignored:
+        * 'compile-window: only when persistent compile window is used - i.e.
+          if `ecb-compile-window-height' is not nil - this is the default
+          value.
+
+        * 'always: always when ECB is active - that means no pop-up-frames
+          when ECB is active
+
+        * `nil': pop-up-frames is fully active when set
+
  -- User Option: ignore-special-display
      Ignore special-display-handling. This means, that all values of
      `special-display-function', `special-display-buffer-names' and
@@ -1026,25 +1923,35 @@ This group contains settings for the screen-layout of the ECB:
      this layout with `ecb-redraw-layout'
 
  -- User Option: layout-window-sizes
-     Specifies the sizes of the ECB windows for each layout. The easiest way
-     (and also the strongly recommended way) to change this variable is to
+     Specifies the sizes of the ECB windows for each layout.  The easiest way
+     (and also the very strongly recommended way) to set this option is to
      change the window sizes by dragging the window borders using the mouse
      and then store the window sizes by calling the command
      `ecb-store-window-sizes'. Next time the layout is redrawn the values
      stored in this option will be used.
 
-     If `ecb-store-window-sizes' is used then the windows sizes are stored
-     per default as fractions of current frame-width and -height of the
+     If `ecb-store-window-sizes' is used then the windows sizes are stored per
+     default as fractions of current frame-width and -height of the
      ecb-frame, so the stored values will "work" for other frame sizes too.
      But if you call `ecb-store-window-sizes' with a prefix-argument then the
      fixed values of current width and height are stored!
 
      If this option is set "by hand" (i.e. not by `ecb-store-window-sizes')
      then the following is important:
-        - It is recommended to use fractions of frame-width and -height!.
+        * Use always `customize-option', never `setq'!
 
-        - The order of the sequence of the inserted window sizes must be the
-          same as `other-window' (the not-adviced version!) would walk!
+        * It is recommended to use fractions of frame-width and -height!.
+
+        * It is also recommended to use buffer-name-symbols instead of plain
+          buffer-names (e.g. ecb-history-buffer-name instead of " *ECB
+          History*")
+
+        * There must be an entry for each special ecb-buffer of that layout
+          for which the sizes are stored.
+
+        * The order of the sequence of the inserted window sizes doesn't
+          matter because each size-pair is assigned to a buffer-name the
+          sizes belong to.
 
  -- User Option: maximize-ecb-window-after-selection
      If not nil maximize current tree-window after selection. When selecting
@@ -1355,8 +2262,8 @@ This group contains settings for the screen-layout of the ECB:
 
 File: ecb.info,  Node: ecb-compilation,  Next: ecb-create-layout,  Prev: ecb-layout,  Up: Customizable options
 
-7.3.9 Group ecb-compilation
----------------------------
+7.3.10 Group ecb-compilation
+----------------------------
 
 This group contains settings for the compile window of ECB:
 
@@ -1546,7 +2453,7 @@ This group contains settings for the compile window of ECB:
 
 File: ecb.info,  Node: ecb-create-layout,  Next: ecb-face-options,  Prev: ecb-compilation,  Up: Customizable options
 
-7.3.10 Group ecb-create-layout
+7.3.11 Group ecb-create-layout
 ------------------------------
 
 This group contains settings for creating new ECB-layouts:
@@ -1563,7 +2470,7 @@ This group contains settings for creating new ECB-layouts:
 
 File: ecb.info,  Node: ecb-face-options,  Next: ecb-faces,  Prev: ecb-create-layout,  Up: Customizable options
 
-7.3.11 Group ecb-face-options
+7.3.12 Group ecb-face-options
 -----------------------------
 
 This group contains settings for all faces used in ECB:
@@ -1588,6 +2495,27 @@ This group contains settings for all faces used in ECB:
  -- User Option: directory-not-accessible-face
      Face for not accessible dirs in the directories buffer.
 
+ -- User Option: history-bucket-node-dir-soure-path-face
+     Basic face for displaying the source-path part in a directory bucket.
+     This defines the face for the source-path part in a bucket-node of the
+     history-buffer if `ecb-history-make-buckets' is set to
+     'directory-with-source-path. For all other values of
+     `ecb-history-make-buckets' this option takes no effect.
+
+     Changes take first effect after finishing and reactivating ECB!
+
+ -- User Option: history-bucket-node-face
+     Basic face for displaying a bucket-node in the ECB-history-buffer.  This
+     defines the basic face for the bucket-nodes used to bucketize the
+     history-entries as defined with the option `ecb-history-make-buckets'.
+
+     Changes take first effect after finishing and reactivating ECB!
+
+ -- User Option: history-dead-buffer-face
+     Face for history entries pointing to dead buffers.
+
+     Changes take first effect after finishing and reactivating ECB!
+
  -- User Option: history-face
      Face used for highlighting current history-entry in the history buffer.
      If the face `ecb-default-highlight-face' is used then the display of all
@@ -1602,6 +2530,11 @@ This group contains settings for all faces used in ECB:
      `ecb-default-general-face' is used then the display of all
      ECB-tree-buffers can be changed by modifying only the face
      `ecb-default-general-face'.
+
+     Changes take first effect after finishing and reactivating ECB!
+
+ -- User Option: history-indirect-buffer-face
+     Face for indirect buffers in the history buffer.
 
      Changes take first effect after finishing and reactivating ECB!
 
@@ -1650,14 +2583,31 @@ This group contains settings for all faces used in ECB:
  -- User Option: source-read-only-face
      Face for read-only sources.
 
+ -- User Option: symboldef-prototype-face
+     Which face should be used for the symbol prototype in the
+     symboldef-buffer.
+
+     The prototype can be the function prototype in case of a function or
+     method or - in case of a variable - the type of the variable (in case of
+     a typed language).
+
+ -- User Option: symboldef-symbol-face
+     Which face should be used for the symbol itself in the symboldef-buffer.
+
+     There are two choices: Either a face or the special symbol
+     'use-font-lock-face whereas the latter one means that ECB uses that face
+     font-lock uses for fontifying the symbol (e.g.
+     font-lock-function-name-face for a function symbol or
+     font-lock-variable-name-face for a variable symbol).
+
  -- User Option: tag-header-face
      Face used for highlighting the tag header after jumping to it by
      clicking onto a node in the methods buffer.
 
 
-File: ecb.info,  Node: ecb-faces,  Next: ecb-download,  Prev: ecb-face-options,  Up: Customizable options
+File: ecb.info,  Node: ecb-faces,  Next: ecb-help,  Prev: ecb-face-options,  Up: Customizable options
 
-7.3.12 Group ecb-faces
+7.3.13 Group ecb-faces
 ----------------------
 
 This group contains all faces used in ECB:
@@ -1709,6 +2659,38 @@ This group contains all faces used in ECB:
 `ecb-directory-not-accessible-face'
      Define a face for not accessible dirs in the directories buffer.
 
+`ecb-history-bucket-node-dir-soure-path-face:'
+     Face used for displaying the source-path part in a directory-bucket.
+
+     In GNU Emacs 21.X this face inherits from the face
+     `ecb-history-bucket-node-face'.
+
+     With XEmacs and GNU Emacs 20.X there is no inheritance-feature so if the
+     buckets in the ECB-history-buffer should be displayed with the same basic
+     attributes set by `ecb-history-bucket-node-face' this set of basic
+     attributes have to be set in
+     `ecb-history-bucket-node-dir-soure-path-face' too!
+
+`ecb-history-bucket-node-face:'
+     Face used for displaying a bucket-node in the ECB-history-buffer.
+
+     In GNU Emacs 21.X this face inherits from the face
+     `ecb-bucket-node-face'. With XEmacs and GNU Emacs 20.X there is no
+     inheritance-feature so if the buckets in the ECB-history-buffer should be
+     displayed with the same basic attributes set by `ecb-bucket-node-face'
+     this set of basic attributes have to be set in
+     `ecb-history-bucket-node-face' too!
+
+`ecb-history-dead-buffer-face:'
+     Face used for history entries pointing to dead buffers.
+
+     In GNU Emacs 21.X this face inherits from the face
+     `ecb-history-general-face'. With XEmacs and GNU Emacs 20.X there is no
+     inheritance-feature so if the buckets in the ECB-history-buffer should be
+     displayed with the same basic attributes set by
+     `ecb-history-general-face' this set of basic attributes have to be set in
+     `ecb-history-dead-buffer-face' too!
+
 `ecb-history-face:'
      Define face used for highlighting current history-entry in the history
      buffer.
@@ -1716,6 +2698,16 @@ This group contains all faces used in ECB:
 `ecb-history-general-face:'
      Basic face for the ECB history buffer. It´s recommended to define here
      the font-family, the font-size, the basic color etc.
+
+`ecb-history-indirect-buffer-face:'
+     Face used for history entries pointing to dead buffers.
+
+     In GNU Emacs 21.X this face inherits from the face
+     `ecb-history-general-face'. With XEmacs and GNU Emacs 20.X there is no
+     inheritance-feature so if the buckets in the ECB-history-buffer should be
+     displayed with the same basic attributes set by
+     `ecb-history-general-face' this set of basic attributes have to be set in
+     `ecb-history-indirect-buffer-face' too!
 
 `ecb-method-face:'
      Define face used for highlighting current method, class or variable in
@@ -1736,6 +2728,10 @@ This group contains all faces used in ECB:
      Define face for the prefix in the mode-line. See
      `ecb-mode-line-prefixes'.
 
+`ecb-mode-line-win-nr-face'
+     Define face for the window-number in the mode-line. See
+     `ecb-mode-line-display-window-number'.
+
 `ecb-source-face:'
      Define face used for highlighting current source in the sources buffer.
 
@@ -1748,6 +2744,12 @@ This group contains all faces used in ECB:
 
 `ecb-source-read-only-face'
      Define a face for read-only sources
+
+`ecb-symboldef-prototype-face'
+     Define face used for the prototype of symbol in the symboldef-buffer.
+
+`ecb-symboldef-symbol-face'
+     Define a face used for the symbol itself in the symboldef-buffer
 
 `ecb-tag-header-face:'
      Define face used for highlighting the tag header after jumping to it by
@@ -1778,102 +2780,13 @@ This group contains all faces used in ECB:
 `ecb-type-tag-union-face:'
      Define face used with option `ecb-type-tag-display'.
 
-`ecb-mode-line-win-nr-face'
-     Define face for the window-number in the mode-line. See
-     `ecb-mode-line-display-window-number'.
-
 
 Just call `customize-face <face-name>' to customize these faces for your
-personal taste. Or customize the related option in the group *note
+personal taste. Or customize the related option in the group *Note
 ecb-face-options::.
 
 
-File: ecb.info,  Node: ecb-download,  Next: ecb-help,  Prev: ecb-faces,  Up: Customizable options
-
-7.3.13 Group ecb-download
--------------------------
-
-This group contains settings for downloading and installing a new ECB from
-within ECB:
-
- -- User Option: download-delete-archive
-     Should the downloaded archive be deleted after successful installation
-     or after failure during the installation-process.  Possible values are:
-
-        - `only-after-success': Archive is only deleted after successful
-          installation but not if a failure occurs during the installation
-          process.
-
-        - `always': Archive is also deleted if an error occurs.
-
-        - `nil': Archive will never be deleted.
-
- -- User Option: download-install-parent-dir
-     Parent directory where downloaded packages are installed.
-
-     ECB installs a downloaded package in this directory, i.e. the downloaded
-     archive X.tar.gz will be extracted in this directory so afterwards this
-     directory contains a new subdirectory X which contains the downloaded
-     package.
-
-     This directory must be write-able!
-
- -- User Option: download-package-version-type
-     Version type ECB is allowed to download for upgrading.
-
-     If you want to upgrade to a newer ECB-version via `ecb-download-ecb' or
-     if you must upgrade to newer semantic- eieio- and/or speedbar-versions
-     (because ECB requires these newer versions) then this option specifies
-     which version-types are allowed.  ECB checks on the download-sites of
-     ECB/semantic/eieio/speedbar which versions are currently available and
-     then downloads always the latest version matching the specified type:
-
-        - 2: Get the newest version of all stable versions available.
-
-        - 1: Get the newest version of all stable and beta versions available.
-
-        - 0: Get the newest version of all stable, beta and alpha versions
-          available.
-
-        - -1: Ask before downloading in the minibuffer for a version
-          (TAB-completion of all available versions is possible).
-
-     So, 2 means stable, 1 means stable and betas, 0 means stable, betas and
-     alphas and -1 means ask the user for a version.
-
-     Per default stable and beta-versions are allowed (value 1).
-
-     But all versions must match the restrictions of the specified min- and
-     max-versions of the required packages. For this see the file README!
-
- -- User Option: download-url
-     URL where download-able ECB-versions are located. The ECB-archive-file
-     (e.g. ecb-1.70.tar.gz) will be appended to this URL and
-     `ecb-download-ecb' will try to download this archive.
-
-     Note: Normally this URL should never change but who knows...
-
- -- User Option: gzip-setup
-     Configuration for the gzip-utility. For a description about the possible
-     settings see `ecb-wget-setup'.
-
- -- User Option: tar-setup
-     Configuration for the tar-utility. For a description about the possible
-     settings see `ecb-wget-setup'.
-
- -- User Option: wget-setup
-     Configuration for the wget-utility. Value is a cons-cell where:
-
-        * car is the name of the wget-executable - if the executable can not
-          be found in the PATH then it must be a full path.
-
-        * cdr is the path type of the file-arguments of this binary. Possible
-          values are `cygwin', `windows' and `other' whereas the latter one
-          is used for all Unix, Linux, Mac OS etc... If `cygwin' is set then
-          the cygpath-utility must be in the PATH!
-
-
-File: ecb.info,  Node: ecb-help,  Next: ecb-eshell,  Prev: ecb-download,  Up: Customizable options
+File: ecb.info,  Node: ecb-help,  Next: ecb-eshell,  Prev: ecb-faces,  Up: Customizable options
 
 7.3.14 Group ecb-help
 ---------------------
@@ -1930,6 +2843,32 @@ This group contains settings for eshell integration within the ECB:
      layout does not display a compile-window (see
      `ecb-compile-window-height') then nothing is done.
 
+ -- User Option: eshell-buffer-sync
+     Synchronize eshell with the default-directory of current source-buffer.
+
+     This option takes only effect if a permanant compile-window is used in
+     the current layout.
+
+     If 'always then the synchronization takes place always a buffer changes
+     in the edit window and if after this the default-directory of the new
+     edit-buffer is different from the default-directory of the current
+     eshell-buffer. If value is nil then never a synchronization will take
+     place. If a list of major-modes then only if the `major-mode' of the new
+     buffer belongs NOT to this list.
+
+     If the special value 'basic is set then ECB uses the setting of the
+     option `ecb-basic-buffer-sync'.
+
+ -- User Option: eshell-buffer-sync-delay
+     Time Emacs must be idle before the eshell-buffer of ECB is synchronized.
+     Synchronizing is done with the current source displayed in the edit
+     window. If nil then there is no delay, means synchronization takes place
+     immediately. A small value of about 0.25 seconds saves CPU resources and
+     you get even though almost the same effect as if you set no delay.
+
+     If the special value 'basic is set then ECB uses the setting of the
+     option `ecb-basic-buffer-sync-delay'.
+
  -- User Option: eshell-enlarge-when-eshell
      Enlarge the compile-window if it is selected by `eshell'. This takes
      only effect if the command `eshell' is called!
@@ -1939,12 +2878,6 @@ This group contains settings for eshell integration within the ECB:
      done by the function `ecb-eshell-fit-window-to-output' which is added to
      `eshell-post-command-hook' ie. which is running autom.  after each
      eshell-command.
-
- -- User Option: eshell-synchronize
-     Synchronize eshell with the default-directory of current source-buffer.
-     The synchronization is done by `ecb-eshell-current-buffer-sync' which
-     can be called interactively but normally it is called autom. by the
-     `ecb-current-buffer-sync-hook-internal'.
 
 
 File: ecb.info,  Node: ecb-speedbar,  Next: ecb-non-semantic,  Prev: ecb-eshell,  Up: Customizable options
@@ -1958,6 +2891,57 @@ File: ecb.info,  Node: ecb-speedbar,  Next: ecb-non-semantic,  Prev: ecb-eshell,
      For example this hook can be used to change the expansion-mode of the
      integrated speedbar via `speedbar-change-initial-expansion-list'.
      Example: (speedbar-change-initial-expansion-list "buffers").
+
+ -- User Option: speedbar-buffer-sync
+     Synchronize the speedbar-buffer of ECB automatically with current edit
+     buffer.
+
+     If 'always then the synchronization takes place always a buffer changes
+     in the edit window, if nil then never. If a list of major-modes then
+     only if the `major-mode' of the new buffer belongs NOT to this list.
+
+     If the special value 'basic is set then ECB uses the setting of the
+     option `ecb-basic-buffer-sync'.
+
+     IMPORTANT NOTE: Every time the synchronization is done the hook
+     `ecb-speedbar-buffer-sync-hook' is evaluated.
+
+ -- User Option: speedbar-buffer-sync-delay
+     Time Emacs must be idle before the speedbar-buffer of ECB is
+     synchronized.  Synchronizing is done with the current source displayed
+     in the edit window. If nil then there is no delay, means synchronization
+     takes place immediately. A small value of about 0.25 seconds saves CPU
+     resources and you get even though almost the same effect as if you set
+     no delay.
+
+     If the special value 'basic is set then ECB uses the setting of the
+     option `ecb-basic-buffer-sync-delay'.
+
+ -- User Option: speedbar-buffer-sync-hook
+     ook run at the end of `ecb-speedbar-buffer-sync'.  See documentation of
+     `ecb-speedbar-buffer-sync' for conditions when synchronization takes
+     place and so in turn these hooks are evaluated.
+
+     Preconditions for such a hook:
+
+        * Current buffer is the buffer of the currently selected edit-window.
+
+        * The speedbar-buffer is displayed in a visible window of the
+          ecb-frame (so no check for visibilty of the speedbar-buffer in the
+          ecb-frame is necessary in a hook function)
+
+     Postcondition for such a hook: Point must stay in the same edit-window
+     as before evaluating the hook.
+
+     Important note: If the option `ecb-speedbar-buffer-sync' is not nil the
+     function `ecb-speedbar-buffer-sync' is running either every time Emacs
+     is idle or even after every command (see
+     `ecb-speedbar-buffer-sync-delay'). So if the speedbar-buffer is
+     displayed in a window of the ecb-frame (see preconditions above) these
+     hooks can be really called very often! Therefore each function of this
+     hook should/must check in an efficient way at beginning if its task have
+     to be really performed and then do them only if really necessary!
+     Otherwise performance of Emacs could slow down dramatically!
 
 
 File: ecb.info,  Node: ecb-non-semantic,  Next: ecb-winman,  Prev: ecb-speedbar,  Up: Customizable options
@@ -2266,7 +3250,7 @@ This group contains settings for the version-control-support of ECB:
      Identify-backend-function: It gets a full directory-name as argument -
      always without ending slash (rsp. backslash for native Windows-XEmacs) -
      and has to return a unique symbol for the VC-backend which manages that
-     directory (e.g. 'CVS for the CVS-system or 'RCS for the RCS-system) or
+     directory (e.g.  'CVS for the CVS-system or 'RCS for the RCS-system) or
      nil if the file is not managed by a version-control-system.
 
      Check-vc-state-function: It gets a full filename (ie. incl. the complete
@@ -2288,40 +3272,25 @@ This group contains settings for the version-control-support of ECB:
      To prepend ECB from checking the VC-state for any file set
      `ecb-vc-enable-support' to nil.
 
-     Default value for GNU Emacs: Support for CVS, RCS, SCCS and Subversion
-     (for the later one the most recent version of the VC-package incl. the
-     vc-svn library is needed) is added per default. To identify the
-     VC-backend the functions `ecb-vc-managed-by-CVS',
-     `ecb-vc-managed-by-RCS' rsp. `ecb-vc-managed-by-SCCS' rsp.
-     `ecb-vc-managed-by-SVN' are used. For all three backends the function
-     `ecb-vc-state' of the VC-package is used.
+     Default value: Support for CVS, RCS, SCCS, Subversion, Git, Bazaar and
+     Monotone. To identify the VC-backend the functions
+     `ecb-vc-dir-managed-by-CVS', `ecb-vc-dir-managed-by-RCS' rsp.
+     `ecb-vc-dir-managed-by-SCCS' rsp. `ecb-vc-dir-managed-by-SVN' rsp.
+     `ecb-vc--dir-managed-by-GIT' rsp.  `ecb-vc-dir-managed-by-BZR' rsp.
+     `ecb-vc-dir-managed-by-MTN' are used.
 
-     Default value for XEmacs: XEmacs contains only a quite outdated
-     VC-package, especially there is no backend-independent
-     check-vc-state-function available (like `vc-state' for GNU Emacs). Only
-     for CVS a check-vc-state-function is available: `vc-cvs-status'.
-     Therefore ECB adds per default only support for CVS and uses
-     `ecb-vc-managed-by-CVS' rsp. `vc-cvs-status'.
+     For all six backends the function `ecb-vc-state' of the VC-package is
+     used by default (which uses a heuristic and therefore faster but less
+     accurate approach), but there is also `ecb-vc-recompute-state' available
+     which is an alias for `vc-recompute-state' (which returns accurate
+     state-values by calling the backend which can be slow especialy for
+     remote root-repositories!)
 
-     Example for GNU Emacs: If `vc-recompute-state' (to get real state-values
-     not only heuristic ones) should be used to check the state for
-     CVS-managed files and `vc-state' for all other backends then an element
-     (ecb-vc-dir-managed-by-CVS . vc-recompute-state) should be added at the
-     beginning of this option.
-
- -- User Option: vc-xemacs-exclude-remote-cvs-repository
-     Exclude directories with a remote cvs-repository from VC-check. This
-     option takes only effect for XEmacs and is needed cause of the outdated
-     VC-package of XEmacs which offers no heuristic state-checking and also
-     no option `vc-cvs-stay-local'. So this option takes only effect if
-     `vc-cvs-stay-local' is not avaiable. In this case ECB treats directories
-     which are managed by CVS but have a remote repository as if the
-     directory would be not managed by CVS (so the files are not checked for
-     their VC-state). This si done to avoid blocking XEmacs when running full
-     cvs-commands (e.g. "cvs status") over the net.
-
-     Note: When ECB can find the option `vc-cvs-stay-local' then this option
-     will automatically take no effect regardless which Emacs-version is used.
+     Example: If `ecb-vc-recompute-state' (to get real state-values not only
+     heuristic ones) should be used to check the state for CVS-managed files
+     and `ecb-vc-state' for all other backends then an element
+     (ecb-vc-dir-managed-by-CVS . ecb-vc-recompute-state) should be added at
+     the beginning of this option.
 
 
 File: ecb.info,  Node: Submitting problem report,  Next: Upgrading,  Prev: Customizing,  Up: Top
@@ -2331,11 +3300,11 @@ File: ecb.info,  Node: Submitting problem report,  Next: Upgrading,  Prev: Custo
 
 If you run into problems with ECB you should first take a look into
 
-   - *note FAQ:: or
+   - *Note FAQ:: or
 
-   - *note Conflicts and bugs:: or
+   - *Note Conflicts and bugs:: or
 
-   - *note Tips and tricks:: or
+   - *Note Common use-cases:: or
 
    - the appropriate section of this online-manual.
 
@@ -2343,7 +3312,7 @@ If your problem(s) still remain you can/should send a problem report to the
 ECB mailing list <ecb-list@lists.sourceforge.net>. ECB offers you a command
 which does all necessary for you to send a problem report. Just call
 `ecb-submit-problem-report'! Please read the documentation of this command,
-see *note Interactive ECB commands::.
+see *Note Interactive ECB commands::.
 
 *IMPORTANT*: Cause of extra appearance of SPAM in the mailing-lists,
 SourceForge has changed its policy: Now it is only possible to post to the
@@ -2375,7 +3344,7 @@ on the debug mode of ECB (also available in the Help-menu of ECB!) before
 submitting a problem-report!
 
 
-File: ecb.info,  Node: Upgrading,  Next: Tips and tricks,  Prev: Submitting problem report,  Up: Top
+File: ecb.info,  Node: Upgrading,  Next: Common use-cases,  Prev: Submitting problem report,  Up: Top
 
 9 Upgrading and downloading packages
 ************************************
@@ -2383,8 +3352,7 @@ File: ecb.info,  Node: Upgrading,  Next: Tips and tricks,  Prev: Submitting prob
 This chapter describes all aspects of upgrading to a newer version of ECB.
 
 The first section describes how to download and install a new package from
-the web, where "package" means either ECB itself or the required libraries
-semantic, eieio and speedbar.
+the web, where "package" means either ECB itself or the required library CEDET
 
 After installing a new ECB-version ECB checks if the values of the customized
 ECB-options are still compatible. If not ECB does some smart things. This is
@@ -2398,97 +3366,61 @@ the topic of the second section.
 
 File: ecb.info,  Node: Downloading new versions,  Next: Auto. option-upgrading,  Prev: Upgrading,  Up: Upgrading
 
-9.1 Downloading new versions of ECB and/or required packages
-============================================================
+9.1 Downloading new versions of ECB and/or CEDET
+================================================
 
-ECB offers the possibility to upgrade to newer versions direct from the
-ECB-website. This can be done if the following requirements are satisfied:
+*Please note*: THE PACKAGE-DOWNLOAD-FEATURE OF ECB IS COMPLETELY DEACTIVATED
+SINCE VERSION 2.33! Please got to the website of ECB and download and install
+"by hand":
 
-  1. A connection to the web is available
+  1. Download ECB
 
-  2. The tools "wget", "tar" and "gzip" are installed
+     Go to `http://ecb.sourceforge.net' and download the latest release (or
+     if you are brave and tough the latest CVS-snapshot) from the download
+     section.
 
-     With Unix-systems these tools are in the standard-distribution. If you
-     are running any Microsoft Windows system then you need cygwin(1) which
-     offers these tools too. On every system these tools must reside in the
-     `PATH' environment-variable!
+     Save the archive (either *.tar.gz or *.zip) in a suitable location of
+     your disk.
 
-     If you are behind a firewall and you have to use a proxy you maybe need
-     the following wget-configuration in your file `~/.wgetrc':
+  2. Extract the downloaded ECB-archive
 
-        # Define your proxies (where 8080 and 8081 are examples
-        # for the port-numbers)
-        http_proxy = http://your.proxy.com:8080
-        ftp_proxy  = http://your.ftpproxy.com:8081
+     Extract the archive with a suitable extraction-tool. The archive will
+     extract into a new directory `ecb-<version>' whereas <version> is either
+     the version number of the downloaded release or "latest" in case of the
+     CVS-snapshot. (example for a release: The archive extracts into a new
+     subdirectory `ecb-2.33'.
 
-        # If you do not want to use proxy at all, set this to off.
-        use_proxy = on
+     The newly created subdirectory contains all files of ECB in the needed
+     subdirectory structure.
 
-If these requirements are satisfied you can download and install both ECB
-itself and also the required versions of semantic, eieio and speedbar:
+     *Note*: Do not change the subdirectory structure of the extracted
+     archive - this will prevent ECB from working correctly!
 
-   * Download a new ECB-version with `ecb-download-ecb':
+  3. Install and setup ECB
 
-     A description for this command you will find in *note Interactive ECB
-     commands::. Check also the options of the customize-group 'ecb-download'
-     (*note ecb-download::).
+     See *Note Installation::.
 
-   * Download and install of required packages:
+  4. Start ECB
 
-     ECB checks at load-time if the packages semantic, eieio and speedbar are
-     at least installed and at start-time if the required versions of
-     semantic, eieio and speedbar (see `README') are installed and loaded
-     into Emacs. If not you will be asked if you want auto. download and
-     install them. If you confirm this then ECB does the following:
+     ECB will perform some requirements checks, especially for CEDET.
+     *Remark*: By setting the option `ecb-version-check' to `nil' you can
+     prevent ECB from checking correct versions of CEDET but it's strongly
+     recommended not to do this!
 
-       1. Checking which versions are available at the download-site of the
-          required packages. With the option
-          `ecb-download-package-version-type' you can specify which type of
-          versions (only stable, stable and betas or stable, betas and alphas)
-          you allow to download and install. This option offers also the
-          choice of asking you for a certain version. Depending on this
-          setting ECB either ask you which version it should download and
-          install or chooses autom. the newest version available which is
-          matching both its min-max-requirements and the setting in
-          `ecb-download-package-version-type'.
+  5. (Optional) Download and install a newer version of CEDET
 
-          NOTE: Currently there are only beta-versions of speedbar available
-          therefore this option has to be set to 1 (allow stable and beta
-          versions). But the speedbar beta-versions are very stable!
+     If the version-check in (4) fails then you have to install a newer
+     version of CEDET which fulfill the version-number ECB reports to you
+     after its version check.
 
-       2. Downloading and installing the right version (see 1.) of the
-          required packages. ECB downloads and installs the new package
-          versions in subdirectories of `ecb-download-install-parent-dir'.
+     See the instruction of CEDET how to do this. You will find CEDET at
+     `http://cedet.sourceforge.net'
 
-     If both of these actions succeed then you will get a message-buffer
-     which tells you something like:
+     For setting up CEDET see *Note Setting up CEDET/semantic::.
 
-        -----------------------------------------------------------------
-        Current state of the required packages semantic, eieio, speedbar:
+     If you have installed a new CEDET-version you *MUST* re-byte-compile ECB
+     unless you run ECB not byte-compiled!
 
-        - semantic author-version must be [1.4, 1.4.9]:
-          Installed in /usr/local/lib/site-lisp/semantic-1.4
-
-        - eieio author-version must be [0.17, 0.17.9]:
-          Correct version already loaded!
-
-        - speedbar author-version must be [0.14beta1, 0.15.9]:
-          Correct version already loaded!
-
-        After adding the new directory to your `load-path' and then
-        restarting Emacs the new package(s) can be activated.
-        -----------------------------------------------------------------
-
-     *Remark 1*: "P author-version must be [x y]" means, that ECB requires
-     package P in a version-number >= x and <= y.
-
-     *Remark 2*: By setting the option `ecb-version-check' to `nil' you can
-     prevent ECB from checking correct versions of semantic, eieio and
-     speedbar but it's strongly recommended not to do this!
-
----------- Footnotes ----------
-
-(1) cygwin is available at `http://cygwin.com/'
 
 
 File: ecb.info,  Node: Auto. option-upgrading,  Prev: Downloading new versions,  Up: Upgrading
@@ -2522,7 +3454,7 @@ If the option `ecb-auto-compatibility-check' has a non-nil value (which is
 the default) then ECB does all this stuff automatically at startup. This is
 very recommended!
 
-If you are interested in some background information, read *note Background
+If you are interested in some background information, read *Note Background
 information::!
 
 
@@ -2593,13 +3525,14 @@ started it displays a list of all upgraded or reseted option with their old
 and new values.
 
 
-File: ecb.info,  Node: Tips and tricks,  Next: Elisp programming,  Prev: Upgrading,  Up: Top
+File: ecb.info,  Node: Common use-cases,  Next: Elisp programming,  Prev: Upgrading,  Up: Top
 
-10 Tips and tricks
-******************
+10 Handling of common use-cases
+*******************************
 
-This chapter contains some tips and tricks how to deal best with some
-situations.
+This chapter lists some common (and also some non-common) use-cases of ECB and
+gives a detailed description for each one. This contains also some tips and
+tricks how to deal best with some situations.
 
 * Menu:
 
@@ -2618,10 +3551,10 @@ situations.
 * Non-semantic sources::        Parsing and displaying non-semantic sources
 * Hide-show::                   Using hide-show from the methods-buffer-menu
 * Window-managers and ECB::     Support of several Emacs-window-managers
-* Using semanticdb::            Using semanticdb for going to external nodes
+* Virtual folders in History::  Simulating something like virtual folders
 
 
-File: ecb.info,  Node: Changing faces,  Next: Small screens,  Prev: Tips and tricks,  Up: Tips and tricks
+File: ecb.info,  Node: Changing faces,  Next: Small screens,  Prev: Common use-cases,  Up: Common use-cases
 
 10.1 Changing faces in the ECB tree-buffers
 ===========================================
@@ -2688,7 +3621,7 @@ ECB-tree-buffers (incl. the methods buffer).
 `ecb-default-general-face'!
 
 
-File: ecb.info,  Node: Small screens,  Next: Big screens,  Prev: Changing faces,  Up: Tips and tricks
+File: ecb.info,  Node: Small screens,  Next: Big screens,  Prev: Changing faces,  Up: Common use-cases
 
 10.2 Working with small screens
 ===============================
@@ -2717,22 +3650,22 @@ situation:
    * To browse and select functions: Call `ecb-toggle-ecb-windows' or
      `ecb-show-ecb-windows' to make the ECB-method buffer visible if not
      already. If you want select a method/variable with the keyboard instead
-     with the mouse you should read the section *note Using the keyboard:: in
+     with the mouse you should read the section *Note Using the keyboard:: in
      this online help!
 
 The possibility of hiding temporally the ECB windows like described above is
 also useful for all the other layouts.
 
 
-File: ecb.info,  Node: Big screens,  Next: Simulating speedbar,  Prev: Small screens,  Up: Tips and tricks
+File: ecb.info,  Node: Big screens,  Next: Simulating speedbar,  Prev: Small screens,  Up: Common use-cases
 
 10.3 Working with big screens
 =============================
 
 ECB offers a layout type "left-right" with special ECB-tree-windows on the
 left and right side of the edit-area. The layouts "leftright1" and
-"leftright2"are examples for this layout type.  See *note Creating a new
-ECB-layout:: and *note The layout-engine:: for details about how to create or
+"leftright2"are examples for this layout type.  See *Note Creating a new
+ECB-layout:: and *Note The layout-engine:: for details about how to create or
 program more layouts of this type.
 
 Such a layout is eventually the best choice for big screens because the
@@ -2744,7 +3677,7 @@ With such a layout it can could be senseful to reduce the value of the option
 max. 0.25 should be enough.
 
 
-File: ecb.info,  Node: Simulating speedbar,  Next: Integrating speedbar,  Prev: Big screens,  Up: Tips and tricks
+File: ecb.info,  Node: Simulating speedbar,  Next: Integrating speedbar,  Prev: Big screens,  Up: Common use-cases
 
 10.4 Simulating speedbar without an extra frame
 ===============================================
@@ -2771,7 +3704,7 @@ But not only simulating speedbar is possible but also full integrating it
 into the ECB and the ECB-frame, *Note Integrating speedbar::.
 
 
-File: ecb.info,  Node: Integrating speedbar,  Next: Large directories,  Prev: Simulating speedbar,  Up: Tips and tricks
+File: ecb.info,  Node: Integrating speedbar,  Next: Large directories,  Prev: Simulating speedbar,  Up: Common use-cases
 
 10.5 Integrating speedbar in the ECB-frame
 ==========================================
@@ -2852,7 +3785,7 @@ attached frame, but this make obviously no sense during running speedbar with
 ECB.
 
 
-File: ecb.info,  Node: Large directories,  Next: Remote directories,  Prev: Integrating speedbar,  Up: Tips and tricks
+File: ecb.info,  Node: Large directories,  Next: Remote directories,  Prev: Integrating speedbar,  Up: Common use-cases
 
 10.6 Working with large directories
 ===================================
@@ -2900,7 +3833,7 @@ be done via the command `ecb-sources-filter' or via the popup-menu of the
 sources-buffer.
 
 
-File: ecb.info,  Node: Remote directories,  Next: Version-control support,  Prev: Large directories,  Up: Tips and tricks
+File: ecb.info,  Node: Remote directories,  Next: Version-control support,  Prev: Large directories,  Up: Common use-cases
 
 10.7 Working with remote directories
 ====================================
@@ -2978,7 +3911,7 @@ would be blocked. First after this timeout ECB could start working! A fast
 "pre"-ping avoids this problem!
 
 
-File: ecb.info,  Node: Version-control support,  Next: Using eshell,  Prev: Remote directories,  Up: Tips and tricks
+File: ecb.info,  Node: Version-control support,  Next: Using eshell,  Prev: Remote directories,  Up: Common use-cases
 
 10.8 Supporting Version control systems
 =======================================
@@ -2989,7 +3922,7 @@ display files managed by a VC-system with an appropriate image-icon(1) in
 front of the filename.
 
 The following four options allow full control over this feature (see also
-*note ecb-version-control:::
+*Note ecb-version-control:::
 
 `ecb-vc-enable-support'
      Enable or disable this feature.
@@ -3051,30 +3984,11 @@ the state::).
 
 You can add arbitrary functions to this options as long as they get one
 directory-argument and return either nil or a backend-symbol. Per default ECB
-offers the following functions to identify the VC-backend CVS, RCS, SCCS or
-Subversion(1):
+offers the following functions to identify the VC-backend CVS, RCS, SCCS, Git,
+Monotone or Subversion(1):
 
 `ecb-vc-dir-managed-by-CVS DIRECTORY'
      Return `CVS' if DIRECTORY is managed by CVS. nil if not.
-
-     This function tries to be as smart as possible: First it checks if
-     DIRECTORY is managed by CVS by checking if there is a subdir `CVS'. If
-     no then nil is returned. If yes then for GNU Emacs it takes into account
-     the value of `vc-cvs-stay-local': If t then just return `CVS'. Otherwise
-     ECB checks the root repository if it is a remote repository. If not just
-     `CVS' is returned. If a remote repository it checks if the value of
-     `vc-cvs-stay-local' is a string and matches the host of that repository.
-     If yes then just `CVS' is returned. If not then ECB checks if that host
-     is currently accessible by performing a ping. If accessible `CVS' is
-     returned otherwise nil. This has the advantage that ECB will not be
-     blocked by trying to get the state from a remote repository while the
-     host is not accessible (e.g. because the user works offline).
-
-     Special remark for XEmacs: XEmacs has a quite outdated VC-package which
-     has no option `vc-cvs-stay-local' so the user can not work with remote
-     CVS-repositories if working offline for example. So if there is no
-     option `vc-cvs-stay-local' then ECB performs always the repository check
-     mentioned above.
 
 `ecb-vc-dir-managed-by-RCS DIRECTORY'
      Return `RCS' if DIRECTORY is managed by RCS. nil if not.
@@ -3082,29 +3996,31 @@ Subversion(1):
 `ecb-vc-dir-managed-by-SCCS DIRECTORY'
      Return `SCCS' if DIRECTORY is managed by SCCS. nil if not.
 
+`ecb-vc-dir-managed-by-MTN DIRECTORY'
+     return `MTN' if directory is managed by Monotone. nil if not.
+
+`ecb-vc-dir-managed-by-BZR DIRECTORY'
+     return `BZR' if directory is managed by Bazaar. nil if not.
+
+`ecb-vc-dir-managed-by-GIT DIRECTORY'
+     Return `GIT' if directory is managed by Git. nil if not.  Because with
+     Git only the top-most directory of a source-tree has a subdir .git this
+     function tries recursively upwards if there is a .git-subdir.
+
 `ecb-vc-dir-managed-by-SVN DIRECTORY'
      Return `SVN' if DIRECTORY is managed by Subversion. nil if not.  Returns
      always nil if the library vc-svn.el can not be found.
 
 
-If ECB should support another VC-backend than CVS, RCS, SCCS or Subversion
-you have to write your own identify-backend-funtion for the used VC-backend
-(e.g. Clearcase)!
-
-10.8.1.1 Special remarks for XEmacs
-...................................
-
-XEmacs contains only a quite outdated VC-package, especially there is no
-backend-independent check-vc-state-function available (like `vc-state' for
-GNU Emacs). Only for CVS a check-vc-state-function is available:
-`vc-cvs-status'. Therefore ECB adds per default only support for CVS and uses
-`ecb-vc-managed-by-CVS' rsp.  `vc-cvs-status'. See also *note Known
-VC-problems::!
+If ECB should support another VC-backend than CVS, RCS, SCCS, Monotone, Git or
+Subversion you have to write your own identify-backend-funtion for the used
+VC-backend (e.g. Clearcase)!
 
 ---------- Footnotes ----------
 
-(1) For this the most recent version of the VC-package (incl. the library
-vc-svn.el) is needed - as contained in CVS Emacs
+(1) For this the most recent version of the VC-package (incl. the libraries
+vc-git.el, vc-mono.el and vc-svn.el) is needed - as contained in Emacs >= 22
+and XEmacs >= 21.4.22
 
 
 File: ecb.info,  Node: Checking the state,  Next: Remote repositories,  Prev: Identifying backends,  Up: Version-control support
@@ -3128,37 +4044,46 @@ understands, ECB offers an option to define a appropriate state-mapping. The
 name of this option is `ecb-vc-state-mapping'.  See the documentation of this
 option to get a list of all state-value ECB understands.
 
-Per default ECB uses - when running under GNU Emacs - the function `vc-state'
-of the VC-package(1) to check the state for the backends CVS, RCS, SCCS and
-Subversion. So the default-value of `ecb-vc-state-mapping' contains a mapping
-between these values `ecb-vc-state' can return and that state-values ECB
-understands.
+Per default ECB uses the function `vc-state' of the VC-package(1) to check
+the state for the backends CVS, RCS, SCCS, Subversion, Git and Monotone. So
+the default-value of `ecb-vc-state-mapping' contains a mapping between these
+values `ecb-vc-state' can return and that state-values ECB understands.
 
-If ECB should support other VC-backends than CVS, RCS, SCCS and Subversion
-(e.g. Clearcase) you should add that new backend to the VC-package (see the
-initial comments of vc.el how to do this) then ECB will automatically support
-that new backend. Alternatively it may be sufficient if you write your own
-check-state-function for this backend and add the needed mapping to
+If ECB should support other VC-backends than CVS, RCS, SCCS, Monotone, Git and
+Subversion (e.g. Clearcase) you should add that new backend to the VC-package
+(see the initial comments of vc.el how to do this) then ECB will automatically
+support that new backend. Alternatively it may be sufficient if you write your
+own check-state-function for this backend and add the needed mapping to
 `ecb-vc-state-mapping' if necessary.
 
-10.8.2.1 Getting heuristic state-values or real ones for CVS
-............................................................
+10.8.2.1 Getting heuristic state-values or real ones for a backend
+..................................................................
 
-The interface of GNU Emacs' VC-package offers two different ways to get the
+The interface of Emacs' VC-package offers two different ways to get the
 VC-state of a file:
 
-   * The real, fresh and expensive approach VC has a function
-     `vc-recompute-state' which always performs a command "cvs status" to get
-     a fresh and real state for a file. As you can imagine this operation can
-     be very expensive and long lasting depending on the location of the
-     repository. But the CVS-backend of VC offers with the option
-     `vc-cvs-stay-local' a way to tell Emacs to stay local even for the sake
-     of getting a real state.
+   * The real, fresh and expensive approach
 
-   * The heuristic approach: The function `vc-state' always returns a
-     "heuristic" state which should be used when a fresh and real state is
-     not necessary.  With `vc-state' the option `vc-cvs-stay-local' will never
-     take effect.
+     VC has a function `vc-recompute-state' which always performs a real
+     backend command (e.g. "cvs status" for CVS) to get a fresh and real state
+     for a file. As you can imagine this operation can be very expensive and
+     long lasting depending on the location of the repository. But for CVS the
+     CVS-backend of VC offers with the option `vc-cvs-stay-local' a way to
+     tell Emacs to stay local even for the sake of getting a real state(2).
+
+     ECB offers `ecb-vc-recompute-state' for this approach which is an alias
+     for `vc-recompute-state'.
+
+   * The heuristic approach:
+
+     The function `vc-state' always returns a "heuristic" state which should
+     be used when a fresh and real state is not necessary.  With `vc-state'
+     the option `vc-cvs-stay-local' will never take effect.
+
+     ECB offers `ecb-vc-state' for this approach - see below for the
+     difference between `vc-state' and `ecb-vc-state'.
+
+Example CVS:
 
 VC/CVS actually does it this way (regardless if ECB is active or not): When
 you visit a file, it always uses just the heuristic to get the state
@@ -3188,16 +4113,20 @@ The bottom line for you is this: If you use `ecb-vc-state' in
 `ecb-vc-supported-backends' to get the version control state, then you get
 the same policy that VC uses and you get always a "correct" heuristic state
 (as correct as possible a heuristic state can be). There should no harm if
-you use `vc-recompute-state' as a replacement function if you want to get
-fresh and real state-values, but then (a) you must make sure to set
-`vc-cvs-stay-local' to nil, and (b) fetching the state over the network under
-all conditions was deemed unacceptably slow in VC.
+you use `ecb-vc-recompute-state' (which is an alias for `vc-recompute-state')
+as a replacement function if you want to get fresh and real state-values, but
+then (a) you must make sure to set `vc-cvs-stay-local' to nil, and (b)
+fetching the state over the network under all conditions was deemed
+unacceptably slow in VC.
 
 ---------- Footnotes ----------
 
 (1) The VC-package of Emacs offers a standardised and uniform interface for
-several backends; per default CVS, RCS, SCCS and Subversion are supported by
-the VC-package.
+several backends; per default CVS, RCS, SCCS, Subversion, Git and Monotone
+are supported by the VC-package.
+
+(2) For other backends you have to check the VC-manual if there is equivalent
+option
 
 
 File: ecb.info,  Node: Remote repositories,  Next: Refreshing the VC-state,  Prev: Checking the state,  Up: Version-control support
@@ -3252,7 +4181,7 @@ the tree-buffers of ECB will be always correct - in that sense that ECB will
 always display that state which the check-state-function for the file will
 return. At least with GNU Emacs for the backends CVS, RCS, SCCS and
 Subversion this will be true. With XEmacs only for CVS. For other backends
-see *note Adding new backends::.
+see *Note Adding new backends::.
 
 But if the VC-state of a file will be changed outside of Emacs (unfortunately
 PCL-CVS must be called "outside" too because PCL-CVS doesn't use the
@@ -3286,7 +4215,7 @@ Of course all these commands update the VC-state in all visible tree-buffers
 the file is currently displayed (e.g. often a file is displayed in the
 sources- and the history-buffer)!
 
-For general informations about the usage of popup-menus in ECB see *note
+For general informations about the usage of popup-menus in ECB see *Note
 Using the mouse:: (subsection "The right mouse button").
 
 In addition to these popup-commands using the POWER- rsp. Shift-click (*note
@@ -3314,7 +4243,7 @@ should be supported by ECB:
   2. Adding an check-state-function to `ecb-vc-supported-backends' Associated
      to the new identify-backend-function mentioned in step 1 a new
      check-state-function is needed which can be used by ECB to get the
-     VC-state for a file. See *note Checking the state:: for a description
+     VC-state for a file. See *Note Checking the state:: for a description
      about the needed interface of such a function. In combinatio with the
      identify-backend-function from step 1 this function has to be added to
      `ecb-vc-supported-backends'.
@@ -3365,32 +4294,13 @@ are automatically supported by ECB too!
 
 File: ecb.info,  Node: Known VC-problems,  Prev: Adding new backends,  Up: Version-control support
 
-10.8.6 Currently know problems with the VC-support
---------------------------------------------------
+10.8.6 Currently known problems with the VC-support
+---------------------------------------------------
 
-10.8.6.1 Remote repositories and XEmacs
-.......................................
-
-Currently there are mostly problems related to XEmacs - cause of its outdated
-VC-package which allows no heuristic state-computation but always runs "cvs
-status" to get the VC-state for a file (done by `vc-cvs-status'). This can be
-horrible slow for remote CVS-root-repositories. Now ECB performs the VC-check
-stealthy and only in idle-time of Emacs but even so XEmacs can be blocked
-espcially if the cygwin-build of XEmacs is used: This XEmacs-version is
-substantially slower concering file-operations and has sometimes a very slow
-and delayed response-behavior for mouse- and keyboard interrupts - so even
-ECB let the user interrupt by using `input-pending-p' before getting the
-VC-state of a file XEmacs sometimes does not react to such user-interrupts
-and seems to be blocked.
-
-Current solution: ECB offers the option
-`ecb-vc-xemacs-exclude-remote-cvs-repository' which excludes remote
-repositories from being checked. This option is per default t for XEmacs.
-Whenever XEmacs syncs up its VC-package with the Emacs one this option will
-automatically take no effect.
+There are no reported problems concerning the Version Control support of ECB.
 
 
-File: ecb.info,  Node: Using eshell,  Next: Grepping directories,  Prev: Version-control support,  Up: Tips and tricks
+File: ecb.info,  Node: Using eshell,  Next: Grepping directories,  Prev: Version-control support,  Up: Common use-cases
 
 10.9 Optimal using of eshell in ECB
 ===================================
@@ -3437,7 +4347,7 @@ ECB tries also to recenter the eshell-buffer as best as possible.  Normally
 this is done autom. but you can do it on demand with the command
 `ecb-eshell-recenter'.
 
-If option `ecb-eshell-synchronize' is true then ECB always synchronizes the
+If option `ecb-eshell-buffer-sync' is true then ECB always synchronizes the
 command prompt of eshell with the directory of current source-buffer of the
 current active edit-window.
 
@@ -3450,7 +4360,7 @@ compile-window when ECB is started but of course if a compile-window exists.
 is just displayed in the edit-area and there is no special integration.
 
 
-File: ecb.info,  Node: Grepping directories,  Next: Working with JDEE,  Prev: Using eshell,  Up: Tips and tricks
+File: ecb.info,  Node: Grepping directories,  Next: Working with JDEE,  Prev: Using eshell,  Up: Common use-cases
 
 10.10 Grepping directories with ECB
 ===================================
@@ -3470,12 +4380,12 @@ So, how to exclude some subdirectories or files from the grep?
 
 Basically this has to be done with the "-prune" option of the find-utility:
 If the standard-grep facility of Emacs is used then this is not easy but with
-the library `igrep.el' there is a convenient way to exclude things like CVS-
+the command `igrep.el' there is a convenient way to exclude things like CVS-
 or RCS-directories from the find-call: See the variable
 `igrep-find-prune-clause' of the library `igrep.el'.
 
 
-File: ecb.info,  Node: Working with JDEE,  Next: Compile-window on demand,  Prev: Grepping directories,  Up: Tips and tricks
+File: ecb.info,  Node: Working with JDEE,  Next: Compile-window on demand,  Prev: Grepping directories,  Up: Common use-cases
 
 10.11 Working best with ECB and JDEE
 ====================================
@@ -3524,7 +4434,7 @@ at the options `ecb-directories-menu-user-extension-function' and
 `ecb-sources-menu-user-extension-function'.
 
 
-File: ecb.info,  Node: Compile-window on demand,  Next: Non-semantic sources,  Prev: Working with JDEE,  Up: Tips and tricks
+File: ecb.info,  Node: Compile-window on demand,  Next: Non-semantic sources,  Prev: Working with JDEE,  Up: Common use-cases
 
 10.12 Displaying the compile-window on demand
 =============================================
@@ -3569,7 +4479,7 @@ errors) then you can throw away the compile-window just by
 compilation or help-buffer-display.!
 
 
-File: ecb.info,  Node: Non-semantic sources,  Next: Hide-show,  Prev: Compile-window on demand,  Up: Tips and tricks
+File: ecb.info,  Node: Non-semantic sources,  Next: Hide-show,  Prev: Compile-window on demand,  Up: Common use-cases
 
 10.13 Parsing and displaying non-semantic sources
 =================================================
@@ -3577,7 +4487,7 @@ File: ecb.info,  Node: Non-semantic sources,  Next: Hide-show,  Prev: Compile-wi
 ECB is mostly designed to display parsing information for files supported by
 semantic. But beginning with version 1.94 it also supports other parsing
 engines like imenu and etags, so also files not supported by semantic but by
-imenu/etags can be displayed in the Method-buffer of ECB. See *note
+imenu/etags can be displayed in the Method-buffer of ECB. See *Note
 Definition of semantic- and non-semantic-sources:: for a description of
 "semantic-sources" and "non-semantic-sources".
 
@@ -3631,8 +4541,8 @@ IMPORTANT:
 10.13.2 Automatic rescanning/reparsing of non-semantic-sources
 --------------------------------------------------------------
 
-In contrast to semantic (see `global-semantic-auto-parse-mode') there is no
-built-in mechanism for autom. reparsing non-semantic-sources and then
+In contrast to semantic (see `global-semantic-idle-scheduler-mode') there is
+no built-in mechanism for autom. reparsing non-semantic-sources and then
 updating the contents of the Methods-buffer.
 
 For non-semantic-sources you have always at least to call
@@ -3697,7 +4607,7 @@ for displaying the tags in the Method-buffer for non-semantic-sources.
 this.
 
 
-File: ecb.info,  Node: Hide-show,  Next: Window-managers and ECB,  Prev: Non-semantic sources,  Up: Tips and tricks
+File: ecb.info,  Node: Hide-show,  Next: Window-managers and ECB,  Prev: Non-semantic sources,  Up: Common use-cases
 
 10.14 Using hide-show from the methods-buffer-menu
 ==================================================
@@ -3730,7 +4640,7 @@ like the already contained entries for `c++-mode' or `java-mode' and hiding
 and showing will work for you with JDEE too.
 
 
-File: ecb.info,  Node: Window-managers and ECB,  Next: Using semanticdb,  Prev: Hide-show,  Up: Tips and tricks
+File: ecb.info,  Node: Window-managers and ECB,  Next: Virtual folders in History,  Prev: Hide-show,  Up: Common use-cases
 
 10.15 Support of several Emacs-window-managers
 ==============================================
@@ -3749,10 +4659,10 @@ combination with ECB!
 ECB currently supports the following managers:
 
    * winring.el: Written by Barry A. Warsaw <bwarsaw@python.org>, available at
-     `http://www.python.org/emacs/'
+     `http://www.python.org/emacs/winring'
 
    * escreen.el: Written by Noah Friedman <friedman@splode.com>, available at
-     `http://www.splode.com/~friedman/software/emacs-lisp/'
+     `http://www.splode.com/~friedman/software/emacs-lisp/#ui'
 
 *IMPORTANT*: With one of these window-managers installed and active you can
 run applications like Gnus, VM or BBDB in the same frame as ECB! Just use
@@ -3838,99 +4748,78 @@ There is normally no need to do this but nevertheless it can be done by
 (1) And of course all other `escreen-goto-*' commands!
 
 
-File: ecb.info,  Node: Using semanticdb,  Prev: Window-managers and ECB,  Up: Tips and tricks
+File: ecb.info,  Node: Virtual folders in History,  Prev: Window-managers and ECB,  Up: Common use-cases
 
-10.16 Using semanticdb to jump to type-tags defined in other files
-==================================================================
+10.16 Something like virtual folders with the ECB-history
+=========================================================
 
-In OO-languages like CLOS, eieio and C++ there can be type-tags in the
-method-buffer which are somehow virtual because there is no definition in the
-current source-file. But such a virtual type collects all its outside defined
-members like methods in C++ which are defined in the `*.cc' file whereas the
-class-definition is defined in the associated header-file. ECB uses
-semanticdb to open the definition-file of such a tag and to jump to the
-definition of this tag. Same for parent-tags in the methods-buffer. This
-feature can only work correctly if semanticdb is well configured!
+For example, there is a large project with a huge number of files, and there
+are various tasks in this project (e.g. several different bug-fixing tasks).
+So it could be convenient to group buffers according to various tasks, or with
+other words: something like virtual folders for the buffers. It can be
+fulfiled through using indirect buffers.
 
-Here is a C++-example:
+See the following example:
 
-This class is defined in a file `ParentClass.h':
+   task_1-aaa.pl
+   task_1-bbb.c
+   task_1-ccc.sh
+   task_2-aaa.pl
+   task_2-eee.c
+   task_2-ccc.sh
+   task_3-xxx.java
+   task_3-ccc.sh
 
-   class ParentClass
-   {
-   protected:
-     int p;
-   };
+This means create indirect buffers(1) with a name-part which can be used for
+grouping together buffers with same name-part (here e.g. task_1- ...
+task_3-). In the example above you would create three indirect buffers for the
+filebuffer ccc.sh because this source is needed in all three tasks, two
+indirect buffers for aaa.pl because it is needed in the task-1 and task-2 and
+so on for the rest of the buffers. Make all this indirect buffers with the
+command `clone-indirect-buffer'(2), which creates real clones means the
+indirect buffers have the same major-mode etc. as the base-buffer (see the
+manual of Emas).
 
-This class is defined in a file `ClassWithExternals.h'
+Now remember to the option `ecb-history-make-buckets' which allows a.o.  to
+define a list of regular expressions to bucketize the buffers of the history.
+Use this to make one bucket for each task. So in our example a value
 
-   #include "ParentClass.h"
+   ("^task_1-.+" "^task_2-.+" "^task_3-.+")
 
-   class ClassWithExternals : public ParentClass
-   {
-   private:
-     int i;
+for `ecb-history-make-buckets' would satiesfy our needs.
 
-   public:
-     ClassWithExternals();
-     ~ClassWithExternals();
-   };
+This option allows to define several criterias for building buckets in the
+history-buffer all the history entries are sorted in (e.g. by major-mode,
+directory, file-extension or regular expressions).
 
-Both the constructor and the destructor of the class "ClassWithExternals" are
-defined in a file `ClassWithExternals.cc':
+After that the history-window would display something like the following:
 
-   #include "test.h"
+   [-] [^task_1-.+]
+    |  task_1-aaa.pl
+    |  task_1-bbb.c
+    `- task_1-ccc.sh
+   [-] [^task_2-.+]
+    |  task_2-aaa.pl
+    |  task_2-eee.c
+    `- task_2-ccc.sh
+   [-] [^task_3-.+]
+    |  task_3-xxx.java
+    `- task_3-ccc.sh
 
-   ClassWithExternals::ClassWithExternals(int i,
-                                          boolean b,
-                                          char c)
-   {
-     return;
-   }
+Hopefully this example could give an impression how the combination of usage
+of indirect buffers and bucketizing the history-window can be used for using
+one sources for different sake and grouping together what belongs together.
 
-   void
-   ClassWithExternals::~ClassWithExternals()
-   {
-     return;
-   }
+---------- Footnotes ----------
 
-ECB displays the contents of `ClassWithExternals.cc' in its methods-buffer
-like follows:
+(1) Remember the most important feature of indirect buffers: Changes made in
+one of them will immediately take effect in all others with the same
+base-buffer
 
-   [-] [Includes]
-    `- test.h
-   [-] ClassWithExternals
-    |  +ClassWithExternals (+i:int, +b:class boolean, +c:char):ClassWithExternals
-    `- +~ClassWithExternals ():void
-
-Both the constructor and the destructor of the class "ClassWithExternals" are
-grouped under their class-type. ECB now uses semanticdb to jump to the
-definition of class "ClassWithExternals" when you click onto the type-node
-"ClassWithExternals" in the methods-buffer.
-
-The contents of `ClassWithExternals.h' are displayed like follows:
-
-   [-] [Includes]
-    `- ParentClass.h
-   [-] ClassWithExternals:class
-    |  [-] [Parents]
-    |   `- ParentClass
-    |  [-] [Variables]
-    |   `- -i:int
-    |  +ClassWithExternals ():ClassWithExternals
-    |  +~ClassWithExternals ():void
-    `- [+] [Misc]
-
-ECB uses semanticdb to jump to the definition of the class "ParentClass" when
-you click onto the node "ParentClass".
-
-To enable this feature `global-semanticdb-minor-mode' must be enabled and
-semanticdb must be correctly configured. This means mainly that the option
-`semanticdb-project-roots' must be setup well. See the manual of semanticdb
-for further informations about this.
+(2) Currently only available with GNU Emacs
 
 
-File: ecb.info,  Node: Elisp programming,  Next: Conflicts and bugs,  Prev: Tips and tricks,  Up: Top
+File: ecb.info,  Node: Elisp programming,  Next: Conflicts and bugs,  Prev: Common use-cases,  Up: Top
 
 11 Entry points for Elisp programmers
 *************************************
@@ -3952,7 +4841,7 @@ File: ecb.info,  Node: List of variables,  Next: List of hooks,  Prev: Elisp pro
 11.1 Variables for Elisp-programs
 =================================
 
-Variables an Elisp-program can use beyond those ones mentioned in *note The
+Variables an Elisp-program can use beyond those ones mentioned in *Note The
 layout-engine:::
 
    * `ecb-source-path-functions'
@@ -3981,7 +4870,15 @@ The following hooks are available:
 
    * `ecb-common-tree-buffer-after-create-hook'
 
-   * `ecb-current-buffer-sync-hook'
+   * `ecb-basic-buffer-sync-hook'
+
+   * `ecb-analyse-buffer-sync-hook'
+
+   * `ecb-symboldef-buffer-sync-hook'
+
+   * `ecb-speedbar-buffer-sync-hook'
+
+   * `ecb-eshell-buffer-sync-hook'
 
    * `ecb-deactivate-hook'
 
@@ -4053,7 +4950,7 @@ in a tree-buffer displays exactly one tree-node. Each node has exactly one
 parent-node and can have any arbitrary number of "children"-nodes. If a
 tree-node has no children then it is called a "leaf". A tree-node contains
 several "slots" wheras the most important ones are the "name",
-"displayed-name" and "data". See *note A new tree-node:: for a detailed
+"displayed-name" and "data". See *Note A new tree-node:: for a detailed
 explanation.
 
 The difference between a natural tree like a fir and a tree-buffer is that
@@ -4084,12 +4981,12 @@ Here is an example of a tree-buffer:
 In most cases an action is triggered when clicking with the mouse onto a
 tree-node(1) (e.g. clicking onto "leaf-node-1" or "parent-node-1" in the
 example above). Which action is triggered by which key depends on what you
-specify at creation-time of the tree-buffer - see *note A new tree-buffer::
+specify at creation-time of the tree-buffer - see *Note A new tree-buffer::
 for details.
 
 The creation-interface of a tree-buffer allows defining special popup-menus
 when clicking with the right mouse-button (of course also possible via
-keyboard, see *note Tree-buffer keybindings::) onto a tree-node (e.g. some
+keyboard, see *Note Tree-buffer keybindings::) onto a tree-node (e.g. some
 senseful actions possible for directory-nodes like grepping this directory or
 performing version-control actions for this directory or something else).
 
@@ -4102,8 +4999,8 @@ beginning from creation and ending with the display.
   1. Create the tree-buffer Creating a new tree-buffer has to be done with
      `tree-buffer-create' for non ECB-tree-buffers and with the macro
      `defecb-tree-buffer-creator' when the tree-buffer should be used as an
-     ECB-tree-buffer, so it is an ECB-interactor. See *note A new
-     tree-buffer:: for all details.
+     ECB-tree-buffer, so it is an ECB-window. See *Note A new tree-buffer::
+     for all details.
 
   2. Add tree-nodes to the tree-buffer Adding nodes to the new tree-buffer
      (means make the new tree-buffer the current buffer and call
@@ -4113,12 +5010,12 @@ beginning from creation and ending with the display.
      (avaliable via `tree-buffer-get-root') as parent-node. The next nodes
      can have either one of the fromerly added nodes or the root-node too. All
      tree-nodes haveing the root-node as parent will be displayed at the
-     toplevel of the tree-buffer. See *note A new tree-node:: for all details.
+     toplevel of the tree-buffer. See *Note A new tree-node:: for all details.
 
   3. Display the tree-buffer with current nodes and state When you are
      finished building up the tree-node-structure call `tree-buffer-update'
      to display the current tree-structure (again after making the
-     tree-buffer the current-buffer). See *note Updating a tree-buffer:: for
+     tree-buffer the current-buffer). See *Note Updating a tree-buffer:: for
      all details.
 
 *IMPORTANT*: First a call of `tree-buffer-update' updates the *display* of a
@@ -4126,14 +5023,14 @@ tree-buffer, means shows all the tree-nodes in an emacs-buffer! Neither
 creating a tree-buffer nor adding tree-nodes display anything; this just
 builds the internal tree-structure.
 
-*IMPORTANT*: See *note Programming special windows:: for details about
-programming interactors (special windows) regardless if they were build as
+*IMPORTANT*: See *Note Programming special windows:: for details about
+programming ECB-windows (special windows) regardless if they were build as
 tree or not. There you can find a.o. how to automatically synchronizing a
 special window with the current edit-buffer.
 
 ---------- Footnotes ----------
 
-(1) Of course using the keyboard is also possible, see *note Tree-buffer
+(1) Of course using the keyboard is also possible, see *Note Tree-buffer
 keybindings::.
 
 
@@ -4143,11 +5040,11 @@ File: ecb.info,  Node: A new tree-buffer,  Next: A new tree-node,  Prev: Introdu
 --------------------------------------
 
 The creator-function for a new tree-buffer depends on the fact if the new
-tree-buffer should be used as an ECB-interactor or not. For a new
-ECB-interactor the macro `defecb-tree-buffer-creator' has to be used,
-otherwise the function `tree-buffer-create'. In the end both methods use
-`tree-buffer-create' because the BODY-argument of
-`defecb-tree-buffer-creator' must contain a call to this function!.
+tree-buffer should be used as an ECB-window or not. For a new ECB-window the
+macro `defecb-tree-buffer-creator' has to be used, otherwise the function
+`tree-buffer-create'. In the end both methods use `tree-buffer-create'
+because the BODY-argument of `defecb-tree-buffer-creator' must contain a call
+to this function!.
 
 This section describes all arguments of `tree-buffer-create'.
 
@@ -4398,7 +5295,7 @@ contains also some examples for complex-arguments!
 `NODE-DATA-EQUAL-FN'
      Function used by the tree-buffer to test if the data of two tree-nodes
      are equal. The function is called with two args: The DATA-slots of the
-     two tree-nodes (see *note A new tree-node:: for details about the
+     two tree-nodes (see *Note A new tree-node:: for details about the
      data-slots).
 
      Here is an example (call `C-h f' to see what it does) for this
@@ -4511,6 +5408,25 @@ contains also some examples for complex-arguments!
      displayed when the user clicks with mouse-button 3 at the modeline of
      the tree-buffer. The menu-title will be "Tree-buffer modeline-menu".
 
+`STICKY-PARENT-P'
+     If not nil then with GNU Emacs >= 21 the tree-buffer displays in its
+     header-line the unvisible parent-node if there is any. sticky-parent-fn
+     is used to get this parent node.
+
+`STICKY-INDENT-STRING'
+     String used for indendation of the sticky node in the header-line so it
+     matches the tree-display.
+
+`STICKY-PARENT-FN'
+     Function used to get that parent node which should be sticky. This
+     function gets as argument a node and should either return nil (if there
+     is not suitable parent node) or a node. This node will be displayed as
+     sticky in the header-line of the tree-buffer. If nil is returned and
+     sticky-parent-p is not nil then just the node under the header-line is
+     displayed. If this argument is nil and sticky-parent-p is not nil then
+     always the next unvisible parent node will be displayed in the
+     header-line.
+
 `TRUNC-LINES'
      Should lines in this tree buffer be truncated (not nil).
 
@@ -4583,7 +5499,7 @@ contains also some examples for complex-arguments!
      EXPAND-SYMBOL-BEFORE-P have no effect.
 
      Ascii-style with guide-lines (value `ascii-guides') and ascii-style
-     without guidelines (value `ascii-no-guides'. See *note Tree-buffer
+     without guidelines (value `ascii-no-guides'. See *Note Tree-buffer
      styles:: for details about the tree-styles.
 
      Both ascii-styles are affected by the args TREE-INDENT and
@@ -4719,7 +5635,7 @@ A tree-node can have the following slots:
 `TYPE'
      The type of the node; must currently be an interger! The type is used to
      classify the nodes, so for example all nodes of a certain type can
-     display the same popup-menu - see `tree-buffer-create' or *note A new
+     display the same popup-menu - see `tree-buffer-create' or *Note A new
      tree-buffer:: which parts of a tree-buffer are distinguished by
      node-types.
 
@@ -4815,7 +5731,7 @@ function `tree-node-add-children' because this functions encapsulates all the
 necessary stuff needed to add children to a node (mainly adding the children
 itself and setting the node itself as parent for every children).
 
-See *note The tree-buffer-API:: for the rest of the API available for
+See *Note The tree-buffer-API:: for the rest of the API available for
 tree-nodes.
 
 
@@ -4843,7 +5759,7 @@ Threre are two ways to update a tree-buffer for display:
      If you do not have the need to display a completely new tree-structure
      but you want only to display a previously cached display-state then pass
      this cached-state as second argument to `tree-buffer-update'. See the
-     documentation of this function and also *note Tree-buffer How to:: for a
+     documentation of this function and also *Note Tree-buffer How to:: for a
      detailled description how to do this.
 
   2. Updating only a single node of the tree-buffer:
@@ -4905,7 +5821,7 @@ automatically being bound:
 
      If point is at the expand/collape-button then depending on the
      expansion-state of the node either the callback in slot NODE-EXPANDED-FN
-     or NODE-COLLAPSED-FN is called (for parameters see again *note A new
+     or NODE-COLLAPSED-FN is called (for parameters see again *Note A new
      tree-buffer::).
 
      *IMPORTANT*: None of these callbacks must modify the slot EXPANDED of
@@ -4913,32 +5829,32 @@ automatically being bound:
      action-dispatcher!
 
      At the end the dispatcher updates the tree-buffer-display with optimized
-     display of the clicked/selected node - see *note Updating a
+     display of the clicked/selected node - see *Note Updating a
      tree-buffer::. This means `tree-buffer-update' is called with that node
      as argument.
 
 `TAB'
      Depending on the expansion-state of the node either the callback in slot
      NODE-EXPANDED-FN or NODE-COLLAPSED-FN is called (for parameters see
-     again *note A new tree-buffer::).
+     again *Note A new tree-buffer::).
 
      *IMPORTANT*: None of these callbacks must modify the slot EXPANDED of
      the passed node because this is done automatically by the
      action-dispatcher!
 
      At the end the the tree-buffer-display is updated with optimized display
-     of the clicked/selected node - see *note Updating a tree-buffer::. This
+     of the clicked/selected node - see *Note Updating a tree-buffer::. This
      means `tree-buffer-update' is called with that node as argument.
 
 `mouse-3'
      Activates the popup-menu for the current tree-buffer for current
-     node-type (if defined). See *note A new tree-buffer:: at argument
+     node-type (if defined). See *Note A new tree-buffer:: at argument
      MENU-CREATOR and MENU-TITLES. These callbacks are called for getting the
      menu and the menu-title.
 
 `modeline-mouse-3'
      Activates the popup-menu for the modeline of the current tree-buffer (if
-     defined). See *note A new tree-buffer:: at argument
+     defined). See *Note A new tree-buffer:: at argument
      MODELINE-MENU-CREATOR. This callback is called for getting the
      modeline-menu.
 
@@ -4953,13 +5869,13 @@ automatically being bound:
 `<left>'
 `<right>'
      These keys are bound to the command `tree-buffer-arrow-pressed' which
-     implements the smart arrow-key-navigation described in *note A new
+     implements the smart arrow-key-navigation described in *Note A new
      tree-buffer:: at argument ARROW-NAVIGATION.
 
 
 In addition to these automatically bound keys you can add further keybindings
 to the local-keymap of the tree-buffer with the parameter AFTER-CREATE-HOOK
-of `tree-buffer-create'. See *note A new tree-buffer:: for an example which
+of `tree-buffer-create'. See *Note A new tree-buffer:: for an example which
 binds `C-t' in this hook.
 
 
@@ -4968,7 +5884,7 @@ File: ecb.info,  Node: The tree-buffer-API,  Next: Do not with tree-buffer,  Pre
 11.3.6 All functions available for tree-buffers and tree-nodes
 --------------------------------------------------------------
 
-This chapter lists the complete AI available for tree-buffers and tree-nodes.
+This chapter lists the complete API available for tree-buffers and tree-nodes.
 
 *IMPORTANT*: These are the only functions and macros of tree-buffer.el you
 are allowed to use for programming with tree-buffers and tree-nodes. If you
@@ -5002,7 +5918,9 @@ details how to use it.
 
    * `tree-buffer-recenter'
 
-   * `tree-buffer-highlight-node-data'
+   * `tree-buffer-highlight-node-by-data/name'
+
+   * `tree-buffer-find-displayed-node-by-data/name'
 
    * `tree-buffer-remove-highlight'
 
@@ -5038,26 +5956,30 @@ details how to use it.
 
    * `tree-node-linelength'
 
+   * `tree-node-map-subtree'
+
    * `tree-node-new'
 
    * `tree-node-new-root'
 
    * `tree-node-remove-child'
 
-   * `tree-node-remove-child-by-data'
+   * `tree-node-remove-child-by-data/name'
 
-   * `tree-node-find-child-by-data'
+   * `tree-node-find-child-by-data/name'
 
    * `tree-node-find-child-by-name'
 
    * `tree-node-search-subtree-by-data'
+
+   * `tree-node-search-subtree-by-id'
 
    * `tree-node-sort-children'
 
    * `tree-node-toggle-expanded'
 
 In addition to these functions the tree-node API contains all accessors for a
-tree-node which are described in *note A new tree-node::.
+tree-node which are described in *Note A new tree-node::.
 
 ---------- Footnotes ----------
 
@@ -5081,11 +6003,11 @@ tree-buffer set in `ecb-tree-buffers'!
 Variable `tree-buffer-displayed-nodes': Only for internal use!  Contains all
 the current visible nodes of current tree-buffer in top-to-bottom order. This
 variable is buffer-local in each tree-buffer! Do not use it directly! When
-you want to cache the current display, then see *note Tree-buffer How to::
+you want to cache the current display, then see *Note Tree-buffer How to::
 how to do this.
 
 *IMPORTANT*: An application may only use the API tree-buffer.el provides but
-no internal variables - see *note The tree-buffer-API::!
+no internal variables - see *Note The tree-buffer-API::!
 
 
 File: ecb.info,  Node: Tree-buffer How to,  Prev: Do not with tree-buffer,  Up: tree-buffer
@@ -5134,13 +6056,15 @@ advice-backbone which allows defining sets of adviced functions whereas a set
 means, that all advices of a certain set are always enabled or disabled
 together.
 
-For this ECB contains three macros:
+For this ECB contains four macros:
 
    - `defecb-advice-set'
 
    - `defecb-advice'
 
    - `ecb-with-original-adviced-function-set'
+
+   - `ecb-with-ecb-advice' (for this one see below)
 
 For a detailed explanation of each macro read the documentation with
 `describe-function'!
@@ -5154,12 +6078,12 @@ disables all advices of all advice-sets at load-time of ECB and also at
 deactivation time of ECB. So you can be sure that after deactivating ECB all
 ecb-advices are deactivated/disabled too.
 
-In addition to the three macros above ECB offers two further macros for
+In addition to the four macros above ECB offers two further macros for
 running code with disabled some ecb-advices:
 
    - `ecb-with-original-basic-functions'
 
-   - `ecb-with-original-permanent-functions'
+   - `ecb-with-original-permanent-layout-functions'
 
 The advice set `ecb-basic-adviced-functions' contains most of the
 ecb-advices. See the contents of this variable to see which advices are
@@ -5169,16 +6093,20 @@ evaluating elisp-code with disabled basic-advices.
 `ecb-with-original-adviced-function-set' called for the
 `ecb-basic-adviced-functions'-set.
 
-Same for `ecb-with-original-permanent-functions' which is a shortcut for the
-advice-set `ecb-permanent-adviced-functions'.
+Same for `ecb-with-original-permanent-layout-functions' which is a shortcut
+for the advice-set `ecb-permanent-adviced-layout-functions'.
 
 Last but not least ECB contains an advice-set `ecb-always-disabled-advices'.
 These advices are always disabled.  This advice-set can not be enabled by
 `ecb-enable-advices' but such an advice has to be activated 'on demand' by
 the caller. Such an advice must be used with the macro `ecb-with-ecb-advice'
-(see the docstring).
+(see the docstring) and is also enabled within the BODY of the macro-call.
 
 ECB contains some more advice-sets but don't bother about it.
+
+*Please Note*: See the value of `ecb-adviced-function-sets' which advice-sets
+are defined and see `ecb-adviced-functions' for an overview for all adviced
+functions.
 
 
 File: ecb.info,  Node: The layout-engine,  Prev: Adviced functions,  Up: Elisp programming
@@ -5225,7 +6153,7 @@ special windows than the standard ECB-windows then it's still recommended to
 define this layout interactively with `ecb-create-new-layout' and using the
 option to give the created windows user-defined types. For every user defined
 type you have then just to program the necessary buffer-set function. For all
-the details see *note Creating a new ECB-layout::.
+the details see *Note Creating a new ECB-layout::.
 
 But if you do not like the interactive way (because you are tough and brave)
 but you want programming the new layout with Elisp then use the macro
@@ -5280,23 +6208,28 @@ for better indexing this manual):
              - `ecb-set-history-buffer'
 
              - `ecb-set-speedbar-buffer'
+
+             - `ecb-set-analyse-buffer'
+
+             - `ecb-set-symboldef-buffer'
           Each layout can only contain one of each tree-buffer-type!
 
           In addition to these functions there is a general macro:
-          `defecb-window-dedicator': This macro defines a so called
-          "window-dedicator" which is a function registered at ECB and called
-          by ECB to perform any arbitrary code in current window and makes the
-          window autom. dedicated at the end. This can be used by third party
-          packages like JDEE to create arbitrary ECB-windows besides the
-          standard tree-windows.
+          `defecb-window-dedicator-to-ecb-buffer': This macro defines a so
+          called "window-dedicator" which is a function registered at ECB and
+          called by ECB to perform any arbitrary code in current window and
+          makes the window autom.  dedicated to the special ecb-buffer at the
+          end. This can be used by third party packages like JDEE to create
+          arbitrary ECB-windows besides the standard special ecb-windows.
 
           To make a special ECB-window a dedicated window either one of the
-          five functions above must be used or a new
+          seven functions above must be used or a new
           "window-dedicator"-function has to be defined with
-          `defecb-window-dedicator' and must be used within the
+          `defecb-window-dedicator-to-ecb-buffer' and must be used within the
           layout-definition.
 
-       3. Every(!) special ECB-window must be dedicated as described in 2.
+       3. Every(!) special ECB-window must be dedicated to a buffer as
+          described in 2.
 
        4. CREATE-CODE must work correctly regardless if there is already a
           compile-window (stored in `ecb-compile-window') or not
@@ -5379,1277 +6312,4 @@ like:
    |                    Compilation                      |
    |                                                     |
    -------------------------------------------------------
-
-
-File: ecb.info,  Node: Programming special windows,  Next: Possible layout-outlines,  Prev: Programming a new layout,  Up: The layout-engine
-
-11.5.2 All aspects of programming special windows
--------------------------------------------------
-
-ECB offers a flexible programmable layout-engine for other packages to
-display their own contents and informations in special ECB-windows. An
-example could be a graphical debugger which offers a special window for
-displaying local variables and another special window for messages from the
-debugger-process (like JDEbug of JDEE(1)).
-
-This section explains all aspects of programming new special windows, adding
-them to a new layout and synchronizing them with edit-window of ECB. This can
-be done best with an easy example which nevertheless covers all necessary
-aspects to be a good example and skeleton for complex tools (like a graphical
-debugger) which want to use the layout-engine of ECB do display their own
-information.
-
-*IMPORTANT*: See *note tree-buffer:: for a full documentation of the library
-tree-buffer.el which can be used for programming a new special window as a
-tree!
-
-Here comes the example:
-
-11.5.2.1 The outline of the example layout:
-...........................................
-
-   -------------------------------------------------------
-   |Bufferinfo for <filename>:            |[prior]       |
-   |Type: file                            |[next]        |
-   |Size: 23456                           |              |
-   |Modes: rw-rw-rw-                      |              |
-   |-----------------------------------------------------|
-   |                                                     |
-   |                                                     |
-   |                                                     |
-   |                                                     |
-   |                 edit-window                         |
-   |                                                     |
-   |                                                     |
-   |                                                     |
-   |                                                     |
-   -------------------------------------------------------
-   |                                                     |
-   |                 compilation-window                  |
-   |                                                     |
-   -------------------------------------------------------
-
-11.5.2.2 The description of the layout-contents
-...............................................
-
-The top-left window always displays informations about the current buffer in
-the selected edit-window. This window demonstrates how autom. synchronizing a
-special window/buffer of a layout with current edit-window.
-
-The top-right window contains an read-only "action-buffer" and offers two
-buttons which can be used with the middle mouse-button to scroll the
-edit-window. This is not very senseful but it demonstrates how to control the
-edit-window with actions performed in a special window/buffer of a layout.
-
-(If you have not set a compilation-window in `ecb-compile-window-height' then
-the layout contains no persistent compilation window and the other windows
-get a little more place).
-
-11.5.2.3 The example code
-.........................
-
-Now let have us a look at the several parts of the Elisp-program needed to
-program this new example layout. ECB contains a library `ecb-examples.el'
-which contains the full working code of this example. To test this example
-and to play with it you can load this library into Emacs (with `load-library'
-for example) and then calling `ecb-change-layout' (bound to `C-c . lc') and
-inserting "example-layout1" as layout-name. An alternative is calling
-`ecb-examples-activate' and `ecb-examples-deactivate'. For details see file
-`ecb-examples.el'.
-
-The following steps only contain code-skeletons to demonstrate the principle.
-The full working code is available in `ecb-examples.el'.
-
-11.5.2.4 The bufferinfo buffer of the example
-.............................................
-
-The name of the bufferinfo buffer:
-
-   (defconst ecb-examples-bufferinfo-buffer-name " *ECB buffer info*")
-
-Two helper functions for displaying infos in a special buffer:
-
-   (defun ecb-examples-print-file-attributes (buffer filename)
-     (ecb-with-readonly-buffer buffer
-       (erase-buffer)
-       (insert (format "Bufferinfo for %s:\n\n" filename))
-       ;; insert with the function `file-attributes' some
-       ;; informations about FILENAME.
-       ))
-
-   (defun ecb-examples-print-non-filebuffer (buffer buffer-name)
-     (ecb-with-readonly-buffer buffer
-       (erase-buffer)
-       ;; analogous to `ecb-examples-print-file-attributes'
-       ))
-
-The main synchronizing function added to `ecb-current-buffer-sync-hook' for
-autom. evaluation by `ecb-current-buffer-sync' which runs dependent on the
-values of `ecb-window-sync' and `ecb-window-sync-delay'. This function
-synchronizes the bufferinfo buffer with the current buffer of the edit-window
-if that buffer has changed.
-
-   (defun ecb-examples-bufferinfo-sync ()
-     (ecb-do-if-buffer-visible-in-ecb-frame
-         'ecb-examples-bufferinfo-buffer-name
-
-       ;; here we can be sure that the buffer with name
-       ;; `ecb-examples-bufferinfo-buffer-name' is displayed in a
-       ;; window of `ecb-frame'
-
-       ;; The macro `ecb-do-if-buffer-visible-in-ecb-frame' locally
-       ;; binds the variables visible-buffer and visible-window!! See
-       ;; documentation of this macro!
-
-       (let ((filename (buffer-file-name (current-buffer))))
-
-         (if (and filename (file-readable-p filename))
-
-             ;; real filebuffers
-             ;; here we could add a smarter mechanism;
-             ;; see ecb-examples.el
-             (ecb-examples-print-file-attributes visible-buffer
-                                                 filename)
-
-           ;; non file buffers like help-buffers etc...
-           (setq ecb-examples-bufferinfo-last-file nil)
-           (ecb-examples-print-non-filebuffer visible-buffer
-                                              (buffer-name
-                                                (current-buffer)))
-           ))))
-
-Two conveniance commands for the user:
-
-   (defun ecb-maximize-bufferinfo-window ()
-     "Maximize the bufferinfo-window.
-   I.e. delete all other ECB-windows, so only one ECB-window and the
-   edit-window\(s) are visible \(and maybe a compile-window). Works
-   also if the ECB-analyse-window is not visible in current layout."
-     (interactive)
-     (ecb-display-one-ecb-buffer ecb-examples-bufferinfo-buffer-name))
-
-   (defun ecb-goto-bufferinfo-window ()
-     "Make the bufferinfo-window the current window."
-     (interactive)
-     (ecb-goto-ecb-window ecb-examples-bufferinfo-buffer-name))
-
-The function which makes the bufferinfo-buffer dedicated to a window and
-registers the new special window/buffer at ECB.
-
-   (defecb-window-dedicator ecb-examples-set-bufferinfo-buffer
-       ecb-examples-bufferinfo-buffer-name
-     "Set the buffer in the current window to the bufferinfo-buffer
-   and make this window dedicated for this buffer."
-     (switch-to-buffer (get-buffer-create
-                         ecb-examples-bufferinfo-buffer-name))
-     (setq buffer-read-only t))
-
-This is all what we need for the special bufferinfo buffer. We have
-demonstrated already three of the important functions/macros of the
-layout-engine API of ECB: `ecb-with-readonly-buffer',
-`ecb-do-if-buffer-visible-in-ecb-frame' and `defecb-window-dedicator' (*note
-The layout-engine API::.  Especially the second macro is strongly recommended
-for programming good synchronizing functions which do not waste CPU!
-
-11.5.2.5 The action buffer of the example
-.........................................
-
-The name of the action-buffer:
-
-   (defconst ecb-examples-action-buffer-name " *ECB action buffer*")
-
-Two helper functions for creating a readonly action-buffer with a special
-local key-map for the middle-mouse-button and two buttons [prior] and [next]:
-
-   (defun ecb-examples-insert-text-in-action-buffer (text)
-     (let ((p (point)))
-       (insert text)
-       (put-text-property p (+ p (length text)) 'mouse-face
-                                                'highlight)))
-
-   (defun ecb-examples-action-buffer-create ()
-     (save-excursion
-       (if (get-buffer ecb-examples-action-buffer-name)
-           (get-buffer ecb-examples-action-buffer-name)
-
-         (set-buffer (get-buffer-create
-                       ecb-examples-action-buffer-name))
-
-         ;; we setup a local key-map and bind middle-mouse-button
-         ;; see ecb-examples.el for the full code
-
-         ;; insert the action buttons [prior] and [next] and
-         ;; make it read-only
-
-         (ecb-with-readonly-buffer (current-buffer)
-           (erase-buffer)
-           (ecb-examples-insert-text-in-action-buffer "[prior]")
-           ;; analogous for the [next] button
-           )
-
-         (current-buffer))))
-
-The function which performs the actions in the action-buffer if clicked with
-the middle-mouse button onto a button [next] or [prior].
-
-   (defun ecb-examples-action-buffer-clicked (e)
-     (interactive "e")
-     (mouse-set-point e)
-     (let ((line (buffer-substring (ecb-line-beginning-pos)
-                                   (ecb-line-end-pos))))
-       (cond ((string-match "prior" line)
-              (ecb-select-edit-window)
-              (call-interactively 'scroll-down))
-             ((string-match "next" line)
-              ;; analogous for [next]
-              ))))
-
-Two conveniance-commands for the user:
-
-   (defun ecb-maximize-action-window ()
-     "Maximize the action-window.
-   I.e. delete all other ECB-windows, so only one ECB-window and the
-   edit-window\(s) are visible \(and maybe a compile-window). Works
-   also if the ECB-analyse-window is not visible in current layout."
-     (interactive)
-     (ecb-display-one-ecb-buffer ecb-examples-action-buffer-name))
-
-   (defun ecb-goto-action-window ()
-     "Make the action-window the current window."
-     (interactive)
-     (ecb-goto-ecb-window ecb-examples-action-buffer-name))
-
-The function which makes the action-buffer dedicated to a window and
-registers it at ECB.
-
-   (defecb-window-dedicator ecb-examples-set-action-buffer
-       (buffer-name (ecb-examples-action-buffer-create))
-     "Set the buffer in the current window to the action-buffer
-   and make this window dedicated for this buffer."
-     (switch-to-buffer (buffer-name (ecb-examples-action-buffer-create))))
-
-We do not need more code for the action buffer. All of the code is standard
-emacs-lisp which would also needed if used without ECB. You see that you can
-use any arbitrary code as second argument for `defecb-window-dedicator' as
-long it returns a buffer-name.
-
-11.5.2.6 Adding the bufferinfo- and action-buffer to a new layout
-.................................................................
-
-Now we add the bufferinfo- and the action-buffer to a new layout of type top
-with name "example-layout1":
-
-   (ecb-layout-define "example-layout1" top
-
-     ;; dedicating the bufferinfo window to the bufferinfo-buffer
-     (ecb-examples-set-bufferinfo-buffer)
-
-     ;; creating the action-window
-     (ecb-split-hor 0.75)
-
-     ;; dedicate the action window to the action-buffer
-     (ecb-examples-set-action-buffer)
-
-     ;; select the edit-window
-     (select-window (next-window)))
-
-This all what we need to define the new layout. See *note Programming a new
-layout:: for more details of the pure layout-programming task.
-
-11.5.2.7 Synchronizing the bufferinfo-buffer automatically
-..........................................................
-
-The last thing we have to do is to synchronize the bufferinfo-buffer with
-current edit-window. We do this by adding `ecb-examples-bufferinfo-sync' to
-the hook `ecb-current-buffer-sync-hook'' (The file `ecb-examples.el' shows a
-smarter mechanism for (de)activating the new layout and the synchronization
-but this works also very well).
-
-   (add-hook 'ecb-current-buffer-sync-hook 'ecb-examples-bufferinfo-sync)
-
-11.5.2.8 Activating and deactivating new layouts
-................................................
-
-Because a set of new special windows integrated in a new layout is often just
-the GUI of a complete tool (like a graphical debugger) we demonstrate here
-the complete activation and deactivation of such a tool or at least of the
-tool-GUI. We decide that the GUI of our example "tool" needs a compile-window
-with height 5 lines and the height of the special windows "row" on top should
-be exactly 6 lines (normally width and height of the special windows should
-be a fraction of the frame, but here we use 6 lines(2)
-
-Here comes the (de)activation code.
-
-The code for saving and restoring the state before activation (the full code
-is available in `ecb-examples.el':
-
-   (defun ecb-examples-preactivation-state(action)
-     (cond ((equal action 'save)
-            ;; code for saving the state
-            )
-           ((equal action 'restore)
-           ;; code for restoring the state
-           )))
-
-The following function activates the GUI of our example tool:
-
-   (defun ecb-examples-activate ()
-     (interactive)
-
-     ;; activating the synchronization of the bufferinfo-window
-     (add-hook 'ecb-current-buffer-sync-hook
-               'ecb-examples-bufferinfo-sync)
-
-     ;; saving the state
-     (ecb-examples-preactivation-state 'save)
-
-     ;; switch to our preferred layout
-     (setq ecb-windows-height 6)
-     (setq ecb-compile-window-height 5)
-     (ecb-layout-switch "example-layout1"))
-
-This function deactivates the GUI of our example-tool and restores the state
-as before activation:
-
-   (defun ecb-examples-deactivate ()
-     (interactive)
-
-     (remove-hook 'ecb-current-buffer-sync-hook
-                  'ecb-examples-bufferinfo-sync)
-     (ecb-examples-preactivation-state 'restore)
-     (ecb-layout-switch ecb-layout-name))
-
-Now we have all code for the new layout and the new layout-buffers.  The
-example is ready for use; just load `ecb-examples.el' (s.a.).
-
----------- Footnotes ----------
-
-(1) JDEE is available at `http://jdee.sunsite.dk/'
-
-(2) You can change the code in the file `ecb-examples.el' to use a
-frame-fraction of 0.2 instead of 6 hard lines, just try it!
-
-
-File: ecb.info,  Node: Possible layout-outlines,  Next: The layout-engine API,  Prev: Programming special windows,  Up: The layout-engine
-
-11.5.3 The wide range of possible layout-outlines
--------------------------------------------------
-
-In the two previous sections *note Programming a new layout:: and *note
-Programming special windows:: we have explained in detail how to program new
-layouts and how to program new special windows/buffers and adding them to a
-new layout.
-
-The intention of this section is to be a summary what are the real
-restrictions for a new layout-outline programmed with `ecb-layout-define'.
-This is necessary because until now we just programmed "obvious" layouts,
-means layout which are in principle very similar to the standard ones which
-means one big edit-window and some special windows "around" this edit-window.
-This section will show you that a layout can have also very different
-outlines.
-
-OK, here are the real restrictions and conditions for a layout programmed
-with `ecb-layout-define':
-  1. It must have exactly one edit-window regardless of its size. The user of
-     this layout can later split this edit-window in as many edit-windows as
-     he like.
-
-  2. All other windows created within the CREATE-CODE body of
-     `ecb-layout-define' (*note Programming a new layout::) must be dedicated
-     to their buffers.
-
-  3. All the dedicated windows must (exclusive!) either reside on the left,
-     right, top or left-and-right side of the edit-window. This will be
-     defined with the TYPE-argument of `ecb-layout-define' (*note Programming
-     a new layout::).
-
-You see, there are only three restrictions/conditions. These and only these
-must be fulfilled at layout-programming.
-
-Demonstrating what this really means and how flexible the layout-engine of
-ECB really is, can be done best with some "pathological" layout-outlines. All
-the following are correct layouts (working code is added below each layout):
-
-The following is a top layout with three vertical layered special windows.
-
-   ------------------------------------------------------------------
-   |                                                                |
-   |                 Upper special window                           |
-   |                                                                |
-   |----------------------------------------------------------------|
-   |                                                                |
-   |                 Middle special window                          |
-   |                                                                |
-   |----------------------------------------------------------------|
-   |                                                                |
-   |                 Lower special window                           |
-   |                                                                |
-   |================================================================|
-   |                                                                |
-   |                         Edit-area                              |
-   |      (can be splitted by the user in several edit-windows)     |
-   ------------------------------------------------------------------
-   |                                                                |
-   |                 Compilation-window (optional)                  |
-   |                                                                |
-   ------------------------------------------------------------------
-
-Here is the code for that top layout (all buffers are dummy-buffers):
-
-
-   ;; The "window dedicator" functions:
-
-   (defecb-window-dedicator ecb-set-usw-buffer "Upper special window"
-     (switch-to-buffer (get-buffer-create "Upper special window")))
-
-   (defecb-window-dedicator ecb-set-msw-buffer "Middle special window"
-     (switch-to-buffer (get-buffer-create "Middle special window")))
-
-   (defecb-window-dedicator ecb-set-lsw-buffer "Lower special window"
-     (switch-to-buffer (get-buffer-create "Lower special window")))
-
-   ;; The layout itself:
-
-   (ecb-layout-define "example-layout3" top
-     nil
-
-     ;; here we have an edit-window and above one top window which we can
-     ;; now split in several other windows. Dependent on the value of
-     ;; `ecb-compile-window-height' we have also a compile-window at the
-     ;; bottom.
-
-     (ecb-set-usw-buffer)
-     (ecb-split-ver 0.33)
-     (ecb-set-msw-buffer)
-     (ecb-split-ver 0.5)
-     (ecb-set-lsw-buffer)
-
-     ;; select the edit-window.
-     (select-window (next-window)))
-
-The following is a left-right layout which has six special windows in the
-left-"column" and one big special window in the right-"column". For
-left-right layouts the left-"column" and the right-"column" have always the
-same width.
-
-   ------------------------------------------------------------------
-   |             |       |                   |                      |
-   | Left1       | Left5 |                   |                      |
-   |             |       |                   |                      |
-   |-------------|       |                   |                      |
-   |      |      |       |                   |                      |
-   |      |      |       |                   |                      |
-   |      |      |       |                   |                      |
-   | Left2| Left3|-------|     Edit-area     |   Right1             |
-   |      |      |       | (can be splitted  |                      |
-   |      |      |       |  in several edit- |                      |
-   |      |      |       |      windows)     |                      |
-   |-------------|       |                   |                      |
-   |             |       |                   |                      |
-   | Left4       | Left6 |                   |                      |
-   |             |       |                   |                      |
-   ------------------------------------------------------------------
-   |                                                                |
-   |                 Compilation-window (optional)                  |
-   |                                                                |
-   ------------------------------------------------------------------
-
-Here is the code for that left-right layout, again with dummy-buffers
-(depending to your screen-resolution you will need a quite big value for
-`ecb-windows-width', e.g. 0.4):
-
-Here is one of the "window dedicator"-functions(1):
-
-   (defecb-window-dedicator ecb-set-left1-buffer "Left1"
-     (switch-to-buffer (get-buffer-create "Left1")))
-
-Here is the layout-definition itself:
-
-   (ecb-layout-define "example-layout2" left-right
-     nil
-
-     ;; here we have an edit-window and left and right two windows each
-     ;; with width `ecb-windows-width'. Dependent to the value of
-     ;; `ecb-compile-window-height' we have also a compile-window at the
-     ;; bottom.
-
-     (ecb-set-left1-buffer)
-     (ecb-split-hor 0.66 t)
-     (ecb-split-ver 0.75)
-     (ecb-set-left4-buffer)
-     (select-window (previous-window (selected-window) 0))
-     (ecb-split-ver 0.25 nil t)
-     (ecb-set-left2-buffer)
-     (ecb-split-hor 0.5)
-     (ecb-set-left3-buffer)
-     (select-window (next-window (next-window)))
-     (ecb-set-left5-buffer)
-     (ecb-split-ver 0.5)
-     (ecb-set-left6-buffer)
-     (select-window (next-window (next-window)))
-     (ecb-set-right1-buffer))
-
-     ;; select the edit-window
-     (select-window (previous-window (selected-window) 0)))
-
-Especially the last example should demonstrate that even very complicated
-layouts are easy to program with `ecb-layout-define'.  If such layouts are
-senseful is another topic ;-)
-
----------- Footnotes ----------
-
-(1) The "window dedicators" for all these ecb-windows/buffers are not
-explicitly described - they look all like `ecb-set-left1-buffer' - of course
-with different buffer-names!
-
-
-File: ecb.info,  Node: The layout-engine API,  Prev: Possible layout-outlines,  Up: The layout-engine
-
-11.5.4 The complete layout-engine API of ECB
---------------------------------------------
-
-This section lists all functions, macros, variables and user-options the
-layout-engine API of ECB offers foreign packages. Call `describe-function'
-rsp. `describe-variable' to get a detailed description.
-
-Functions and macros for programming with layouts and special ecb-windows:
-   - `defecb-window-dedicator'
-
-   - `ecb-available-layouts-member-p'
-
-   - `ecb-canonical-ecb-windows-list'
-
-   - `ecb-canonical-edit-windows-list'
-
-   - `ecb-compile-window-live-p'
-
-   - `ecb-compile-window-state'
-
-   - `ecb-do-if-buffer-visible-in-ecb-frame'
-
-   - `ecb-exec-in-window'
-
-   - `ecb-get-current-visible-ecb-buffers'
-
-   - `ecb-layout-define'
-
-   - `ecb-layout-switch'
-
-   - `ecb-layout-undefine'
-
-   - `ecb-point-in-compile-window'
-
-   - `ecb-point-in-ecb-window'
-
-   - `ecb-point-in-edit-window'
-
-   - `ecb-select-edit-window'
-
-   - `ecb-split-hor'
-
-   - `ecb-split-ver'
-
-   - `ecb-where-is-point'
-
-   - `ecb-with-dedicated-window'(1)
-
-Utility functions/macros:
-   - `ecb-display-one-ecb-buffer'
-
-   - `ecb-enlarge-window'
-
-   - `ecb-fix-filename'
-
-   - `ecb-goto-ecb-window'
-
-   - `ecb-window-live-p'
-
-   - `ecb-with-readonly-buffer'
-
-Some other maybe useful functions/macros:
-   - `ecb-with-adviced-functions'
-
-   - `ecb-with-original-functions'
-
-   - `ecb-with-some-adviced-functions'
-
-Some useful *READONLY* variables:
-   - `ecb-compile-window'
-
-   - `ecb-last-edit-window-with-point'
-
-   - `ecb-last-source-buffer'
-
-*Caution*: DO NOT USE THE VARIABLE `ecb-edit-window' IN YOUR PROGRAMS!
-
-User-options and hooks related to the layout-engine API:
-   - `ecb-current-buffer-sync-hook'
-
-   - `ecb-hide-ecb-windows-after-hook'
-
-   - `ecb-hide-ecb-windows-before-hook'
-
-   - `ecb-redraw-layout-after-hook'
-
-   - `ecb-redraw-layout-before-hook'
-
-   - `ecb-show-ecb-windows-after-hook'
-
-   - `ecb-show-ecb-windows-before-hook'
-
-   - `ecb-windows-height'
-
-   - `ecb-windows-width'
-
-   - `ecb-compile-window-height'
-
----------- Footnotes ----------
-
-(1) Normally not needed because `defecb-window-dedicator' does all necessary.
-
-
-File: ecb.info,  Node: Conflicts and bugs,  Next: FAQ,  Prev: Elisp programming,  Up: Top
-
-12 Conflicts and bugs of ECB
-****************************
-
-This chapter describes what to do when there are conflicts with other
-packages and also the known (and currently unfixed) bugs of ECB. If possible
-(and in most cases it is possible ;-) then a practicable solution or
-workaround is described.
-
-* Menu:
-
-* Conflicts::                   Conflicts with other packages
-* Bugs::                        Known bugs
-
-
-File: ecb.info,  Node: Conflicts,  Next: Bugs,  Prev: Conflicts and bugs,  Up: Conflicts and bugs
-
-12.1 Conflicts with other packages
-==================================
-
-This chapter contains a list of already known conflict between ECB and other
-packages and how to solve them - in most cases ECB already contains a
-suitable workaround.
-
-That is followed by a general recipe what you can do when you have detected a
-conflict between ECB and a package is not listed in the
-know-conflicts-section.
-
-12.1.1 Proved workarounds or recommendations for other packages
----------------------------------------------------------------
-
-Here is a list of packages which are proved to work properly with ECB and if
-not (i.e. there are conflicts) then helpful solutions/hints/workarounds are
-offered:
-
-12.1.1.1 Package bs.el
-......................
-
-The package bs.el offers a nifty buffer-selection buffer. The main command of
-this package is `bs-show'. With ECB < 2.20 this command does not really
-working well within activated ECB. But as of version 2.20 of ECB there should
-be no problems using this package.
-
-If you add "*buffer-selection*" as buffer-name to the option
-`ecb-compilation-buffer-names' then ECB will always display the
-buffer-selection buffer of bs in the compile-window (if there is one).
-Otherwise bs will use the edit-area to do its job.
-
-12.1.1.2 Package BBDB
-.....................
-
-As of ECB 2.21 there should be no conflicts between BBDB and ECB, so BBDB can
-be used even when the ECB-windows are visible.
-
-But if you encounter problems then it is recommened to use one of the
-window-managers escreen.el or winring.el (*note Window-managers and ECB::).
-With such a window-manager ECB and BBDB should work together very well under
-all circumstances!
-
-12.1.1.3 Package calendar.el
-............................
-
-With activated ECB `calendar' does not shrink it´s window to the small size
-but splits the window equally. But if you add this to your `.emacs' it works:
-
-   (add-hook 'initial-calendar-window-hook
-             (function (lambda ()
-                         (when (and ecb-minor-mode
-                                    (ecb-point-in-edit-window))
-                           ;; if no horizontal split then nothing
-                           ;; special to do
-                           (or (= (frame-width) (window-width))
-                               (shrink-window (- (window-height) 9))))
-                        )))
-
-12.1.1.4 Package cygwin-mount.el
-................................
-
-There can be a conflict between ECB and cygwin-mount.el if the following
-conditions are true:
-
-   - You are working with cygwin-mount.el (sounds clear :-)
-
-   - You have set `cygwin-mount-build-mount-table-asynch' to not nil
-
-   - ECB is automatically started after starting Emacs (e.g. with
-     `ecb-auto-activate' or calling `ecb-activate' in `window-setup-hook')
-
-   - Your Emacs-setup contains a call of `cygwin-mount-activate'.
-
-Under these circumstances Emacs 21.X sometimes eats up the whole CPU (at
-least with Windows XP) and the cygwin-mount-table is never build.
-
-But there is an easy work-around: Call `cygwin-mount-activate' first *AFTER*
-ECB is activated. This can be done with the hook `ecb-activate-hook':
-
-   (add-hook 'ecb-activate-hook
-             (function (lambda ()
-                         (require 'cygwin-mount)
-                         (setq cygwin-mount-build-mount-table-asynch t)
-                         (cygwin-mount-activate))))
-
-12.1.1.5 Package desktop.el
-...........................
-
-ECB works perfectly with the desktop-saver desktop.el. But to ensure this the
-option `desktop-minor-mode-table' *MUST* contain the following entry:
-
-   (ecb-minor-mode nil)
-
-Without this entry desktop.el tries for each buffer it loads after
-Emacs-start to enable `ecb-minor-mode' and therefore to start ECB. This
-conflicts with ECB! Therefore you must add the entry above to
-`desktop-minor-mode-table'!
-
-Further it is strongly recommended to add entries for all the minor-mode of
-the semantic-package to `desktop-minor-mode-table', so for example add also:
-
-   (semantic-show-unmatched-syntax-mode nil)
-   (semantic-stickyfunc-mode nil)
-   (senator-minor-mode nil)
-   (semantic-idle-scheduler-mode nil)
-
-Which modes you have to add depends on which modes of semantic you use. But
-to get sure you should add all minor-modes of the semantic-package because
-these modes are normally activated by the related "global" command (e.g.
-`global-semantic-show-unmatched-syntax-mode') or by adding the minor-mode to
-the related major-mode-hook.
-
-It has also been reported that just disabling the Tip-Of-The-Day (option:
-`ecb-tip-of-the-day') fixes the compatibility-problems with desktop.el. Just
-try it out!
-
-12.1.1.6 Package edebug (Lisp Debugger)
-.......................................
-
-It is strongly recommended to run edebug only when the ECB-windows are
-hidden. With visible ECB-windows there will probably serious conflicts
-between the ECB-layout and the edebug-window-manager.
-
-12.1.1.7 Package ediff.el
-.........................
-
-In most cases ECB works very well with ediff (see option
-`ecb-run-ediff-in-ecb-frame'). But currently suspending ediff with
-`ediff-suspend' and restoring the ediff-session (e.g. with command
-`eregistry') does confuse the window-management of ECB.
-
-If you often use ediff in a scenario where you suspend ediff and reactivate
-it later then it is recommended to exit ECB first (`ecb-deactivate' or
-`ecb-minor-mode')!
-
-12.1.1.8 Package func-menu.el
-.............................
-
-This package has been reported to produce some conflicts under some
-circumstances when ECB is activated. Some of them could be reproduced by the
-ECB-maintainer. So the recommendation is to disable func-menu-support when
-using ECB. Normally using func-menu makes no sense in combination with ECB
-because ECB provides the same and even more informations as func-menu - so
-func-menu is redundant ;-)
-
-12.1.1.9 Package Gnus (Newsreader)
-..................................
-
-As of ECB 2.21 there should be no conflicts between Gnus and ECB, so Gnus can
-be used even when the ECB-windows are visible.
-
-But if you encounter problems then it is recommened to use one of the
-window-managers escreen.el or winring.el (*note Window-managers and ECB::).
-With such a window-manager ECB and Gnus should work together very well under
-all circumstances!
-
-12.1.1.10 Package JDEE (Java Development Environment)
-.....................................................
-
-JDEE has a lot of "dialogs" where the user can select among several choices.
-An example is importing classes via the command `jde-import-find-and-import'.
-These dialogs are strongly designed to work in an environment where a new
-temporary window is created, the contents of the dialog are displayed in the
-new window, the user select his choice and hits [OK]. After that the new
-window is deleted and the selection is performed (for example the chosen
-import statement are inserted in the source-buffer.
-
-*Caution*: ECB can work very well with this dialogs but only if the
-buffer-name of these dialog-buffers (normally "Dialog") is not contained in
-the option `ecb-compilation-buffer-names'. So do not add the string "Dialog"
-to this option!
-
-*Please Note*: Regardless if a persistent compile-window is used (i.e.
-`ecb-compile-window-height' is not nil) or not, these JDEE-dialogs will
-always being displayed by splitting the edit-window of ECB and not within the
-compile-window.
-
-12.1.1.11 Package scroll-all.el (scroll-all-mode)
-.................................................
-
-ECB advices `scroll-all-mode' so it is working correct during running ECB.
-This means if point stays in an edit-window and the edit-window is splitted
-then all edit-windows are scrolled by `scroll-all-mode' and no other window!
-If point stays in any other window just this selected window is scrolled.
-This is the only senseful behavior of `scroll-all-mode' with ECB.
-
-12.1.1.12 Package VC (Version Control)
-......................................
-
-The variable `vc-delete-logbuf-window' must be set to nil during active ECB.
-This can be done with the hooks mentioned in *note Elisp programming::.
-
-12.1.1.13 Package VM (Emacs Mail-Client)
-........................................
-
-As of ECB 2.21 there should be no conflicts between VM and ECB, so VM can be
-used even when the ECB-windows are visible.
-
-But if you encounter problems then it is recommened to use one of the
-window-managers escreen.el or winring.el (*note Window-managers and ECB::).
-With such a window-manager ECB and VM should work together very well under
-all circumstances!
-
-12.1.1.14 Package winner.el (winner-mode)
-.........................................
-
-`winner-mode' is autom. disabled as long as ECB is running. ECB has its own
-window-management which is completely incompatible with `winner-mode'! But
-`winner-mode' makes also not really sense with ECB.
-
-12.1.1.15 Package wb-line-number.el
-...................................
-
-Do not use the package wb-line-number.el in combination with ECB - it will
-not work and it will not work under any circumstances and there is no way to
-make it work together and there will be no way in the future!
-
-The reason behind that is: wb-line-number.el uses additional dedicated
-windows to display the line-numbers. And ECB can not work if there there are
-additional dedicated windows - additional to that ones created by ECB.
-
-12.1.1.16 Application xrefactory
-................................
-
-Xrefactory (also known as Xref, X-ref and Xref-Speller), the refactoring
-browser for (X)Emacs(1), can be used during running ECB regardless if the
-ECB-windows are visible or not. There should be no conflicts as of ECB
-versions >= 2.21.
-
-If there are conflicts with the Xref-browser then the most recommended way is
-to use one of the window-manager escreen.el or winring.el (and then use
-different escreens or window-configurations for ECB and Xrefactory-browsing -
-*note Window-managers and ECB::).
-
-12.1.2 What to do for unknown conflicts with other packages
------------------------------------------------------------
-
-As of version 2.20 the layout-engine of ECB is so flexible that normally
-there should be no conflicts with other packages unless these packages have
-their own complete window-layout-management (e.g. Gnus, BBDB, Xrefactory).
-But these packages can and should be handled very well with the
-window-manager-support of ECB (*note Window-managers and ECB::).
-
-So if you detect an unknown (i.e. not listed in the conflicts-list in the
-next subsection) conflict with a small package and some of its commands and
-you have installed an ECB-version < 2.20 the first task you have to do is to
-upgrade to a version >= 2.20!
-
-If this doesn't solve the problem a very probable reason for the conflict is
-that the command fails if called from another window than an edit-window of
-the ecb-frame. So please check if the problem disappears if you call the
-failing command from an edit-window of ECB.  If this is true then you you can
-add the following code to your .emacs (and of course replace the XXX with the
-failing command):
-
-   (defadvice XXX (before ecb activate)
-     "Ensures `XXX' works well when called from another window
-   as an edit-window. Does nothing if called in another frame
-   as the `ecb-frame'."
-     (when (equal (selected-frame) ecb-frame)
-       (unless (ecb-point-in-edit-window)
-         (ecb-select-edit-window))))
-
-This before-advice runs before the command XXX and ensures that the XXX is
-called from within an edit-window if the current selected window is not an
-edit-window. It does nothing if called for another frame as the ecb-frame.
-
-If such an advice solves the problem then please send a note with the
-solution to the ECB-mailing-list or direct to the ECB-maintainer so the
-solution can be integrated in the next ECB-release
-
-If calling from an edit-window fails too then please file a complete
-bug-report to the ECB-mailing-list (*note Submitting problem report::). This
-report should contain a detailed description which command of which package
-fails under which circumstances!
-
----------- Footnotes ----------
-
-(1) Xrefactory is available at `http://www.xref-tech.com'
-
-
-File: ecb.info,  Node: Bugs,  Prev: Conflicts,  Up: Conflicts and bugs
-
-12.2 Known bugs
-===============
-
-This section describes all currently known bugs of ECB. The maintainers of
-ECB try to fix these bugs as soon as possible.
-
-12.2.1 Following the source-file link in a help-buffer
-------------------------------------------------------
-
-The following bug occurs only in ECB-versions < 1.96 and is fixed since ECB
-1.96!!
-
-This bug only occurs if a compile-window is used and visible!
-
-If you call functions like `describe-function' which displays a help-buffer
-in the compile-window, then you will often get an output like this in the
-compile-window:
-
-   ecb-activate is an interactive compiled Lisp function in `ecb'.
-   (ecb-activate)
-
-   Activates the ECB...
-
-The link to `ecb' is normally a click-able link, means if you click with the
-middle-mouse button onto it the file is opened (in our example `ecb.el' would
-be opened.
-
-If you click onto it when the help-buffer is already the current buffer (i.e.
-the compile-window is already selected before the click!)  then all is
-working fine (i.e. the file is opened in the edit-window), but if you click
-onto the link without selecting the compile-window before (i.e. the
-edit-window is the current selected window) then the file is opened in the
-compile-window which is probably not what you want. Not a big problem but
-annoying.
-
-The only available workaround is, first selecting the compile-window and then
-clicking onto the link!
-
-12.2.2 Extra history-entries for JDEE source-buffers
-----------------------------------------------------
-
-ECB on occasions creates an extra edit buffer for entries in the history
-window. For example, let say there are three entries in the history window:
-
-   Test1
-   Test2
-   Test3
-
-In the edit window Test1 file is edited. When clicked on Test2 entry in
-history, on occasion instead of switching to the existing buffer for Test2, a
-new edit buffer is opened for Test2 file. At this point, there are four
-entries in the history as follows:
-
-   Test2
-   Test2<2>
-   Test1
-   Test3
-
-
-File: ecb.info,  Node: FAQ,  Next: Command Index,  Prev: Conflicts and bugs,  Up: Top
-
-13 Frequently asked questions
-*****************************
-
-This is the Emacs Code Browser FAQ.
-
-QUESTION                          ANSWER
-
-What is the first step i          Read carefully the related sections of the
-should do if i have problems      online-help of ECB.
-with ECB?                         
-
-What should i do, if a have a     Send a problem-report to the ECB-mailing-list
-problem which can not be          with the command `ecb-submit-problem-report'.
-solved even after reading the     See *note Submitting problem report::.
-online-help?                      
-
-What should i do, if another      Take a look into *note Conflicts::. If your
-package seems not to work         package is not listed there then submit a
-correct with ECB?                 problem-report.
-
-Can ECB parse and display         Yes, in all version >= 1.94. ECB can now
-source-contents not supported     parse and display all source-contents
-by semantic?                      supported by semantic, imenu or etags - same
-                                  as speedbar. See *note Non-semantic sources::.
-
-Why are the lines in the ECB-,    Check the variable
-temp- and compilation-buffers     `truncate-partial-width-windows' and set it to
-not wrapped but truncated?        nil.
-
-Why doesn't ECB work correct      The variable `vc-delete-logbuf-window' must
-with VC?                          be set to nil during active ECB. This can be
-                                  done with the hooks of ECB.
-
-Does ECB support C++ as well      This depends strongly on the used
-as Java?                          semantic-version, but all semantic-versions
-                                  >= semantic-1.4.3 support C++ really well.
-
-Does ECB support Perl?            If perl can be parsed either by imenu, etags
-                                  or semantic then ECB supports perl. Of course
-                                  ECB would support perl best if perl is
-                                  supported by semantic.
-
-Does ECB support language XYZ?    See question "Does ECB support Perl?" and
-                                  replace "Perl" with "XYZ" in the answer.
-
-How to add new languages to       Add the language XYZ to semantic (perform all
-ECB?                              necessary steps described in the
-                                  semantic-manual) and ECB will automatically
-                                  support language XYZ!  There is nothing to do
-                                  in ECB itself! Same when you write an imenu-
-                                  or etags-support for language XYZ.
-
-Why does ECB not recognize my     Your C++-files have probably an extension
-source-files for C++?             which is not mapped to c++-mode in
-                                  `auto-mode-alist' and/or your own Emacs-setup
-                                  has "destroyed" the correct value of the
-                                  hook-variable `c++-mode-hook'.
-                                  See *note Setting up Emacs::.
-
-Why doesn't ECB display the       There can be several reasons: First the value
-node name in the echo area if     of the option
-mouse moves over it?              `ecb-show-node-name-in-minibuffer' must be
-                                  either `always' or `if-too-long'. If this is
-                                  OK, then maybe you have turned on
-                                  follow-mouse AFTER activating ECB;
-                                  follow-mouse must be turned on BEFORE ECB is
-                                  activated, e.g. in the `ecb-activate-hook'!
-                                  But with Emacs 21.X and XEmacs there are no
-                                  problems with this feature, just activate it.
-
-Is it possible to make the        You can use the library "desktop.el" which
-history of ECB persistent?        works very well with ECB.  Then all files of
-                                  your recent Emacs-session will be opened
-                                  automatically after next Emacs-start and will
-                                  be added automatically to the ECB-history
-                                  after ECB-start.
-
-Is there an                       For Java the JDEE(1) has this feature and for
-"Intellisense"-mechanism like     all other languages semantic offer something
-with other IDEs?                  similar, see
-                                  `http://cedet.sourceforge.net/intellisense.shtml'
-
-Can i use ECB in combination      You can, but for ECB-versions < 1.96 it is
-with Gnus within one frame?       not recommended because each of them has it's
-                                  own window-management and probably there will
-                                  be conflicts, so use different frames for ECB
-                                  and Gnus! But beginning with ECB 1.96 you can
-                                  use either escreen.el or winring.el as
-                                  "window-manager" which allows you in
-                                  consequence to use ECB and applications like
-                                  Gnus in one frame!
-                                  *Note Window-managers and ECB::.
-
-Can i speed up displaying the     Yes, see the option
-contents of big-size              `ecb-cache-directory-contents'. Read the
-directories?                      section
-                                  *note Large directories::.
-
-Is it possible to create/use      Yes. *note Creating a new ECB-layout:: and
-other layouts than the            *note The layout-engine:: are the relevant
-built-in ones?                    sections. The former one describes how to
-                                  create interactively new layouts where the
-                                  latter one is for Elisp-programmers.
-
-Can i use speedbar as             Yes, see *note Integrating speedbar::.
-directory-browser within ECB?     
-
-Can i exclude subdirectories      Yes, see *note Grepping directories::.
-from the recursive grep in the    
-directories buffer?               
-
-How can i prevent                 Set `semanticdb-default-save-directory' to a
-contaminating each directory      directory.
-with a file `semantic-cache'?     
-
-Why ECB displays large            This comes from semantic;
-portions of current               see *note Setting up Emacs::.
-source-file with dark             
-background?                       
-
-Why ECB underlines some parts     This comes from semantic;
-of current source-file?           see *note Setting up Emacs::.
-
-Can i add my own commands to      Yes, see *note Using the mouse::.
-the popup-menus of                
-tree-buffers?                     
-
-Can ECB display the               Yes, see *note Tips and tricks::.
-compile-window "on demand"?       
-
-Which buffers are treated as      See the docstring of the function
-compilation-buffers by ECB?       `ecb-compilation-buffer-p'.
-
-How can i change the modeline     You can change it with the options
-of an ECB-tree-buffer?            `ecb-mode-line-prefixes',
-                                  `ecb-mode-line-data' and
-                                  `ecb-mode-line-display-window-number'.
-
-Can the tree-buffers being        Yes, see option
-selected faster than with the     `ecb-mode-line-display-window-number'.
-standard-keybindings of ECB?      
-
-Can ECB display the               Yes, see option
-window-number in the modeline     `ecb-mode-line-display-window-number'.
-of the special windows?           
-
-How can i change the              You can do this with option `ecb-key-map'
-keybindings of ECB?               (*note ecb-general::).
-
-What can i do if                  Either the current `major-modes' is not
-hiding/showing from the           supported by hideshow or you have to add an
-methods-buffer does not work?     entry to `hs-special-modes-alist'
-                                  (*note Hide-show::).
-
-Can i maximize one of the         Yes, see *note Maximizing the ECB windows::.
-ECB-windows for better            
-overlook?                         
-
-Can i hide the ECB-windows for    Yes, see *note Hiding the ECB windows::.
-getting more editing-space?       
-
-Can i define the actions ECB      Yes, see *note Visiting tags::.
-performs after visiting a tag?    
-
-Buffers are not displayed         See *note Problems with the compile window::.
-correctly in the                  
-compile-window?                   
-
-Can ECB work together with        Yes, see *note Window-managers and ECB::.
-window-managers like              
-escreen.el?                       
-
-Can i remove these "ugly"         Yes, see option `ecb-tree-buffer-style'.
-vertical lines from a             
-tree-buffer?                      
-
-ECB does not display images in    Customize `ecb-tree-buffer-style' and restart
-the tree-buffers - what can i     ECB. But note: GNU Emacs <= 21.3.X for
-do?                               Windows does not support image-display so ECB
-                                  uses always ascii-guide-lines even when here
-                                  the image-style is set in
-                                  `ecb-tree-buffer-style'.
-
-Do `special-display-function'     Yes, see
-et. al. work with ECB.            *note Using special-display with ECB::.
-
-Can i activate the popup-menu     Yes, see *note Using popup-menus::.
-of a tree-buffer from keyboard?   
-
-Can i display the popup-menu      Yes, see *note Using popup-menus::.
-of a tree-buffer with tmm?        
-
-Does ECB disable all advices      "Nes"(2), see remarks in the documentation of
-after deactivation?               the option
-                                  `ecb-split-edit-window-after-start'.
-
-Can ECB preserve the full         Yes, see the option
-state of ECB between              `ecb-split-edit-window-after-start'.
-deactivation and next             
-activation?                       
-
-Can i change the behavior how     Yes, see *note The other window::.
-ECB chooses another window for    
-selecting it or scrolling it.     
-
-Can i increase the allowed        Yes, see the docstring of the option
-depth of nested submenus.         `ecb-directories-menu-user-extension'.
-
-Can i apply some filters to       Yes, see *note Filtering the tree-buffers::
-the Tree-buffers.                 
-
-With XEmacs i get sometimes an    Disable the func-menu support in your
-error "Wrong number of            XEmacs-setup. See *note Conflicts::.
-arguments: widen (1)". What       
-can i do?                         
-
-Can i use desktop.el in           Yes, see *note Conflicts::.
-combination with ECB?             
-
-Opening directories takes a       Read *note Large directories::.
-long time - what can i do?        
-
-ECB seems to be blocked           ECB performs some stealthy tasks when idle -
-sometimes - what is the reason?   this can cause sometimes a blocked Emacs but
-                                  this tasks will be immetiatelly interrupted
-                                  by any user-event so there should be normally
-                                  no problems. But especially for mounted
-                                  net-drives some of the stealthy tasks can
-                                  take time up to some seconds for each file -
-                                  and during one file-operation it can not be
-                                  interrupted. See also
-                                  `ecb-stealthy-tasks-delay'.
-
-Can i exclude certain             Yes, see option
-directories from being checked    `ecb-prescan-directories-exclude-regexps'.
-for emptyness?                    
-
-Can i exclude certain             Yes, see option
-directories from checking the     `ecb-vc-directory-exclude-regexps'.
-VC-state of the contained         
-sources?                          
-
-Can i exclude certain             Yes, see option
-directories from checking the     `ecb-read-only-check-exclude-regexps'.
-read-only-state of the            
-contained sources?                
-
-ECB ignores the remote-paths i    Maybe you have to check the option
-have added to                     `ecb-ping-options'. Ensure that this option
-`ecb-source-path'.                contains a value suitable for your
-                                  ping-program (see `ecb-ping-program').
-                                  See also *note Remote directories::.
-
-ECB seems to be blocked a long    Maybe you use cygwin-XEmacs. Then either the
-time.                             empty-dir-check (see option
-                                  `ecb-prescan-directories-for-emptyness') or
-                                  the VC-support (see `ecb-vc-enable-support')
-                                  can block ECB.
-                                  For the latter one see *note Known
-                                  VC-problems::.
-
-ECB seems to be blocked during    Maybe the root repository for the current
-the VC-state update in the        directory is a remote-repository. This can
-tree-windows.                     result in a long lasting check-time per file.
-                                  See also *note Version-control support:: for
-                                  hints what you can do.
-
-I have encountered some           See also *note Version-control support:: for
-problems with the display of      hints what you can do.
-the VC-state in the               
-tree-buffers.                     
-
-I get errors when trying to       Ensure that the ECB-configuration of these
-download new ECB with             tools is correct for your system (see
-`ecb-download-ecb'.               `ecb-wget-setup', `ecb-gzip-setup' and
-                                  `ecb-tar-setup').
-
----------- Footnotes ----------
-
-(1) `http://jdee.sunsite.dk/'
-
-(2) Nes is a combination of No and Yes :-)
 

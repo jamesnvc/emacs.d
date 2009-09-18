@@ -3,7 +3,7 @@
 ;; Copyright (C) 2008, 2009 Eric M. Ludlam
 
 ;; Author: Eric M. Ludlam <eric@siege-engine.com>
-;; X-RCS: $Id: semantic-ia-utest.el,v 1.24 2009/02/26 03:29:21 zappo Exp $
+;; X-RCS: $Id: semantic-ia-utest.el,v 1.30 2009/08/18 03:07:34 zappo Exp $
 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
@@ -32,6 +32,10 @@
 ;;; Code:
 (require 'cedet-utests)
 (require 'semantic)
+(require 'semantic-analyze)
+(require 'semantic-analyze-refs)
+(require 'semantic-symref)
+(require 'semantic-symref-filter)
 
 (defvar semantic-ia-utest-file-list
   '(
@@ -42,7 +46,9 @@
     "tests/testtemplates.cpp"
     "tests/testfriends.cpp"
     "tests/testusing.cpp"
+    "tests/testnsp.cpp"
     "tests/testsppcomplete.c"
+    "tests/testvarnames.c"
     "tests/testjavacomp.java"
     )
   "List of files with analyzer completion test points.")
@@ -56,7 +62,8 @@
 Argument ARG specifies which set of tests to run.
  1 - ia utests
  2 - regs utests
- 3 - symrefs utests"
+ 3 - symrefs utests
+ 4 - symref count utests"
   (interactive "P")
   (save-excursion
 
@@ -71,6 +78,11 @@ Argument ARG specifies which set of tests to run.
 
       (while fl
 
+	;; Make sure we have the files we think we have.
+	(when (not (file-exists-p (car fl)))
+	  (error "Cannot find unit test file: %s" (car fl)))
+
+	;; Run the tests.
 	(let ((fb (find-buffer-visiting (car fl)))
 	      (b (semantic-find-file-noselect (car fl) t)))
 
@@ -97,6 +109,10 @@ Argument ARG specifies which set of tests to run.
 	      (set-buffer b)
 	      (semantic-sr-utest-buffer-refs))
 
+	    (when (or (not arg) (= arg 4))
+	      (set-buffer b)
+	      (semantic-src-utest-buffer-refs))
+
 	    (semantic-ia-utest-log "  ** Completed tests in %s\n"
 				   (buffer-name))
 	    )
@@ -107,16 +123,18 @@ Argument ARG specifies which set of tests to run.
 	  )
 	(setq fl (cdr fl)))
 
-      (cedet-utest-log-shutdown 
+      (cedet-utest-log-shutdown
        "ANALYZER"
        (when semantic-ia-utest-error-log-list
-	 (format "%s Failures found." 
+	 (format "%s Failures found."
 		 (length semantic-ia-utest-error-log-list))))
+      (when semantic-ia-utest-error-log-list
+	(error "Failures found during analyzer unit tests"))
       ))
   )
 
 (defun semantic-ia-utest-buffer ()
-  "Run a unit-test pass in the current buffer."
+  "Run analyzer completion unit-test pass in the current buffer."
 
   (let* ((idx 1)
 	 (regex-p nil)
@@ -192,7 +210,7 @@ Argument ARG specifies which set of tests to run.
     ))
 
 (defun semantic-ia-utest-buffer-refs ()
-  "Run a unit-test pass in the current buffer."
+  "Run a analyze-refs unit-test pass in the current buffer."
 
   (let* ((idx 1)
 	 (regex-p nil)
@@ -301,7 +319,7 @@ Argument ARG specifies which set of tests to run.
     ))
 
 (defun semantic-sr-utest-buffer-refs ()
-  "Run a unit-test pass in the current buffer."
+  "Run a symref unit-test pass in the current buffer."
 
   ;; This line will also force the include, scope, and typecache.
   (semantic-clear-toplevel-cache)
@@ -352,12 +370,15 @@ Argument ARG specifies which set of tests to run.
 			 )
 	    )
 
-	(setq actual (list (mapcar
-			    'file-name-nondirectory
-			    (semantic-symref-result-get-files actual-result))
-			   (mapcar
-			    'semantic-format-tag-canonical-name
-			    (semantic-symref-result-get-tags actual-result))))
+	(setq actual (list (sort (mapcar
+				  'file-name-nondirectory
+				  (semantic-symref-result-get-files actual-result))
+				 'string<)
+			   (sort
+			    (mapcar
+			     'semantic-format-tag-canonical-name
+			     (semantic-symref-result-get-tags actual-result))
+			    'string<)))
 
       
 	(if (equal desired actual)
@@ -393,6 +414,81 @@ Argument ARG specifies which set of tests to run.
 	   "    Unit tests (symrefs) failed tests")
 	  )
       (semantic-ia-utest-log "    Unit tests (symrefs) passed (%d total)"
+			     (- idx 1)))
+
+    ))
+
+(defun semantic-src-utest-buffer-refs ()
+  "Run a sym-ref counting unit-test pass in the current buffer."
+
+  ;; This line will also force the include, scope, and typecache.
+  (semantic-clear-toplevel-cache)
+  ;; Force tags to be parsed.
+  (semantic-fetch-tags)
+
+  (let* ((idx 1)
+	 (start nil)
+	 (regex-p nil)
+	 (desired nil)
+	 (actual nil)
+	 (pass nil)
+	 (fail nil)
+	 ;; Exclude unpredictable system files in the
+	 ;; header include list.
+	 (semanticdb-find-default-throttle
+	  (remq 'system semanticdb-find-default-throttle))
+	 )
+    ;; Keep looking for test points until we run out.
+    (while (save-excursion
+	     (setq regex-p (concat "//\\s-*@"
+				   (number-to-string idx)
+				   "@\\s-+\\(\\w+\\)" ))
+	     (goto-char (point-min))
+	     (save-match-data
+	       (when (re-search-forward regex-p nil t)
+		 (goto-char (match-beginning 1))
+		 (setq desired (read (buffer-substring (point) (point-at-eol))))
+		 (setq start (match-beginning 0))
+		 (goto-char start)
+		 (setq actual (semantic-symref-test-count-hits-in-tag))
+		 start)))
+
+      (if (not actual)
+	  (progn
+	    (setq fail (cons idx fail))
+	    (semantic-ia-utest-log
+	     "  Failed symref count %d: No results." idx)
+
+	    (add-to-list 'semantic-ia-utest-error-log-list
+			 (list (buffer-name) idx)
+			 )
+	    )
+      
+	(if (equal desired actual)
+	    ;; We passed
+	    (setq pass (cons idx pass))
+	  ;; We failed.
+	  (setq fail (cons idx fail))
+	  (when (not (equal actual desired))
+	    (semantic-ia-utest-log
+	     "  Failed symref count %d: Actual: %S Desired: %S"
+	     idx actual desired)
+	    )
+
+	  (add-to-list 'semantic-ia-utest-error-log-list
+		       (list (buffer-name) idx)
+		       )
+	  ))
+
+      (setq idx (1+ idx))
+      )
+    
+    (if fail
+	(progn
+	  (semantic-ia-utest-log
+	   "    Unit tests (symrefs counter) failed tests")
+	  )
+      (semantic-ia-utest-log "    Unit tests (symrefs counter) passed (%d total)"
 			     (- idx 1)))
 
     ))

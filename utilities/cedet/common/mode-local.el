@@ -7,7 +7,7 @@
 ;; Maintainer: David Ponce <david@dponce.com>
 ;; Created: 27 Apr 2004
 ;; Keywords: syntax
-;; X-RCS: $Id: mode-local.el,v 1.15 2009/01/09 22:58:30 zappo Exp $
+;; X-RCS: $Id: mode-local.el,v 1.23 2009/07/17 02:32:16 zappo Exp $
 ;;
 ;; This file is not part of GNU Emacs.
 ;;
@@ -106,13 +106,27 @@ walk through.  It defaults to `buffer-list'."
            (when (or (not predicate) (funcall predicate))
              (funcall function))))))
 
+(defun mode-local-equivalent-mode-p (mode)
+  "Is the major-mode in the current buffer equivalent to a mode in MODES."
+  (let ((modes nil))
+    (while mode
+      (setq modes (cons mode modes)
+	    mode  (get-mode-local-parent mode)))
+    modes))
+
 (defun mode-local-map-mode-buffers (function modes)
   "Run FUNCTION on every file buffer with major mode in MODES.
 MODES can be a symbol or a list of symbols.
 FUNCTION does not have arguments."
   (or (listp modes) (setq modes (list modes)))
   (mode-local-map-file-buffers
-   function #'(lambda () (memq major-mode modes))))
+   function #'(lambda () 
+		(let ((mm (mode-local-equivalent-mode-p major-mode))
+		      (ans nil))
+		  (while (and (not ans) mm)
+		    (setq ans (memq (car mm) modes)
+			  mm (cdr mm)) )
+		  ans))))
 
 ;;; Hook machinery
 ;;
@@ -134,7 +148,7 @@ which mode local bindings have been activated."
 (defun mode-local-post-major-mode-change ()
   "`post-command-hook' run when there is a `major-mode' change.
 This makes sure mode local init type stuff can occur."
-  (remove-hook 'post-command-hook 'mode-local-post-major-mode-change)
+  (remove-hook 'post-command-hook 'mode-local-post-major-mode-change nil)
   (let ((buffers mode-local-changed-mode-buffers))
     (setq mode-local-changed-mode-buffers nil)
     (mode-local-map-file-buffers
@@ -149,7 +163,7 @@ This makes sure mode local init type stuff can occur."
 (defun mode-local-on-major-mode-change ()
   "Function called in `change-major-mode-hook'."
   (add-to-list 'mode-local-changed-mode-buffers (current-buffer))
-  (add-hook 'post-command-hook 'mode-local-post-major-mode-change))
+  (add-hook 'post-command-hook 'mode-local-post-major-mode-change t nil))
 
 (add-hook 'find-file-hooks 'mode-local-post-major-mode-change)
 (add-hook 'change-major-mode-hook 'mode-local-on-major-mode-change)
@@ -164,7 +178,7 @@ local variables have been defined."
   ;; Refresh mode bindings to get mode local variables inherited from
   ;; PARENT. To work properly, the following should be called after
   ;; PARENT mode local variables have been defined.
-  (mode-local-map-mode-buffers mode 'activate-mode-local-bindings))
+  (mode-local-map-mode-buffers #'activate-mode-local-bindings mode))
 
 (defsubst get-mode-local-parent (mode)
   "Return the mode parent of the major mode MODE.
@@ -316,28 +330,41 @@ variables.
 If MODE is not specified it defaults to current `major-mode'.
 Return the alist of buffer-local variables that have been changed.
 Elements are (SYMBOL . PREVIOUS-VALUE), describing one variable."
-  (let (modes table old-locals)
-    (unless mode
-      (set (make-local-variable 'mode-local--init-mode) major-mode)
-      (setq mode major-mode))
-    ;; Get MODE's parents & MODE in the right order.
-    (while mode
-      (setq modes (cons mode modes)
-            mode  (get-mode-local-parent mode)))
-    ;; Activate mode bindings following parent modes order.
-    (dolist (mode modes)
-      (when (setq table (get mode 'mode-local-symbol-table))
-        (mapatoms
-         #'(lambda (var)
-             (when (get var 'mode-variable-flag)
-               (let ((v (intern (symbol-name var))))
-                 ;; Save the current buffer-local value of the
-                 ;; mode-local variable.
-                 (and (local-variable-p v (current-buffer))
-                      (push (cons v (symbol-value v)) old-locals))
-                 (set (make-local-variable v) (symbol-value var)))))
-         table)))
-    old-locals))
+  ;; Hack -
+  ;; do not do this if we are inside set-auto-mode as we may be in
+  ;; an initialization race condition.
+  (if (or  (and (featurep 'emacs) (boundp 'keep-mode-if-same))
+	   (and (featurep 'xemacs) (boundp 'just-from-file-name)))
+      ;; We are inside set-auto-mode, as this is an argument that is
+      ;; vaguely unique.
+      
+      ;; This will make sure that when everything is over, this will get
+      ;; called and we won't be under set-auto-mode anymore.
+      (mode-local-on-major-mode-change)
+
+    ;; Do the normal thing.
+    (let (modes table old-locals)
+      (unless mode
+	(set (make-local-variable 'mode-local--init-mode) major-mode)
+	(setq mode major-mode))
+      ;; Get MODE's parents & MODE in the right order.
+      (while mode
+	(setq modes (cons mode modes)
+	      mode  (get-mode-local-parent mode)))
+      ;; Activate mode bindings following parent modes order.
+      (dolist (mode modes)
+	(when (setq table (get mode 'mode-local-symbol-table))
+	  (mapatoms
+	   #'(lambda (var)
+	       (when (get var 'mode-variable-flag)
+		 (let ((v (intern (symbol-name var))))
+		   ;; Save the current buffer-local value of the
+		   ;; mode-local variable.
+		   (and (local-variable-p v (current-buffer))
+			(push (cons v (symbol-value v)) old-locals))
+		   (set (make-local-variable v) (symbol-value var)))))
+	   table)))
+      old-locals)))
 
 (defun deactivate-mode-local-bindings (&optional mode)
   "Deactivate variables defined locally in MODE and its parents.
@@ -357,32 +384,48 @@ If MODE is not specified it defaults to current `major-mode'."
          table))
       (setq mode (get-mode-local-parent mode)))))
 
-(defmacro with-mode-local (mode &rest body)
-   "With the local bindings of MODE, evaluate BODY.
+(defmacro with-mode-local-symbol (mode &rest body)
+   "With the local bindings of MODE symbol, evaluate BODY.
 The current mode bindings are saved, BODY is evaluated, and the saved
 bindings are restored, even in case of an abnormal exit.
-Value is what BODY returns."
+Value is what BODY returns.
+This is like `with-mode-local', except that MODE's value is used.
+To use the symbol MODE (quoted), use `with-mode-local'."
    (let ((old-mode  (make-symbol "mode"))
          (old-locals (make-symbol "old-locals"))
+	 (new-mode (make-symbol "new-mode"))
          (local (make-symbol "local")))
      `(let ((,old-mode mode-local-active-mode)
-            (,old-locals nil))
+            (,old-locals nil)
+	    (,new-mode ,mode)
+	    )
         (unwind-protect
             (progn
               (deactivate-mode-local-bindings ,old-mode)
-              (setq mode-local-active-mode ',mode)
+              (setq mode-local-active-mode ,new-mode)
               ;; Save the previous value of buffer-local variables
               ;; changed by `activate-mode-local-bindings'.
-              (setq ,old-locals (activate-mode-local-bindings ',mode))
+              (setq ,old-locals (activate-mode-local-bindings ,new-mode))
               ,@body)
-          (deactivate-mode-local-bindings ',mode)
+          (deactivate-mode-local-bindings ,new-mode)
           ;; Restore the previous value of buffer-local variables.
           (dolist (,local ,old-locals)
             (set (car ,local) (cdr ,local)))
           ;; Restore the mode local variables.
           (setq mode-local-active-mode ,old-mode)
           (activate-mode-local-bindings ,old-mode)))))
+(put 'with-mode-local-symbol 'lisp-indent-function 1)
+
+(defmacro with-mode-local (mode &rest body)
+   "With the local bindings of MODE, evaluate BODY.
+The current mode bindings are saved, BODY is evaluated, and the saved
+bindings are restored, even in case of an abnormal exit.
+Value is what BODY returns.
+This lis like `with-mode-local-symbol', except that MODE is quoted
+and is note evaluated."
+   `(with-mode-local-symbol ',mode ,@body))
 (put 'with-mode-local 'lisp-indent-function 1)
+
 
 (defsubst mode-local-value (mode sym)
   "Return the value of the MODE local variable SYM."
@@ -727,7 +770,7 @@ invoked interactively."
       (help-setup-xref
        (list 'mode-local-describe-bindings-1 buffer-or-mode)
        interactive-p))
-    (with-output-to-temp-buffer "*Help*"
+    (with-output-to-temp-buffer (help-buffer) ; "*Help*"
       (with-current-buffer standard-output
         (mode-local-describe-bindings-2 buffer-or-mode)))))
 
@@ -826,7 +869,7 @@ invoked interactively."
 (defun mode-local-setup-edebug-specs ()
   "Define edebug specification for mode local macros."
   (def-edebug-spec setq-mode-local
-    (symbolp (&rest symbolp form))
+    (symbolp &rest symbolp form)
     )
   (def-edebug-spec defvar-mode-local
     (&define symbolp name def-form [ &optional stringp ] )

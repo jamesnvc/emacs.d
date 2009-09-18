@@ -4,7 +4,7 @@
 
 ;; Author: Eric M. Ludlam <zappo@gnu.org>
 ;; Keywords: project, make
-;; RCS: $Id: ede-proj.el,v 1.58 2009/01/20 02:39:53 zappo Exp $
+;; RCS: $Id: ede-proj.el,v 1.62 2009/08/08 21:44:10 zappo Exp $
 
 ;; This software is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -31,6 +31,7 @@
 
 (eval-and-compile '(require 'ede))
 (require 'ede-proj-comp)
+(require 'ede-make)
 
 ;;; Class Definitions:
 (defclass ede-proj-target (ede-target)
@@ -331,8 +332,8 @@ Argument TARGET is the project we are completing customization on."
   (let ((f (ede-convert-path this (buffer-file-name buffer))))
     (or (string= (file-name-nondirectory (oref this file)) f)
 	(string= (ede-proj-dist-makefile this) f)
-	(string-match "Makefile\\(\\.\\(in\\|am\\)\\)?" f)
-	(string-match "config\\(ure\\.in\\|\\.stutus\\)?" f)
+	(string-match "Makefile\\(\\.\\(in\\|am\\)\\)?$" f)
+	(string-match "config\\(ure\\.in\\|\\.stutus\\)?$" f)
 	)))
 
 (defmethod ede-buffer-mine ((this ede-proj-target) buffer)
@@ -453,7 +454,7 @@ FILE must be massaged by `ede-convert-path'."
 	(error "Try `ede-update-version' before making a distribution"))
     (ede-proj-setup-buildenvironment this)
     (if (string= pm "Makefile.am") (setq pm "Makefile"))
-    (compile (concat "make -f " pm " dist"))
+    (compile (concat ede-make-command " -f " pm " dist"))
     ))
 
 (defmethod project-dist-files ((this ede-proj-project))
@@ -470,7 +471,7 @@ Argument COMMAND is the command to use when compiling."
 	(default-directory (file-name-directory (oref proj file))))
     (ede-proj-setup-buildenvironment proj)
     (if (string= pm "Makefile.am") (setq pm "Makefile"))
-    (compile (concat "make -f " pm " all"))))
+    (compile (concat ede-make-command" -f " pm " all"))))
 
 ;;; Target type specific compilations/debug
 ;;
@@ -484,7 +485,7 @@ Argument COMMAND is the command to use for compiling the target."
   "Compile the current target program OBJ.
 Optional argument COMMAND is the s the alternate command to use."
   (ede-proj-setup-buildenvironment (ede-current-project))
-  (compile (concat "make -f " (oref obj makefile) " "
+  (compile (concat ede-make-command " -f " (oref obj makefile) " "
 		   (ede-proj-makefile-target-name obj))))
 
 (defmethod project-debug-target ((obj ede-proj-target))
@@ -561,7 +562,7 @@ Converts all symbols into the objects to be used."
 	  (unless link
 	    ;; No linker stands out!  Loop over our linkers and pull out
 	    ;; the first that has no source type requirement.
-	    (while (and avail (not (slot-boundp (car avail) 'sourcetype)))
+	    (while (and avail (not (eieio-instance-inheritor-slot-boundp (car avail) 'sourcetype)))
 	      (setq avail (cdr avail)))
 	    (setq link (cdr avail)))))
       ;; Return the disovered linkers
@@ -637,18 +638,18 @@ Optional argument FORCE will force items to be regenerated."
       (ede-proj-makefile-create-maybe this (ede-proj-dist-makefile this))
     (require 'ede-pmake)
     (ede-proj-makefile-create this (ede-proj-dist-makefile this)))
-  (if (ede-proj-automake-p this)
-      (progn 
-	(require 'ede-pconf)
-	;; If the user wants to force this, do it some other way?
-	(ede-proj-configure-synchronize this)
-	;; Now run automake to fill in the blanks, autoconf, and other
-	;; auto thingies so that we can just say "make" when done.
-	
-	))
   ;; Rebuild all subprojects
   (ede-map-subprojects
    this (lambda (sproj) (ede-proj-setup-buildenvironment sproj force)))
+  ;; Autoconf projects need to do other kinds of initializations.
+  (when (and (ede-proj-automake-p this)
+	     (eq this (ede-toplevel this)))
+    (require 'ede-pconf)
+    ;; If the user wants to force this, do it some other way?
+    (ede-proj-configure-synchronize this)
+    ;; Now run automake to fill in the blanks, autoconf, and other
+    ;; auto thingies so that we can just say "make" when done.
+    )
   )
 
 

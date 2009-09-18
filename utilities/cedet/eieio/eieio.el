@@ -5,7 +5,7 @@
 ;; Copyright (C) 95,96,98,99,2000,01,02,03,04,05,06,07,08,09 Eric M. Ludlam
 ;;
 ;; Author: <zappo@gnu.org>
-;; RCS: $Id: eieio.el,v 1.183 2009/02/01 20:26:44 scymtym Exp $
+;; RCS: $Id: eieio.el,v 1.188 2009/08/30 01:50:29 zappo Exp $
 ;; Keywords: OO, lisp
 
 (defvar eieio-version "1.2"
@@ -42,16 +42,7 @@
 ;; is the only way I seem to be able to make this stuff load properly.
 
 ;; @TODO - fix :initform to be a form, not a quoted value
-;; @TODO - For API calls like `object-p', replace with something
-;;         that does not conflict with "object", meaning a lisp object.
 ;; @TODO - Prefix non-clos functions with `eieio-'.
-
-(when (featurep 'eieio)
-  (error "Do not load EIEIO twice."))
-
-(eval-when-compile
-  (when (featurep 'eieio)
-    (error "Do not byte-compile EIEIO if EIEIO is already loaded.")))
 
 (require 'cl)
 (load "cl-macs" nil t) ; No provide in this file.
@@ -81,7 +72,7 @@ introduced."
 			  (if beta (format "beta%s" beta) ""))))
 
 (eval-and-compile
-;; Abount the above.  EIEIO must process it's own code when it compiles
+;; About the above.  EIEIO must process it's own code when it compiles
 ;; itself, thus, by eval-and-compiling outselves, we solve the problem.
 
 ;; Compatibility
@@ -104,11 +95,7 @@ introduced."
 ;;
 
 (defvar eieio-hook nil
-  "*This hook is executed, then cleared each time `defclass' is called.
-The immediate effect is that I can safely keep track of common-lisp
-`setf' definitions regardless of the order.  Users can add hooks to
-this variable without worrying about weather this package has been
-loaded or not.")
+  "*This hook is executed, then cleared each time `defclass' is called.")
 
 (defvar eieio-error-unsupported-class-tags nil
   "*Non nil to throw an error if an encountered tag us unsupported.
@@ -141,7 +128,10 @@ execute a `call-next-method'.  DO NOT SET THIS YOURSELF!")
 (defvar eieio-initializing-object  nil
   "Set to non-nil while initializing an object.")
 
-(defconst eieio-unbound (make-symbol "unbound")
+(defconst eieio-unbound
+  (if (and (boundp 'eieio-unbound) (symbolp eieio-unbound))
+      eieio-unbound
+    (make-symbol "unbound"))
   "Uninterned symbol representing an unbound slot in an object.")
 
 ;; This is a bootstrap for eieio-default-superclass so it has a value
@@ -820,7 +810,8 @@ OPTIONS-AND-DOC as the toplevel documentation for this class."
       (aset newc class-default-object-cache cache))
 
     ;; Return our new class object
-    newc
+    ;; newc
+    cname
     ))
 
 (defun eieio-perform-slot-validation-for-default (slot spec value skipnil)
@@ -843,7 +834,10 @@ we must override it's value for a default.
 Optional argument SKIPNIL indicates if type checking should be skipped
 if default value is nil."
   ;; Make sure we duplicate those items that are sequences.
-  (if (sequencep d) (setq d (copy-sequence d)))
+  (condition-case nil
+      (if (sequencep d) (setq d (copy-sequence d)))
+    ;; This copy can fail on a cons cell with a non-cons in the cdr.  Lets skip it if it doesn't work.
+    (error nil))
   (if (sequencep type) (setq type (copy-sequence type)))
   (if (sequencep cust) (setq cust (copy-sequence cust)))
   (if (sequencep custg) (setq custg (copy-sequence custg)))
@@ -1464,26 +1458,6 @@ created by the :initarg tag."
 (defalias 'slot-value 'eieio-oref)
 (defalias 'set-slot-value 'eieio-oset)
 
-;; @TODO - DELETE THIS AFTER FAIR WARNING
-
-;; This alias is needed so that functions can be written
-;; for defaults, but still behave like lambdas.
-(defmacro lambda-default (&rest cdr)
-  "The same as `lambda' but is used as a default value in `defclass'.
-As such, the form (lambda-default ARGS DOCSTRING INTERACTIVE BODY) is
-self quoting.  This macro is meant for the sole purpose of quoting
-lambda expressions into class defaults.  Any `lambda-default'
-expression is automatically transformed into a `lambda' expression
-when copied from the defaults into a new object.  The use of
-`oref-default', however, will return a `lambda-default' expression.
-CDR is function definition and body."
-  (message "Warning: Use of `labda-default' will be obsoleted in the next version of EIEIO.")
-  ;; This definition is copied directly from subr.el for lambda
-  (list 'function (cons 'lambda-default cdr)))
-
-(put 'lambda-default 'lisp-indent-function 'defun)
-(put 'lambda-default 'byte-compile 'byte-compile-lambda-form)
-
 (defmacro oref-default (obj slot)
   "Gets the default value of OBJ (maybe a class) for SLOT.
 The default value is the value installed in a class with the :initform
@@ -1516,21 +1490,11 @@ Fills in OBJ's SLOT with it's default value."
 
 (defun eieio-default-eval-maybe (val)
   "Check VAL, and return what `oref-default' would provide."
-  ;; check for functions to evaluate
-  (if (and (listp val) (equal (car val) 'lambda))
-      (progn
-	(message "Warning: Evaluation of `lambda' initform will be obsoleted in the next version of EIEIO.")
-	(funcall val)
-	)
-    ;; check for quoted things, and unquote them
-    (if (and (listp val) (eq (car val) 'quote))
-	(car (cdr val))
-      ;; return it verbatim
-      (if (and (listp val) (eq (car val) 'lambda-default))
-	  (let ((s (copy-sequence val)))
-	    (setcar s 'lambda)
-	    s)
-	val))))
+  ;; check for quoted things, and unquote them
+  (if (and (listp val) (eq (car val) 'quote))
+      (car (cdr val))
+    ;; return it verbatim
+    val))
 
 ;;; Object Set macros
 ;;
@@ -2396,10 +2360,6 @@ not nil."
 	(pub (aref (class-v (aref obj object-class)) class-public-a)))
     (while pub
       (let ((df (eieio-oref-default obj (car pub))))
-	(if (and (listp df) (eq (car df) 'lambda-default))
-	    (progn
-	      (setq df (copy-sequence df))
-	      (setcar df 'lambda)))
 	(if (or df set-all)
 	    (eieio-oset obj (car pub) df)))
       (setq pub (cdr pub)))))
@@ -2537,11 +2497,6 @@ dynamically set from SLOTS."
 	   (slot (aref scoped-class class-public-a))
 	   (defaults (aref scoped-class class-public-d)))
       (while slot
-	(if (and (listp (car defaults))
-		 (eq 'lambda (car (car defaults))))
-	    (progn
-	      (message "Warning: Evaluation of `lambda' initform will be obsoleted in the next version of EIEIO.")
-	      (eieio-oset this (car slot) (funcall (car defaults)))))
 	(setq slot (cdr slot)
 	      defaults (cdr defaults))))
     ;; Shared initialize will parse our slots for us.

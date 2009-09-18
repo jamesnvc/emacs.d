@@ -3,7 +3,7 @@
 <title>ecb-compilation - ECB - the Emacs Code Browser</title>
 <meta http-equiv="Content-Type" content="text/html">
 <meta name="description" content="ECB - the Emacs Code Browser">
-<meta name="generator" content="makeinfo 4.13">
+<meta name="generator" content="makeinfo 4.8">
 <link title="Top" rel="start" href="ecb.html#Top">
 <link rel="up" href="Customizable-options.html#Customizable-options" title="Customizable options">
 <link rel="prev" href="ecb_002dlayout.html#ecb_002dlayout" title="ecb-layout">
@@ -24,21 +24,21 @@
 </head>
 <body>
 <div class="node">
+<p>
 <a name="ecb-compilation"></a>
 <a name="ecb_002dcompilation"></a>
-<p>
 Next:&nbsp;<a rel="next" accesskey="n" href="ecb_002dcreate_002dlayout.html#ecb_002dcreate_002dlayout">ecb-create-layout</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="ecb_002dlayout.html#ecb_002dlayout">ecb-layout</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="Customizable-options.html#Customizable-options">Customizable options</a>
 <hr>
 </div>
 
-<h4 class="subsection">7.3.9 Group ecb-compilation</h4>
+<h4 class="subsection">7.3.10 Group ecb-compilation</h4>
 
 <p class="noindent">This group contains settings for the compile window of ECB:
 
 <div class="defun">
-&mdash; User Option: <b>compilation-buffer-names</b><var><a name="index-compilation_002dbuffer_002dnames-278"></a></var><br>
+&mdash; User Option: <b>compilation-buffer-names</b><var><a name="index-compilation_002dbuffer_002dnames-292"></a></var><br>
 <blockquote><p>Additional buffer names that should be displayed in the
 compile-window. Buffer names can either be defined as strings or as
 regexps. If the buffer-name of a buffer matches one of the defined
@@ -54,7 +54,7 @@ possible (see <a href="Using-eshell.html#Using-eshell">Using eshell</a>).
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>compilation-major-modes</b><var><a name="index-compilation_002dmajor_002dmodes-279"></a></var><br>
+&mdash; User Option: <b>compilation-major-modes</b><var><a name="index-compilation_002dmajor_002dmodes-293"></a></var><br>
 <blockquote><p>Additional major-mode that should be displayed in the compile-window. 
 All buffers of a major-mode contained in this list are displayed in
 the compile-window even if <code>compilation-buffer-p</code> says nil for
@@ -66,7 +66,7 @@ ECB already handles the eshell-integration as best as possible
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>compilation-predicates</b><var><a name="index-compilation_002dpredicates-280"></a></var><br>
+&mdash; User Option: <b>compilation-predicates</b><var><a name="index-compilation_002dpredicates-294"></a></var><br>
 <blockquote><p>Predicates when a buffer should be treated as compilation-buffer. 
 Every element of this list has to be a function or lambda-expression
 which gets as argument a buffer-object and which has to return not nil
@@ -83,7 +83,7 @@ not nil when the buffer is related to a living process.
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>compile-window-height</b><var><a name="index-compile_002dwindow_002dheight-281"></a></var><br>
+&mdash; User Option: <b>compile-window-height</b><var><a name="index-compile_002dwindow_002dheight-295"></a></var><br>
 <blockquote><p>Height of the persistent compilation-window of ECB. If you want a
 compilation window shown at the bottom of the ECB-layout then set here
 the height of it (Default is a height of 5). If you redraw the current
@@ -121,7 +121,7 @@ this layout with <code>ecb-redraw-layout</code>
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>compile-window-prevent-shrink-below-height</b><var><a name="index-compile_002dwindow_002dprevent_002dshrink_002dbelow_002dheight-282"></a></var><br>
+&mdash; User Option: <b>compile-window-prevent-shrink-below-height</b><var><a name="index-compile_002dwindow_002dprevent_002dshrink_002dbelow_002dheight-296"></a></var><br>
 <blockquote><p>Allow the compile-window to be shrunken below its height. A non nil
 value means ECB prevents the compile-window from being shrunken below
 the threshold of <code>ecb-compile-window-height</code> by displaying
@@ -136,7 +136,7 @@ of <code>ecb-compile-window-height</code>.
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>compile-window-temporally-enlarge</b><var><a name="index-compile_002dwindow_002dtemporally_002denlarge-283"></a></var><br>
+&mdash; User Option: <b>compile-window-temporally-enlarge</b><var><a name="index-compile_002dwindow_002dtemporally_002denlarge-297"></a></var><br>
 <blockquote><p>Let Emacs temporally enlarge the compile-window of the ECB-layout. 
 This option has only an effect if <code>ecb-compile-window-height</code> is
 not nil!
@@ -170,7 +170,7 @@ value of <code>ecb-compile-window-height</code>.
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>compile-window-width</b><var><a name="index-compile_002dwindow_002dwidth-284"></a></var><br>
+&mdash; User Option: <b>compile-window-width</b><var><a name="index-compile_002dwindow_002dwidth-298"></a></var><br>
 <blockquote><p>Width of the compile-window.
 
         <p>Possible values are <code>frame</code> and <code>edit-window</code>. 
@@ -189,7 +189,7 @@ With <code>frame</code> the compile-window looks like:
            |                    Compilation                      |
            |                                                     |
            -------------------------------------------------------
-</pre>
+   </pre>
         <p>With <code>edit-window</code> the compile-window looks like:
 
      <pre class="example">           -------------------------------------------------------
@@ -205,13 +205,13 @@ With <code>frame</code> the compile-window looks like:
            |              |            Compilation               |
            |              |                                      |
            -------------------------------------------------------
-</pre>
+   </pre>
         <p>This option takes only effect if <code>ecb-compile-window-height</code> is
 not nil! 
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>change-layout-preserves-compwin-state</b><var><a name="index-change_002dlayout_002dpreserves_002dcompwin_002dstate-285"></a></var><br>
+&mdash; User Option: <b>change-layout-preserves-compwin-state</b><var><a name="index-change_002dlayout_002dpreserves_002dcompwin_002dstate-299"></a></var><br>
 <blockquote><p>Changing the layout preserves the state of the compile-window. This is
 for example useful if the user toggles between several layouts (see
 <code>ecb-toggle-layout</code>) and wants to preserve the hidden-state of
@@ -219,7 +219,7 @@ the compile-window.
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>enlarged-compilation-window-max-height</b><var><a name="index-enlarged_002dcompilation_002dwindow_002dmax_002dheight-286"></a></var><br>
+&mdash; User Option: <b>enlarged-compilation-window-max-height</b><var><a name="index-enlarged_002dcompilation_002dwindow_002dmax_002dheight-300"></a></var><br>
 <blockquote><p>The max height of the compile-window after enlarging it. The max
 height of the compilation window after enlarged by
 <code>ecb-toggle-compile-window-height</code>. The following values are
@@ -249,7 +249,7 @@ the frame-height).
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>scroll-other-window-scrolls-compile-window</b><var><a name="index-scroll_002dother_002dwindow_002dscrolls_002dcompile_002dwindow-287"></a></var><br>
+&mdash; User Option: <b>scroll-other-window-scrolls-compile-window</b><var><a name="index-scroll_002dother_002dwindow_002dscrolls_002dcompile_002dwindow-301"></a></var><br>
 <blockquote><p><code>scroll-other-window</code> scrolls always the compile-window. For all
 details about the scroll-behavior of <code>scroll-other-window</code> see
 the advice documentation of <code>other-window-for-scrolling</code>. 

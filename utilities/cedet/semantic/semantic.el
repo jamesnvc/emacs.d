@@ -4,12 +4,12 @@
 
 ;; Author: Eric M. Ludlam <zappo@gnu.org>
 ;; Keywords: syntax
-;; X-RCS: $Id: semantic.el,v 1.211 2009/01/29 02:56:53 zappo Exp $
+;; X-RCS: $Id: semantic.el,v 1.213 2009/04/18 16:29:18 zappo Exp $
 
 (eval-and-compile
   ;; Other package depend on this value at compile time via inversion.
 
-  (defvar semantic-version "2.0pre6"
+  (defvar semantic-version "2.0pre7"
     "Current version of Semantic.")
 
   )
@@ -299,6 +299,10 @@ to use Semantic, and `semantic-init-hook' is run."
              (not (semantic-active-p))
              (not (run-hook-with-args-until-success
                    'semantic-inhibit-functions)))
+    ;; Make sure that if this buffer is cloned, our tags and overlays
+    ;; don't go along for the ride.
+    (add-hook 'clone-indirect-buffer-hook 'semantic-clear-toplevel-cache
+	      nil t)
     ;; Specify that this function has done it's work.  At this point
     ;; we can consider that semantic is active in this buffer.
     (setq semantic-new-buffer-fcn-was-run t)

@@ -1,13 +1,8 @@
-(require 'ede)
-(require 'cedet-files)
-
-(require 'ede-proj)
-
-;; Copyright (C) 2008 Eric M. Ludlam
+;; Copyright (C) 2008, 2009 Eric M. Ludlam
 
 ;; Author: Eric M. Ludlam <eric@siege-engine.com>
 ;; Joakim Verona <joakim@verona.se>
-;; X-RCS: $Id: ede-proj-maven2.el,v 1.1 2009/02/27 23:06:04 joakimv Exp $
+;; X-RCS: $Id: ede-proj-maven2.el,v 1.5 2009/03/19 19:37:55 joakimv Exp $
 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
@@ -64,10 +59,12 @@
 
 ;;TODO
 
-;; BUG: in projects with a root pom and modules with poms residing in
-;; child directories of the root pom, "compile" sometimes build the
-;; root project rather than the child project. This is not what we
-;; want for maven.  maybe its a feature for makefile projects?
+;; 
+;; BUG: (this bug-description is somewhat based on a missunderstanding
+;; of EDE, FIXME) in projects with a root pom and modules with poms
+;; residing in child directories of the root pom, "compile" sometimes
+;; build the root project rather than the child project. This is not
+;; what we want for maven.  maybe its a feature for makefile projects?
 
 ;;to reproduce:
 ;; - use a hierarchical maven project:
@@ -101,6 +98,9 @@
 ;; all src files will belong to all maven targets.
 
 ;; - an auxilary project file, like ede-simple could be an useful option
+
+(require 'ede)
+(require 'cedet-files)
 
 ;;; Code:
 
@@ -147,8 +147,10 @@ ROOTPROJ is nil, since there is only one project."
              (ede-maven2-project "Maven"
                                  :name "maven dir" ; make fancy name from dir here.
                                  :directory dir
-                                 :file "pom.xml")))
-         (message "adding %s to global proj list" this)
+                                 :file
+				 (expand-file-name "pom.xml" dir)
+				 )))
+         ;; (message "adding %s to global proj list" this)
          (ede-add-project-to-global-list this)
          ;;TODO the above seems to be done somewhere else, maybe ede-load-project-file
          ;; this seems to lead to multiple copies of project objects in ede-projects
@@ -185,15 +187,31 @@ All directories need at least one target.")
     (oset this :targets nil))
   )
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;the 3 compile methods below currently do much the same thing.
+;;  - 1st one tries to find the "root project" and compile it
+;;  - 2nd 2 compiles the child project the current file is a member of
+;;maven error messages are recognized by emacs23
 
 (defmethod project-compile-project ((obj ede-maven2-project) &optional command)
   "Compile the entire current project OBJ.
 Argument COMMAND is the command to use when compiling."
-  (message "mvn install to be exectued here %s"  obj)
   ;; we need to be in the proj root dir for this to work
   (let ((default-directory (ede-project-root-directory obj)))
     (compile "mvn install")))
 
+
+(defmethod project-compile-target ((obj ede-maven2-target-java) &optional command)
+  "Compile the current target OBJ.
+Argument COMMAND is the command to use for compiling the target."
+  (let* ((default-directory (ede-maven2-project-root (oref obj :path))))
+    (compile "mvn install")))
+
+(defmethod project-compile-target ((obj ede-maven2-target-misc) &optional command)
+  "Compile the current target OBJ.
+Argument COMMAND is the command to use for compiling the target."
+  (let* ((default-directory (ede-maven2-project-root (oref obj :path))))
+    (compile "mvn install")))
 
 ;;; File Stuff
 ;;

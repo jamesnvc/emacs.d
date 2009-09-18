@@ -4,8 +4,8 @@
 
 ;; Author: Eric M. Ludlam <zappo@gnu.org>
 ;; Keywords: project, make
-;; RCS: $Id: ede.el,v 1.129 2009/02/28 02:40:56 zappo Exp $
-(defconst ede-version "1.0pre6"
+;; RCS: $Id: ede.el,v 1.137 2009/07/17 02:00:04 zappo Exp $
+(defconst ede-version "1.0pre7"
   "Current version of the Emacs EDE.")
 
 ;; This software is free software; you can redistribute it and/or modify
@@ -258,6 +258,14 @@ For Automake based projects, each directory is treated as a project.")
 	       :group tools
 	       :documentation "List of tool cache configurations in this project.
 This allows any tool to create, manage, and persist project-specific settings.")
+   (mailinglist :initarg :mailinglist
+		:initform ""
+		:type string
+		:custom string
+		:label "Mailing List Address"
+		:group name
+		:documentation
+		"An email address where users might send email for help.")
    (web-site-url :initarg :web-site-url
 		 :initform ""
 		 :type string
@@ -403,7 +411,9 @@ Do not set this to non-nil globally.  It is used internally.")
   "Save a cache of EDE objects that Emacs has seen before."
   (interactive)
   (let ((p ede-projects)
-	(c ede-project-cache-files))
+	(c ede-project-cache-files)
+	(recentf-exclude '(ignore))
+	)
     (condition-case nil
 	(progn
 	  (set-buffer (find-file-noselect ede-project-placeholder-cache-file t))
@@ -675,7 +685,9 @@ Argument MENU-DEF is the definition of the current menu."
 	;; Make custom menus for everything here.
 	(append (list
 		 (cons (concat "Project " (ede-name obj))
-		       (eieio-customize-object-group obj)))
+		       (eieio-customize-object-group obj))
+		 [ "Reorder Targets" ede-project-sort-targets t ]
+		 )
 		(mapcar (lambda (o)
 			  (cons (concat "Target " (ede-name o))
 				(eieio-customize-object-group o)))
@@ -757,7 +769,7 @@ mode.  nil means to toggle the mode."
 	    (not (or (and (null arg) ede-minor-mode)
 		     (<= (prefix-numeric-value arg) 0))))
       (if (and ede-minor-mode (not ede-constructing)
-	       (ede-directory-project-p default-directory))
+	       (ede-directory-project-p default-directory t))
 	  (let* ((ROOT nil)
 		 (proj (ede-directory-get-open-project default-directory
 						       'ROOT)))
@@ -792,7 +804,7 @@ ONOFF indicates enabling or disabling the mode."
 If ARG is negative, disable.  Toggle otherwise."
   (interactive "P")
   (if (not arg)
-      (if (member 'ede-turn-on-hook find-file-hook)
+      (if (member 'ede-turn-on-hook find-file-hooks)
 	  (global-ede-mode -1)
 	(global-ede-mode 1))
     (if (or (eq arg t) (> arg 0))
@@ -809,12 +821,30 @@ If ARG is negative, disable.  Toggle otherwise."
       (remove-hook 'dired-mode-hook 'ede-turn-on-hook))
     (ede-reset-all-buffers arg)))
 
+(defvar ede-ignored-file-alist
+  '( "\\.cvsignore$"
+     "\\.#"
+     "~$"
+     )
+  "List of file name patters that EDE will never ask about.")
+
+(defun ede-ignore-file (filename)
+  "Should we ignore FILENAME?"
+  (let ((any nil)
+	(F ede-ignored-file-alist))
+    (while (and (not any) F)
+      (when (string-match (car F) filename)
+	(setq any t))
+      (setq F (cdr F)))
+    any))
+
 (defun ede-auto-add-to-target ()
   "Look for a target that wants to own the current file.
 Follow the preference set with `ede-auto-add-method' and get the list
 of objects with the `ede-want-file-p' method."
   (if ede-object (error "Ede-object already defined for %s" (buffer-name)))
-  (if (eq ede-auto-add-method 'never)
+  (if (or (eq ede-auto-add-method 'never)
+	  (ede-ignore-file (buffer-file-name)))
       nil
     (let (wants desires)
       ;; Find all the objects.
@@ -892,6 +922,12 @@ Optional argument NAME is the name to give this project."
 			     r)
 			   )
 			  nil t)))
+  ;; Make sure we have a valid directory
+  (when (not (file-exists-p default-directory))
+    (error "Cannot create project in non-existant directory %s" default-directory))
+  (when (not (file-writable-p default-directory))
+    (error "No write permissions for %s" default-directory))
+  ;; Create the project
   (let* ((obj (object-assoc type 'name ede-project-class-files))
 	 (nobj (let ((f (oref obj file))
 		     (pf (oref obj proj-file)))
@@ -1081,6 +1117,10 @@ Optional argument FORCE forces the file to be removed without asking."
   (let ((ede-object (ede-current-project)))
     (ede-invoke-method 'project-make-dist)))
 
+;;; Customization
+;;
+;; Routines for customizing projects and targets.
+
 (eval-when-compile (require 'eieio-custom))
 
 (defvar eieio-ede-old-variables nil
@@ -1119,7 +1159,98 @@ Optional argument GROUP is the slot group to display."
   (if (and obj (not (obj-of-class-p obj ede-target)))
       (error "No logical target to customize"))
   (eieio-customize-object obj (or group 'default)))
+;;; Target Sorting
+;;
+;; Target order can be important, but custom doesn't support a way
+;; to resort items in a list.  This function by David Engster allows
+;; targets to be re-arranged.
 
+(defvar ede-project-sort-targets-order nil
+  "Variable for tracking target order in `ede-project-sort-targets'.")
+
+(defun ede-project-sort-targets ()
+  "Create a custom-like buffer for sorting targets of current project."
+  (interactive)
+  (let ((proj (ede-current-project))
+        (count 1)
+        current order)
+    (switch-to-buffer (get-buffer-create "*EDE sort targets*"))
+    (erase-buffer)
+    (setq ede-object-project proj)
+    (widget-create 'push-button
+                   :notify (lambda (&rest ignore)
+                             (let ((targets (oref ede-object-project targets))
+                                   cur newtargets)
+                               (while (setq cur (pop ede-project-sort-targets-order))
+                                 (setq newtargets (append newtargets
+                                                          (list (nth cur targets)))))
+                               (oset ede-object-project targets newtargets))
+                             (ede-commit-project ede-object-project)
+                             (kill-buffer))
+                   " Accept ")
+    (widget-insert "   ")
+    (widget-create 'push-button
+                   :notify (lambda (&rest ignore)
+                               (kill-buffer))
+                   " Cancel ")
+    (widget-insert "\n\n")
+    (setq ede-project-sort-targets-order nil)
+    (mapc (lambda (x)
+            (add-to-ordered-list
+             'ede-project-sort-targets-order
+             x x))
+          (number-sequence 0 (1- (length (oref proj targets)))))
+    (ede-project-sort-targets-list)
+    (use-local-map widget-keymap)
+    (widget-setup)
+    (goto-char (point-min))))
+
+(defun ede-project-sort-targets-list ()
+  "Sort the target list while using `ede-project-sort-targets'."
+  (save-excursion
+    (let ((count 0)
+          (targets (oref ede-object-project targets))
+          (inhibit-read-only t)
+          (inhibit-modification-hooks t))
+      (goto-char (point-min))
+      (forward-line 2)
+      (delete-region (point) (point-max))
+      (while (< count (length targets))
+        (if (> count 0)
+            (widget-create 'push-button
+                           :notify `(lambda (&rest ignore)
+                                      (let ((cur ede-project-sort-targets-order))
+                                        (add-to-ordered-list
+                                         'ede-project-sort-targets-order
+                                         (nth ,count cur)
+                                         (1- ,count))
+                                        (add-to-ordered-list
+                                         'ede-project-sort-targets-order
+                                         (nth (1- ,count) cur) ,count))
+                                      (ede-project-sort-targets-list))
+                           " Up ")
+          (widget-insert "      "))
+        (if (< count (1- (length targets)))
+            (widget-create 'push-button
+                           :notify `(lambda (&rest ignore)
+                                      (let ((cur ede-project-sort-targets-order))
+                                        (add-to-ordered-list
+                                         'ede-project-sort-targets-order
+                                         (nth ,count cur) (1+ ,count))
+                                        (add-to-ordered-list
+                                         'ede-project-sort-targets-order
+                                         (nth (1+ ,count) cur) ,count))
+                                      (ede-project-sort-targets-list))
+                           " Down ")
+          (widget-insert "        "))
+        (widget-insert (concat " " (number-to-string (1+ count)) ".:   "
+                               (oref (nth (nth count ede-project-sort-targets-order)
+                                          targets) name) "\n"))
+        (setq count (1+ count))))))
+
+;;; Customization hooks
+;;
+;; These hooks are used when finishing up a customization.
 (defmethod eieio-done-customizing ((proj ede-project))
   "Call this when a user finishes customizing PROJ."
   (let ((ov eieio-ede-old-variables)
@@ -1486,37 +1617,30 @@ Optional argument OBJ is an object to find the parent of."
   (let* ((proj (or obj ede-object-project)) ;; Current project.
 	 (root (if obj (ede-project-root obj)
 		 ede-object-root-project)))
-    (if
-	;; This case is a SHORTCUT if the project has defined
-	;; a way to calculate the project root.
-	(and root proj (eq root proj))
+    ;; This case is a SHORTCUT if the project has defined
+    ;; a way to calculate the project root.
+    (if (and root proj (eq root proj))
 	nil ;; we are at the root.
       ;; Else, we may have a nil proj or root.
       (let* ((thisdir (if obj (oref obj directory)
 			default-directory))
-	     (updir (ede-up-directory thisdir))
-	     (ans nil)
-	     )
-	;; If there was no root, perhaps we can derive it from
-	;; updir now.
-	(when (not root)
-	  (setq root (ede-directory-get-toplevel-open-project updir)))
-
-	;; This lets us find a subproject under root based on updir.
-	(when root
-	  (setq ans (ede-find-subproject-for-directory
-		     root updir)))
-
-	;; Try the all structure based search.
-	(setq ans (ede-directory-get-open-project updir))
-
-	;; Load up the project file as a last resort.
-	;; Last resort since it uses file-truename, and other
-	;; slow features.
-	(when (and (not ans) (ede-directory-project-p updir))
-	  (setq ans (ede-load-project-file
-		     (file-name-as-directory updir))))
-	ans))))
+	     (updir (ede-up-directory thisdir)))
+        (when updir
+	  ;; If there was no root, perhaps we can derive it from
+	  ;; updir now.
+	  (let ((root (or root (ede-directory-get-toplevel-open-project updir))))
+	    (or
+	     ;; This lets us find a subproject under root based on updir.
+	     (and root
+		  (ede-find-subproject-for-directory root updir))
+	     ;; Try the all structure based search.
+	     (ede-directory-get-open-project updir)
+	     ;; Load up the project file as a last resort.
+	     ;; Last resort since it uses file-truename, and other
+	     ;; slow features.
+	     (and (ede-directory-project-p updir)
+		  (ede-load-project-file
+		   (file-name-as-directory updir))))))))))
 
 (defun ede-current-project (&optional dir)
   "Return the current project file.
@@ -1757,10 +1881,11 @@ Return the first non-nil value returned by PROC."
 	     )
 	   (oref project local-variables))))
 
-(defun ede-set (variable value)
+(defun ede-set (variable value &optional proj)
   "Set the project local VARIABLE to VALUE.
 If VARIABLE is not project local, just use set."
-  (let ((p (ede-current-project)) a)
+  (let ((p (or proj (ede-current-project)))
+	a)
     (if (and p (setq a (assoc variable (oref p local-variables))))
 	(progn
 	  (setcdr a value)

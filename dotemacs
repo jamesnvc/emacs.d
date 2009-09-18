@@ -3,10 +3,11 @@
 (require 'cl)
 (load-file "~/emacs.d/fixing.el")
 (setenv "SHELL" "bash")
+(push "/opt/local/bin" exec-path)
 (defvar emacs-root (expand-file-name "~/emacs.d/"))
 (defvar src-root (expand-file-name "~/src/"))
 
-(add-to-list 'load-path "/home/james/src/factor/misc/fuel")
+(add-to-list 'load-path (expand-file-name "~/src/factor/misc/fuel"))
 (labels ((add-path (p)
 		   (add-to-list 'load-path
 			   (concat emacs-root p))))
@@ -21,7 +22,7 @@
   (add-path "modes/gnuplot-mode.0.6.0")
   (add-path "modes/haskell")
   (add-path "modes/icicles")
-  (add-path "modes/jde/build/lisp")
+  (add-path "modes/jde/lisp")
   (add-path "modes/mmm-mode-0.4.8")
   (add-path "modes/muse")
   (add-path "modes/nxml-mode")
@@ -78,9 +79,12 @@
 (load-library "mymisc")
 (load-library "mode-configs")
 (load-library "customizations") ;; Generic customizations
-(load-library "keys") ;; my key customizations
 (load-library "hooks") ;; Various hooks
+(load-library "keys") ;; my key customizations
 (smex-initialize) ;; Should run after all other packages loaded
 (server-start)
+
+;; files I want to always have open
+(find-file (expand-file-name "~/Documents/org/todo.org"))
 
 ;; End of my .emacs

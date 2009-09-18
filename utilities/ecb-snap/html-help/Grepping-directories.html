@@ -3,9 +3,9 @@
 <title>Grepping directories - ECB - the Emacs Code Browser</title>
 <meta http-equiv="Content-Type" content="text/html">
 <meta name="description" content="ECB - the Emacs Code Browser">
-<meta name="generator" content="makeinfo 4.13">
+<meta name="generator" content="makeinfo 4.8">
 <link title="Top" rel="start" href="ecb.html#Top">
-<link rel="up" href="Tips-and-tricks.html#Tips-and-tricks" title="Tips and tricks">
+<link rel="up" href="Common-use_002dcases.html#Common-use_002dcases" title="Common use-cases">
 <link rel="prev" href="Using-eshell.html#Using-eshell" title="Using eshell">
 <link rel="next" href="Working-with-JDEE.html#Working-with-JDEE" title="Working with JDEE">
 <link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
@@ -24,11 +24,11 @@
 </head>
 <body>
 <div class="node">
-<a name="Grepping-directories"></a>
 <p>
+<a name="Grepping-directories"></a>
 Next:&nbsp;<a rel="next" accesskey="n" href="Working-with-JDEE.html#Working-with-JDEE">Working with JDEE</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="Using-eshell.html#Using-eshell">Using eshell</a>,
-Up:&nbsp;<a rel="up" accesskey="u" href="Tips-and-tricks.html#Tips-and-tricks">Tips and tricks</a>
+Up:&nbsp;<a rel="up" accesskey="u" href="Common-use_002dcases.html#Common-use_002dcases">Common use-cases</a>
 <hr>
 </div>
 
@@ -50,7 +50,7 @@ the <code>default-directory</code> of current buffer in the edit-window.
 
    <p>Basically this has to be done with the &ldquo;-prune&rdquo; option of the
 find-utility: If the standard-grep facility of Emacs is used then this
-is not easy but with the library <samp><span class="file">igrep.el</span></samp> there is a convenient
+is not easy but with the command <samp><span class="file">igrep.el</span></samp> there is a convenient
 way to exclude things like CVS- or RCS-directories from the find-call:
 See the variable <code>igrep-find-prune-clause</code> of the library
 <samp><span class="file">igrep.el</span></samp>.

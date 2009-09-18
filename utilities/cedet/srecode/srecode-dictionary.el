@@ -3,7 +3,7 @@
 ;; Copyright (C) 2007, 2008, 2009 Eric M. Ludlam
 
 ;; Author: Eric M. Ludlam <eric@siege-engine.com>
-;; X-RCS: $Id: srecode-dictionary.el,v 1.9 2009/02/11 00:43:45 zappo Exp $
+;; X-RCS: $Id: srecode-dictionary.el,v 1.11 2009/08/29 01:28:22 zappo Exp $
 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
@@ -44,6 +44,11 @@
 	   "The parent dictionary.
 Symbols not appearing in this dictionary will be checked against the
 parent dictionary.")
+   (origin :initarg :origin
+	   :type string
+	   :documentation
+	   "A string representing the origin of this dictionary.
+Useful only while debugging.")
    )
   "Dictionary of symbols and what they mean.
 Dictionaries are used to look up named symbols from
@@ -144,29 +149,42 @@ If BUFFER-OR-PARENT is t, then this dictionary should not be
 assocated with a buffer or parent."
   (save-excursion
     (let ((parent nil)
-	  (buffer nil))
+	  (buffer nil)
+	  (origin nil)
+	  (initfrombuff nil))
       (cond ((bufferp buffer-or-parent)
 	     (set-buffer buffer-or-parent)
-	     (setq buffer buffer-or-parent))
+	     (setq buffer buffer-or-parent
+		   origin (buffer-name buffer-or-parent)
+		   initfrombuff t))
 	    ((srecode-dictionary-child-p buffer-or-parent)
 	     (setq parent buffer-or-parent
-		   buffer (oref buffer-or-parent buffer))
+		   buffer (oref buffer-or-parent buffer)
+		   origin (concat (object-name buffer-or-parent) " in "
+				  (if buffer (buffer-name buffer)
+				    "no buffer")))
 	     (when buffer
 	       (set-buffer buffer)))
 	    ((eq buffer-or-parent t)
-	     (setq buffer nil))
+	     (setq buffer nil
+		   origin "Unspecified Origin"))
 	    (t
-	     (setq buffer (current-buffer)))
+	     (setq buffer (current-buffer)
+		   origin (concat "Unspecified.  Assume "
+				  (buffer-name buffer))
+		   initfrombuff t)
+	     )
 	    )
       (let ((dict (srecode-dictionary
 		   major-mode
 		   :buffer buffer
 		   :parent parent
 		   :namehash  (make-hash-table :test 'equal
-					       :size 20))))
-	;; Only set up the default variables if we don't have
-	;; a buffer
-	(when buffer
+					       :size 20)
+		   :origin origin)))
+	;; Only set up the default variables if we are being built
+	;; directroy for a particular buffer.
+	(when initfrombuff
 	  ;; Variables from the table we are inserting from.
 	  ;; @todo - get a better tree of tables.
 	  (let ((mt (srecode-get-mode-table major-mode))
@@ -364,10 +382,62 @@ FUNCTION and DICTIONARY are as for the baseclass."
     (srecode-dump-code-list cmp (make-string indent ? ))
     ))
 
+;;; FIELD EDITING COMPOUND VALUE
+;;
+;; This is an interface to using field-editing objects
+;; instead of asking questions.  This provides the basics
+;; behind this compound value.
+
+;;;###autoload
+(defclass srecode-field-value (srecode-dictionary-compound-value)
+  ((firstinserter :initarg :firstinserter
+		  :documentation
+		  "The inserter object for the first occurance of this field.")
+   (defaultvalue :initarg :defaultvalue
+     :documentation
+     "The default value for this inserter.")
+   )
+  "When inserting values with editable field mode, a dictionary value.
+Compound values allow a field to be stored in the dictionary for when
+it is referenced a second time.  This compound value can then be
+inserted with a new editable field.")
+
+(defmethod srecode-compound-toString((cp srecode-field-value)
+				     function
+				     dictionary)
+  "Convert this field into an insertable string."
+  ;; If we are not in a buffer, then this is not supported.
+  (when (not (bufferp standard-output))
+    (error "FIELDS invoked while inserting template to non-buffer."))
+
+  (if function
+      (error "@todo: Cannot mix field insertion with functions.")
+
+    ;; No function.  Perform a plain field insertion.
+    ;; We know we are in a buffer, so we can perform the insertion.
+    (let* ((dv (oref cp defaultvalue))
+	   (sti (oref cp firstinserter))
+	   (start (point))
+	   (name (oref sti :object-name)))
+
+      (if (or (not dv) (string= dv ""))
+	  (insert name)
+	(insert dv))
+
+      (srecode-field name :name name
+		     :start start
+		     :end (point)
+		     :prompt (oref sti prompt)
+		     :read-fcn (oref sti read-fcn)
+		     )
+      ))
+  ;; Returning nil is a signal that we have done the insertion ourselves.
+  nil)
+
 
 ;;; Higher level dictionary functions
 ;;
-(defun srecode-create-section-dicionary (sectiondicts STATE)
+(defun srecode-create-section-dictionary (sectiondicts STATE)
   "Create a dictionary with section entries for a template.
 The format for SECTIONDICTS is what is emitted from the template parsers.
 STATE is the current compiler state."
@@ -420,7 +490,7 @@ STATE is the current compiler state."
 	 )
     (message "Creating a dictionary took %.2f seconds."
 	     (semantic-elapsed-time start end))
-    (data-debug-new-buffer "*SRECUDE ADEBUG*")
+    (data-debug-new-buffer "*SRECODE ADEBUG*")
     (data-debug-insert-object-slots dict "*")))
 
 ;;;###autoload

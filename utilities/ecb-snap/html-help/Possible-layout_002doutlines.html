@@ -3,7 +3,7 @@
 <title>Possible layout-outlines - ECB - the Emacs Code Browser</title>
 <meta http-equiv="Content-Type" content="text/html">
 <meta name="description" content="ECB - the Emacs Code Browser">
-<meta name="generator" content="makeinfo 4.13">
+<meta name="generator" content="makeinfo 4.8">
 <link title="Top" rel="start" href="ecb.html#Top">
 <link rel="up" href="The-layout_002dengine.html#The-layout_002dengine" title="The layout-engine">
 <link rel="prev" href="Programming-special-windows.html#Programming-special-windows" title="Programming special windows">
@@ -24,9 +24,9 @@
 </head>
 <body>
 <div class="node">
+<p>
 <a name="Possible-layout-outlines"></a>
 <a name="Possible-layout_002doutlines"></a>
-<p>
 Next:&nbsp;<a rel="next" accesskey="n" href="The-layout_002dengine-API.html#The-layout_002dengine-API">The layout-engine API</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="Programming-special-windows.html#Programming-special-windows">Programming special windows</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="The-layout_002dengine.html#The-layout_002dengine">The layout-engine</a>
@@ -78,15 +78,15 @@ windows.
 
 <pre class="example">   ------------------------------------------------------------------
    |                                                                |
-   |                 Upper special window                           |
+   |                 Upper special window (a tree-buffer)           |
    |                                                                |
    |----------------------------------------------------------------|
    |                                                                |
-   |                 Middle special window                          |
+   |                 Middle special window (no tree-buffer)         |
    |                                                                |
    |----------------------------------------------------------------|
    |                                                                |
-   |                 Lower special window                           |
+   |                 Lower special window (a tree-buffer)           |
    |                                                                |
    |================================================================|
    |                                                                |
@@ -101,15 +101,18 @@ windows.
    <p>Here is the code for that top layout (all buffers are dummy-buffers):
 
 <pre class="lisp">   
-   ;; The "window dedicator" functions:
+   ;; The "window dedicator to buffer" functions:
    
-   (defecb-window-dedicator ecb-set-usw-buffer "Upper special window"
+   (defecb-window-dedicator-to-ecb-buffer ecb-set-usw-buffer
+      upper-special-window-buffer-name t
      (switch-to-buffer (get-buffer-create "Upper special window")))
    
-   (defecb-window-dedicator ecb-set-msw-buffer "Middle special window"
+   (defecb-window-dedicator-to-ecb-buffer ecb-set-msw-buffer
+      middle-special-window-buffer-name nil
      (switch-to-buffer (get-buffer-create "Middle special window")))
    
-   (defecb-window-dedicator ecb-set-lsw-buffer "Lower special window"
+   (defecb-window-dedicator-to-ecb-buffer ecb-set-lsw-buffer
+      lower-special-window-buffer-name t
      (switch-to-buffer (get-buffer-create "Lower special window")))
    
    ;; The layout itself:
@@ -162,9 +165,13 @@ right-&rdquo;column&rdquo; have always the same width.
 (depending to your screen-resolution you will need a quite big value
 for <code>ecb-windows-width</code>, e.g. 0.4):
 
-   <p>Here is one of the &ldquo;window dedicator&rdquo;-functions<a rel="footnote" href="#fn-1" name="fnd-1"><sup>1</sup></a>:
+   <p>Here is one of the &ldquo;window dedicator for buffer&rdquo;-functions<a rel="footnote" href="#fn-1" name="fnd-1"><sup>1</sup></a>:
 
-<pre class="lisp">   (defecb-window-dedicator ecb-set-left1-buffer "Left1"
+<pre class="lisp">   (defvar buffer-name-left1 "left1")
+   
+   ;; Note that the third argument muts be not nil if the ecb-window should
+   ;; display an ecb-buffer of type tree-buffer!
+   (defecb-window-dedicator-to-ecb-buffer ecb-set-left1-buffer buffer-name-left1 nil
      (switch-to-buffer (get-buffer-create "Left1")))
 </pre>
    <p>Here is the layout-definition itself:
@@ -203,11 +210,11 @@ If such layouts are senseful is another topic ;-)
    <div class="footnote">
 <hr>
 <h4>Footnotes</h4><p class="footnote"><small>[<a name="fn-1" href="#fnd-1">1</a>]</small> The
-&ldquo;window dedicators&rdquo; for all these ecb-windows/buffers are
-not explicitly described - they look all like
-<code>ecb-set-left1-buffer</code> - of course with different buffer-names!</p>
+&ldquo;window dedicators&rdquo; for all these ecb-windows/buffers are not explicitly
+described - they look all like <code>ecb-set-left1-buffer</code> - of course with
+different buffer-names!</p>
 
-   <hr></div>
+   <p><hr></div>
 
    </body></html>
 

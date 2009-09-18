@@ -8,9 +8,7 @@
 (add-hook 'inferior-scheme-mode-hook (function gambit-inferior-mode))
 (add-hook 'scheme-mode-hook (function gambit-mode))
 (add-hook 'scheme-mode-hook (function highlight-parentheses-mode))
-(add-hook 'scheme-mode-hook 'light-symbol-mode)
 (add-hook 'scheme-mode-hook 'paredit-mode)
-
 
 ;; (put 'dbind 'scheme-indent-function 2)
 ;; (put 'with-gensyms 'scheme-indent-function 1)

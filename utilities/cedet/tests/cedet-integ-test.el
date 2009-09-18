@@ -63,35 +63,73 @@
 ;; 4) Delete the project
 ;;    a Make sure the semanticdb cleans up the dead cache files.
 ;;    b Make sure EDE clears this project from it's project cache.
+;;
+;; 5) Use COGRE to build sources with SRecode
+;;    a Create a COGRE graph.
+;;    b Generate C++ code from the graph.
+;;    c Compile the sources.
+
 (require 'semantic)
+(require 'ede)
+(require 'data-debug)
+(require 'ede-make)
+(require 'cogre)
+
+(eval-and-compile
+  (defvar cedet-integ-base "/tmp/CEDET_INTEG"
+    "Root of multiple project integration tests.")
+  )
+
 (require 'cit-cpp)
+(require 'cit-uml)
 (require 'cit-srec)
 (require 'cit-el)
 (require 'cit-texi)
 (require 'cit-gnustep)
 
-(defvar cedet-integ-target "/tmp/CEDET_INTEG"
-  "Root of the integration tests.")
+(defvar cedet-integ-target (expand-file-name "edeproj" cedet-integ-base)
+  "Root of the EDE project integration tests.")
 
 ;;; Code:
-(defun cedet-integ-test ()
-  "Run the full CEDET integration test."
+(defun cedet-integ-test-Make ()
+  "Run the full CEDET integration test using a Make style project."
+  (cedet-integ-test-proj "Make"))
+
+(defun cedet-integ-test-Automake ()
+  "Run the full CEDET integration test using a Automake style project."
+  (let ((ede-pconf-create-file-query nil))
+    (cedet-integ-test-proj "Automake")))
+
+(defun cedet-integ-test-proj (&optional make-type)
+  "Run the full CEDET integration test.
+Optional argument MAKE-TYPE is the style of EDE project to test."
   (interactive)
+
+  ;; Input check
+  (if (not (member make-type '("Make" "Automake")))
+      (error "Invalid make-type for test: %S" make-type))
+  (message "Running integration test of style %S" make-type)
+
   ;; 1 a) build directories
   ;;
+  (cit-make-dir cedet-integ-base)
   (cit-make-dir cedet-integ-target)
   ;; 1 c) make src and include directories
   (cit-make-dir (cit-file "src"))
   (cit-make-dir (cit-file "include"))
+  (cit-make-dir (cit-file "uml"))
   ;;
   ;; 1 b) make a toplevel project
   ;;
   (find-file (expand-file-name "README" cedet-integ-target))
-  (ede-new "Make" "CEDET Integ Test Project")
+  (ede-new make-type "CEDET_Integ_Test_Project")
   ;; 1 d) Put C++ src into the right directories.
   ;; 2 a) Create sources with SRecode
   ;;
-  (cit-srecode-fill-cpp)
+  (cit-srecode-fill-cpp make-type)
+
+  ;; 5 a,b,c) UML code generation test
+  (cit-fill-uml make-type)
 
   ;; 1 e) remove files from a project
   (cit-remove-add-to-project-cpp)
@@ -100,26 +138,42 @@
   (cit-srecode-map-test)
 
   ;; Do some more with Emacs Lisp.
-  (cit-srecode-fill-el)
+  (cit-srecode-fill-el make-type)
 
   ;; Do some texinfo documentation.
   (cit-srecode-fill-texi)
 
+  (cit-finish-message "PASSED" make-type)
+  )
+
+(defun cedet-integ-test-GNUStep ()
+  "Run the CEDET integration test using GNUStep style project."
+  (interactive)
+
   ;; Do a EDE GNUstep-Make Project
   (make-directory (concat cedet-integ-target "_ede_GSMake") t)
   (find-file (expand-file-name "README" (concat cedet-integ-target "_ede_GSMake"))) ;; only to change dir
-  (setq oldval ede-auto-add-method
-	ede-auto-add-method 'always)
-  (cit-ede-step-test)
-  (setq ede-auto-add-method oldval)
+  (let ((ede-auto-add-method 'always))
+    (cit-ede-step-test))
 
-  ;; Leave a message
+  (cit-finish-message "PASSED" "GNUStep")
+  )
+
+(defun cit-finish-message (message style)
+  "Display a MESSAGE that some test is now finished.
+Argument STYLE is the type of build done."
   (let ((b (set-buffer (get-buffer-create "*PASSED*"))))
     (erase-buffer)
-    (insert "\n\n  PASSED!\n")
+    (insert "\n\n  PASSED!\n\n  Make Style: ")
+    (insert (format "%S" style) "\n")
+    (insert "\n\nWaiting 5 seconds before exiting with positive exit status.\n")
     (switch-to-buffer b)
-    )
-  )
+    ;; Now wait.
+    (sit-for 5)
+    ;; 1 means GOOD to the shell script, since any other emacs exit
+    ;; mechanism will be 0. (ie - click on the X in the corner.)
+    (kill-emacs 1)
+    ))
 
 (defun cit-make-dir (dir)
   "Make directory DIR if it doesn't exist."
@@ -203,7 +257,7 @@ are found, but don't error if they are not their."
     (let ((T1 (car actual))
 	  (T2 (car expected)))
 
-      (cond 
+      (cond
        ((semantic-tag-similar-p T1 T2 :default-value)
 
 	(let ((mem1 (semantic-tag-components T1))
@@ -224,36 +278,41 @@ are found, but don't error if they are not their."
 	)
 
        (t ;; Not the same
-	(semantic-adebug-show (cit-tag-verify-error-debug
-			       "Dbg" :actual T1 :expected T2))
+	(data-debug-new-buffer "*Test Failure*")
+	(data-debug-insert-thing
+	 (cit-tag-verify-error-debug "Dbg" :actual T1 :expected T2)
+	 ">" "")
 
 	(error "Tag %s does not match %s"
 	       (semantic-format-tag-name T1)
 	       (semantic-format-tag-name T2))
 	)
        ))
-
+    
     (setq actual (cdr actual))
     ))
 
 (defun cit-compile-and-wait ()
   "Compile our current project, but wait for it to finish."
-  (find-file (cit-file "Project.ede"))
-  ;; 1 f) Create a build file.
-  (ede-proj-regenerate)
-  ;; 1 g) build the sources.
-  (compile "make")
-  
-  (while compilation-in-progress
-    (accept-process-output)
-    (sit-for 1))
+  (let ((bufftokill (find-file (cit-file "Project.ede"))))
+    ;; 1 f) Create a build file.
+    (ede-proj-regenerate)
+    ;; 1 g) build the sources.
+    (compile ede-make-command)
 
-  (save-excursion
-    (set-buffer "*compilation*")
-    (goto-char (point-max))
+    (while compilation-in-progress
+      (accept-process-output)
+      (sit-for 1))
 
-    (when (re-search-backward " Error " nil t)
-      (error "Compilation failed!"))
+    (save-excursion
+      (set-buffer "*compilation*")
+      (goto-char (point-max))
+
+      (when (re-search-backward " Error " nil t)
+	(error "Compilation failed!"))
+
+      )
+    (kill-buffer bufftokill)
     ))
 
 (provide 'cedet-integ-test)

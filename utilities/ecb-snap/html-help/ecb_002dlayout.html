@@ -3,10 +3,10 @@
 <title>ecb-layout - ECB - the Emacs Code Browser</title>
 <meta http-equiv="Content-Type" content="text/html">
 <meta name="description" content="ECB - the Emacs Code Browser">
-<meta name="generator" content="makeinfo 4.13">
+<meta name="generator" content="makeinfo 4.8">
 <link title="Top" rel="start" href="ecb.html#Top">
 <link rel="up" href="Customizable-options.html#Customizable-options" title="Customizable options">
-<link rel="prev" href="ecb_002danalyse.html#ecb_002danalyse" title="ecb-analyse">
+<link rel="prev" href="ecb_002dsymboldef.html#ecb_002dsymboldef" title="ecb-symboldef">
 <link rel="next" href="ecb_002dcompilation.html#ecb_002dcompilation" title="ecb-compilation">
 <link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
 <meta http-equiv="Content-Style-Type" content="text/css">
@@ -24,28 +24,28 @@
 </head>
 <body>
 <div class="node">
+<p>
 <a name="ecb-layout"></a>
 <a name="ecb_002dlayout"></a>
-<p>
 Next:&nbsp;<a rel="next" accesskey="n" href="ecb_002dcompilation.html#ecb_002dcompilation">ecb-compilation</a>,
-Previous:&nbsp;<a rel="previous" accesskey="p" href="ecb_002danalyse.html#ecb_002danalyse">ecb-analyse</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="ecb_002dsymboldef.html#ecb_002dsymboldef">ecb-symboldef</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="Customizable-options.html#Customizable-options">Customizable options</a>
 <hr>
 </div>
 
-<h4 class="subsection">7.3.8 Group ecb-layout</h4>
+<h4 class="subsection">7.3.9 Group ecb-layout</h4>
 
 <p class="noindent">This group contains settings for the screen-layout of the ECB:
 
 <div class="defun">
-&mdash; User Option: <b>activate-before-new-frame-created-hook</b><var><a name="index-activate_002dbefore_002dnew_002dframe_002dcreated_002dhook-252"></a></var><br>
+&mdash; User Option: <b>activate-before-new-frame-created-hook</b><var><a name="index-activate_002dbefore_002dnew_002dframe_002dcreated_002dhook-265"></a></var><br>
 <blockquote><p>Normal hook run before the new ECB-frame is created if
 <code>ecb-new-ecb-frame</code> is not nil (otherwise this hook is not
 evaluated). 
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>advice-window-functions-signal-error</b><var><a name="index-advice_002dwindow_002dfunctions_002dsignal_002derror-253"></a></var><br>
+&mdash; User Option: <b>advice-window-functions-signal-error</b><var><a name="index-advice_002dwindow_002dfunctions_002dsignal_002derror-266"></a></var><br>
 <blockquote><p>Signal an error if an adviced function can not do its job. If not nil
 then an error is signaled if one of the adviced user-commands can not
 do its job. So for example if the user tries to split the
@@ -63,7 +63,7 @@ function.
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>fix-window-size</b><var><a name="index-fix_002dwindow_002dsize-254"></a></var><br>
+&mdash; User Option: <b>fix-window-size</b><var><a name="index-fix_002dwindow_002dsize-267"></a></var><br>
 <blockquote><p>Fix size of the ECB-windows/buffers even after frame-resizing. The fix
 type (valid values are nil, t, width and height) can either be set on
 a layout-basis (means a different value for each layout) or one value
@@ -96,7 +96,7 @@ all ecb-windows have always unfixed sizes) with Emacs &lt; 22 if
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>hide-ecb-windows-after-hook</b><var><a name="index-hide_002decb_002dwindows_002dafter_002dhook-255"></a></var><br>
+&mdash; User Option: <b>hide-ecb-windows-after-hook</b><var><a name="index-hide_002decb_002dwindows_002dafter_002dhook-268"></a></var><br>
 <blockquote><p>Hooks run direct after the ECB windows have been hidden. Hiding was
 done either by <code>ecb-toggle-ecb-windows</code> or
 <code>ecb-hide-ecb-windows</code>.
@@ -110,7 +110,7 @@ is analogous to that described in
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>hide-ecb-windows-before-hook</b><var><a name="index-hide_002decb_002dwindows_002dbefore_002dhook-256"></a></var><br>
+&mdash; User Option: <b>hide-ecb-windows-before-hook</b><var><a name="index-hide_002decb_002dwindows_002dbefore_002dhook-269"></a></var><br>
 <blockquote><p>Hook run direct before the ECB windows will be hidden. Hiding is done
 either by <code>ecb-toggle-ecb-windows</code> or
 <code>ecb-hide-ecb-windows</code>. This means that at runtime of this hook
@@ -125,7 +125,7 @@ is analogous to that described in
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>ignore-display-buffer-function</b><var><a name="index-ignore_002ddisplay_002dbuffer_002dfunction-257"></a></var><br>
+&mdash; User Option: <b>ignore-display-buffer-function</b><var><a name="index-ignore_002ddisplay_002dbuffer_002dfunction-270"></a></var><br>
 <blockquote><p>Adviced <code>display-buffer</code> ignores <code>display-buffer-function</code>. 
 This means, that the adviced version of <code>display-buffer</code> ignores
 the value of <code>display-buffer-function</code> when called for the
@@ -148,7 +148,19 @@ value of <code>display-buffer-function</code> if the value is a function.
         </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>ignore-special-display</b><var><a name="index-ignore_002dspecial_002ddisplay-258"></a></var><br>
+&mdash; User Option: <b>ignore-pop-up-frames</b><var><a name="index-ignore_002dpop_002dup_002dframes-271"></a></var><br>
+<blockquote><p>Ignore setting of option <code>pop-up-frames</code>. 
+This means, that a value of not nil for <code>pop-up-frames</code> is ignored:
+          <ul>
+<li>'compile-window: only when persistent compile window is used - i.e. if
+<code>ecb-compile-window-height</code> is not nil - this is the default value. 
+<li>'always: always when ECB is active - that means no pop-up-frames when ECB is active
+<li><code>nil</code>: pop-up-frames is fully active when set
+</ul>
+        </p></blockquote></div>
+
+<div class="defun">
+&mdash; User Option: <b>ignore-special-display</b><var><a name="index-ignore_002dspecial_002ddisplay-272"></a></var><br>
 <blockquote><p>Ignore special-display-handling. This means, that all values of
 <code>special-display-function</code>, <code>special-display-buffer-names</code>
 and <code>special-display-regexps</code> are ignored
@@ -170,7 +182,7 @@ options <code>special-display-function</code>,
         </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>layout-always-operate-in-edit-window</b><var><a name="index-layout_002dalways_002doperate_002din_002dedit_002dwindow-259"></a></var><br>
+&mdash; User Option: <b>layout-always-operate-in-edit-window</b><var><a name="index-layout_002dalways_002doperate_002din_002dedit_002dwindow-273"></a></var><br>
 <blockquote><p>Adviced window functions work always in the edit-window. If we are in
 an ECB special buffer (methods, directories, etc), and any of the
 adviced windowing functions is called interactively, we will select
@@ -192,7 +204,7 @@ documentation of the adviced functions for this.
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>layout-debug-mode</b><var><a name="index-layout_002ddebug_002dmode-260"></a></var><br>
+&mdash; User Option: <b>layout-debug-mode</b><var><a name="index-layout_002ddebug_002dmode-274"></a></var><br>
 <blockquote><p>Write debug-information about layout-operations in the
 Messages-buffer. Normally there should be no need to set this option
 to true but if there are problems to display buffers in the
@@ -215,7 +227,7 @@ further debugging output in the *Messages* buffer
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>layout-name</b><var><a name="index-layout_002dname-261"></a></var><br>
+&mdash; User Option: <b>layout-name</b><var><a name="index-layout_002dname-275"></a></var><br>
 <blockquote><p>Select a window layout of ECB. Value is any arbitrary string. There are
 four different types of layouts: left, right, top and left-right,
 which means the location of the ECB-tree-windows in the ECB-frame. 
@@ -248,32 +260,36 @@ this layout with <code>ecb-redraw-layout</code>
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>layout-window-sizes</b><var><a name="index-layout_002dwindow_002dsizes-262"></a></var><br>
-<blockquote><p>Specifies the sizes of the ECB windows for each layout. The easiest
-way (and also the strongly recommended way) to change this variable is
-to change the window sizes by dragging the window borders using the
-mouse and then store the window sizes by calling the command
-<code>ecb-store-window-sizes</code>. Next time the layout is redrawn the
-values stored in this option will be used.
+&mdash; User Option: <b>layout-window-sizes</b><var><a name="index-layout_002dwindow_002dsizes-276"></a></var><br>
+<blockquote><p>Specifies the sizes of the ECB windows for each layout. 
+The easiest way (and also the very strongly recommended way) to set this
+option is to change the window sizes by dragging the window borders using
+the mouse and then store the window sizes by calling the command
+<code>ecb-store-window-sizes</code>. Next time the layout is redrawn the values stored in
+this option will be used.
 
-        <p>If <code>ecb-store-window-sizes</code> is used then the windows sizes are
-stored per default as fractions of current frame-width and -height of
-the ecb-frame, so the stored values will &ldquo;work&rdquo; for other frame
-sizes too. But if you call <code>ecb-store-window-sizes</code> with a
-prefix-argument then the fixed values of current width and height are
-stored!
+        <p>If <code>ecb-store-window-sizes</code> is used then the windows sizes are stored per
+default as fractions of current frame-width and -height of the ecb-frame, so
+the stored values will &ldquo;work&rdquo; for other frame sizes too. But if you call
+<code>ecb-store-window-sizes</code> with a prefix-argument then the fixed values of
+current width and height are stored!
 
-        <p>If this option is set &ldquo;by hand&rdquo; (i.e. not by
-<code>ecb-store-window-sizes</code>) then the following is important:
+        <p>If this option is set &ldquo;by hand&rdquo; (i.e. not by <code>ecb-store-window-sizes</code>) then
+the following is important:
           <ul>
+<li>Use always <code>customize-option</code>, never <code>setq</code>! 
 <li>It is recommended to use fractions of frame-width and -height!. 
-<li>The order of the sequence of the inserted window sizes must be the same as
-<code>other-window</code> (the not-adviced version!) would walk! 
+<li>It is also recommended to use buffer-name-symbols instead of plain
+buffer-names (e.g. ecb-history-buffer-name instead of " *ECB History*&rdquo;)
+<li>There must be an entry for each special ecb-buffer of that layout for which
+the sizes are stored. 
+<li>The order of the sequence of the inserted window sizes doesn't matter
+because each size-pair is assigned to a buffer-name the sizes belong to. 
 </ul>
         </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>maximize-ecb-window-after-selection</b><var><a name="index-maximize_002decb_002dwindow_002dafter_002dselection-263"></a></var><br>
+&mdash; User Option: <b>maximize-ecb-window-after-selection</b><var><a name="index-maximize_002decb_002dwindow_002dafter_002dselection-277"></a></var><br>
 <blockquote><p>If not nil maximize current tree-window after selection. When
 selecting another not-tree-window after such an automatic maximizing
 all tree-windows of current layout are displayed again. But a
@@ -283,7 +299,7 @@ tree-buffer has been opened.
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>maximize-next-after-maximized-select</b><var><a name="index-maximize_002dnext_002dafter_002dmaximized_002dselect-264"></a></var><br>
+&mdash; User Option: <b>maximize-next-after-maximized-select</b><var><a name="index-maximize_002dnext_002dafter_002dmaximized_002dselect-278"></a></var><br>
 <blockquote><p>Maximizes the next logical tree-window after a maximized
 node-selection. Selecting a node in a maximized tree-window is handled
 very smart by ECB:
@@ -328,7 +344,7 @@ hard-coded as follows:
         </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>maximize-next-after-maximized-select</b><var><a name="index-maximize_002dnext_002dafter_002dmaximized_002dselect-265"></a></var><br>
+&mdash; User Option: <b>maximize-next-after-maximized-select</b><var><a name="index-maximize_002dnext_002dafter_002dmaximized_002dselect-279"></a></var><br>
 <blockquote><p>Maximizes the next logical tree-window after a maximized
 node-selection. Selecting a node in a maximized tree-window is handled
 very smart by ECB:
@@ -357,12 +373,12 @@ source-file from the sources-buffer.
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>new-ecb-frame</b><var><a name="index-new_002decb_002dframe-266"></a></var><br>
+&mdash; User Option: <b>new-ecb-frame</b><var><a name="index-new_002decb_002dframe-280"></a></var><br>
 <blockquote><p>Create a new frame at activation time of ECB. 
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>other-window-behavior</b><var><a name="index-other_002dwindow_002dbehavior-267"></a></var><br>
+&mdash; User Option: <b>other-window-behavior</b><var><a name="index-other_002dwindow_002dbehavior-281"></a></var><br>
 <blockquote><p>The behavior of ECB concerning getting an &ldquo;other window&rdquo;. The
 following settings are possible:
 
@@ -456,7 +472,7 @@ has to handle properly all situation for itself.
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>redraw-layout-after-hook</b><var><a name="index-redraw_002dlayout_002dafter_002dhook-268"></a></var><br>
+&mdash; User Option: <b>redraw-layout-after-hook</b><var><a name="index-redraw_002dlayout_002dafter_002dhook-282"></a></var><br>
 <blockquote><p>Hooks run direct before the ECB windows will be shown either by
 <code>ecb-toggle-ecb-windows</code> or <code>ecb-show-ecb-windows</code>. This
 means that at runtime of this hook the ECB-windows are already
@@ -464,24 +480,24 @@ visible.
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>redraw-layout-before-hook</b><var><a name="index-redraw_002dlayout_002dbefore_002dhook-269"></a></var><br>
+&mdash; User Option: <b>redraw-layout-before-hook</b><var><a name="index-redraw_002dlayout_002dbefore_002dhook-283"></a></var><br>
 <blockquote><p>Hooks run direct before the ECB-layout will be redrawn by either
 <code>ecb-redraw-layout</code>. 
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>redraw-layout-quickly</b><var><a name="index-redraw_002dlayout_002dquickly-270"></a></var><br>
+&mdash; User Option: <b>redraw-layout-quickly</b><var><a name="index-redraw_002dlayout_002dquickly-284"></a></var><br>
 <blockquote><p>If non-nil, we will attempt to redraw the layout quickly. Please read
 also carefully the documentation of <code>ecb-redraw-layout</code>. 
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>select-edit-window-on-redraw</b><var><a name="index-select_002dedit_002dwindow_002don_002dredraw-271"></a></var><br>
+&mdash; User Option: <b>select-edit-window-on-redraw</b><var><a name="index-select_002dedit_002dwindow_002don_002dredraw-285"></a></var><br>
 <blockquote><p>Select the first edit window on <code>ecb-redraw-layout</code>. 
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>show-ecb-windows-after-hook</b><var><a name="index-show_002decb_002dwindows_002dafter_002dhook-272"></a></var><br>
+&mdash; User Option: <b>show-ecb-windows-after-hook</b><var><a name="index-show_002decb_002dwindows_002dafter_002dhook-286"></a></var><br>
 <blockquote><p>Hooks run direct before the ECB windows will be shown either by
 <code>ecb-toggle-ecb-windows</code> or <code>ecb-show-ecb-windows</code>. This
 means that at runtime of this hook the ECB-windows are already
@@ -504,7 +520,7 @@ So be aware which code you add to which hook!
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>show-ecb-windows-before-hook</b><var><a name="index-show_002decb_002dwindows_002dbefore_002dhook-273"></a></var><br>
+&mdash; User Option: <b>show-ecb-windows-before-hook</b><var><a name="index-show_002decb_002dwindows_002dbefore_002dhook-287"></a></var><br>
 <blockquote><p>Hooks run direct before the ECB windows will be shown either by
 <code>ecb-toggle-ecb-windows</code> or <code>ecb-show-ecb-windows</code>. This
 means that at runtime of this hook the ECB-windows are still hidden.
@@ -526,7 +542,7 @@ So be aware which code you add to which hook!
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>split-edit-window-after-start</b><var><a name="index-split_002dedit_002dwindow_002dafter_002dstart-274"></a></var><br>
+&mdash; User Option: <b>split-edit-window-after-start</b><var><a name="index-split_002dedit_002dwindow_002dafter_002dstart-288"></a></var><br>
 <blockquote><p>Sets if and how the edit window should be splitted after ECB-start. 
 But be aware: This option determines only if and how the edit-window
 should be splitted at start-time of ECB. There are five different
@@ -579,7 +595,7 @@ really completely save.
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>toggle-layout-sequence</b><var><a name="index-toggle_002dlayout_002dsequence-275"></a></var><br>
+&mdash; User Option: <b>toggle-layout-sequence</b><var><a name="index-toggle_002dlayout_002dsequence-289"></a></var><br>
 <blockquote><p>Toggle sequence for layout toggling with <code>ecb-toggle-layout</code>. 
 Every element of this list has to be a valid layout-name i.e. either
 one of the predefined layouts or one of the user-defined layouts.
@@ -608,13 +624,13 @@ element!
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>windows-height</b><var><a name="index-windows_002dheight-276"></a></var><br>
+&mdash; User Option: <b>windows-height</b><var><a name="index-windows_002dheight-290"></a></var><br>
 <blockquote><p>The height of the ECB windows in lines for top-layouts. If the number
 is less than 1.0 the width is a fraction of the frame height. 
 </p></blockquote></div>
 
 <div class="defun">
-&mdash; User Option: <b>windows-width</b><var><a name="index-windows_002dwidth-277"></a></var><br>
+&mdash; User Option: <b>windows-width</b><var><a name="index-windows_002dwidth-291"></a></var><br>
 <blockquote><p>The width of the ECB windows in columns for left- and right layouts. 
 If the number is less than 1.0 the width is a fraction of the frame
 width. 

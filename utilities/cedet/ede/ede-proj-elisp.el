@@ -4,7 +4,7 @@
 
 ;; Author: Eric M. Ludlam <zappo@gnu.org>
 ;; Keywords: project, make
-;; RCS: $Id: ede-proj-elisp.el,v 1.36 2009/02/24 00:46:25 zappo Exp $
+;; RCS: $Id: ede-proj-elisp.el,v 1.38 2009/08/08 21:43:19 zappo Exp $
 
 ;; This software is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -106,9 +106,16 @@ Lays claim to all .elc files that match .el files in this target."
     (while packages
       (or (setq ldir (locate-library (car packages)))
 	  (error "Cannot find package %s" (car packages)))
-      (setq paths (cons (file-relative-name (file-name-directory ldir))
-			paths)
-	    packages (cdr packages)))
+      (let* ((fnd (file-name-directory ldir))
+	     (rel (file-relative-name fnd))
+	     (full nil)
+	     )
+	;; Make sure the relative name isn't to far off
+	(when (string-match "^\\.\\./\\.\\./\\.\\./\\.\\." rel)
+	  (setq full fnd))
+	;; Do the setup.
+	(setq paths (cons (or full rel) paths)
+	      packages (cdr packages))))
     paths))
 
 (defmethod project-compile-target ((obj ede-proj-target-elisp))
@@ -209,9 +216,9 @@ is found, such as a `-version' variable, or the standard header."
   "Tweak the configure file (current buffer) to accomodate THIS."
   (call-next-method)
   ;; Ok, now we have to tweak the autoconf provided `elisp-comp' program.
-  (let ((ec (ede-expand-filename this "elisp-comp")))
-    (if (not (file-exists-p ec))
-	(message "There may be compile errors.  Rerun a second time.")
+  (let ((ec (ede-expand-filename this "elisp-comp" 'newfile)))
+    (if (or (not ec) (not (file-exists-p ec)))
+	(message "No elisp-comp file.  There may be compile errors?  Rerun a second time.")
       (save-excursion
 	(if (file-symlink-p ec)
 	    (progn
@@ -232,9 +239,9 @@ is found, such as a `-version' variable, or the standard header."
 (defmethod ede-proj-flush-autoconf ((this ede-proj-target-elisp))
   "Flush the configure file (current buffer) to accomodate THIS."
   ;; Remove crufty old paths from elisp-compile
-  (let ((ec (ede-expand-filename this "elisp-comp"))
+  (let ((ec (ede-expand-filename this "elisp-comp" 'newfile))
 	)
-    (if (file-exists-p ec)
+    (if (and ec (file-exists-p ec))
 	(save-excursion
 	  (set-buffer (find-file-noselect ec t))
 	  (goto-char (point-min))

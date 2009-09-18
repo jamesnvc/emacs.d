@@ -3,7 +3,7 @@
 <title>Conflicts - ECB - the Emacs Code Browser</title>
 <meta http-equiv="Content-Type" content="text/html">
 <meta name="description" content="ECB - the Emacs Code Browser">
-<meta name="generator" content="makeinfo 4.13">
+<meta name="generator" content="makeinfo 4.8">
 <link title="Top" rel="start" href="ecb.html#Top">
 <link rel="up" href="Conflicts-and-bugs.html#Conflicts-and-bugs" title="Conflicts and bugs">
 <link rel="prev" href="Conflicts-and-bugs.html#Conflicts-and-bugs" title="Conflicts and bugs">
@@ -24,8 +24,8 @@
 </head>
 <body>
 <div class="node">
-<a name="Conflicts"></a>
 <p>
+<a name="Conflicts"></a>
 Next:&nbsp;<a rel="next" accesskey="n" href="Bugs.html#Bugs">Bugs</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="Conflicts-and-bugs.html#Conflicts-and-bugs">Conflicts and bugs</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="Conflicts-and-bugs.html#Conflicts-and-bugs">Conflicts and bugs</a>
@@ -50,7 +50,7 @@ solutions/hints/workarounds are offered:
 
 <h5 class="subsubsection">12.1.1.1 Package bs.el</h5>
 
-<p><a name="index-bs-package-351"></a><a name="index-bs_002dshow-352"></a>The package bs.el offers a nifty buffer-selection buffer. The main
+<p><a name="index-bs-package-367"></a><a name="index-bs_002dshow-368"></a>The package bs.el offers a nifty buffer-selection buffer. The main
 command of this package is <code>bs-show</code>. With ECB &lt; 2.20 this
 command does not really working well within activated ECB. But as of
 version 2.20 of ECB there should be no problems using this package.
@@ -62,7 +62,7 @@ Otherwise bs will use the edit-area to do its job.
 
 <h5 class="subsubsection">12.1.1.2 Package BBDB</h5>
 
-<p><a name="index-BBDB-353"></a>As of ECB 2.21 there should be no conflicts between BBDB and ECB, so
+<p><a name="index-BBDB-369"></a>As of ECB 2.21 there should be no conflicts between BBDB and ECB, so
 BBDB can be used even when the ECB-windows are visible.
 
    <p>But if you encounter problems then it is recommened to use one of the
@@ -71,7 +71,7 @@ very well under all circumstances!
 
 <h5 class="subsubsection">12.1.1.3 Package calendar.el</h5>
 
-<p><a name="index-calendar-package-354"></a>With activated ECB <code>calendar</code> does not shrink it´s window to the small
+<p><a name="index-calendar-package-370"></a>With activated ECB <code>calendar</code> does not shrink it´s window to the small
 size but splits the window equally. But if you add this to your
 <samp><span class="file">.emacs</span></samp> it works:
 
@@ -87,7 +87,7 @@ size but splits the window equally. But if you add this to your
 </pre>
    <h5 class="subsubsection">12.1.1.4 Package cygwin-mount.el</h5>
 
-<p><a name="index-cygwin_002dmount-package-355"></a>There can be a conflict between ECB and cygwin-mount.el if the
+<p><a name="index-cygwin_002dmount-package-371"></a>There can be a conflict between ECB and cygwin-mount.el if the
 following conditions are true:
 
      <ul>
@@ -115,32 +115,39 @@ first *AFTER* ECB is activated. This can be done with the hook
 </pre>
    <h5 class="subsubsection">12.1.1.5 Package desktop.el</h5>
 
-<p><a name="index-desktop-356"></a>ECB works perfectly with the desktop-saver desktop.el. But to ensure
-this the option <code>desktop-minor-mode-table</code> <strong>MUST</strong> contain
-the following entry:
+<p><a name="index-desktop-372"></a>ECB works perfectly with the desktop-saver desktop.el. Normally there should
+be nothing to do for you.
+
+   <p>But if you encounter problems (e.g. that desktop tries to activate ECB for
+each buffer it loads) then you should add the following entry to the option
+<code>desktop-minor-mode-table</code>:
 
 <pre class="example">   (ecb-minor-mode nil)
 </pre>
-   <p>Without this entry desktop.el tries for each buffer it loads after
-Emacs-start to enable <code>ecb-minor-mode</code> and therefore to start
-ECB. This conflicts with ECB! Therefore you must add the entry above
-to <code>desktop-minor-mode-table</code>!
+   <p>If you still encounter problems then you should add entries for all the
+minor-mode of the semantic-package to <code>desktop-minor-mode-table</code>, so for
+example add also:
 
-   <p>Further it is strongly recommended to add entries for all the
-minor-mode of the semantic-package to <code>desktop-minor-mode-table</code>,
-so for example add also:
-
-<pre class="example">   (semantic-show-unmatched-syntax-mode nil)
-   (semantic-stickyfunc-mode nil)
-   (senator-minor-mode nil)
+<pre class="example">   (semantic-decoration-mode nil)
+   (semantic-idle-completions-mode nil)
+   (semantic-idle-tag-highlight-mode nil)
+   (semantic-idle-summary-mode nil)
    (semantic-idle-scheduler-mode nil)
+   (senator-isearch-semantic-mode nil)
+   (senator-minor-mode nil)
+   (semantic-highlight-func-mode nil)
+   (semantic-stickyfunc-mode nil)
+   (semantic-show-parser-state-mode nil)
+   (semantic-show-unmatched-syntax-mode nil
+   (semantic-highlight-edits-mode nil
 </pre>
-   <p>Which modes you have to add depends on which modes of semantic you
-use. But to get sure you should add all minor-modes of the
-semantic-package because these modes are normally activated by the
-related &ldquo;global&rdquo; command (e.g. 
-<code>global-semantic-show-unmatched-syntax-mode</code>) or by adding the
-minor-mode to the related major-mode-hook.
+   <p>Normally this should not be necessary, because semantic is already prepared to
+work perfectly with desktop.el. But if there are problems it's worth a try. 
+Which modes you have to add depends on which modes of semantic you use. But to
+get sure you should add all minor-modes of the semantic-package because these
+modes are normally activated by the related &ldquo;global&rdquo; command (e.g. 
+<code>global-semantic-show-unmatched-syntax-mode</code>) or by adding the minor-mode
+to the related major-mode-hook.
 
    <p>It has also been reported that just disabling the Tip-Of-The-Day
 (option: <code>ecb-tip-of-the-day</code>) fixes the compatibility-problems
@@ -148,13 +155,13 @@ with desktop.el. Just try it out!
 
 <h5 class="subsubsection">12.1.1.6 Package edebug (Lisp Debugger)</h5>
 
-<p><a name="index-edebug-357"></a>It is strongly recommended to run edebug only when the ECB-windows are
+<p><a name="index-edebug-373"></a>It is strongly recommended to run edebug only when the ECB-windows are
 hidden. With visible ECB-windows there will probably serious conflicts
 between the ECB-layout and the edebug-window-manager.
 
 <h5 class="subsubsection">12.1.1.7 Package ediff.el</h5>
 
-<p><a name="index-ediff-358"></a>In most cases ECB works very well with ediff (see option
+<p><a name="index-ediff-374"></a>In most cases ECB works very well with ediff (see option
 <code>ecb-run-ediff-in-ecb-frame</code>). But currently suspending ediff
 with <code>ediff-suspend</code> and restoring the ediff-session (e.g. with
 command <code>eregistry</code>) does confuse the window-management of ECB.
@@ -165,7 +172,7 @@ reactivate it later then it is recommended to exit ECB first
 
 <h5 class="subsubsection">12.1.1.8 Package func-menu.el</h5>
 
-<p><a name="index-func_002dmenu-package-359"></a>This package has been reported to produce some conflicts under some
+<p><a name="index-func_002dmenu-package-375"></a>This package has been reported to produce some conflicts under some
 circumstances when ECB is activated. Some of them could be reproduced
 by the ECB-maintainer. So the recommendation is to disable
 func-menu-support when using ECB. Normally using func-menu makes no
@@ -174,7 +181,7 @@ more informations as func-menu - so func-menu is redundant ;-)
 
 <h5 class="subsubsection">12.1.1.9 Package Gnus (Newsreader)</h5>
 
-<p><a name="index-Gnus-360"></a>As of ECB 2.21 there should be no conflicts between Gnus and ECB, so
+<p><a name="index-Gnus-376"></a>As of ECB 2.21 there should be no conflicts between Gnus and ECB, so
 Gnus can be used even when the ECB-windows are visible.
 
    <p>But if you encounter problems then it is recommened to use one of the
@@ -183,7 +190,7 @@ very well under all circumstances!
 
 <h5 class="subsubsection">12.1.1.10 Package JDEE (Java Development Environment)</h5>
 
-<p><a name="index-JDEE-361"></a>JDEE has a lot of &ldquo;dialogs&rdquo; where the user can select among several
+<p><a name="index-JDEE-377"></a>JDEE has a lot of &ldquo;dialogs&rdquo; where the user can select among several
 choices. An example is importing classes via the command
 <code>jde-import-find-and-import</code>. These dialogs are strongly designed
 to work in an environment where a new temporary window is created, the
@@ -204,7 +211,7 @@ of ECB and not within the compile-window.
 
 <h5 class="subsubsection">12.1.1.11 Package scroll-all.el (scroll-all-mode)</h5>
 
-<p><a name="index-scroll_002dall_002dmode-362"></a><a name="index-scroll_002dall-363"></a>ECB advices <code>scroll-all-mode</code> so it is working correct during
+<p><a name="index-scroll_002dall_002dmode-378"></a><a name="index-scroll_002dall-379"></a>ECB advices <code>scroll-all-mode</code> so it is working correct during
 running ECB. This means if point stays in an edit-window and the
 edit-window is splitted then all edit-windows are scrolled by
 <code>scroll-all-mode</code> and no other window! If point stays in any
@@ -213,12 +220,12 @@ senseful behavior of <code>scroll-all-mode</code> with ECB.
 
 <h5 class="subsubsection">12.1.1.12 Package VC (Version Control)</h5>
 
-<p><a name="index-VC-package-364"></a><a name="index-Version-control-365"></a>The variable <code>vc-delete-logbuf-window</code> must be set to nil during
+<p><a name="index-VC-package-380"></a><a name="index-Version-control-381"></a>The variable <code>vc-delete-logbuf-window</code> must be set to nil during
 active ECB. This can be done with the hooks mentioned in <a href="Elisp-programming.html#Elisp-programming">Elisp programming</a>.
 
 <h5 class="subsubsection">12.1.1.13 Package VM (Emacs Mail-Client)</h5>
 
-<p><a name="index-VM-package-366"></a>As of ECB 2.21 there should be no conflicts between VM and ECB, so
+<p><a name="index-VM-package-382"></a>As of ECB 2.21 there should be no conflicts between VM and ECB, so
 VM can be used even when the ECB-windows are visible.
 
    <p>But if you encounter problems then it is recommened to use one of the
@@ -227,14 +234,14 @@ well under all circumstances!
 
 <h5 class="subsubsection">12.1.1.14 Package winner.el (winner-mode)</h5>
 
-<p><a name="index-winner_002dmode-367"></a><a name="index-winner-368"></a><code>winner-mode</code> is autom. disabled as long as ECB is running. ECB
+<p><a name="index-winner_002dmode-383"></a><a name="index-winner-384"></a><code>winner-mode</code> is autom. disabled as long as ECB is running. ECB
 has its own window-management which is completely incompatible with
 <code>winner-mode</code>! But <code>winner-mode</code> makes also not really sense
 with ECB.
 
 <h5 class="subsubsection">12.1.1.15 Package wb-line-number.el</h5>
 
-<p><a name="index-wb_002dline_002dnumber-369"></a>
+<p><a name="index-wb_002dline_002dnumber-385"></a>
 Do not use the package wb-line-number.el in combination with ECB - it
 will not work and it will not work under any circumstances and there
 is no way to make it work together and there will be no way in the
@@ -247,7 +254,7 @@ created by ECB.
 
 <h5 class="subsubsection">12.1.1.16 Application xrefactory</h5>
 
-<p><a name="index-xrefactory-370"></a>Xrefactory (also known as Xref, X-ref and Xref-Speller), the
+<p><a name="index-xrefactory-386"></a>Xrefactory (also known as Xref, X-ref and Xref-Speller), the
 refactoring browser for (X)Emacs<a rel="footnote" href="#fn-1" name="fnd-1"><sup>1</sup></a>, can be used during running ECB regardless if the ECB-windows are
 visible or not. There should be no conflicts as of ECB versions &gt;=
 2.21.
@@ -277,7 +284,7 @@ disappears if you call the failing command from an edit-window of ECB.
 If this is true then you you can add the following code to your
 .emacs (and of course replace the XXX with the failing command):
 
-<pre class="example">   (defadvice XXX (before ecb activate)
+<pre class="example">   (defecb-advice XXX before ecb-compatibility-advices
      "Ensures `XXX' works well when called from another window
    as an edit-window. Does nothing if called in another frame
    as the `ecb-frame'."
@@ -289,6 +296,13 @@ If this is true then you you can add the following code to your
 XXX is called from within an edit-window if the current selected
 window is not an edit-window. It does nothing if called for another
 frame as the ecb-frame.
+
+   <p><strong>Please note</strong>: You have to define such compatibility advices exactly as
+demonstrated in the example above, i.e. you must use the macro
+<code>defecb-advice</code> and you have to use the advice-set
+<code>ecb-compatibility-advices</code> (see the documentation of this macro)! The
+advice-class is not necessary <code>before</code>, it can be <code>after</code> or
+<code>around</code> too. Never use <code>defadvice</code> for ECB-advices!
 
    <p>If such an advice solves the problem then please send a note with the
 solution to the ECB-mailing-list or direct to the ECB-maintainer so
@@ -304,7 +318,7 @@ command of which package fails under which circumstances!
 <a href="http://www.xref-tech.com">http://www.xref-tech.com</a>
 </p>
 
-   <hr></div>
+   <p><hr></div>
 
    </body></html>
 

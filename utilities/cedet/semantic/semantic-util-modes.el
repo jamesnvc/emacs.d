@@ -6,7 +6,7 @@
 ;; Author: Eric M. Ludlam <zappo@gnu.org>
 ;; Author: David Ponce <david@dponce.com>
 ;; Keywords: syntax
-;; X-RCS: $Id: semantic-util-modes.el,v 1.67 2009/01/31 18:12:19 zappo Exp $
+;; X-RCS: $Id: semantic-util-modes.el,v 1.70 2009/04/23 21:44:07 zappo Exp $
 
 ;; This file is not part of GNU Emacs.
 
@@ -848,7 +848,7 @@ Use the command `semantic-stickyfunc-mode' to change this variable.")
 	   ;; Test fringe size.
 	   (let* ((f (window-fringes))
 		  (fw (car f))
-		  (numspace (/ fw charwidth))
+		  (numspace (/ fw (frame-char-width)))
 		  )
 	     (make-string numspace ? ))
 	 (error
@@ -1157,10 +1157,11 @@ current tag declaration."
 	  (setq semantic-highlight-func-mode nil)
 	  (error "Buffer %s was not set up for parsing" (buffer-name)))
 	;; Setup our hook
-	(add-hook 'post-command-hook 'semantic-highlight-func-highlight-current-tag t)
+	(add-hook 'post-command-hook 'semantic-highlight-func-highlight-current-tag nil t)
 	)
     ;; Disable highlight func mode
     (remove-hook 'post-command-hook 'semantic-highlight-func-highlight-current-tag t)
+    (semantic-highlight-func-highlight-current-tag t)
     )
   semantic-highlight-func-mode)
 
@@ -1196,8 +1197,9 @@ minor mode is enabled."
                (if semantic-highlight-func-mode "en" "dis")))
   semantic-highlight-func-mode)
 
-(defun semantic-highlight-func-highlight-current-tag ()
+(defun semantic-highlight-func-highlight-current-tag (&optional disable)
   "Highlight the current tag under point.
+Optional argument DISABLE will turn off any active highlight.
 If the current tag for this buffer is different from the last time this
 function was called, move the overlay."
   (when (and (not (minibufferp))
@@ -1210,7 +1212,7 @@ function was called, move the overlay."
       (when (not ol)
 	;; No overlay in this buffer.  Make one.
 	(setq ol (semantic-make-overlay (point-min) (point-min)
-					(current-buffer) nil nil))
+					(current-buffer) t nil))
 	(semantic-overlay-put ol 'highlight-func t)
 	(semantic-overlay-put ol 'face 'semantic-highlight-func-current-tag-face)
 	(semantic-overlay-put ol 'keymap semantic-highlight-func-mode-map)
@@ -1220,7 +1222,7 @@ function was called, move the overlay."
 	)
 
       ;; TAG is nil if there was nothing of the apropriate type there.
-      (if (not tag)
+      (if (or (not tag) disable)
 	  ;; No tag, make the overlay go away.
 	  (progn
 	    (semantic-overlay-put ol 'tag nil)
