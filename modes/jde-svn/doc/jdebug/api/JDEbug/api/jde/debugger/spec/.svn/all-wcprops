@@ -1,0 +1,95 @@
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svnroot/jdee/!svn/ver/80/trunk/jde/doc/jdebug/api/JDEbug/api/jde/debugger/spec
+END
+AccessWatchpointSpec.html
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svnroot/jdee/!svn/ver/80/trunk/jde/doc/jdebug/api/JDEbug/api/jde/debugger/spec/AccessWatchpointSpec.html
+END
+ModificationWatchpointSpec.html
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/svnroot/jdee/!svn/ver/80/trunk/jde/doc/jdebug/api/JDEbug/api/jde/debugger/spec/ModificationWatchpointSpec.html
+END
+LineBreakpointSpec.html
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svnroot/jdee/!svn/ver/80/trunk/jde/doc/jdebug/api/JDEbug/api/jde/debugger/spec/LineBreakpointSpec.html
+END
+package-frame.html
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svnroot/jdee/!svn/ver/80/trunk/jde/doc/jdebug/api/JDEbug/api/jde/debugger/spec/package-frame.html
+END
+package-summary.html
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svnroot/jdee/!svn/ver/80/trunk/jde/doc/jdebug/api/JDEbug/api/jde/debugger/spec/package-summary.html
+END
+package-tree.html
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svnroot/jdee/!svn/ver/80/trunk/jde/doc/jdebug/api/JDEbug/api/jde/debugger/spec/package-tree.html
+END
+WatchpointSpec.html
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svnroot/jdee/!svn/ver/80/trunk/jde/doc/jdebug/api/JDEbug/api/jde/debugger/spec/WatchpointSpec.html
+END
+SourceNameReferenceTypeSpec.html
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/svnroot/jdee/!svn/ver/80/trunk/jde/doc/jdebug/api/JDEbug/api/jde/debugger/spec/SourceNameReferenceTypeSpec.html
+END
+EventRequestSpecList.html
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svnroot/jdee/!svn/ver/80/trunk/jde/doc/jdebug/api/JDEbug/api/jde/debugger/spec/EventRequestSpecList.html
+END
+EventRequestSpec.html
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svnroot/jdee/!svn/ver/80/trunk/jde/doc/jdebug/api/JDEbug/api/jde/debugger/spec/EventRequestSpec.html
+END
+PatternReferenceTypeSpec.html
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svnroot/jdee/!svn/ver/80/trunk/jde/doc/jdebug/api/JDEbug/api/jde/debugger/spec/PatternReferenceTypeSpec.html
+END
+ExceptionSpec.html
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svnroot/jdee/!svn/ver/80/trunk/jde/doc/jdebug/api/JDEbug/api/jde/debugger/spec/ExceptionSpec.html
+END
+BreakpointSpec.html
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svnroot/jdee/!svn/ver/80/trunk/jde/doc/jdebug/api/JDEbug/api/jde/debugger/spec/BreakpointSpec.html
+END
+MethodBreakpointSpec.html
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svnroot/jdee/!svn/ver/80/trunk/jde/doc/jdebug/api/JDEbug/api/jde/debugger/spec/MethodBreakpointSpec.html
+END
+ReferenceTypeSpec.html
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svnroot/jdee/!svn/ver/80/trunk/jde/doc/jdebug/api/JDEbug/api/jde/debugger/spec/ReferenceTypeSpec.html
+END

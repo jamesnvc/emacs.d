@@ -1,0 +1,563 @@
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree
+END
+PackageDeclaration.java
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/PackageDeclaration.java
+END
+SwitchLabel.java
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/SwitchLabel.java
+END
+Statement.java
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/Statement.java
+END
+SynchronizedStatement.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/SynchronizedStatement.java
+END
+Arguments.java
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/Arguments.java
+END
+ConditionalAndExpression.java
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/ConditionalAndExpression.java
+END
+NestedInterfaceDeclaration.java
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/NestedInterfaceDeclaration.java
+END
+InstanceOfExpression.java
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/InstanceOfExpression.java
+END
+AdditiveExpression.java
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/AdditiveExpression.java
+END
+ForInit.java
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/ForInit.java
+END
+ClassDeclaration.java
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/ClassDeclaration.java
+END
+NameList.java
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/NameList.java
+END
+PostfixExpression.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/PostfixExpression.java
+END
+LabeledStatement.java
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/LabeledStatement.java
+END
+ArgumentList.java
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/ArgumentList.java
+END
+CompilationUnit.java
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/CompilationUnit.java
+END
+ImportDeclaration.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/ImportDeclaration.java
+END
+NodeList.java
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/NodeList.java
+END
+IfStatement.java
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/IfStatement.java
+END
+ArrayDimsAndInits.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/ArrayDimsAndInits.java
+END
+SwitchStatement.java
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/SwitchStatement.java
+END
+ClassBodyDeclaration.java
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/ClassBodyDeclaration.java
+END
+ConstructorDeclaration.java
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/ConstructorDeclaration.java
+END
+Literal.java
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/Literal.java
+END
+BooleanLiteral.java
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/BooleanLiteral.java
+END
+Makefile
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/Makefile
+END
+PreDecrementExpression.java
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/PreDecrementExpression.java
+END
+NodeChoice.java
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/NodeChoice.java
+END
+LocalVariableDeclaration.java
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/LocalVariableDeclaration.java
+END
+ContinueStatement.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/ContinueStatement.java
+END
+PrimitiveType.java
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/PrimitiveType.java
+END
+CastExpression.java
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/CastExpression.java
+END
+UnmodifiedInterfaceDeclaration.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/UnmodifiedInterfaceDeclaration.java
+END
+RelationalExpression.java
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/RelationalExpression.java
+END
+UnaryExpression.java
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/UnaryExpression.java
+END
+ResultType.java
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/ResultType.java
+END
+StatementExpressionList.java
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/StatementExpressionList.java
+END
+Type.java
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/Type.java
+END
+ClassBody.java
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/ClassBody.java
+END
+EmptyStatement.java
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/EmptyStatement.java
+END
+NodeToken.java
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/NodeToken.java
+END
+VariableDeclarator.java
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/VariableDeclarator.java
+END
+NullLiteral.java
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/NullLiteral.java
+END
+VariableInitializer.java
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/VariableInitializer.java
+END
+NodeOptional.java
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/NodeOptional.java
+END
+Expression.java
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/Expression.java
+END
+PrimaryPrefix.java
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/PrimaryPrefix.java
+END
+NodeListInterface.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/NodeListInterface.java
+END
+CastLookahead.java
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/CastLookahead.java
+END
+PrimaryExpression.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/PrimaryExpression.java
+END
+TryStatement.java
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/TryStatement.java
+END
+ReturnStatement.java
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/ReturnStatement.java
+END
+InterfaceDeclaration.java
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/InterfaceDeclaration.java
+END
+BreakStatement.java
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/BreakStatement.java
+END
+ForStatement.java
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/ForStatement.java
+END
+PreIncrementExpression.java
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/PreIncrementExpression.java
+END
+EqualityExpression.java
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/EqualityExpression.java
+END
+NestedClassDeclaration.java
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/NestedClassDeclaration.java
+END
+BlockStatement.java
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/BlockStatement.java
+END
+UnaryExpressionNotPlusMinus.java
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/UnaryExpressionNotPlusMinus.java
+END
+Name.java
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/Name.java
+END
+FormalParameter.java
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/FormalParameter.java
+END
+ExplicitConstructorInvocation.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/ExplicitConstructorInvocation.java
+END
+InclusiveOrExpression.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/InclusiveOrExpression.java
+END
+ArrayInitializer.java
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/ArrayInitializer.java
+END
+ConditionalExpression.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/ConditionalExpression.java
+END
+AssignmentOperator.java
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/AssignmentOperator.java
+END
+ConditionalOrExpression.java
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/ConditionalOrExpression.java
+END
+Node.java
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/Node.java
+END
+MethodDeclaration.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/MethodDeclaration.java
+END
+TypeDeclaration.java
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/TypeDeclaration.java
+END
+ExclusiveOrExpression.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/ExclusiveOrExpression.java
+END
+ForUpdate.java
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/ForUpdate.java
+END
+MethodDeclarationLookahead.java
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/MethodDeclarationLookahead.java
+END
+VariableDeclaratorId.java
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/VariableDeclaratorId.java
+END
+FormalParameters.java
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/FormalParameters.java
+END
+AllocationExpression.java
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/AllocationExpression.java
+END
+PrimarySuffix.java
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/PrimarySuffix.java
+END
+MultiplicativeExpression.java
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/MultiplicativeExpression.java
+END
+NodeSequence.java
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/NodeSequence.java
+END
+UnmodifiedClassDeclaration.java
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/UnmodifiedClassDeclaration.java
+END
+MethodDeclarator.java
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/MethodDeclarator.java
+END
+AndExpression.java
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/AndExpression.java
+END
+Initializer.java
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/Initializer.java
+END
+StatementExpression.java
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/StatementExpression.java
+END
+NodeListOptional.java
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/NodeListOptional.java
+END
+DoStatement.java
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/DoStatement.java
+END
+ThrowStatement.java
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/ThrowStatement.java
+END
+FieldDeclaration.java
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/FieldDeclaration.java
+END
+Block.java
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/Block.java
+END
+ShiftExpression.java
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/ShiftExpression.java
+END
+WhileStatement.java
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/WhileStatement.java
+END
+InterfaceMemberDeclaration.java
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/syntaxtree/InterfaceMemberDeclaration.java
+END

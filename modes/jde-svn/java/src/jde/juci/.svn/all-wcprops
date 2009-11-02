@@ -1,0 +1,107 @@
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/juci
+END
+Connection.java
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/juci/Connection.java
+END
+NoMoreResultsException.java
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/juci/NoMoreResultsException.java
+END
+Quoted.java
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/juci/Quoted.java
+END
+Cons.java
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/juci/Cons.java
+END
+LispWriterTest.java
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/juci/LispWriterTest.java
+END
+LispWriter.java
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/juci/LispWriter.java
+END
+SymbolTest.java
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/juci/SymbolTest.java
+END
+Symbol.java
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/juci/Symbol.java
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/juci/package.html
+END
+Logger.java
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/juci/Logger.java
+END
+ConnectionImplTest.java
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/juci/ConnectionImplTest.java
+END
+ConnectionImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/juci/ConnectionImpl.java
+END
+ConnectionUnavailableException.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/juci/ConnectionUnavailableException.java
+END
+WrappedRuntimeException.java
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/juci/WrappedRuntimeException.java
+END
+ElispError.java
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/juci/ElispError.java
+END
+ConnectionFactory.java
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/juci/ConnectionFactory.java
+END
+AllTests.java
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/juci/AllTests.java
+END

@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svnroot/jdee/!svn/ver/80/trunk/jde/doc/src/styles/html
+END
+jdb-ug-toc.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svnroot/jdee/!svn/ver/80/trunk/jde/doc/src/styles/html/jdb-ug-toc.xsl
+END
+jdb-ug-html-toc.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svnroot/jdee/!svn/ver/80/trunk/jde/doc/src/styles/html/jdb-ug-html-toc.xsl
+END
+jdebook.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svnroot/jdee/!svn/ver/80/trunk/jde/doc/src/styles/html/jdebook.xsl
+END
+jdebook_toc.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svnroot/jdee/!svn/ver/80/trunk/jde/doc/src/styles/html/jdebook_toc.xsl
+END
+jdebook_html_toc.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svnroot/jdee/!svn/ver/80/trunk/jde/doc/src/styles/html/jdebook_html_toc.xsl
+END

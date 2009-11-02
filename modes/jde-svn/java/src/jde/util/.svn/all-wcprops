@@ -1,0 +1,83 @@
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/util
+END
+CompileServer.java
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/util/CompileServer.java
+END
+ClassInfo.java
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/util/ClassInfo.java
+END
+ClassPathDir.java
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/util/ClassPathDir.java
+END
+DynamicClassLoader.java
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/util/DynamicClassLoader.java
+END
+ClassPathEntry.java
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/util/ClassPathEntry.java
+END
+ImmutableClassPathEntry.java
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/util/ImmutableClassPathEntry.java
+END
+ProjectClasses.java
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/util/ProjectClasses.java
+END
+ClassPathZip.java
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/util/ClassPathZip.java
+END
+JDESecurityManager.java
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/util/JDESecurityManager.java
+END
+MultiValueMap.java
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/util/MultiValueMap.java
+END
+AntServer.java
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/util/AntServer.java
+END
+Completion.java
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/util/Completion.java
+END
+JdeUtilities.java
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/util/JdeUtilities.java
+END

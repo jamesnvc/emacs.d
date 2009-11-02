@@ -1,0 +1,71 @@
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser
+END
+Token.java
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/Token.java
+END
+TokenMgrError.java
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/TokenMgrError.java
+END
+ParserMain.java
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/ParserMain.java
+END
+Java1.1.jj
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/Java1.1.jj
+END
+jtb.out.jj
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/jtb.out.jj
+END
+ParseException.java
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/ParseException.java
+END
+JavaParserTokenManager.java
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/JavaParserTokenManager.java
+END
+prj.el
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/prj.el
+END
+ASCII_UCodeESC_CharStream.java
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/ASCII_UCodeESC_CharStream.java
+END
+JavaParserConstants.java
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/JavaParserConstants.java
+END
+JavaParser.java
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svnroot/jdee/!svn/ver/80/trunk/jde/java/src/jde/parser/JavaParser.java
+END

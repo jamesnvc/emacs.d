@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<project name="jdee" default="build">
+    <!-- add in the contribs (add ant-contrib-VERSION.jar) to CLASSPATH -->
+  <taskdef resource="net/sf/antcontrib/antlib.xml"/>
+
+
+  <!-- basic properties, the rest are taken from ${config.dir}/build. -->
+  <property name="project.dir" location="./"/>
+  <property name="project.version" value="2.4.0"/>
+  <property name="config.dir" location="./config"/>
+
+
+  <!-- everything depends on this initialization target -->
+  <target name="init">
+    <tstamp/>
+    <!-- developers will usually have the following config file (i.e. source
+	 installed libs) -->
+    <property file="${user.home}/.jdee-config.properties"/>
+
+    <property file="${config.build.file}"/>
+
+    <property file="${config.dir}/project.properties"/>
+    <path id="compile.classpath">
+	<fileset dir="${lib.java.dir}"/>
+    </path>
+
+    <condition property="build.bin.emacs"
+	       value="/Applications/Emacs.app/Contents/MacOS/Emacs">
+      <and>
+	<os family="mac"/>
+	<available file="/Applications/Emacs.app" type="dir"/>
+      </and>
+    </condition>
+    <condition property="build.bin.emacs"
+	       value="${user.home}/Applications/Emacs.app/Contents/MacOS/Emacs">
+      <and>
+	<os family="mac"/>
+	<available file="${user.home}/Applications/Emacs.app" type="dir"/>
+      </and>
+    </condition>
+
+    <uptodate property="config.uptodate" srcfile="${config.build.file}"
+	      targetfile="${config.build.file}"/>
+    <mkdir dir="${build.dir}"/>
+  </target>
+
+
+  <!-- determine whether or not we need to compile emacs lisp/autoload files -->
+  <target name="prepare-lisp-build">
+    <mkdir dir="${build.lisp.dir}"/>
+
+    <condition property="lisp.uptodate">
+      <and>
+	<available file="${build.lisp.autoload.file}"/>
+	<uptodate>
+	  <srcfiles dir="${build.lisp.dir}" includes="*.el"/>
+	  <mapper type="glob" from="*.el" to="*.elc"/>
+	</uptodate>
+      </and>
+    </condition>
+  </target>
+
+  <target name="configure" depends="init,prepare-lisp-build"
+	  unless="config.uptodate"
+	  description="create the configuration file the user edits for builds">
+
+    <!-- defaults -->
+    <property name="build.bin.emacs" value="emacs"/>
+    <!-- end defaults -->
+
+    <mkdir dir="${build.config.dir}"/>
+
+    <!-- project specific defaults (not user or instance specific) -->
+    <property file="${config.dir}/default.properties"/>
+
+    <propertyfile file="${config.build.file}"
+		  comment="user editable build configuration parameters">
+      <entry key="config.time" type="date" value="now"/>
+      <entry key="cedet.dir" value="${cedet.dir}"/>
+      <entry key="elib.dir" value="${elib.dir}"/>
+      <entry key="prefix.dir" value="${prefix.dir}"/>
+      <entry key="build.bin.emacs" value="${build.bin.emacs}"/>
+    </propertyfile>
+  </target>
+
+  <!-- configure (create/build) the emacs lisp build configuration files -->
+  <target name="configure-ebuild" depends="configure,init"
+	  unless="lisp.uptodate">
+    <!-- copy the lisp to the build directory -->
+    <copy todir="${build.lisp.dir}">
+      <fileset dir="${src.lisp.dir}" includes="*.el"/>
+    </copy>
+
+    <!-- make windows paths "mixed" dos paths (cygwin term) -->
+    <mixed-path property="cedet.escaped.dir" value="${cedet.dir}"/>
+    <mixed-path property="elib.escaped.dir" value="${elib.dir}"/>
+    <mixed-path property="src.lisp.escaped.dir" value="${src.lisp.dir}"/>
+    <mixed-path property="build.lisp.escaped.dir" value="${build.lisp.dir}"/>
+
+    <!-- create the file used to compile the emacs lisp code -->
+    <copy file="${build.lisp.src.file}" tofile="${build.lisp.dst.file}"/>
+    <replace file="${build.lisp.dst.file}">
+      <replacefilter token="@{cedet.dir}" value="${cedet.escaped.dir}"/>
+      <replacefilter token="@{elib.dir}" value="${elib.escaped.dir}"/>
+      <replacefilter token="@{src.lisp.dir}" value="${src.lisp.escaped.dir}"/>
+      <replacefilter token="@{build.lisp.dir}" value="${build.lisp.escaped.dir}"/>
+      <replacefilter token="@{build.lisp.autoload.libname}" value="${build.lisp.autoload.libname}"/>
+    </replace>
+  </target>
+
+
+  <target name="build-lisp" depends="configure-ebuild" unless="lisp.uptodate"
+	  description="compile the JDEE Emacs lisp code">
+    <!-- invoke Emacs in batch mode to creat autoloads and compile emacs lisp
+         -->
+    <!-- here we set os=unix since otherwise the exec complains about the
+         directory not existing -->
+    <mixed-path property="build.lisp.escaped.dir" value="${build.lisp.dir}"/>
+    <mixed-path property="build.lisp.dst.escaped.file" value="${build.lisp.dst.file}"/>
+
+    <exec dir="${build.lisp.escaped.dir}"
+	  executable="${build.bin.emacs}" failonerror="true">
+      <arg value="--batch"/>
+      <arg value="--load"/>
+      <arg value="${build.lisp.dst.escaped.file}"/>
+    </exec>
+  </target>
+
+
+  <target name="build-java" depends="init"
+	  description="compile the JDEE Java source code">
+    <mkdir dir="${build.java.dir}"/>
+    <javac srcdir="${src.java.dir}" destdir="${build.java.dir}"
+	   classpathref="compile.classpath"/>
+  </target>
+
+
+  <target name="build" depends="build-lisp, build-java"
+	  description="compile all JDEE source code"/>
+
+
+  <target name="dist" depends="build"
+	  description="create the &quot;binary&quot; distribution">
+    <!-- create dist java lib directory -->
+    <mkdir dir="${dist.lisp.dir}"/>
+    <copy todir="${dist.lisp.dir}">
+      <fileset dir="${build.lisp.dir}"/>
+    </copy>
+
+    <!-- this subdir contains all things Java -->
+    <mkdir dir="${dist.java.lib.dir}"/>
+    <!-- third party libraries -->
+    <copy todir="${dist.java.lib.dir}">
+      <fileset dir="${lib.java.dir}"/>
+    </copy>
+
+    <!-- for those who want to look at the Java source -->
+    <mkdir dir="${dist.java.src.dir}"/>
+    <copy todir="${dist.java.src.dir}">
+      <fileset dir="${src.java.dir}"/>
+    </copy>
+
+    <!-- user guide docs -->
+    <mkdir dir="${dist.doc.html.dir}"/>
+    <copy todir="${dist.doc.html.dir}">
+      <!-- use the checked in generated docs for now -->
+      <fileset dir="./doc/html" includes="**"/>
+    </copy>
+
+    <!-- create the JDE jar file -->
+    <jar destfile="${dist.jar.jde.file}"
+	 basedir="${build.java.dir}"
+	 includes="**/*.class"/>
+
+    <!--javadoc sourcepath="${src.java.dir}"
+	     destdir="${dist.doc.java.api.dir}"
+	     classpathref="compile.classpath"
+	     author="true" version="true" use="true"
+	     windowtitle="JDEE Java API"
+	     /-->
+  </target>
+
+  <target name="install" depends="dist"
+	  description="install the derived objects (the entire dist)">
+      <mkdir dir="${prefix.dir}"/>
+      <copy todir="${prefix.dir}">
+	  <fileset dir="${dist.dir}"/>
+      </copy>
+  </target>
+
+  <target name="clean" depends="init"
+	  description="delete all derived objects EXCEPT the user edited configuration file">
+    <delete dir="${build.dir}"/>
+    <delete dir="${dist.dir}"/>
+  </target>
+
+  <target name="clean-all" depends="clean"
+	  description="delete all derived objects">
+    <delete file="${config.build.file}"/>
+  </target>
+
+
+  <!-- macros -->
+
+  <!-- make windows paths "mixed" dos paths (cygwin term) -->
+  <macrodef name="mixed-path">
+      <attribute name="property"/>
+      <attribute name="value"/>
+      <sequential>
+	  <propertyregex property="@{property}" input="@{value}" regexp="\\"
+			 defaultValue="@{value}" replace="/" global="true"/>
+      </sequential>
+  </macrodef>
+
+
+</project>

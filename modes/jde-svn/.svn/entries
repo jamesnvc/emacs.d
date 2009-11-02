@@ -1,0 +1,52 @@
+8
+
+dir
+138
+https://jdee.svn.sourceforge.net/svnroot/jdee/trunk/jde
+https://jdee.svn.sourceforge.net/svnroot/jdee
+
+
+
+2009-08-10T08:22:11.843563Z
+116
+lenbok
+has-props
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+381a1f10-3442-0410-997e-ef331cd04102
+
+java
+dir
+
+config
+dir
+
+doc
+dir
+
+lisp
+dir
+
+build.xml
+file
+
+
+
+
+2009-09-02T17:21:48.000000Z
+da26ab044e2b310257a1a083b118f8ee
+2009-08-02T10:04:40.661965Z
+108
+lenbok
+
