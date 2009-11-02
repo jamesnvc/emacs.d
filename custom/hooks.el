@@ -12,6 +12,7 @@
 
 ;; Org hooks
 (add-hook 'org-mode-hook 'org-mode-reftex-setup)
+(add-hook 'org-mode-hook 'turn-on-org-cdlatex)
 
 
 ;; Asm

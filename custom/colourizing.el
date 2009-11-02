@@ -512,5 +512,3 @@ With a prefix arg, changes to my custom white background theme."
 ;;     (if arg
 ;; 	(color-theme-billc)
 ;;       (color-theme-billc1))))
-
-(provide 'color-theme-mods)

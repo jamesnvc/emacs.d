@@ -1,4 +1,9 @@
 ;; Some things that I'm working on here...
+(defun new-window-conf (name buffer)
+  (winring-new-configuration)
+  (winring-set-name name)
+  (switch-to-buffer buffer))
+
 (defun sudo-edit (&optional arg)
   "Prompt for a file and open it as root"
   (interactive "p")

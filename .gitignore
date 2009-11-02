@@ -4,3 +4,4 @@ semantic.cache
 *.elc
 *.pyc
 *~
+.DS_Store

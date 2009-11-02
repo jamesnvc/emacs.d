@@ -1,7 +1,7 @@
 (defconst use-backup-dir t)
 (setenv "JAVA_HOME" "/System/Library/Frameworks/JavaVM.framework/Versions/1.5")
 (setenv "JAVACMD" "/System/Library/Frameworks/JavaVM.framework/Versions/1.5/Home/bin/java")
-(setenv "PATH" (concat (getenv "PATH") ":/usr/local/git/bin:/opt/local/bin:" (expand-file-name "~/bin")))
+(setenv "PATH" (concat (getenv "PATH") ":/usr/local/git/bin:/opt/local/bin:" (expand-file-name "~/bin") ":/usr/texbin"))
 (push "/usr/local/git/bin" exec-path)
 (push (expand-file-name "~/bin") exec-path)
 

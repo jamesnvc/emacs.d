@@ -68,7 +68,6 @@
 (global-set-key (kbd "C-c l") 'org-store-link)
 (global-set-key (kbd "C-c o")  'occur)
 (global-set-key (kbd "C-c w")  'woman)
-(global-set-key (kbd "C-c m") 'vm)
 (global-set-key (kbd "C-c r") 'remember)
 (global-set-key (kbd "C-c d") 'insert-date)
 (global-set-key (kbd "C-c s") 'magit-status)

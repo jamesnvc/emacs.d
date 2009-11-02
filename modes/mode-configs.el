@@ -6,6 +6,7 @@
 
 (load-library "auctex")
 (load-library "preview-latex")
+(require 'actionscript-mode)
 (require 'cc-mode)
 (require 'cperl-mode)
 (require 'css-mode)
@@ -37,8 +38,8 @@
 ;; (require 'ipython)
 ;; (require 'pymacs)
 (require 'remember)
-(require 'ruby-electric)
 (require 'ruby-mode)
+(require 'ruby-electric)
 (require 'rinari)
 (require 'sass-mode)
 (require 'scala-mode-auto)
@@ -182,6 +183,9 @@
 
 ;; CSS
 (autoload 'css-mode "css-mode" "Mode for editing CSS files" t)
+
+;; Ruby
+(setq inferior-ruby-first-prompt-pattern "^>>")
 
 ;; flymake
 (defun my-flymake-show-next-error()

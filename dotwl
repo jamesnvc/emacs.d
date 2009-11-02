@@ -1,0 +1,5 @@
+;; -*- mode: emacs-lisp -*-
+;; browse url key
+(add-hook 'mime-view-mode-hook
+	  (lambda ()
+	    (local-set-key "f" 'browse-url)))
