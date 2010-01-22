@@ -114,8 +114,8 @@
 ;   (cons "\\$\\$[^$]+\\$\\$" 'font-lock-string-face)
 ;   (cons "\\$[^$]+\\$" 'font-lock-string-face)
    ;; Headers and (Horizontal Rules)
-   (cons ".*\n?===*" 'font-lock-function-name-face)     ; === headers
-   (cons ".*\n?---*" 'font-lock-function-name-face)     ; --- headers
+   (cons ".*\n?===+" 'font-lock-function-name-face)     ; === headers
+   (cons ".*\n?---+" 'font-lock-function-name-face)     ; --- headers
    (cons "^#+ .*$" 'font-lock-function-name-face)	; ### Headers
    (cons "^\\*[\\*\\s]*$" 'font-lock-function-name-face) ; * * * style HRs
    (cons "^-[-\\s]*$" 'font-lock-function-name-face)	; - - - style HRs
