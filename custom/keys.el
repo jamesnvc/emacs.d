@@ -58,7 +58,7 @@
 
 ;; C-c
 (global-set-key (kbd "C-c C-u") 'uncomment-region)
-(global-set-key (kbd "C-c C-l") 'set-longlines-mode)
+;; (global-set-key (kbd "C-c C-l") 'set-longlines-mode)
 (global-set-key (kbd "C-c N") 'winring-new-configuration)
 (global-set-key (kbd "C-c R") 'winring-rename-configuration)
 (global-set-key (kbd "C-c J") 'winring-jump-to-configuration)
