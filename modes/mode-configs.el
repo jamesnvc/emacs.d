@@ -12,7 +12,7 @@
 (require 'css-mode)
 (require 'distel)
 (require 'erlang)
-;; (require 'ess-site) ;; R
+(require 'ess-site) ;; R
 (autoload 'flyspell-mode "flyspell" "On-the-fly spelling checker." t)
 ;; (require 'gambit)
 ;; (require 'gst-mode)
