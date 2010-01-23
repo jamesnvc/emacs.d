@@ -21,6 +21,26 @@
   :group 'multimarkdown
   :type 'string)
 
+(defcustom multimarkdown-xhtml-command "mmd2XHTML.pl"
+  "Command to generate XHTML output from MultiMarkdown"
+  :group 'multimarkdown
+  :type 'string)
+
+(defcustom multimarkdown-latex-command "mmd2latex.pl"
+  "Command to generate LaTeX output from MultiMarkdown"
+  :group 'multimarkdown
+  :type 'string)
+
+(defcustom multimarkdown-rtf-command "mmd2RTF.pl"
+  "Command to generate RTF output from MultiMarkdown"
+  :group 'multimarkdown
+  :type 'string)
+
+(defcustom multimarkdown-pdf-command "mmd2PDF.pl"
+  "Command to generate PDF output from MultiMarkdown"
+  :group 'multimarkdown
+  :type 'string)
+
 (defcustom multimarkdown-hr-length 5
   "Length of horizonal rules."
   :group 'multimarkdown
@@ -70,7 +90,7 @@
 ;   (cons "\\$[^$]+\\$" 'font-lock-string-face)
    ;; Headers and (Horizontal Rules)
    (cons metadata-headers '(1 'font-lock-comment-face))
-   (cons metadata-headers '(2 'font-lock-keyword-face))
+   (cons metadata-headers '(2 'font-lock-doc-face))
    (cons ".*\n?===+" 'font-lock-function-name-face)     ; === headers
    (cons ".*\n?---+" 'font-lock-function-name-face)     ; --- headers
    (cons "^#+ .*$" 'font-lock-function-name-face)	; ### Headers
@@ -290,17 +310,46 @@ which case it is turned into a blockquote region."
 (defun multimarkdown ()
   "Run multimarkdown on the current buffer and preview the output in another buffer."
   (interactive)
-    (if (and (boundp 'transient-mark-mode) transient-mark-mode mark-active)
-	(shell-command-on-region region-beginning region-end multimarkdown-command
-				 "*multimarkdown-output*" nil)
+  (if (and (boundp 'transient-mark-mode) transient-mark-mode mark-active)
+      (shell-command-on-region region-beginning region-end multimarkdown-command
+                               "*multimarkdown-output*" nil)
       (shell-command-on-region (point-min) (point-max) multimarkdown-command
-			       "*multimarkdown-output*" nil)))
+                               "*multimarkdown-output*" nil)))
 
 (defun multimarkdown-preview ()
   "Run multimarkdown on the current buffer and preview the output in a browser."
   (interactive)
   (multimarkdown)
   (browse-url-of-buffer "*multimarkdown-output*"))
+
+(defun multimarkdown-export (export-fn)
+  "Run multimarkdown on the current buffer and export in the given format"
+  (interactive)
+    (if (and (boundp 'transient-mark-mode) transient-mark-mode mark-active)
+        (shell-command-on-region region-beginning region-end export-fn
+                                 "*multimarkdown-output*" nil)
+        (shell-command (concat export-fn " \"" (buffer-file-name) "\""))
+        ))
+
+(defun multimarkdown-export-as-latex ()
+  "Run multimarkdown on the current buffer and export as LaTeX"
+  (interactive)
+    (multimarkdown-export multimarkdown-latex-command))
+
+(defun multimarkdown-export-as-xhtml ()
+  "Run multimarkdown on the current buffer and export as XHTML"
+  (interactive)
+    (multimarkdown-export multimarkdown-xhtml-command))
+
+(defun multimarkdown-export-as-rtf ()
+  "Run multimarkdown on the current buffer and export as RTF"
+  (interactive)
+    (multimarkdown-export multimarkdown-rtf-command))
+
+(defun multimarkdown-export-as-pdf ()
+  "Run multimarkdown on the current buffer and export as PDF"
+  (interactive)
+    (multimarkdown-export multimarkdown-pdf-command))
 
 
 ;;; Utilities =================================================================
