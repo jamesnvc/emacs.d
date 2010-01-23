@@ -103,6 +103,9 @@
 
 (require 'magit)
 
+;; Use my own multimarkdown mode in preference to markdown-mode
+(defalias 'markdown-mode 'multimarkdown-mode)
+
 ;; Factor
 (setq fuel-factor-root-dir (expand-file-name "~/src/factor"))
 (require 'fuel-mode)
