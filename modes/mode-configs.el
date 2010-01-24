@@ -23,6 +23,7 @@
 (require 'inf-ruby)
 (require 'lua-mode)
 (autoload 'mmm-mode "mmm-mode" "Multiple Major Modes" t)
+(require 'multimarkdown-mode)
 (require 'muse-mode)
 (require 'muse-docbook)
 (require 'muse-html)
