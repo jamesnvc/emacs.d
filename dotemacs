@@ -18,7 +18,7 @@
   (add-path "modes/cl-lookup")
   (add-path "modes/clojure-mode")
   (add-path "modes/distel") ;; Erlang
-  (add-path "modes/ess-5.3.5/lisp") ;; R statistical language
+  (add-path "modes/ess-5.7.1/lisp") ;; R statistical language
   (add-path "modes/gnuplot-mode.0.6.0")
   (add-path "modes/haskell")
   (add-path "modes/icicles")
@@ -74,6 +74,10 @@
   (add-path "custom") ;; various customizations
   )
 
+(when
+    (load
+     (expand-file-name "~/.emacs.d/elpa/package.el"))
+  (package-initialize))
 
 (require 'emacs-type)
 (load-library "mymisc")
@@ -84,7 +88,18 @@
 (smex-initialize) ;; Should run after all other packages loaded
 (server-start)
 
-;; files I want to always have open
-(find-file (expand-file-name "~/Documents/org/todo.org"))
-
+;; Setup my winring spaces
+(progn
+  (winring-delete-configuration)
+  
+  (winring-rename-configuration "misc")
+  (switch-to-buffer "*scratch*")
+  
+  (mapc #'new-window-conf
+        '("school" "five minute stories" "currmap" "writing"))
+  
+  )
 ;; End of my .emacs
+
+(put 'dired-find-alternate-file 'disabled nil)
+(ns-toggle-fullscreen)

@@ -14,6 +14,7 @@
                 (lambda () (interactive) (yas/load-directory (concat emacs-root "utilities/yasnippet-read-only/snippets"))))
 (global-set-key [f9] 'slime-selector)
 (global-set-key [f10] 'run-clojure)
+(global-set-key [f11] 'ns-toggle-fullscreen)
 (global-set-key (kbd "<f7> t") 'planner-create-task-from-buffer)
 
 ;; Super keys
