@@ -1,7 +1,12 @@
 (defconst use-backup-dir t)
 (setenv "JAVA_HOME" "/System/Library/Frameworks/JavaVM.framework/Versions/1.5")
 (setenv "JAVACMD" "/System/Library/Frameworks/JavaVM.framework/Versions/1.5/Home/bin/java")
-(setenv "PATH" (concat (getenv "PATH") ":/usr/local/git/bin:/opt/local/bin:" (expand-file-name "~/bin") ":/usr/texbin"))
+(setenv "PATH" (concat (expand-file-name "~/Library/Application Support/MultiMarkdown/bin")
+                       ":"
+                       (getenv "PATH")
+                       ":/usr/local/git/bin:/opt/local/bin:"
+                       (expand-file-name "~/bin")
+                       ":/usr/texbin"))
 (push "/usr/local/git/bin" exec-path)
 (push (expand-file-name "~/bin") exec-path)
 
@@ -19,7 +24,8 @@
 (require 'ffap)
 (require 'highlight-parentheses)
 (require 'hippie-exp)
-(require 'htmlize)
+;; (require 'htmlize)
+(load-file (concat emacs-root "other/htmlize.el")
 (require 'jit-lock)
 (require 'ledger)
 (require 'notify)
@@ -86,6 +92,9 @@
 ;; Org stuff (popup reminders)
 (setq appt-time-msg-list nil)
 (org-agenda-to-appt)
+(require 'org-latex)
+(add-to-list 'org-export-latex-packages-alist '("" "listings"))
+(add-to-list 'org-export-latex-packages-alist '("" "color"))
 
 (defadvice  org-agenda-redo (after org-agenda-redo-add-appts)
   "Pressing `r' on the agenda will also add appointments."

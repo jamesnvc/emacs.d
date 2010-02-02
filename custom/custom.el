@@ -126,7 +126,44 @@
  '(org-agenda-text-search-extra-files (quote (agenda-archives)))
  '(org-deadline-warning-days 14)
  '(org-default-notes-file "~/notes.org")
+ '(org-export-html-style "")
+ '(org-export-htmlize-output-type (quote css))
+ '(org-export-htmlized-org-css-url "/Users/james/emacs.d/org-html-export.css")
+ '(org-export-latex-classes (quote (("article" "\\documentclass[11pt]{article}
+\\usepackage[T1]{fontenc}
+\\usepackage{graphicx}
+\\usepackage{longtable}
+\\usepackage{float}
+\\usepackage{wrapfig}
+\\usepackage{soul}
+\\usepackage{amssymb}
+\\usepackage{hyperref}
+\\usepackage{amsfonts}
+\\usepackage{enumerate}
+\\usepackage{fontspec}
+\\usepackage{xunicode}
+\\usepackage{xltxtra}" ("\\section{%s}" . "\\section*{%s}") ("\\subsection{%s}" . "\\subsection*{%s}") ("\\subsubsection{%s}" . "\\subsubsection*{%s}") ("\\paragraph{%s}" . "\\paragraph*{%s}") ("\\subparagraph{%s}" . "\\subparagraph*{%s}")) ("report" "\\documentclass[11pt]{report}
+\\usepackage[utf8]{inputenc}
+\\usepackage[T1]{fontenc}
+\\usepackage{graphicx}
+\\usepackage{longtable}
+\\usepackage{float}
+\\usepackage{wrapfig}
+\\usepackage{soul}
+\\usepackage{amssymb}
+\\usepackage{hyperref}" ("\\part{%s}" . "\\part*{%s}") ("\\chapter{%s}" . "\\chapter*{%s}") ("\\section{%s}" . "\\section*{%s}") ("\\subsection{%s}" . "\\subsection*{%s}") ("\\subsubsection{%s}" . "\\subsubsection*{%s}")) ("book" "\\documentclass[11pt]{book}
+\\usepackage[utf8]{inputenc}
+\\usepackage[T1]{fontenc}
+\\usepackage{graphicx}
+\\usepackage{longtable}
+\\usepackage{float}
+\\usepackage{wrapfig}
+\\usepackage{soul}
+\\usepackage{amssymb}
+\\usepackage{hyperref}" ("\\part{%s}" . "\\part*{%s}") ("\\chapter{%s}" . "\\chapter*{%s}") ("\\section{%s}" . "\\section*{%s}") ("\\subsection{%s}" . "\\subsection*{%s}") ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))))
+ '(org-export-latex-listings t)
  '(org-fast-tag-selection-single-key (quote expert))
+ '(org-latex-to-pdf-process (quote ("xelatex -interaction nonstopmode %s" "xelatex -interaction nonstopmode %s")))
  '(org-link-abbrev-alist (quote (("wiki" . "http://en.wikipedia.org/wiki/"))))
  '(org-link-mailto-program (quote (browse-url "mailto:%a?subject=%s")))
  '(org-log-done t)
