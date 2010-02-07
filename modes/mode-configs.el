@@ -11,6 +11,7 @@
 (require 'cperl-mode)
 (require 'css-mode)
 (require 'distel)
+(require 'django-html-mode)
 (require 'erlang)
 (require 'ess-site) ;; R
 (autoload 'flyspell-mode "flyspell" "On-the-fly spelling checker." t)
