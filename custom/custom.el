@@ -5,8 +5,9 @@
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
  '(Info-additional-directory-list (quote ("/usr/local/info" "/Users/james/doc/info")))
- '(LaTeX-command "/usr/texbin/latex")
+ '(LaTeX-command "/usr/texbin/xelatex")
  '(Man-width t)
+ '(TeX-output-view-style (quote (("^dvi$" ("^landscape$" "^pstricks$\\|^pst-\\|^psfrag$") "%(o?)dvips -t landscape %d -o && gv %f") ("^dvi$" "^pstricks$\\|^pst-\\|^psfrag$" "%(o?)dvips %d -o && gv %f") ("^dvi$" ("^\\(?:a4\\(?:dutch\\|paper\\|wide\\)\\|sem-a4\\)$" "^landscape$") "%(o?)xdvi %dS -paper a4r -s 0 %d") ("^dvi$" "^\\(?:a4\\(?:dutch\\|paper\\|wide\\)\\|sem-a4\\)$" "%(o?)xdvi %dS -paper a4 %d") ("^dvi$" ("^\\(?:a5\\(?:comb\\|paper\\)\\)$" "^landscape$") "%(o?)xdvi %dS -paper a5r -s 0 %d") ("^dvi$" "^\\(?:a5\\(?:comb\\|paper\\)\\)$" "%(o?)xdvi %dS -paper a5 %d") ("^dvi$" "^b5paper$" "%(o?)xdvi %dS -paper b5 %d") ("^dvi$" "^letterpaper$" "%(o?)xdvi %dS -paper us %d") ("^dvi$" "^legalpaper$" "%(o?)xdvi %dS -paper legal %d") ("^dvi$" "^executivepaper$" "%(o?)xdvi %dS -paper 7.25x10.5in %d") ("^dvi$" "." "%(o?)xdvi %dS %d") ("^pdf$" "." "open %o %(outpage)") ("^html?$" "." "netscape %o"))))
  '(abbrev-mode nil)
  '(bbdb-continental-zip-regexp "^\\s *[A-Z0-9]\\{3,3\\} *[A-Z0-9]\\{3,3\\}")
  '(bbdb-default-area-code nil)
@@ -163,6 +164,7 @@
 \\usepackage{hyperref}" ("\\part{%s}" . "\\part*{%s}") ("\\chapter{%s}" . "\\chapter*{%s}") ("\\section{%s}" . "\\section*{%s}") ("\\subsection{%s}" . "\\subsection*{%s}") ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))))
  '(org-export-latex-listings t)
  '(org-fast-tag-selection-single-key (quote expert))
+ '(org-hide-leading-stars t)
  '(org-latex-to-pdf-process (quote ("xelatex -interaction nonstopmode %s" "xelatex -interaction nonstopmode %s")))
  '(org-link-abbrev-alist (quote (("wiki" . "http://en.wikipedia.org/wiki/"))))
  '(org-link-mailto-program (quote (browse-url "mailto:%a?subject=%s")))

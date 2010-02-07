@@ -25,7 +25,7 @@
 (require 'highlight-parentheses)
 (require 'hippie-exp)
 ;; (require 'htmlize)
-(load-file (concat emacs-root "other/htmlize.el")
+(load-file (concat emacs-root "other/htmlize.el"))
 (require 'jit-lock)
 (require 'ledger)
 (require 'notify)
