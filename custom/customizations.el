@@ -36,7 +36,6 @@
 (require 'printing)
 (require 'snippet)
 (require 'smart-snippet)
-(require 'smex)
 (require 'vm)
 (require 'message)
 (require 'w3m)

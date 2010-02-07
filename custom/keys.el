@@ -5,6 +5,7 @@
 (global-set-key [down] 'winring-prev-configuration)
 (global-set-key [left] 'next-buffer)
 (global-set-key [right] 'previous-buffer)
+(global-set-key [(menu)] 'execute-extended-command)
 
 ;; F keys
 ;; (global-set-key [f2] 'webjump)
@@ -182,13 +183,6 @@
 (define-key forth-mode-map (kbd "C-h") 'backward-delete-char-untabify)
 (define-key forth-mode-map (kbd "C-x C-n") 'other-window)
 (define-key forth-mode-map (kbd "M-SPC") 'just-one-space)
-
-;;; Smex
-;; (global-set-key (kbd "M-x") 'smex)
-(global-set-key (kbd "M-x") 'execute-extended-command)
-(global-set-key [(menu)] 'execute-extended-command)
-(global-set-key (kbd "M-X") 'anything)
-(global-set-key (kbd "C-c M-x") 'smex-update-and-run)
 
 ;; Miscelaneous
 (define-key isearch-mode-map (kbd "C-h") 'isearch-delete-char)

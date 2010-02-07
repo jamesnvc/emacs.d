@@ -57,7 +57,6 @@
   (add-path "utilities/mailcrypt-3.5.8")
   (add-path "utilities/planner")
   (add-path "utilities/semi")
-  (add-path "utilities/smex")
   (add-path "utilities/twitter")
   (add-path "utilities/vm") ;; VM mailer
   (add-path "utilities/wanderlust/utils")
@@ -85,7 +84,6 @@
 (load-library "customizations") ;; Generic customizations
 (load-library "hooks") ;; Various hooks
 (load-library "keys") ;; my key customizations
-(smex-initialize) ;; Should run after all other packages loaded
 (server-start)
 
 ;; Setup my winring spaces
