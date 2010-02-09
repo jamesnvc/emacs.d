@@ -27,7 +27,9 @@ def ${1:name}(self, $2):
           (concat "Returns: " (make-string 3 34))
         (mapconcat
          'identity
-         (list "" "Arguments:" args  "Returns: " (make-string 3 34))
+         (list "" "Arguments:" args
+                  indent "Returns: "
+                  indent "Raises: " (make-string 3 34))
          indent)))
     }
     $0
