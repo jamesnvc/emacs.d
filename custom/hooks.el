@@ -123,6 +123,8 @@
                (lambda ()
                 (font-lock-add-keywords nil
                  '(("\\<\\(FIXME\\|TODO\\|BUG\\):" 1 font-lock-warning-face t)))))
+(add-hook 'c-mode-common-hook (lambda () (c-set-style "kernel")))
+
 ;; Other
 ;; (add-hook 'text-mode-hook 'flyspell-mode)
 ;; (add-hook 'mail-mode-hook 'flyspell-mode)

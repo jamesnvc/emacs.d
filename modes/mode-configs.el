@@ -197,3 +197,8 @@
   (interactive)
   (flymake-goto-next-error)
   (flymake-display-err-menu-for-current-line))
+
+;; C
+(c-add-style "kernel"
+             '("gnu"
+               (c-basic-offset . 4)))
