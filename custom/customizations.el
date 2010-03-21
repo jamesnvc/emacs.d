@@ -283,24 +283,34 @@ MANDATORY_MANPATH" "/usr/share/man" "/usr/local/man")))
 ;; default groups for ibuffer
 (setq ibuffer-saved-filter-groups
       '(("default"
-	 ("Misc" (name . "^\\*.*\\*$"))
-	 ("Emacs" (or
-		   (mode . emacs-lisp-mode)
-		   (name . "^\\*scratch\\*$")
-		   (name . "^\\*Messages\\*$")))
-	 ("w3m" (mode . w3m-mode))
-	 ("Haskell" (mode . haskell-mode))
-	 ("Scheme" (mode . scheme-mode))
-	 ("Lisp" (mode . lisp-mode))
-	 ("Erlang" (mode . erlang-mode))
-	 ("Ruby" (mode . ruby-mode))
-	 ("C" (or (mode . c-mode)
-		  (mode . c++-mode)))
-	 ("Org" (or (mode . org-mode)
-		    (mode . muse-mode)))
+         ("Misc" (name . "^\\*.*\\*$"))
+         ("Emacs" (or
+                   (mode . emacs-lisp-mode)
+                   (name . "^\\*scratch\\*$")
+                   (name . "^\\*Messages\\*$")))
+         ("w3m" (mode . w3m-mode))
+         ("Misc. Programming"
+          (or
+           (mode . haskell-mode)
+           (mode . scheme-mode)
+           (mode . lisp-mode)
+           (mode . erlang-mode)
+           ))
+         ("C"
+          (or (mode . c-mode)
+              (mode . c++-mode)))
+         ("Ruby/Rails"
+          (or (mode . ruby-mode)
+              (mode . haml-mode)
+              (mode . sass-mode)
+              (mode . arorem-rhtml)))
+         ("Org" (or (mode . org-mode)
+                    (mode . muse-mode)))
 
-	 ("Dired" (mode . dired-mode))
-	 )))
+         ("Dired" (mode . dired-mode))
+         ("Writing" (or (mode . markdown-mode)
+                        (mode . multimarkdown-mode)))
+         )))
 
 
 ;; Reverse the order of the groups
