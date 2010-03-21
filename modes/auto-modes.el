@@ -15,6 +15,7 @@
                        ("\\.html$" . nxml-mode)
                        ("\\.java$" . java-mode)
                        ("\\.js$" . js2-mode)
+                       ("\\.json$" . js2-mode)
                        ("\\.lhs$" . literate-haskell-mode)
                        ("\\.md$" . markdown-mode)
                        ("\\.mli?$" . tuareg-mode)
