@@ -4,7 +4,7 @@
 (setenv "PATH" (concat (expand-file-name "~/Library/Application Support/MultiMarkdown/bin")
                        ":"
                        (getenv "PATH")
-                       ":/usr/local/git/bin:/opt/local/bin:"
+                       ":/usr/local/git/bin:/opt/local/bin:/usr/local/bin:"
                        (expand-file-name "~/bin")
                        ":/usr/texbin"))
 (push "/usr/local/git/bin" exec-path)
