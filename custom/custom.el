@@ -221,7 +221,7 @@
  '(swank-clojure-extra-classpaths (append (directory-files "/usr/lib/jvm/java-6-sun/jre/lib" t "jar$") (when (file-directory-p "~/.clojure") (directory-files "~/.clojure" t ".jar$"))))
  '(tab-always-indent t)
  '(tab-width 4)
- '(tags-table-list nil)
+ '(tags-table-list (quote ("/Users/james/Documents/School/engSci/year3/Semester 2/ECE353/svn/trunk")))
  '(text-mode-hook (quote (turn-on-auto-fill text-mode-hook-identify)))
  '(thinks-extra-silliness t)
  '(thinks-from (quote bottom-diagonal))
