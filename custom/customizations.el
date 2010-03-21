@@ -104,6 +104,7 @@
 (add-to-list 'org-export-latex-packages-alist '("" "listings"))
 (add-to-list 'org-export-latex-packages-alist '("" "color"))
 
+
 (defadvice  org-agenda-redo (after org-agenda-redo-add-appts)
   "Pressing `r' on the agenda will also add appointments."
   (progn
@@ -251,7 +252,6 @@ MANDATORY_MANPATH" "/usr/share/man" "/usr/local/man")))
         try-complete-file-name-partially
         try-complete-file-name
         try-expand-whole-kill))
-(setq tags-file-name "/home/james/Programming/TAGS")
 (setq backup-directory-alist (quote ((".*" . "~/backup/temp/")))
       version-control t                ; Use version numbers for backups
       kept-new-versions 3             ; Number of newest versions to keep

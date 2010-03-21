@@ -376,7 +376,5 @@ which case it is turned into a blockquote region."
        '(multimarkdown-mode-font-lock-keywords))
   (set (make-local-variable 'font-lock-multiline) t))
 
-;(add-to-list 'auto-mode-alist '("\\.mdml$" . multimarkdown-mode))
-
 (provide 'multimarkdown-mode)
 ;;; multimarkdown-mode.el ends here
