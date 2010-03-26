@@ -1,6 +1,30 @@
 ;; Various color themes to experiment with
 (require 'color-theme)
 
+(defun color-theme-jamesnvc-colourful ()
+  (interactive)
+  (color-theme-install
+   '(color-theme-jamesnvc-colourful
+          ((background-color . "#000000")
+      (background-mode . light)
+      (border-color . "#000000")
+      (cursor-color . "#205165")
+      (foreground-color . "#ffffff")
+      (mouse-color . "black"))
+     (fringe ((t (:background "#000000"))))
+     (mode-line ((t (:foreground "#c7c7c7" :background "#3e3c3c"))))
+     (region ((t (:background "#505857"))))
+     (font-lock-builtin-face ((t (:foreground "#ba75cc"))))
+     (font-lock-comment-face ((t (:foreground "#8cd788"))))
+     (font-lock-function-name-face ((t (:foreground "#38b512"))))
+     (font-lock-keyword-face ((t (:foreground "#00c6f0"))))
+     (font-lock-string-face ((t (:foreground "#81ccdf"))))
+     (font-lock-type-face ((t (:foreground"#584ed4"))))
+     (font-lock-variable-name-face ((t (:foreground "#18e78f"))))
+     (minibuffer-prompt ((t (:foreground "#6aa8f6" :bold t))))
+     (font-lock-warning-face ((t (:foreground "Red" :bold t))))
+     )))
+
 (defun color-theme-jamesnvc ()
   "My colour scheme, created by James Cash 04 Mar 2009 - 11:02 PM"
   (interactive)

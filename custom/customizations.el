@@ -362,6 +362,6 @@ MANDATORY_MANPATH" "/usr/share/man" "/usr/local/man")))
 
 ;; Set colours, overriding custom-set-faces
 (load-library "colourizing")
-(color-theme-jamesnvc)
+(color-theme-jamesnvc-colourful)
 
 ;; (require 'shell-config)
