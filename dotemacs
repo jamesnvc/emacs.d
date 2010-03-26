@@ -57,6 +57,7 @@
   (add-path "utilities/mailcrypt-3.5.8")
   (add-path "utilities/planner")
   (add-path "utilities/semi")
+  (add-path "utilities/textmate.el")
   (add-path "utilities/twitter")
   (add-path "utilities/vm") ;; VM mailer
   (add-path "utilities/wanderlust/utils")

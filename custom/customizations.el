@@ -40,6 +40,8 @@
 (require 'message)
 (require 'w3m)
 (require 'webjump)
+(require 'textmate)
+(textmate-mode)
 
 (load-library "snippet-expands")
 (load-library "fuzzy-match")
