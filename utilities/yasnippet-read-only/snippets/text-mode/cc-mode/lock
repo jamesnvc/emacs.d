@@ -1,0 +1,5 @@
+#name : lock_acquire(...) ... lock_release(...)
+# --
+lock_acquire($1);
+$0
+lock_release($1);

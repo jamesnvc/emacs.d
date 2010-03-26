@@ -1,0 +1,6 @@
+#name : if (... == NULL) { return ... }
+# --
+if (${1:var} == NULL) {
+   return ${2:ENOMEM};
+}
+$0
