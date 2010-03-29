@@ -51,6 +51,11 @@
   (concat (nth 6 action)
 	  "\nThis function is defined by `wl-summary-define-mark-action'."))
 
+(defsubst wl-summary-action-unmark-docstring (action)
+  (concat "Unmark `" (wl-summary-action-mark action) "' from the current line."
+	  "\nIf NUMBER is non-nil, unmark the summary line specified by NUMBER."
+	  "\nThis function is defined by `wl-summary-define-mark-action'."))
+
 ;; Set mark
 (defun wl-summary-set-mark (&optional set-mark number interactive data)
   "Set temporary mark SET-MARK on the message with NUMBER.
@@ -251,11 +256,11 @@ Return number if put mark succeed"
 	  (when (wl-summary-action-argument-function action)
 	    (wl-summary-remove-argument)))
 	(set-buffer-modified-p nil))))
-  ;; Move the cursor.
-  ;;  (if (or interactive (interactive-p))
-  ;;      (if (eq wl-summary-move-direction-downward nil)
-  ;;	  (wl-summary-prev)
-  ;;	(wl-summary-next))))
+;;; Move the cursor.
+;;;  (if (or interactive (interactive-p))
+;;;      (if (eq wl-summary-move-direction-downward nil)
+;;;	  (wl-summary-prev)
+;;;	(wl-summary-next))))
   )
 
 (defun wl-summary-make-destination-numbers-list (mark-list)
@@ -359,6 +364,12 @@ Return number if put mark succeed"
 	     (interactive)
 	     (wl-summary-set-mark ,(wl-summary-action-mark action)
 				  number (interactive-p) data)))
+    (fset (intern (format "wl-summary-unmark-%s"
+			  (wl-summary-action-symbol action)))
+	  `(lambda (&optional number)
+	     ,(wl-summary-action-unmark-docstring action)
+	     (interactive)
+	     (wl-summary-unmark number ,(wl-summary-action-mark action))))
     (fset (intern (format "wl-summary-%s-region"
 			  (wl-summary-action-symbol action)))
 	  `(lambda (beg end)
@@ -544,9 +555,8 @@ Return number if put mark succeed"
   "Resend the message with NUMBER to ADDRESS."
   (message "Resending message to %s..." address)
   (let ((folder wl-summary-buffer-elmo-folder))
-    (save-excursion
+    (with-current-buffer (get-buffer-create " *wl-draft-resend*")
       ;; We first set up a normal mail buffer.
-      (set-buffer (get-buffer-create " *wl-draft-resend*"))
       (set-buffer-multibyte nil)
       (erase-buffer)
       (setq wl-sent-message-via nil)
@@ -604,8 +614,8 @@ Return number if put mark succeed"
 	  (buffer-read-only nil)
 	  (buf (current-buffer))
 	  sol eol rs re)
+      (setq sol (point-at-bol))
       (beginning-of-line)
-      (setq sol (point))
       (search-forward "\r")
       (forward-char -1)
       (setq eol (point))
@@ -747,7 +757,8 @@ Return number if put mark succeed"
 		  (put-text-property rs re 'invisible t))
 	      (when (and width
 			 (> (setq padding (- width len c)) 0))
-		(setq data (concat (make-string padding ?\ ) data)))
+		(setq data (concat (make-string padding (string-to-char " "))
+				   data)))
 	      (setq rs (1- re))))
 	  (put-text-property rs re 'wl-summary-action-argument t)
 	  (goto-char re)
@@ -825,7 +836,7 @@ Return number if put mark succeed"
 	   checked-dsts
 	   (count 0)
 	   number dst thr-entity)
-      (goto-line 1)
+      (goto-char (point-min))
       (while (not (eobp))
 	(setq number (wl-summary-message-number))
 	(dolist (number (cons number
@@ -867,11 +878,14 @@ Return number if put mark succeed"
 	  (message "No message was marked.")
 	(message "Marked %d message(s)." count)))))
 
-(defun wl-summary-unmark (&optional number)
-  "Unmark marks (temporary, refile, copy, delete)of current line.
-If optional argument NUMBER is specified, unmark message specified by NUMBER."
+(defun wl-summary-unmark (&optional number mark)
+  "Unmark temporary marks of the current line.
+If NUMBER is non-nil, remove the mark of the summary line specified by NUMBER.
+If MARK is non-nil, remove only the specified MARK from the summary line."
   (interactive)
-  (wl-summary-unset-mark number (interactive-p)))
+  (if (or (null mark)
+	  (string= mark (wl-summary-temp-mark number)))
+      (wl-summary-unset-mark number (interactive-p))))
 
 (defun wl-summary-unmark-region (beg end)
   (interactive "r")
@@ -926,8 +940,7 @@ If optional argument NUMBER is specified, unmark message specified by NUMBER."
 (defun wl-summary-delete-all-mark (mark)
   (goto-char (point-min))
   (while (not (eobp))
-    (when (string= (wl-summary-temp-mark) mark)
-      (wl-summary-unmark))
+    (wl-summary-unmark nil mark)
     (forward-line 1))
   (if (string= mark "*")
       (setq wl-summary-buffer-target-mark-list nil)

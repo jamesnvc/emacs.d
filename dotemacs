@@ -60,8 +60,9 @@
   (add-path "utilities/textmate.el")
   (add-path "utilities/twitter")
   (add-path "utilities/vm") ;; VM mailer
+  (add-path "utilities/wanderlust/elmo")
   (add-path "utilities/wanderlust/utils")
-  (add-path "utilities/wl")
+  (add-path "utilities/wanderlust/wl")
   (add-path "utilities/yasnippet-read-only")
   (add-path "other") ;; various stuff that doesn't fit elsewhere
   (add-path "other/anything-config")

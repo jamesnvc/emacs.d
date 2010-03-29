@@ -1,15 +1,21 @@
-/BUGS/1.5/Sun Apr 15 15:34:34 2007//
-/BUGS.ja/1.5/Sun Apr 15 15:34:34 2007//
-/COPYING/1.2/Tue Sep 11 20:47:58 2001//
-/ChangeLog/1.141/Tue Nov 25 06:07:26 2008//
-/INSTALL/1.31/Tue Nov 25 06:07:26 2008//
-/INSTALL.ja/1.29/Tue Nov 25 06:07:26 2008//
-/Makefile/1.11/Tue Feb 19 11:29:06 2008//
-/NEWS/1.75/Thu May 28 10:40:24 2009//
-/NEWS.ja/1.86/Thu May 28 10:40:24 2009//
-/README/1.22/Fri Nov  4 15:16:45 2005//
-/README.ja/1.20/Fri Nov  4 15:16:45 2005//
 /WL-CFG/1.7/Tue Apr  8 23:18:41 2003//
-/WL-ELS/1.36/Sat Sep 17 09:43:26 2005//
-/WL-MK/1.54/Fri Feb 15 01:17:37 2008//
-D
+D/doc////
+D/elmo////
+D/etc////
+D/samples////
+D/tests////
+D/utils////
+D/wl////
+/BUGS/1.5/Fri Aug 14 02:37:35 2009//
+/BUGS.ja/1.5/Fri Aug 14 02:37:57 2009//
+/COPYING/1.2/Fri Aug 14 02:37:42 2009//
+/ChangeLog/1.143/Mon Mar 29 19:53:12 2010//
+/INSTALL/1.31/Fri Aug 14 02:38:13 2009//
+/INSTALL.ja/1.29/Fri Aug 14 02:38:13 2009//
+/Makefile/1.11/Fri Aug 14 02:37:42 2009//
+/NEWS/1.77/Mon Mar 29 19:53:12 2010//
+/NEWS.ja/1.88/Mon Mar 29 19:53:12 2010//
+/README/1.22/Fri Aug 14 02:38:06 2009//
+/README.ja/1.20/Fri Aug 14 02:37:36 2009//
+/WL-ELS/1.36/Fri Aug 14 02:38:06 2009//
+/WL-MK/1.55/Mon Mar 29 19:53:12 2010//

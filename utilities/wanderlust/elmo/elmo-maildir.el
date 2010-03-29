@@ -256,19 +256,19 @@ LOCATION."
   (let ((cur-time (current-time))
 	(count 0)
 	last-accessed)
-    (mapcar (function
-	     (lambda (file)
-	       (setq last-accessed (nth 4 (file-attributes file)))
-	       (when (or (> (- (car cur-time)(car last-accessed)) 1)
-			 (and (eq (- (car cur-time)(car last-accessed)) 1)
-			      (> (- (cadr cur-time)(cadr last-accessed))
-				 64064))) ; 36 hours.
-		 (message "Maildir: %d tmp file(s) are cleared."
-			  (setq count (1+ count)))
-		 (delete-file file))))
-	    (directory-files (expand-file-name "tmp" dir)
-			     t ; full
-			     "^[^.].*$" t))))
+    (mapcar
+     (lambda (file)
+       (setq last-accessed (nth 4 (file-attributes file)))
+       (when (or (> (- (car cur-time)(car last-accessed)) 1)
+		 (and (eq (- (car cur-time)(car last-accessed)) 1)
+		      (> (- (cadr cur-time)(cadr last-accessed))
+			 64064)))	; 36 hours.
+	 (message "Maildir: %d tmp file(s) are cleared."
+		  (setq count (1+ count)))
+	 (delete-file file)))
+     (directory-files (expand-file-name "tmp" dir)
+		      t			; full
+		      "^[^.].*$" t))))
 
 (defun elmo-maildir-update-current (folder)
   "Move all new msgs to cur in the maildir."
@@ -405,7 +405,7 @@ file name for maildir directories."
       (make-directory (file-name-directory filename)))
     (while (file-exists-p filename)
 ;;; I don't want to wait.
-;;;   (sleep-for 2)
+;;;      (sleep-for 2)
       (setq filename
 	    (expand-file-name
 	     (concat "tmp/" (elmo-maildir-make-unique-string))
@@ -477,7 +477,7 @@ file name for maildir directories."
       (elmo-copy-file
        (elmo-message-file-name folder number)
        (expand-file-name
-	(int-to-string (if start-number cur-number number))
+	(number-to-string (if start-number cur-number number))
 	temp-dir))
       (incf cur-number))
     temp-dir))

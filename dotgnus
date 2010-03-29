@@ -3,6 +3,7 @@
 (load-library "smtpmail")
 (load-library "imap")
 (require 'nnir)
+(require 'mailcap)
 
 (setq gnus-agent nil)
 ;; (setq gnus-invalid-group-regexp "^$")

@@ -31,7 +31,7 @@
 ;;; Code:
 
 (defconst wl-demo-copyright-notice
-  "Copyright (C) 1998-2009 Yuuichi Teranishi <teranisi@gohome.org>"
+  "Copyright (C) 1998-2010 Yuuichi Teranishi <teranisi@gohome.org>"
   "A declaration of the copyright on Wanderlust.")
 
 (eval-when-compile
@@ -190,9 +190,10 @@ Return a number of lines that an image occupies in the buffer."
 					 file image-type)))))
 		 (when (eq 'xbm image-type)
 		   (set-glyph-face image 'wl-highlight-logo-face))
-		 (insert-char ?\  (max 0 (/ (+ (* (- width (glyph-width image))
-						  (window-width)) width)
-					    (* 2 width))))
+		 (insert-char (string-to-char " ")
+			      (max 0 (/ (+ (* (- width (glyph-width image))
+					      (window-width)) width)
+					(* 2 width))))
 		 (set-extent-end-glyph (make-extent (point) (point)) image)
 		 (insert "\n")
 		 (/ (+ (* 2 (glyph-height image) (window-height)) height)
@@ -235,11 +236,11 @@ Return a number of lines that an image occupies in the buffer."
 
 		 ;; Emacs 21.x may fail on computing the end of the
 		 ;; column if there're bitmap characters.
-		 ;;(setq width 0)
-		 ;;(while (progn
-		 ;;	    (end-of-line 0)
-		 ;;	    (not (bobp)))
-		 ;;  (setq width (max width (current-column))))
+;;;		 (setq width 0)
+;;;		 (while (progn
+;;;			  (end-of-line 0)
+;;;			  (not (bobp)))
+;;;		   (setq width (max width (current-column))))
 		 (setq width 1024)
 		 (while (progn
 			  (end-of-line 0)

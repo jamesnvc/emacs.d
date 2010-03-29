@@ -119,14 +119,14 @@
 	(if (and wl-draft-enable-queuing
 		 wl-auto-flush-queue)
 	    (wl-draft-queue-flush))
-;; 	(when (and (eq major-mode 'wl-summary-mode)
-;; 		   (elmo-folder-plugged-p wl-summary-buffer-elmo-folder))
-;; 	  (let* ((msgdb-dir (elmo-folder-msgdb-path
-;; 			     wl-summary-buffer-elmo-folder))
-;; 		 (seen-list (elmo-msgdb-seen-load msgdb-dir)))
-;; 	 (setq seen-list
-;; 		  (wl-summary-flush-pending-append-operations seen-list))
-;; 	    (elmo-msgdb-seen-save msgdb-dir seen-list)))
+;;; 	(when (and (eq major-mode 'wl-summary-mode)
+;;; 		   (elmo-folder-plugged-p wl-summary-buffer-elmo-folder))
+;;; 	  (let* ((msgdb-dir (elmo-folder-msgdb-path
+;;; 			     wl-summary-buffer-elmo-folder))
+;;; 		 (seen-list (elmo-msgdb-seen-load msgdb-dir)))
+;;;	    (setq seen-list
+;;; 		  (wl-summary-flush-pending-append-operations seen-list))
+;;; 	    (elmo-msgdb-seen-save msgdb-dir seen-list)))
 	(run-hooks 'wl-plugged-hook))
     (wl-biff-stop)
     (run-hooks 'wl-unplugged-hook))
@@ -215,14 +215,15 @@ Entering Plugged mode calls the value of `wl-plugged-mode-hook'."
   (setq buffer-read-only t)
   (run-hooks 'wl-plugged-mode-hook))
 
-(defmacro wl-plugged-string (plugged &optional time)
-  `(if ,time wl-plugged-auto-off
-     (if ,plugged
-	 wl-plugged-plug-on
-       wl-plugged-plug-off)))
+(defun wl-plugged-string (plugged &optional time)
+  (if time
+      wl-plugged-auto-off
+    (if plugged
+	wl-plugged-plug-on
+      wl-plugged-plug-off)))
 
-(defmacro wl-plugged-server-indent ()
-  '(make-string wl-plugged-server-indent ? ))
+(defun wl-plugged-server-indent ()
+  (make-string wl-plugged-server-indent (string-to-char " ")))
 
 (defun wl-plugged-set-variables ()
   (setq wl-plugged-sending-queue-alist
@@ -231,8 +232,8 @@ Entering Plugged mode calls the value of `wl-plugged-mode-hook'."
 	(wl-plugged-dop-queue-info))
   (setq wl-plugged-alist
 	(sort (copy-sequence elmo-plugged-alist)
-	      '(lambda (a b)
-		 (string< (caar a) (caar b))))))
+	      (lambda (a b)
+		(string< (caar a) (caar b))))))
 
 (defun wl-plugged-sending-queue-info ()
   ;; sending queue status
@@ -264,7 +265,7 @@ Entering Plugged mode calls the value of `wl-plugged-mode-hook'."
 	    (if (> len 1)
 		(format ": %d msgs (" len)
 	      (format ": %d msg (" len))
-	    (mapconcat (function int-to-string) (cdr qinfo) ",")
+	    (mapconcat (function number-to-string) (cdr qinfo) ",")
 	    ")")))
 
 (defun wl-plugged-dop-queue-info ()
@@ -273,11 +274,11 @@ Entering Plugged mode calls the value of `wl-plugged-mode-hook'."
 	 (elmo-dop-queue (copy-sequence elmo-dop-queue))
 	 dop-queue last alist server-info
 	 ope operation)
-    ;(elmo-dop-queue-load)
+;;;    (elmo-dop-queue-load)
     (elmo-dop-queue-merge)
-    (setq dop-queue (sort elmo-dop-queue '(lambda (a b)
-					    (string< (elmo-dop-queue-fname a)
-						     (elmo-dop-queue-fname b)))))
+    (setq dop-queue (sort elmo-dop-queue (lambda (a b)
+					   (string< (elmo-dop-queue-fname a)
+						    (elmo-dop-queue-fname b)))))
     (wl-append dop-queue (list nil)) ;; terminate(dummy)
     (when (car dop-queue)
       (setq last (elmo-dop-queue-fname (car dop-queue)))) ;; first
@@ -293,7 +294,7 @@ Entering Plugged mode calls the value of `wl-plugged-mode-hook'."
       (if (and (car dop-queue)
 	       (string= last (elmo-dop-queue-fname (car dop-queue))))
 	  (wl-append operation (list ope))
-	;;(setq count (1+ count))
+;;;	(setq count (1+ count))
 	(when (and last (setq server-info (elmo-net-port-info
 					   (wl-folder-get-elmo-folder last))))
 	  (setq alist
@@ -312,29 +313,29 @@ Entering Plugged mode calls the value of `wl-plugged-mode-hook'."
   (let ((operations (cdr qinfo))
 	(column (or column wl-plugged-queue-status-column)))
     (mapconcat
-     '(lambda (folder-ope)
-	(concat (wl-plugged-set-folder-icon
-		 (car folder-ope)
-		 (wl-folder-get-petname (car folder-ope)))
-		"("
-		(let ((opes (cdr folder-ope))
-		      pair shrinked)
-		  (while opes
-		    (if (setq pair (assoc (car (car opes)) shrinked))
-			(setcdr pair (+ (cdr pair)
-					(max (cdr (car opes)) 1)))
-		      (setq shrinked (cons
-				      (cons (car (car opes))
-					    (max (cdr (car opes)) 1))
-				      shrinked)))
-		    (setq opes (cdr opes)))
-		  (mapconcat
-		   '(lambda (ope)
-		      (if (> (cdr ope) 0)
-			  (format "%s:%d" (car ope) (cdr ope))
-			(format "%s" (car ope))))
-		   (nreverse shrinked) ","))
-		")"))
+     (lambda (folder-ope)
+       (concat (wl-plugged-set-folder-icon
+		(car folder-ope)
+		(wl-folder-get-petname (car folder-ope)))
+	       "("
+	       (let ((opes (cdr folder-ope))
+		     pair shrinked)
+		 (while opes
+		   (if (setq pair (assoc (car (car opes)) shrinked))
+		       (setcdr pair (+ (cdr pair)
+				       (max (cdr (car opes)) 1)))
+		     (setq shrinked (cons
+				     (cons (car (car opes))
+					   (max (cdr (car opes)) 1))
+				     shrinked)))
+		   (setq opes (cdr opes)))
+		 (mapconcat
+		  (lambda (ope)
+		    (if (> (cdr ope) 0)
+			(format "%s:%d" (car ope) (cdr ope))
+		      (format "%s" (car ope))))
+		  (nreverse shrinked) ","))
+	       ")"))
      operations
      (concat "\n" (wl-set-string-width column "")))))
 
@@ -379,7 +380,7 @@ Entering Plugged mode calls the value of `wl-plugged-mode-hook'."
       ;; port plug
       (setq line
 	    (format "%s[%s]%s"
-		    (make-string wl-plugged-port-indent ? )
+		    (make-string wl-plugged-port-indent (string-to-char " "))
 		    (wl-plugged-string plugged time)
 		    (cond
 		     ((stringp port)
@@ -419,7 +420,8 @@ Entering Plugged mode calls the value of `wl-plugged-mode-hook'."
 (defun wl-plugged-redrawing-switch (indent switch &optional time)
   (beginning-of-line)
   (when (re-search-forward
-	 (format "^%s\\[\\([^]]+\\)\\]" (make-string indent ? )))
+	 (format "^%s\\[\\([^]]+\\)\\]"
+		 (make-string indent (string-to-char " "))))
     (goto-char (match-beginning 1))
     (delete-region (match-beginning 1) (match-end 1))
     (insert (wl-plugged-string switch time))
@@ -460,8 +462,7 @@ Entering Plugged mode calls the value of `wl-plugged-mode-hook'."
 			  (/ (frame-height) 2)
 			(window-height)))
 	   window-lines lines)
-      (save-excursion
-	(set-buffer (get-buffer-create wl-plugged-buf-name))
+      (with-current-buffer (get-buffer-create wl-plugged-buf-name)
 	(wl-plugged-mode)
 	(buffer-disable-undo (current-buffer))
 	(delete-windows-on (current-buffer))
@@ -505,7 +506,7 @@ Entering Plugged mode calls the value of `wl-plugged-mode-hook'."
 	(let (variable switch name)
 	  (goto-char cur-point)
 	  (when (and (not (bobp))
-		     (not (eq (char-before) ? )))
+		     (not (eq (char-before) (string-to-char " "))))
 	    (if (re-search-backward " [^ ]+" nil t)
 		(forward-char 1)
 	      (re-search-backward "^[^ ]+" nil t)))
@@ -572,8 +573,8 @@ Entering Plugged mode calls the value of `wl-plugged-mode-hook'."
 
 (defun wl-plugged-exit ()
   (interactive)
-  (setq ;;elmo-plugged-alist wl-plugged-alist
-	wl-plugged wl-plugged-switch
+  (setq wl-plugged wl-plugged-switch
+;;;	elmo-plugged-alist wl-plugged-alist
 	wl-plugged-alist nil
 	wl-plugged-sending-queue-alist nil
 	wl-plugged-dop-queue-alist nil)
@@ -688,9 +689,9 @@ Entering Plugged mode calls the value of `wl-plugged-mode-hook'."
 			"\\|")))
     (when wl-delete-startup-frame-function
       (funcall wl-delete-startup-frame-function))
-;;    (if (and wl-folder-use-frame
-;;	     (> (length (visible-frame-list)) 1))
-;;	(delete-frame))
+;;;    (if (and wl-folder-use-frame
+;;;	     (> (length (visible-frame-list)) 1))
+;;;	(delete-frame))
     (setq wl-init nil)
     (remove-hook 'kill-emacs-hook 'wl-save-status)
     (elmo-passwd-alist-clear)
@@ -905,23 +906,21 @@ If ARG (prefix argument) is specified, folder checkings are skipped."
 
 ;; Define some autoload functions WL might use.
 (eval-and-compile
-  ;; This little mapcar goes through the list below and marks the
+  ;; This little mapc goes through the list below and marks the
   ;; symbols in question as autoloaded functions.
-  (mapcar
-   (function
-    (lambda (package)
-      (let ((interactive (nth 1 (memq ':interactive package))))
-	(mapcar
-	 (function
-	  (lambda (function)
-	    (let (keymap)
-	      (when (consp function)
-		(setq keymap (car (memq 'keymap function)))
-		(setq function (car function)))
-	      (autoload function (car package) nil interactive keymap))))
-	 (if (eq (nth 1 package) ':interactive)
-	     (cdddr package)
-	   (cdr package))))))
+  (mapc
+   (lambda (package)
+     (let ((interactive (nth 1 (memq ':interactive package))))
+       (mapc
+	(lambda (function)
+	  (let (keymap)
+	    (when (consp function)
+	      (setq keymap (car (memq 'keymap function)))
+	      (setq function (car function)))
+	    (autoload function (car package) nil interactive keymap)))
+	(if (eq (nth 1 package) ':interactive)
+	    (cdddr package)
+	  (cdr package)))))
    '(("wl-fldmgr" :interactive t
       wl-fldmgr-access-display-all wl-fldmgr-access-display-normal
       wl-fldmgr-add wl-fldmgr-clear-cut-entity-list wl-fldmgr-copy

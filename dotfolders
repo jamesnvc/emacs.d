@@ -1,18 +1,1 @@
-%inbox "inbox"
-# %[Gmail]/Sent Mail "Sent mail"
-# %[Gmail]/All Mail "All Mail"
-# %[Gmail]/Starred "☆" 
-Social{
-%Social/Twitter "Twitter Notifications"
-%Social/Facebook "Facebook Notifications"
-}
-EngSci{
-%EngSci "General Engsci"
-%EngSci/Skule Site "Skule.ca"
-}
-Mailing Lists{
-%Mailing Lists/Factor "Factor"
-}
-%TODO "Todo Items"
-# +trash "Trash"
-# +drafts "Drafts"
+%/

@@ -71,8 +71,7 @@
 
 (defmacro elmo-set-work-buf (&rest body)
   "Execute BODY on work buffer.  Work buffer remains."
-  `(save-excursion
-     (set-buffer (get-buffer-create elmo-work-buf-name))
+  `(with-current-buffer (get-buffer-create elmo-work-buf-name)
      (set-buffer-multibyte default-enable-multibyte-characters)
      (erase-buffer)
      ,@body))
@@ -171,7 +170,7 @@ with FILENAME which defaults to `buffer-file-name'."
 	      (goto-char (point-min))
 	      (setq case-fold-search nil)
 	      (re-search-forward "^;;;coding system: "
-				 ;;(+ (point-min) 3000) t))
+;;;				 (+ (point-min) 3000) t))
 				 nil t))
 	    (looking-at "[^\t\n\r ]+")
 	    (find-coding-system
@@ -572,7 +571,7 @@ Return value is a cons cell of (STRUCTURE . REST)"
 	  print-length print-level)
       (prin1 elmo-passwd-alist (current-buffer))
       (princ "\n" (current-buffer))
-;;;   (if (and (file-exists-p filename)
+;;;      (if (and (file-exists-p filename)
 ;;;	       (not (equal 384 (file-modes filename))))
 ;;;	  (error "%s is not safe.chmod 600 %s!" filename filename))
       (if (file-writable-p filename)
@@ -826,7 +825,7 @@ Return value is a cons cell of (STRUCTURE . REST)"
 			     (directory-files path t "^[^\\.]")
 			   (error nil)))
 		  (result 0.0))
-	      ;; (result (nth 7 file-attr))) ... directory size
+;;;	      (result (nth 7 file-attr))) ; ... directory size
 	      (while files
 		(setq result (+ result (or (elmo-disk-usage (car files)) 0)))
 		(setq files (cdr files)))
@@ -1714,12 +1713,12 @@ NUMBER-SET is altered."
 	     prev
 	     (nconc
 	      (list
-	       ;; (beg . (1- number))
+;;;	       (beg . (1- number))
 	       (let ((new (cons (car elem) (1- number))))
 		 (if (eq (car new) (cdr new))
 		     (car new)
 		   new))
-	       ;; ((1+ number) . end)
+;;;	       ((1+ number) . end)
 	       (let ((new (cons (1+ number) (cdr elem))))
 		 (if (eq (car new) (cdr new))
 		     (car new)
@@ -2074,7 +2073,7 @@ If KBYTES is kilo bytes (This value must be float)."
 				   (cons (car (car cfl))
 					 (car flist)))))
       (setq cfl (cdr cfl)))
-;;; (prin1 firsts)
+;;;    (prin1 firsts)
     (while firsts
       (if (and (not oldest-entity)
 	       (cdr (cdr (car firsts))))
@@ -2112,12 +2111,12 @@ If KBYTES is kilo bytes (This value must be float)."
   "Expire cache file by age.
 Optional argument DAYS specifies the days to expire caches."
   (interactive)
-  (let ((age (or (and days (int-to-string days))
+  (let ((age (or (and days (number-to-string days))
 		 (and (interactive-p)
 		      (read-from-minibuffer
 		       (format "Enter days (%s): "
 			       elmo-cache-expire-default-age)))
-		 (int-to-string elmo-cache-expire-default-age)))
+		 (number-to-string elmo-cache-expire-default-age)))
 	(dirs (directory-files
 	       elmo-cache-directory
 	       t "^[^\\.]"))

@@ -1,3 +1,37 @@
+2010-01-22  TAKAHASHI Kaoru  <kaoru@kaisei.org>
+
+	* test-utf7.el (test-utf7-encode-string-alpha): Fix indent.
+
+	* test-elmo-date.el (test-elmo-date-get-week): Add assert.
+
+2010-01-01  TAKAHASHI Kaoru  <kaoru@kaisei.org>
+
+	* test-elmo-util.el (test-elmo-delete-cr-1): New testcase.
+	* test-elmo-date.el (test-elmo-time-parse-date-string-1)
+	(test-elmo-time-parse-date-string-2): New testcase.
+
+2009-08-01  TAKAHASHI Kaoru  <kaoru@kaisei.org>
+
+	* test-elmo-imap4.el: New file.
+	(test-elmo-imap4-parse-greeting-ok): New testcase.
+	(test-elmo-imap4-parse-greeting-preauth): Ditto.
+	(test-elmo-imap4-parse-greeting-bye): Ditto.
+
+	* test-utf7.el (toplevel): Use `fboundp' instead of `boundp'.
+	Fix (require 'utf7) order for Mule-UCS.
+	(test-utf7-decode-string-plus): New testcase.
+	(test-utf7-decode-string-noconv): Ditto.
+	(test-utf7-encode-string-plus): Ditto.
+	(test-utf7-encode-string-noconv): Ditto.
+	(test-utf7-decode-string-nihongo): Rename from
+	`test-utf7-decode-string'. Use `make-char'.
+	(test-utf7-encode-string-nihongo): Rename from
+	`test-utf7-encode-string'. Use `make-char'.
+	(test-utf7-decode-string-alpha): New testcase.
+	(test-utf7-encode-string-alpha): Ditto.
+	(test-utf7-decode-string-smiling-face): Ditto.
+	(test-utf7-encode-string-smiling-face): Ditto.
+
 2008-02-19  TAKAHASHI Kaoru  <kaoru@kaisei.org>
 
 	* test-wl-util.el (test-wl-unique-id-by-user): New testcase.

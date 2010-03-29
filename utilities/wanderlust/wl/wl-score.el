@@ -538,14 +538,14 @@ Set `wl-score-cache' nil."
       (setq extras (cdr extras)))
     nil))
 
-(defmacro wl-score-put-alike ()
-  '(elmo-set-hash-val (format "#%d" (wl-count-lines))
-		      alike
+(defmacro wl-score-put-alike (alike)
+  `(elmo-set-hash-val (format "#%d" (wl-count-lines))
+		      ,alike
 		      wl-score-alike-hashtb))
 
-(defmacro wl-score-get-alike ()
-  '(elmo-get-hash-val (format "#%d" (wl-count-lines))
-		      wl-score-alike-hashtb))
+(defsubst wl-score-get-alike ()
+  (elmo-get-hash-val (format "#%d" (wl-count-lines))
+		     wl-score-alike-hashtb))
 
 (defun wl-score-insert-header (header messages &optional extra-header)
   (let ((mime-decode (nth 3 (assoc header wl-score-header-index)))
@@ -576,12 +576,12 @@ Set `wl-score-cache' nil."
 	      ;; headers.
 	      (wl-push art alike)
 	    (when last
-	      (wl-score-put-alike)
+	      (wl-score-put-alike alike)
 	      (insert last ?\n))
 	    (setq alike (list art)
 		  last this)))
 	(when last
-	  (wl-score-put-alike)
+	  (wl-score-put-alike alike)
 	  (insert last ?\n))
 	(when mime-decode
 	  (decode-mime-charset-region (point-min) (point-max)
@@ -711,7 +711,6 @@ Set `wl-score-cache' nil."
 
 (defun wl-score-followup (scores header now expire &optional thread)
   "Insert the unique message headers in the buffer."
-  ;; Insert the unique message headers in the buffer.
   (let ((wl-score-index (nth 2 (assoc header wl-score-header-index)))
 	(all-scores scores)
 	entries alist messages
@@ -868,7 +867,7 @@ Set `wl-score-cache' nil."
 			 (car entry)
 			 (if increase "raise" "lower"))
 		 (if (numberp match)
-		     (int-to-string match)
+		     (number-to-string match)
 		   match)))
     ;; transform from string to int.
     (when (eq (nth 1 (assoc (car entry) wl-score-header-index))
@@ -937,8 +936,7 @@ Set `wl-score-cache' nil."
   (setq wl-score-help-winconf (current-window-configuration))
   (let ((cur-win (selected-window))
 	mes-win)
-    (save-excursion
-      (set-buffer (get-buffer-create "*Score Help*"))
+    (with-current-buffer (get-buffer-create "*Score Help*")
       (buffer-disable-undo (current-buffer))
       (delete-windows-on (current-buffer))
       (erase-buffer)
@@ -963,7 +961,7 @@ Set `wl-score-cache' nil."
 	    (delete-char -1)		; the `\n' takes a char
 	    (insert "\n"))
 	  (setq pad (- width 3))
-	  (setq format (concat "%c: %-" (int-to-string pad) "s"))
+	  (setq format (concat "%c: %-" (number-to-string pad) "s"))
 	  (insert (format format (caar alist) (nth idx (car alist))))
 	  (setq alist (cdr alist))
 	  (setq i (1+ i)))
@@ -1374,8 +1372,7 @@ Entering Score mode calls the value of `wl-score-mode-hook'."
   (let ((sum-buf (wl-score-edit-get-summary-buf))
 	(index (nth 2 (assoc header wl-score-header-index))))
     (when (and sum-buf index)
-      (save-excursion
-	(set-buffer sum-buf)
+      (with-current-buffer sum-buf
 	(wl-score-get-header header extra)))))
 
 (defun wl-score-edit-insert-number ()
@@ -1383,8 +1380,7 @@ Entering Score mode calls the value of `wl-score-mode-hook'."
   (let ((sum-buf (wl-score-edit-get-summary-buf))
 	num)
     (when sum-buf
-      (if (setq num (save-excursion
-		      (set-buffer sum-buf)
+      (if (setq num (with-current-buffer sum-buf
 		      (wl-summary-message-number)))
 	  (prin1 num (current-buffer))))))
 

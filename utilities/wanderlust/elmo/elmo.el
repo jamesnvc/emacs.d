@@ -860,7 +860,7 @@ Return a cons cell of (NUMBER-CROSSPOSTS . NEW-FLAG-ALIST).")
     (when (and filename (file-readable-p filename))
       (with-temp-buffer
 	(set-buffer-multibyte nil)
-	;;(insert-file-contents-as-binary filename)
+;;;	(insert-file-contents-as-binary filename)
 	(elmo-message-fetch folder number
 			    (elmo-make-fetch-strategy 'entire
 						      (and cache t)
@@ -954,7 +954,8 @@ If optional argument IF-EXISTS is nil, load on demand.
   (elmo-folder-set-info-hashtb
    folder
    (if numbers (apply #'max numbers) 0)
-   nil ;;(length num-db)
+;;;   (length num-db)
+   nil
    ))
 
 (defun elmo-folder-get-info-max (folder)
@@ -973,7 +974,7 @@ If optional argument IF-EXISTS is nil, load on demand.
   "Setup folder info hashtable by INFO-ALIST on HASHTB."
   (let* ((hashtb (or hashtb
 		     (elmo-make-hash (length info-alist)))))
-    (mapcar
+    (mapc
      (lambda (x)
        (let ((info (cadr x)))
 	 (and (intern-soft (car x) hashtb)
@@ -1209,7 +1210,7 @@ Returns a list of message numbers successfully appended."
 	    result)
 	(if no-delete
 	    (progn
-	      ;; (message "Copying messages...done")
+;;;	      (message "Copying messages...done")
 	      t)
 	  (if (eq len 0)
 	      (message "No message was moved.")
@@ -1450,10 +1451,10 @@ If Optional LOCAL is non-nil, don't update server flag."
   ;; Do nothing.
   )
 
-;;(luna-define-generic elmo-folder-append-message-entity (folder entity
-;;							       &optional
-;;							       flag-table)
-;;  "Append ENTITY to the folder.")
+;;;(luna-define-generic elmo-folder-append-message-entity (folder entity
+;;;							       &optional
+;;;							       flag-table)
+;;;  "Append ENTITY to the folder.")
 
 (defun elmo-msgdb-merge (folder msgdb-merge)
   "Return a list of messages which have duplicated message-id."
@@ -1497,7 +1498,7 @@ If Optional LOCAL is non-nil, don't update server flag."
 	  (catch 'end
 	    (while t
 	      (setq in (read-from-minibuffer "Update number: "
-					     (int-to-string in))
+					     (number-to-string in))
 		    in (string-to-number in))
 	      (if (< len in)
 		  (throw 'end len))
@@ -1775,8 +1776,8 @@ Return a hashtable for newsgroups."
       (while alist
 	(setq newsgroups
 	      (elmo-delete-if
-	       '(lambda (x)
-		  (not (intern-soft x elmo-newsgroups-hashtb)))
+	       (lambda (x)
+		 (not (intern-soft x elmo-newsgroups-hashtb)))
 	       (nth 1 (car alist))))
 	(if newsgroups
 	    (setcar (cdar alist) newsgroups)

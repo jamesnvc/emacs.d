@@ -106,14 +106,11 @@
 ;;; Macro and misc Function
 ;;
 
-(defmacro wl-fldmgr-delete-line ()
-  '(delete-region (save-excursion (beginning-of-line)
-				  (point))
-		  (save-excursion (end-of-line)
-				  (+ 1 (point)))))
+(defun wl-fldmgr-delete-line ()
+  (delete-region (point-at-bol) (1+ (point-at-eol))))
 
-(defmacro wl-fldmgr-make-indent (level)
-  `(concat " " (make-string (* 2 ,level) ,(string-to-char " "))))
+(defun wl-fldmgr-make-indent (level)
+  (concat " " (make-string (* 2 level) (string-to-char " "))))
 
 (defmacro wl-fldmgr-get-entity-id (&optional entity)
   `(get-text-property (if ,entity
@@ -246,29 +243,29 @@ return value is diffs '(-new -unread -all)."
 	     (setq result-path (cdr result-path))
 	     (setq entities (wl-pop entity-stack)))))))))
 
-;; (defun wl-fldmgr-get-previous-entity (entity key-id)
-;;   (cdr (wl-fldmgr-get-previous-entity-internal '(nil . nil) entity key-id)))
-;;
-;; (defun wl-fldmgr-get-previous-entity-internal (result entity key-id)
-;;   (cond
-;;    ((stringp entity)
-;;     (if (eq key-id (wl-fldmgr-get-entity-id entity))
-;; 	(cons t result)
-;;       (cons nil (cons entity entity))))
-;;    ((consp entity)
-;;     (if (eq key-id (wl-fldmgr-get-entity-id (car entity)))
-;; 	(cons t result)
-;;       (setcar result (car entity))
-;;       (let ((flist (nth 2 entity))
-;; 	    return found)
-;; 	(while (and flist (not found))
-;; 	  (if (car (setq return
-;; 			 (wl-fldmgr-get-previous-entity-internal
-;; 			  result (car flist) key-id)))
-;; 	      (setq found t))
-;; 	  (setq result (cdr return))
-;; 	  (setq flist (cdr flist)))
-;; 	(cons found result))))))
+;;;(defun wl-fldmgr-get-previous-entity (entity key-id)
+;;;  (cdr (wl-fldmgr-get-previous-entity-internal '(nil . nil) entity key-id)))
+;;;
+;;;(defun wl-fldmgr-get-previous-entity-internal (result entity key-id)
+;;;  (cond
+;;;   ((stringp entity)
+;;;    (if (eq key-id (wl-fldmgr-get-entity-id entity))
+;;;	(cons t result)
+;;;      (cons nil (cons entity entity))))
+;;;   ((consp entity)
+;;;    (if (eq key-id (wl-fldmgr-get-entity-id (car entity)))
+;;;	(cons t result)
+;;;      (setcar result (car entity))
+;;;      (let ((flist (nth 2 entity))
+;;;	    return found)
+;;;	(while (and flist (not found))
+;;;	  (if (car (setq return
+;;;			 (wl-fldmgr-get-previous-entity-internal
+;;;			  result (car flist) key-id)))
+;;;	      (setq found t))
+;;;	  (setq result (cdr return))
+;;;	  (setq flist (cdr flist)))
+;;;	(cons found result))))))
 
 ;; path is get `wl-fldmgr-get-path-from-buffer'.
 (defun wl-fldmgr-update-group (path diffs)
@@ -765,10 +762,9 @@ return value is diffs '(-new -unread -all)."
   (let ((table
 	 (catch 'found
 	   (mapatoms
-	    (function
-	     (lambda (atom)
-	       (if (string-match (symbol-name atom) string)
-		   (throw 'found (symbol-value atom)))))
+	    (lambda (atom)
+	      (if (string-match (symbol-name atom) string)
+		  (throw 'found (symbol-value atom))))
 	    wl-fldmgr-add-completion-hashtb)))
 	(pattern
 	 (if (string-match "\\.$"
@@ -797,8 +793,8 @@ return value is diffs '(-new -unread -all)."
 (defun wl-fldmgr-add-completion-subr (string predicate flag)
   (let ((table
 	 (if (string= string "")
-	     (mapcar (function (lambda (spec)
-				 (list (char-to-string (car spec)))))
+	     (mapcar (lambda (spec)
+		       (list (char-to-string (car spec))))
 		     elmo-folder-type-alist)
 	   (when (assq (aref string 0) elmo-folder-type-alist)
 	     (delq nil (mapcar

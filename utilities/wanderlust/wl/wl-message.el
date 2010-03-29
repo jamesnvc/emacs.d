@@ -106,14 +106,14 @@ With association ((\"folder\" message \"message-id\") . cache-buffer).")
   "Move ENTRY to the top of `wl-message-buffer-cache'."
   (setq wl-message-buffer-cache
 	(cons entry (delete entry wl-message-buffer-cache))))
-;  (let* ((pointer (cons nil wl-message-buffer-cache))
-;	 (top pointer))
-;    (while (cdr pointer)
-;      (if (equal (car (cdr pointer)) entry)
-;	  (setcdr pointer (cdr (cdr pointer)))
-;	(setq pointer (cdr pointer))))
-;    (setcdr pointer (list entry))
-;    (setq wl-message-buffer-cache (cdr top))))
+;;;  (let* ((pointer (cons nil wl-message-buffer-cache))
+;;;	 (top pointer))
+;;;    (while (cdr pointer)
+;;;      (if (equal (car (cdr pointer)) entry)
+;;;	  (setcdr pointer (cdr (cdr pointer)))
+;;;	(setq pointer (cdr pointer))))
+;;;    (setcdr pointer (list entry))
+;;;    (setq wl-message-buffer-cache (cdr top))))
 
 (defconst wl-original-message-buffer-name " *Original*")
 
@@ -208,8 +208,8 @@ Return its cache buffer."
 	(mes (cdr wl-message-window-size))
 	whi)
     (when (and window
-	       (not (eq (save-excursion (set-buffer (window-buffer window))
-					wl-message-buffer-cur-summary-buffer)
+	       (not (eq (with-current-buffer (window-buffer window)
+			  wl-message-buffer-cur-summary-buffer)
 			(current-buffer))))
       (delete-window window)
       (run-hooks 'wl-message-window-deleted-hook)
@@ -511,9 +511,9 @@ Returns non-nil if bottom of message."
      wl-message-mode-line-format-spec-alist)
     (setq mode-line-buffer-identification
 	  (funcall wl-message-buffer-mode-line-formatter))
-    ;; highlight body
-;    (when wl-highlight-body-too
-;      (wl-highlight-body))
+;;;    ;; highlight body
+;;;    (when wl-highlight-body-too
+;;;      (wl-highlight-body))
     (ignore-errors (wl-message-narrow-to-page))
     (goto-char (point-min))
     (when (re-search-forward "^$" nil t)
@@ -653,8 +653,8 @@ Returns non-nil if bottom of message."
 	    (t wl-message-buffer-prefetch-folder-list)))))
 
 (defsubst wl-message-buffer-prefetch-clear-timer ()
-;;;     cannot use for the bug of fsf-compat package (1.09).
-;;;	(cancel-function-timers 'wl-message-buffer-prefetch-subr)
+;;; cannot use for the bug of fsf-compat package (1.09).
+;;;  (cancel-function-timers 'wl-message-buffer-prefetch-subr)
   (if (fboundp 'run-with-idle-timer)
       (if (featurep 'xemacs)
 	  (let ((p itimer-list))
@@ -778,15 +778,16 @@ Returns non-nil if bottom of message."
 	(when wl-message-buffer-prefetch-debug
 	  (message "Buffer Cached Messages: %s"
 		   (mapconcat
-		    '(lambda (cache)
-		       (if (numberp (nth 1 (car cache)))
-			   (if (string=
-				(nth 0 (car cache))
-				(elmo-folder-name-internal folder))
-			       (format "%d"
-				       (nth 1 (car cache)))
-			     (format "*%d" (nth 1 (car cache))))
-			 "-"))
+
+		    (lambda (cache)
+		      (if (numberp (nth 1 (car cache)))
+			  (if (string=
+			       (nth 0 (car cache))
+			       (elmo-folder-name-internal folder))
+			      (format "%d"
+				      (nth 1 (car cache)))
+			    (format "*%d" (nth 1 (car cache))))
+			"-"))
 		    wl-message-buffer-cache " "))) )))
 
 (defvar wl-message-button-map (make-sparse-keymap))
@@ -821,8 +822,7 @@ Returns non-nil if bottom of message."
       (wl-summary-redisplay)))
 
 (defun wl-message-uu-substring (buf outbuf &optional first last)
-  (save-excursion
-    (set-buffer buf)
+  (with-current-buffer buf
     (search-forward "\n\n")
     (let ((sp (point))
 	  ep filename case-fold-search)
@@ -833,18 +833,16 @@ Returns non-nil if bottom of message."
 		  (setq filename (buffer-substring (match-beginning 1)(match-end 1)))
 		(throw 'done nil)))
 	  (re-search-forward "^M.*$" nil t)) ; uuencoded string
-	(beginning-of-line)
-	(setq sp (point))
+	(setq sp (point-at-bol))
 	(goto-char (point-max))
 	(if last
 	    (re-search-backward "^end" sp t)
 	  (re-search-backward "^M.*$" sp t)) ; uuencoded string
 	(forward-line 1)
 	(setq ep (point))
-	(set-buffer outbuf)
-	(goto-char (point-max))
-	(insert-buffer-substring buf sp ep)
-	(set-buffer buf)
+	(with-current-buffer outbuf
+	  (goto-char (point-max))
+	  (insert-buffer-substring buf sp ep))
 	filename))))
 
 ;;; Header narrowing courtesy of Hideyuki Shirai.

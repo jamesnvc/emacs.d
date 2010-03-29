@@ -40,6 +40,7 @@
 (require 'message)
 (require 'w3m)
 (require 'webjump)
+(require 'wl)
 (require 'textmate)
 (textmate-mode)
 
@@ -86,6 +87,7 @@
 (require 'ecb)
 
 ;; Latex
+(load-library "tex")
 (eval-after-load "tex"
   (progn
     (add-to-list 'TeX-command-list '("XeLaTeX" "%`xelatex%(mode)%' %t" TeX-run-TeX nil t))
@@ -168,7 +170,7 @@
           :visit-link planner-visit-link))))
 
 ;;; Wanderlust mail stuff
-;; (load-library "wanderlust-conf")
+(load-library "wanderlust-conf")
 
 (require 'emacs-goodies-el)
 

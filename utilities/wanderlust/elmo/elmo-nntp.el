@@ -257,7 +257,7 @@ Don't cache if nil.")
    (if (and port
 	    (null (eq port elmo-nntp-default-port)))
        (concat ":" (if (numberp port)
-		       (int-to-string port) port)))
+		       (number-to-string port) port)))
    (unless (eq (elmo-network-stream-type-symbol type)
 	       elmo-nntp-default-stream-type)
      (elmo-network-stream-type-spec-string type))))
@@ -454,8 +454,7 @@ Don't cache if nil.")
     (let* ((cache-time (car elmo-nntp-list-folders-cache)))
       (unless (elmo-time-expire cache-time
 				elmo-nntp-list-folders-use-cache)
-	(save-excursion
-	  (set-buffer buf)
+	(with-current-buffer buf
 	  (erase-buffer)
 	  (insert (nth 3 elmo-nntp-list-folders-cache))
 	  (goto-char (point-min))
@@ -586,7 +585,7 @@ Don't cache if nil.")
 				"@" (elmo-net-folder-server-internal folder))))
     (unless (eq (elmo-net-folder-port-internal folder) elmo-nntp-default-port)
       (setq append-serv (concat append-serv
-				":" (int-to-string
+				":" (number-to-string
 				     (elmo-net-folder-port-internal folder)))))
     (unless (eq (elmo-network-stream-type-symbol
 		 (elmo-net-folder-stream-type-internal folder))
@@ -717,11 +716,11 @@ Don't cache if nil.")
     (while ov-list
       (setq ov-entity (car ov-list))
 ;;; INN bug??
-;;;   (if (or (> (setq num (string-to-int (aref ov-entity 0)))
+;;;      (if (or (> (setq num (string-to-number (aref ov-entity 0)))
 ;;;		 99999)
 ;;;	      (<= num 0))
 ;;;	  (setq num 0))
-;;;  (setq num (int-to-string num))
+;;;      (setq num (number-to-string num))
       (setq num (string-to-number (aref ov-entity 0)))
       (when (or (null numlist)
 		(memq num numlist))
@@ -782,8 +781,8 @@ Don't cache if nil.")
 	   session
 	   (format
 	    "xover %s-%s"
-	    (int-to-string cur)
-	    (int-to-string
+	    (number-to-string cur)
+	    (number-to-string
 	     (+ cur
 		elmo-nntp-overview-fetch-chop-length))))
 	  (with-current-buffer (elmo-network-session-buffer session)
@@ -913,7 +912,7 @@ Don't cache if nil.")
 	(forward-line 1)
 	(setq beg (point))
 	(setq ret-val (nconc ret-val (list ret-list))))
-;;;   (kill-buffer tmp-buffer)
+;;;      (kill-buffer tmp-buffer)
       ret-val)))
 
 (defun elmo-nntp-get-newsgroup-by-msgid (msgid server user port type)
@@ -981,8 +980,7 @@ Don't cache if nil.")
 		   (elmo-get-network-stream-type
 		    elmo-nntp-default-stream-type))))
 	response has-message-id)
-    (save-excursion
-      (set-buffer content-buf)
+    (with-current-buffer content-buf
       (goto-char (point-min))
       (if (search-forward mail-header-separator nil t)
 	  (delete-region (match-beginning 0)(match-end 0)))
@@ -1000,7 +998,7 @@ Don't cache if nil.")
       (run-hooks 'elmo-nntp-post-pre-hook)
       (elmo-nntp-send-buffer session content-buf)
       (elmo-nntp-send-command session ".")
-;;;   (elmo-nntp-read-response buffer process t)
+;;;      (elmo-nntp-read-response buffer process t)
       (if (not (string-match
 		"^2" (setq response (elmo-nntp-read-raw-response
 				     session))))
@@ -1082,7 +1080,7 @@ Returns a list of cons cells like (NUMBER . VALUE)"
       (let* ((numbers (or from-msgs (elmo-folder-list-messages spec)))
 	     (rest (nthcdr (string-to-number (elmo-filter-value condition) )
 			   numbers)))
-	(mapcar '(lambda (x) (delete x numbers)) rest)
+	(mapc (lambda (x) (delete x numbers)) rest)
 	numbers))
      ((or (string= "since" search-key)
 	  (string= "before" search-key))

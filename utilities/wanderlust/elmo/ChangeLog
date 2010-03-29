@@ -1,9 +1,179 @@
+2010-03-17  David Maus  <dmaus@ictsoc.de>
+
+	* elmo-imap4.el (elmo-imap4-folder-list-flagged)
+	(elmo-imap4-search-internal-primitive): Pass filter type to imap
+	search when performing search for flagged messages.
+
+2010-01-22  Vitaly Mayatskih  <v.mayatskih@gmail.com>
+
+	* modb-standard.el (modb-standard-save-entity): Use
+	`modb-standard-cleanup-stale-entities' to clean up stale entity
+	files in modb cache.
+	* elmo-imap4.el (elmo-network-authenticate-session): Ask for
+	capabilities after login.
+
+2010-01-17  TAKAHASHI Kaoru  <kaoru@kaisei.org>
+
+	* elmo-imap4.el (elmo-folder-list-messages-plugged): Use TAB for
+	indent (only cosmetic fix).
+
+2010-01-15  Vitaly Mayatskih  <v.mayatskih@gmail.com>
+
+	* elmo-version.el (elmo-version): Up to 2.15.9.
+
+	* elmo-imap4.el (elmo-imap4-elist): New function
+	* elmo-imap4.el (elmo-imap4-parse-response): Added support for
+	ESEARCH feature (RFC4731).
+	* elmo-imap4.el (toplevel): Require time-stamp
+	* elmo-imap4.el (elmo-imap4-send-command, elmo-imap4-send-string,
+	elmo-imap4-read-response elmo-imap4-read-untagged
+	elmo-imap4-arrival-filter elmo-imap4-parse-response): Change
+	logging format.
+	* elmo-imap4.el (elmo-folder-list-messages-plugged,
+	elmo-imap4-folder-list-range, elmo-folder-open): Don't ask server
+	for full uid range on folder entering, retrieve updates only for
+	newly appeared messages.
+	* elmo-imap4.el (elmo-imap4-send-command, elmo-imap4-send-string,
+	elmo-imap4-read-response, elmo-imap4-read-untagged,
+	elmo-imap4-parse-response): Change deprecated time-stamp-hh:mm:ss
+	to format-time-string.
+	* elmo-vars.el (toplevel): New custom
+	`elmo-imap4-set-seen-flag-explicitly' to override setting of Seen
+	flag for some buggy servers.
+	* elmo-imap4.el (elmo-message-fetch-plugged): Ditto
+
+2010-01-05  TAKAHASHI Kaoru  <kaoru@kaisei.org>
+
+	* acap.el (acap-parse-response): Fix comment-out style. Use three
+	semicolons, that should start at the left margin.
+	See. also (Info-goto-node "(elisp)Comment Tips").
+	* elmo.el (toplevel, elmo-message-match-condition)
+	(elmo-folder-set-info-max-by-numdb, elmo-folder-move-messages):
+	Ditto.
+	* elmo-archive.el (elmo-archive-suffix-alist)
+	(elmo-archive-tar-method-alist, elmo-archive-tgz-method-alist)
+	(elmo-archive-method-list)
+	(elmo-archive-msgdb-create-as-numlist-subr2, elmo-folder-search):
+	Ditto.
+	* elmo-imap4.el	(toplevel)
+	(elmo-imap4-send-command, elmo-imap4-check-validity)
+	(elmo-imap4-fetch-callback-1-subr)
+	(elmo-network-initialize-session, elmo-server-diff-async)
+	(elmo-imap4-folder-diff-plugged): Ditto
+	* elmo-maildir.el (elmo-maildir-temporal-filename): Ditto.
+	* elmo-msgdb.el (elmo-msgdb-append-element): Ditto.
+	* elmo-net.el (elmo-network-close-session): Ditto.
+	* elmo-nntp.el (elmo-nntp-create-msgdb-from-overview-string)
+	(elmo-nntp-parse-overview-string, elmo-nntp-post): Ditto.
+	* elmo-pop3.el (elmo-pop3-retrieve-headers):  Ditto.
+	* elmo-util.el (elmo-set-auto-coding, elmo-passwd-alist-save)
+	(elmo-number-set-delete)
+	(elmo-cache-get-oldest-cache-file-entity): Ditto.
+
+2010-01-04  TAKAHASHI Kaoru  <kaoru@kaisei.org>
+
+	* elmo-version.el (elmo-version): Up to 2.15.8.
+
+	* elmo-mime.el (elmo-mime-insert-header-from-buffer): Use
+	`with-current-buffer' instead of `save-excursion' (for suppress
+	compile warnings).
+
+	* elmo.el (elmo-folder-confirm-appends): Use `number-to-string'
+	instead of `int-to-string'.
+	* elmo-archive.el (elmo-archive-message-fetch-internal)
+	(elmo-archive-folder-message-make-temp-files)
+	(elmo-archive-folder-append-buffer)
+	(elmo-folder-delete-messages-internal)
+	(elmo-archive-msgdb-create-entity)
+	(elmo-archive-msgdb-create-as-numlist-subr2): Ditto.
+	* elmo-util.el (elmo-cache-expire-by-age): Ditto.
+	* elmo-flag.el (elmo-global-flag-set-internal): Ditto.
+	* elmo-file.el (elmo-folder-message-make-temp-files): Ditto.
+	* elmo-imap4.el (elmo-imap4-make-number-set-list)
+	(elmo-folder-list-subfolders): Ditto.
+	* elmo-localdir.el (elmo-message-file-name)
+	(elmo-folder-message-make-temp-files)
+	(elmo-localdir-msgdb-create-entity)
+	(elmo-folder-append-messages-*-localdir)
+	(elmo-folder-pack-numbers): Ditto.
+	* elmo-maildir.el (elmo-folder-message-make-temp-files): Ditto.
+	* elmo-map.el (elmo-location-map-key): Ditto.
+	* elmo-nntp.el (elmo-nntp-folder-postfix)
+	(elmo-nntp-folder-list-subfolders)
+	(elmo-nntp-folder-msgdb-create): Ditto.
+
+	* elmo.el (elmo-crosspost-message-alist-save): Don't use
+	`function' for `lambda'.
+	* elmo-archive.el (elmo-archive-folder-list-subfolders)
+	(elmo-folder-append-messages-*-archive)
+	(elmo-folder-delete-messages-internal): Ditto.
+	* elmo-date.el (elmo-replace-in-string): Ditto.
+	* elmo-multi.el (elmo-folder-list-messages, elmo-folder-search)
+	(elmo-folder-list-flagged): Ditto.
+	* elmo-maildir.el (elmo-maildir-cleanup-temporal): Ditto.
+	* elmo-imap4.el (elmo-network-authenticate-session): Ditto.
+	* modb-standard.el (modb-standard-cleanup-stale-entities): Ditto.
+
+2010-01-02  TAKAHASHI Kaoru  <kaoru@kaisei.org>
+
+	* elmo-dop.el (elmo-dop-spool-folder): Suppress warning "defsubst
+	`elmo-dop-spool-folder' was used before it was defined"; Use
+	`defun' instead.
+
+	* pldap.el (ldap/ldif-safe-string-p): macro to function.
+	* elmo-imap4.el (elmo-imap4-detect-search-charset): Ditto.
+
+	* elmo.el (elmo-folder-info-make-hashtb): Use `mapc' instead of
+	`mapcar'; Suppress compile warning.
+	* elmo-imap4.el (elmo-network-initialize-session-buffer)
+	(elmo-imap4-search-internal-primitive): Ditto.
+	* elmo-nntp.el (elmo-nntp-search-primitive): Ditto.
+	* elmo-archive.el (elmo-archive-exec-msgs-subr2): Ditto.
+
+	* elmo-imap4.el (elmo-imap4-parse-address-list)
+	(elmo-imap4-parse-fetch-body-section, elmo-imap4-parse-body)
+	(elmo-imap4-parse-acl, elmo-imap4-parse-body-extension)
+	(elmo-imap4-parse-body-ext, elmo-imap4-parse-body): Use
+	`(string-to-char " ")' instead of `? ', `?\ '.
+
+2010-01-01  TAKAHASHI Kaoru  <kaoru@kaisei.org>
+
+	* pldap.el (ldap-search-entries): Don't use `function' for lambda.
+	(ldap-add-entries, ldap-modify-entries): Use `mapc' instead of `mapcar'.
+	(ldap-delete-entries): Use `mapc' instead of `mapcar'. Don't use
+	`function' for lambda.
+
+	* modb-standard.el (modb-standard-cleanup-stale-entities): Use
+	`string-to-number' instead of `string-to-int'.
+
+	* elmo-util.el (elmo-set-work-buf): Use `with-current-buffer'
+	instead of `save-excursion' (for suppress compile warnings).
+	* elmo-pop3.el (elmo-pop3-retrieve-headers): Ditto.
+	* elmo-nntp.el (elmo-nntp-list-folders-get-cache): Ditto.
+	(elmo-nntp-post): Ditto.
+
+2009-08-01  TAKAHASHI Kaoru  <kaoru@kaisei.org>
+
+	* utf7.el (utf7-get-u16char-converter): Revert BOM workaround for
+	Mule-UCS (to-utf-16).
+	(utf7-utf-16-coding-system): Change preference when Mule-UCS on
+	Emacs 23.
+
+2009-07-11  Taiki SUGAWARA  <buzz.taiki@gmail.com>
+
+	* utf7.el (utf7-find-coding-system-without-bom): New Function.
+	(utf7-utf-16-coding-system): use no-BOM coding system.
+	(utf7-get-u16char-converter): remove workaround for BOM.
+
 2009-05-26  Vitaly Mayatskikh <v.mayatskih@gmail.com>
 
 	* elmo-util.el (elmo-union): New function, make a union of two lists.
 
         * elmo-mime.el (elmo-mime-entity-display): Fix Emacs crash in
 	mime-view when displaying malformed base64 attach.
+
+	* elmo-imap4.el (elmo-imap4-folder-list-flagged): Use elmo-imap4-list
+	(removed duplicated code)
 
 	* modb-standard.el (modb-standard-cleanup-stale-entities): New
 	function, Remove stale entities from elmo's cache.

@@ -1,4 +1,5 @@
 ;; Wanderlust configuration
+(require 'elmo)
 (autoload 'wl "wl" "Wanderlust" t)
 (autoload 'wl-other-frame "wl" "Wanderlust on new frame." t)
 (autoload 'wl-draft "wl-draft" "Write draft with Wanderlust." t)
@@ -44,6 +45,7 @@
  )
 
 (autoload 'wl-user-agent-compose "wl-draft" nil t)
+(setq wl-icon-directory (expand-file-name "utilities/wanderlust/etc/icons" emacs-root))
 
 (if (boundp 'mail-user-agent)
     (setq mail-user-agent 'wl-user-agent))

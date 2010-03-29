@@ -439,8 +439,7 @@ Return nil if no ADDRESS exists."
   (let ((entry (wl-addrmgr-address-entry))
 	buffer-read-only)
     (save-excursion
-      (beginning-of-line)
-      (delete-region (point) (progn (end-of-line)(point)))
+      (delete-region (point-at-bol) (point-at-eol))
       (wl-addrmgr-insert-line entry))
     (set-buffer-modified-p nil)
     (wl-addrmgr-next)))
@@ -552,20 +551,15 @@ Return nil if no ADDRESS exists."
 ;;; Operations.
 
 (defun wl-addrmgr-address-entry ()
-  (save-excursion
-    (end-of-line)
-    (get-text-property (previous-single-property-change
-			(point) 'wl-addrmgr-entry nil
-			(progn
-			  (beginning-of-line)
-			  (point)))
-		       'wl-addrmgr-entry)))
+  (get-text-property (previous-single-property-change
+		      (point-at-eol) 'wl-addrmgr-entry nil
+		      (point-at-bol))
+		     'wl-addrmgr-entry))
 
 (defun wl-addrmgr-mark-write (&optional mark)
   "Set MARK to the current address entry."
   (save-excursion
-    (end-of-line)
-    (unless (< (count-lines (point-min) (point)) 3)
+    (unless (< (count-lines (point-min) (point-at-eol)) 3)
       (let ((buffer-read-only nil) beg end)
 	(beginning-of-line)
 	(delete-char 4)
@@ -574,16 +568,12 @@ Return nil if no ADDRESS exists."
 		  (cc "Cc: ")
 		  (bcc "Bcc:")
 		  (t "    ")))
-	(insert (make-string (- 4 (current-column)) ? ))
-	(beginning-of-line)
-	(setq beg (point))
-	(setq end (progn (end-of-line)
-			 (point)))
+	(insert (make-string (- 4 (current-column)) (string-to-char " ")))
+	(setq beg (point-at-bol))
+	(setq end (point-at-eol))
 	(put-text-property beg end 'face nil)
 	(wl-highlight-message beg end nil))
-      (set-buffer-modified-p nil)
-      (beginning-of-line)
-      (forward-char 4))))
+      (set-buffer-modified-p nil))))
 
 (defun wl-addrmgr-apply ()
   (interactive)
@@ -672,12 +662,10 @@ Return nil if no ADDRESS exists."
 	(while (re-search-forward (concat "^" (regexp-quote field) ":") nil t)
 	  ;; delete field
 	  (progn
-	    (save-excursion
-	      (beginning-of-line)
-	      (setq beg (point)))
+	    (setq beg (point-at-bol))
 	    (re-search-forward "^[^ \t]" nil 'move)
-	    (beginning-of-line)
-	    (delete-region beg (point))))
+	    (delete-region beg (point-at-bol))
+	    (beginning-of-line)))
 	(when content
 	  ;; add field to top.
 	  (goto-char (point-min))

@@ -407,7 +407,7 @@ or `wl-draft-reply-with-argument-list' if WITH-ARG argument is non-nil."
       (setq mail-followup-to (wl-delete-duplicates mail-followup-to nil t)))
     (with-temp-buffer			; to keep raw buffer unibyte.
       (set-buffer-multibyte default-enable-multibyte-characters)
-      (setq newsgroups (wl-parse newsgroups
+      (setq newsgroups (elmo-parse newsgroups
 				 "[ \t\f\r\n,]*\\([^ \t\f\r\n,]+\\)")
 	    newsgroups (wl-delete-duplicates newsgroups)
 	    newsgroups
@@ -423,24 +423,24 @@ or `wl-draft-reply-with-argument-list' if WITH-ARG argument is non-nil."
 		      to (copy-sequence to))
 	      t t))
     (and to (setq to (mapconcat
-		      '(lambda (addr)
-			 (if wl-draft-reply-use-address-with-full-name
-			     (or (cdr (assoc addr to-alist)) addr)
-			   addr))
+		      (lambda (addr)
+			(if wl-draft-reply-use-address-with-full-name
+			    (or (cdr (assoc addr to-alist)) addr)
+			  addr))
 		      to ",\n\t")))
     (and cc (setq cc (mapconcat
-		      '(lambda (addr)
-			 (if wl-draft-reply-use-address-with-full-name
-			     (or (cdr (assoc addr cc-alist)) addr)
-			   addr))
+		      (lambda (addr)
+			(if wl-draft-reply-use-address-with-full-name
+			    (or (cdr (assoc addr cc-alist)) addr)
+			  addr))
 		      cc ",\n\t")))
     (and mail-followup-to
 	 (setq mail-followup-to
 	       (mapconcat
-		'(lambda (addr)
-		   (if wl-draft-reply-use-address-with-full-name
-		       (or (cdr (assoc addr (append to-alist cc-alist))) addr)
-		     addr))
+		(lambda (addr)
+		  (if wl-draft-reply-use-address-with-full-name
+		      (or (cdr (assoc addr (append to-alist cc-alist))) addr)
+		    addr))
 		mail-followup-to ",\n\t")))
     (and (null to) (setq to cc cc nil))
     (setq references (delq nil references)
@@ -487,8 +487,7 @@ or `wl-draft-reply-with-argument-list' if WITH-ARG argument is non-nil."
   (wl-draft-add-in-reply-to "References"))
 
 (defun wl-draft-add-in-reply-to (&optional alt-field)
-  (let* ((mes-id (save-excursion
-		   (set-buffer mail-reply-buffer)
+  (let* ((mes-id (with-current-buffer mail-reply-buffer
 		   (std11-field-body "message-id")))
 	 (field (or alt-field "In-Reply-To"))
 	 (ref (std11-field-body field))
@@ -756,9 +755,8 @@ or `wl-draft-reply-with-argument-list' if WITH-ARG argument is non-nil."
 
 (defun wl-draft-delete (editing-buffer)
   "Kill the editing draft buffer and delete the file corresponds to it."
-  (save-excursion
-    (when editing-buffer
-      (set-buffer editing-buffer)
+  (when editing-buffer
+    (with-current-buffer editing-buffer
       (when wl-draft-buffer-message-number
 	(elmo-folder-delete-messages (wl-draft-get-folder)
 				     (list
@@ -867,7 +865,7 @@ text was killed."
 			  (concat " to="
 				  (mapconcat
 				   'identity
-				   (mapcar '(lambda(x) (format "<%s>" x)) to)
+				   (mapcar (lambda (x) (format "<%s>" x)) to)
 				   ","))))
 		   ""))
 	     (id (if id (concat " id=" id) ""))
@@ -1070,8 +1068,7 @@ non-nil."
 		(newline))
 	    (run-hooks 'wl-mail-send-pre-hook) ;; X-PGP-Sig, Cancel-Lock
 	    (if mail-interactive
-		(save-excursion
-		  (set-buffer errbuf)
+		(with-current-buffer errbuf
 		  (erase-buffer)))
 	    (wl-draft-delete-field "bcc" delimline)
 	    (wl-draft-delete-field "resent-bcc" delimline)
@@ -1170,7 +1167,7 @@ If FORCE-MSGID, insert message-id regardless of `wl-insert-message-id'."
 	    nil t)
       (when (string= "" (match-string 1))
 	(replace-match ""))))
-;;;  (run-hooks 'wl-mail-send-pre-hook) ;; X-PGP-Sig, Cancel-Lock
+;;;  (run-hooks 'wl-mail-send-pre-hook) ; X-PGP-Sig, Cancel-Lock
   (wl-draft-dispatch-message)
   (when kill-when-done
     ;; hide editing-buffer.
@@ -1282,7 +1279,8 @@ This variable is valid when `wl-interactive-send' has non-nil value."
       (condition-case nil
 	  (progn
 	    (when wl-draft-send-confirm-with-preview
-	      (let (wl-draft-send-hook)
+	      (let (wl-draft-send-hook
+		    (pgg-decrypt-automatically nil))
 		(wl-draft-preview-message)))
 	    (save-excursion
 	      (goto-char (point-min)) ; to show recipients in header
@@ -1303,9 +1301,9 @@ This variable is valid when `wl-interactive-send' has non-nil value."
   "Send current draft message.
 If KILL-WHEN-DONE is non-nil, current draft buffer is killed"
   (interactive)
-  ;; Don't call this explicitly.
-  ;; Added to 'wl-draft-send-hook (by teranisi)
-  ;; (wl-draft-config-exec)
+;;; Don't call this explicitly.
+;;; Added to 'wl-draft-send-hook (by teranisi)
+;;;  (wl-draft-config-exec)
   (run-hooks 'wl-draft-send-hook)
   (when (or (not wl-interactive-send)
 	    (wl-draft-send-confirm))
@@ -1321,8 +1319,7 @@ If KILL-WHEN-DONE is non-nil, current draft buffer is killed"
 	  (wl-draft-verbose-msg nil)
 	  err)
       (unwind-protect
-	  (save-excursion
-	    (set-buffer sending-buffer)
+	  (with-current-buffer sending-buffer
 	    (if (and (not (wl-message-mail-p))
 		     (not (wl-message-news-p)))
 		(error "No recipient is specified"))
@@ -1558,15 +1555,12 @@ If KILL-WHEN-DONE is non-nil, current draft buffer is killed"
 
 (defun wl-draft-do-fcc (header-end &optional fcc-list)
   (let ((send-mail-buffer (current-buffer))
-	(tembuf (generate-new-buffer " fcc output"))
 	(case-fold-search t)
 	beg end)
     (or (markerp header-end) (error "HEADER-END must be a marker"))
-    (save-excursion
-      (unless fcc-list
-	(setq fcc-list (wl-draft-get-fcc-list header-end)))
-      (set-buffer tembuf)
-      (erase-buffer)
+    (unless fcc-list
+      (setq fcc-list (wl-draft-get-fcc-list header-end)))
+    (with-temp-buffer
       ;; insert just the headers to avoid moving the gap more than
       ;; necessary (the message body could be arbitrarily huge.)
       (insert-buffer-substring send-mail-buffer 1 header-end)
@@ -1587,8 +1581,7 @@ If KILL-WHEN-DONE is non-nil, current draft buffer is killed"
 	      (or (equal (car fcc-list) (car wl-read-folder-history))
 		  (setq wl-read-folder-history
 			(append (list (car fcc-list)) wl-read-folder-history))))
-	  (setq fcc-list (cdr fcc-list)))))
-    (kill-buffer tembuf)))
+	  (setq fcc-list (cdr fcc-list)))))))
 
 (defun wl-draft-on-field-p ()
   (if (< (point)
@@ -1856,7 +1849,7 @@ If KILL-WHEN-DONE is non-nil, current draft buffer is killed"
 	field
       nil)))
 
-(defsubst wl-draft-default-headers ()
+(defun wl-draft-default-headers ()
   (list
    (cons 'Mail-Reply-To (and wl-insert-mail-reply-to
 			     (wl-address-header-extract-address
@@ -1935,8 +1928,7 @@ If KILL-WHEN-DONE is non-nil, current draft buffer is killed"
 (defun wl-draft-generate-clone-buffer (name &optional local-variables)
   "Generate clone of current buffer named NAME."
   (let ((editing-buffer (current-buffer)))
-    (save-excursion
-      (set-buffer (generate-new-buffer name))
+    (with-current-buffer (generate-new-buffer name)
       (erase-buffer)
       (wl-draft-mode)
       (wl-draft-editor-mode)
@@ -1945,8 +1937,7 @@ If KILL-WHEN-DONE is non-nil, current draft buffer is killed"
       (while local-variables
 	(make-local-variable (car local-variables))
 	(set (car local-variables)
-	     (save-excursion
-	       (set-buffer editing-buffer)
+	     (with-current-buffer editing-buffer
 	       (symbol-value (car local-variables))))
 	(setq local-variables (cdr local-variables)))
       (current-buffer))))
@@ -2008,22 +1999,20 @@ If KILL-WHEN-DONE is non-nil, current draft buffer is killed"
     (goto-char (point-max))
     buffer))
 
-(defmacro wl-draft-body-goto-top ()
-  `(progn
-     (goto-char (point-min))
-     (if (re-search-forward mail-header-separator nil t)
-	 (forward-char 1)
-       (goto-char (point-max)))))
+(defun wl-draft-body-goto-top ()
+  (goto-char (point-min))
+  (if (re-search-forward mail-header-separator nil t)
+      (forward-char 1)
+    (goto-char (point-max))))
 
-(defmacro wl-draft-body-goto-bottom ()
-  `(goto-char (point-max)))
+(defun wl-draft-body-goto-bottom ()
+  (goto-char (point-max)))
 
-(defmacro wl-draft-config-body-goto-header ()
-  `(progn
-     (goto-char (point-min))
-     (if (re-search-forward mail-header-separator nil t)
-	 (beginning-of-line)
-       (goto-char (point-max)))))
+(defun wl-draft-config-body-goto-header ()
+  (goto-char (point-min))
+  (if (re-search-forward mail-header-separator nil t)
+      (beginning-of-line)
+    (goto-char (point-max))))
 
 (defsubst wl-draft-config-sub-eval-insert (content &optional newline)
   (let (content-value)
@@ -2165,8 +2154,7 @@ Automatically applied in draft sending time."
 	     ((eq key 'reply)
 	      (when (and
 		     reply-buf
-		     (save-excursion
-		       (set-buffer reply-buf)
+		     (with-current-buffer reply-buf
 		       (save-restriction
 			 (std11-narrow-to-header)
 			 (goto-char (point-min))
@@ -2451,8 +2439,8 @@ Automatically applied in draft sending time."
 		  ((looking-at wl-folder-complete-header-regexp)
 		   (and (boundp 'wl-read-folder-history)
 			(setq history wl-read-folder-history)))
-		  ;; ((looking-at wl-address-complete-header-regexp)
-		  ;;  (setq history .....))
+;;;		  ((looking-at wl-address-complete-header-regexp)
+;;;		   (setq history .....))
 		  (t
 		   nil)))
 	       (eolp))
@@ -2539,7 +2527,8 @@ Automatically applied in draft sending time."
   (goto-char (point-min))
   (search-forward mail-header-separator)
   (forward-line 1)
-  (insert body-text))
+  (insert body-text)
+  (or (bolp) (insert "\n")))
 
 ;;;###autoload
 (defun wl-user-agent-compose (&optional to subject other-headers continue
@@ -2558,26 +2547,23 @@ been implemented yet.  Partial support for SWITCH-FUNCTION now supported."
   ;; to be necessary to protect the values used w/in
   (let ((wl-user-agent-headers-and-body-alist other-headers)
 	(wl-draft-use-frame (eq switch-function 'switch-to-buffer-other-frame))
-	(wl-draft-buffer-style switch-function))
+	(wl-draft-buffer-style switch-function)
+	tem)
     (if to
-	(if (wl-string-match-assoc "to" wl-user-agent-headers-and-body-alist
-				   'ignore-case)
-	    (setcdr
-	     (wl-string-match-assoc "to" wl-user-agent-headers-and-body-alist
-				    'ignore-case)
-	     to)
+	(if (setq tem (wl-string-match-assoc
+		       "\\`to\\'"
+		       wl-user-agent-headers-and-body-alist
+		       'ignore-case))
+	    (setcdr tem to)
 	  (setq wl-user-agent-headers-and-body-alist
 		(cons (cons "to" to)
 		      wl-user-agent-headers-and-body-alist))))
     (if subject
-	(if (wl-string-match-assoc "subject"
-				   wl-user-agent-headers-and-body-alist
-				   'ignore-case)
-	    (setcdr
-	     (wl-string-match-assoc "subject"
-				    wl-user-agent-headers-and-body-alist
-				    'ignore-case)
-	     subject)
+	(if (setq tem (wl-string-match-assoc
+		       "\\`subject\\'"
+		       wl-user-agent-headers-and-body-alist
+		       'ignore-case))
+	    (setcdr tem subject)
 	  (setq wl-user-agent-headers-and-body-alist
 		(cons (cons "subject" subject)
 		      wl-user-agent-headers-and-body-alist))))
@@ -2609,12 +2595,11 @@ been implemented yet.  Partial support for SWITCH-FUNCTION now supported."
 	;; highlight headers (from wl-draft in wl-draft.el)
 	(wl-highlight-headers 'for-draft)
 	;; insert body
-	(if (wl-string-match-assoc "body" wl-user-agent-headers-and-body-alist
-				   'ignore-case)
-	    (wl-user-agent-insert-body
-	     (cdr (wl-string-match-assoc
-		   "body"
-		   wl-user-agent-headers-and-body-alist 'ignore-case)))))
+	(let ((body (wl-string-match-assoc "\\`body\\'"
+					   wl-user-agent-headers-and-body-alist
+					   'ignore-case)))
+	  (if body
+	      (wl-user-agent-insert-body (cdr body)))))
     t))
 
 (defun wl-draft-setup-parent-flag (flag)

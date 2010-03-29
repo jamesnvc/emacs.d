@@ -147,11 +147,11 @@
 
 (defvar elmo-archive-suffix-alist
    '((lha . ".lzh")  ; default
-;;;  (lha . ".lzs")
+;;;     (lha . ".lzs")
      (zip . ".zip")
      (zoo . ".zoo")
-;;;  (arc . ".arc")
-;;;  (arj . ".arj")
+;;;     (arc . ".arc")
+;;;     (arj . ".arj")
      (rar . ".rar")
      (tar . ".tar")
      (tgz . ".tar.gz")))
@@ -219,7 +219,7 @@
     '((ls    . ("gtar" "-tf"))
       (cat   . ("gtar" "-Oxf"))
       (ext   . ("gtar" "-xf"))
-;;;	(rm    . ("gtar" "--delete" "-f")) ;; well not work
+;;;      (rm    . ("gtar" "--delete" "-f")) ; well not work
       )))
 
 ;;; GNU tar (*.tar.gz, *.tar.Z, *.tar.bz2)
@@ -227,7 +227,7 @@
   '((ls         . ("gtar" "-ztf"))
     (cat        . ("gtar" "-Ozxf"))
     (create     . ("gtar" "-zcf"))
-;;; (rm         . elmo-archive-tgz-rm-func)
+;;;    (rm         . elmo-archive-tgz-rm-func)
     (cp         . elmo-archive-tgz-cp-func)
     (mv         . elmo-archive-tgz-mv-func)
     (ext        . ("gtar" "-zxf"))
@@ -235,17 +235,17 @@
     (decompress . ("gzip" "-d"))
     (compress   . ("gzip"))
     (append     . ("gtar" "-uf"))
-;;; (delete     . ("gtar" "--delete" "-f")) ; well not work
+;;;    (delete     . ("gtar" "--delete" "-f")) ; well not work
     ))
 
 (defvar elmo-archive-method-list
   '(elmo-archive-lha-method-alist
     elmo-archive-zip-method-alist
     elmo-archive-zoo-method-alist
-;;; elmo-archive-tar-method-alist
+;;;    elmo-archive-tar-method-alist
     elmo-archive-tgz-method-alist
-;;; elmo-archive-arc-method-alist
-;;; elmo-archive-arj-method-alist
+;;;    elmo-archive-arc-method-alist
+;;;    elmo-archive-arj-method-alist
     elmo-archive-rar-method-alist))
 
 ;;; Internal vars.
@@ -508,7 +508,7 @@ TYPE specifies the archiver's symbol."
 					  nil)))
 	     (regexp (format "^\\(.*\\)\\(%s\\)$"
 			     (mapconcat
-			      '(lambda (x) (regexp-quote (cdr x)))
+			      (lambda (x) (regexp-quote (cdr x)))
 			      elmo-archive-suffix-alist
 			      "\\|"))))
 	(if (string-match "\\(.*\\)/$" base-folder) ; ends with '/'.
@@ -518,29 +518,29 @@ TYPE specifies the archiver's symbol."
 	(delq
 	 nil
 	 (mapcar
-	  '(lambda (x)
-	     (when (and (string-match regexp x)
-			(eq suffix
-			    (car
-			     (rassoc (elmo-match-string 2 x)
-				     elmo-archive-suffix-alist))))
-	       (format "%s%s;%s%s"
-		       (elmo-folder-prefix-internal folder)
-		       (elmo-concat-path base-folder (elmo-match-string 1 x))
-		       suffix prefix)))
+	  (lambda (x)
+	    (when (and (string-match regexp x)
+		       (eq suffix
+			   (car
+			    (rassoc (elmo-match-string 2 x)
+				    elmo-archive-suffix-alist))))
+	      (format "%s%s;%s%s"
+		      (elmo-folder-prefix-internal folder)
+		      (elmo-concat-path base-folder (elmo-match-string 1 x))
+		      suffix prefix)))
 	  flist)))
     (elmo-mapcar-list-of-list
-     (function (lambda (x)
-		 (if (file-exists-p
-		      (expand-file-name
-		       (concat elmo-archive-basename
-			       (elmo-archive-get-suffix
-				(elmo-archive-folder-archive-type-internal
-				 folder)))
-		       (expand-file-name
-			x
-			(elmo-archive-folder-path folder))))
-		     (concat (elmo-folder-prefix-internal folder) x))))
+     (lambda (x)
+       (if (file-exists-p
+	    (expand-file-name
+	     (concat elmo-archive-basename
+		     (elmo-archive-get-suffix
+		      (elmo-archive-folder-archive-type-internal
+		       folder)))
+	     (expand-file-name
+	      x
+	      (elmo-archive-folder-path folder))))
+	   (concat (elmo-folder-prefix-internal folder) x)))
      (elmo-list-subdirectories
       (elmo-archive-folder-path folder)
       (or (elmo-archive-folder-dir-name-internal folder) "")
@@ -560,7 +560,7 @@ TYPE specifies the archiver's symbol."
 	 (prefix (elmo-archive-folder-archive-prefix-internal folder))
 	 (method (elmo-archive-get-method type 'cat))
 	 (args (list arc (elmo-concat-path
-			  prefix (int-to-string number)))))
+			  prefix (number-to-string number)))))
     (and (file-exists-p arc)
 	 (as-binary-process
 	  (elmo-archive-call-method method args t))
@@ -600,7 +600,7 @@ TYPE specifies the archiver's symbol."
 	  (elmo-make-directory (directory-file-name tmp-dir))))
       (setq newfile (elmo-concat-path
 		     prefix
-		     (int-to-string next-num)))
+		     (number-to-string next-num)))
       (elmo-bind-directory
        tmp-dir
        (if (and (or (functionp method) (car method))
@@ -667,7 +667,7 @@ TYPE specifies the archiver's symbol."
 		(setq base-dir (expand-file-name ".." temp-dir)))
 	      (setq files
 		    (mapcar
-		     '(lambda (x) (elmo-concat-path prefix x))
+		     (lambda (x) (elmo-concat-path prefix x))
 		     (directory-files temp-dir nil "^[^\\.]")))
 	      (unless (elmo-archive-append-files folder
 						 base-dir
@@ -703,7 +703,7 @@ TYPE specifies the archiver's symbol."
 	 (n-method (elmo-archive-get-method type 'ext))
 	 (tmp-msgs (mapcar (lambda (x) (elmo-concat-path
 					prefix
-					(int-to-string x))) numbers))
+					(number-to-string x))) numbers))
 	 number)
     ;; Expand files in the tmp-dir-src.
     (elmo-bind-directory
@@ -730,7 +730,7 @@ TYPE specifies the archiver's symbol."
 		    tmp-dir-src)
 		   (expand-file-name
 		    (if start-number
-			(int-to-string number)
+			(number-to-string number)
 		      (file-name-nondirectory tmp-file))
 		    tmp-dir-dst))
       (if start-number (incf number)))
@@ -776,9 +776,9 @@ TYPE specifies the archiver's symbol."
 	 (arc (elmo-archive-get-archive-name folder))
 	 (p-method (elmo-archive-get-method type 'rm-pipe))
 	 (n-method (elmo-archive-get-method type 'rm))
-	 (numbers (mapcar '(lambda (x) (elmo-concat-path
-					prefix
-					(int-to-string x)))
+	 (numbers (mapcar (lambda (x) (elmo-concat-path
+				       prefix
+				       (number-to-string x)))
 			  numbers)))
     (cond ((functionp n-method)
 	   (funcall n-method (cons arc numbers)))
@@ -811,20 +811,22 @@ TYPE specifies the archiver's symbol."
     (setq sum 0)
     (catch 'done
       (while (and rest (<= i n))
-	(mapcar '(lambda (x)
-		   (let* ((len (length x))
-			  (files (member x (reverse rest))))
-		     ;; total(previous) + current + white space
-		     (if (<= max-len (+ sum len 1))
-			 (progn
-			   (unless
-			       (elmo-archive-call-process
-				prog (append args files))
-			     (throw 'done nil))
-			   (setq sum 0) ;; reset
-			   (setq rest (nthcdr i rest)))
-		       (setq sum (+ sum len 1)))
-		     (setq i (1+ i)))) msgs))
+	(mapc
+	 (lambda (x)
+	   (let* ((len (length x))
+		  (files (member x (reverse rest))))
+	     ;; total(previous) + current + white space
+	     (if (<= max-len (+ sum len 1))
+		 (progn
+		   (unless
+		       (elmo-archive-call-process
+			prog (append args files))
+		     (throw 'done nil))
+		   (setq sum 0) ;; reset
+		   (setq rest (nthcdr i rest)))
+	       (setq sum (+ sum len 1)))
+	     (setq i (1+ i))))
+	 msgs))
       (throw 'done
 	     (or (not rest)
 		 (elmo-archive-call-process prog (append args rest))))
@@ -919,7 +921,7 @@ TYPE specifies the archiver's symbol."
 					    method
 					    archive number type
 					    &optional prefix)
-  (let* ((msg (elmo-concat-path prefix (int-to-string number)))
+  (let* ((msg (elmo-concat-path prefix (number-to-string number)))
 	 (arg-list (list archive msg)))
     (when (elmo-archive-article-exists-p archive msg type)
       ;; insert article.
@@ -989,7 +991,8 @@ TYPE specifies the archiver's symbol."
 	(insert
 	 (mapconcat
 	  'concat
-	  (mapcar '(lambda (x) (elmo-concat-path prefix (int-to-string x))) msgs)
+	  (mapcar (lambda (x) (elmo-concat-path prefix (number-to-string x)))
+		  msgs)
 	  "\n"))
 	(as-binary-process (apply 'call-process-region
 				  (point-min) (point-max)
@@ -1000,7 +1003,7 @@ TYPE specifies the archiver's symbol."
 	  (elmo-msgdb-append
 	   new-msgdb
 	   (elmo-archive-parse-mmdf folder msgs flag-table)))
-;;; 	 ((looking-at delim2)	;; UNIX MAIL
+;;; 	 ((looking-at delim2)		; UNIX MAIL
 ;;; 	  (elmo-msgdb-append
 ;;; 	   new-msgdb
 ;;; 	   (elmo-archive-parse-unixmail msgs flag-table)))
@@ -1046,7 +1049,7 @@ TYPE specifies the archiver's symbol."
     (let* ((type (elmo-archive-folder-archive-type-internal folder))
 	   (arc (elmo-archive-get-archive-name folder))
 	   (method (elmo-archive-get-method type 'cat))
-	   (args (list arc (elmo-concat-path prefix (int-to-string number)))))
+	   (args (list arc (elmo-concat-path prefix (number-to-string number)))))
       (elmo-set-work-buf
        (when (file-exists-p arc)
 	 (as-binary-process
@@ -1057,12 +1060,11 @@ TYPE specifies the archiver's symbol."
 
 (luna-define-method elmo-folder-search ((folder elmo-archive-folder)
 					condition &optional from-msgs)
-  (let* (;;(args (elmo-string-to-list key))
-	 ;; XXX: I don't know whether `elmo-archive-list-folder'
-	 ;;      updates match-data.
-	 ;; (msgs (or from-msgs (elmo-archive-list-folder spec)))
+  (let* ((case-fold-search nil)
+;;;	 (args (elmo-string-to-list key))
+;;; XXX: I don't know whether `elmo-archive-list-folder' updates match-data.
+;;;	 (msgs (or from-msgs (elmo-archive-list-folder spec)))
 	 (msgs (or from-msgs (elmo-folder-list-messages folder)))
-	 (case-fold-search nil)
 	 ret-val)
     (elmo-with-progress-display (elmo-folder-search (length msgs)) "Searching"
       (dolist (number msgs)

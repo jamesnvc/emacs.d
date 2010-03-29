@@ -266,7 +266,7 @@ Matched address lists are append to CL."
       ;; make mail addrses list
       (while mails
 	(if (null (assoc (car mails) cl)); Not already in cl.
-	    ;; (string-match regexp (car mails))
+;;;	    (string-match regexp (car mails))
 	    ;; add mail address itself to completion list
 	    (setq result (cons (cons (car mails)
 				     (concat cn " <" (car mails) ">"))
@@ -365,8 +365,7 @@ Matched address lists are append to CL."
   (if (and (get-buffer-window wl-completion-buf-name)
 	   (equal wl-complete-candidates all))
       (let ((win (get-buffer-window wl-completion-buf-name)))
-	(save-excursion
-	  (set-buffer wl-completion-buf-name)
+	(with-current-buffer wl-completion-buf-name
 	  (if (pos-visible-in-window-p (point-max) win)
 	      (set-window-start win 1)
 	    (scroll-other-window))))
@@ -456,7 +455,7 @@ Matched address lists are append to CL."
 	    ((and epand-char
 		  (> len 0)
 		  (or (char-equal (aref pattern (1- len)) epand-char)
-		      (char-equal (aref pattern (1- len)) ?\ ))
+		      (char-equal (aref pattern (1- len)) (string-to-char " ")))
 		  (assoc (substring pattern 0 (1- len)) cl))
 	     (wl-complete-insert
 	      start end
@@ -564,10 +563,10 @@ Refresh `wl-address-list', `wl-address-completion-list', and
 
 (defsubst wl-address-header-extract-address (str)
   "Extracts a real e-mail address from STR and return it.
-e.g. \"Mine Sakurai <m-sakura@ccs.mt.nec.co.jp>\"
-  ->  \"m-sakura@ccs.mt.nec.co.jp\".
-e.g. \"m-sakura@ccs.mt.nec.co.jp (Mine Sakurai)\"
-  ->  \"m-sakura@ccs.mt.nec.co.jp\"."
+e.g. \"Mine Sakurai <m-sakura@example.org>\"
+  ->  \"m-sakura@example.org\".
+e.g. \"m-sakura@example.org (Mine Sakurai)\"
+  ->  \"m-sakura@example.org\"."
   (cond ((string-match ".*<\\([^>]*\\)>" str) ; .* to extract last <>
 	 (wl-match-string 1 str))
 	((string-match "\\([^ \t\n]*@[^ \t\n]*\\)" str)
@@ -576,7 +575,7 @@ e.g. \"m-sakura@ccs.mt.nec.co.jp (Mine Sakurai)\"
 
 (defsubst wl-address-header-extract-realname (str)
   "Extracts a real name from STR and return it.
-e.g. \"Mr. bar <hoge@foo.com>\"
+e.g. \"Mr. bar <hoge@example.com>\"
   ->  \"Mr. bar\"."
   (cond ((string-match "\\(.*[^ \t]\\)[ \t]*<[^>]*>" str)
 	 (wl-match-string 1 str))
@@ -721,10 +720,7 @@ If already registerd, change it."
 		  (insert "\n")))
 	  ;; override
 	  (while (re-search-forward (concat "^[ \t]*" address) nil t)
-	    (delete-region (save-excursion (beginning-of-line)
-					   (point))
-			   (save-excursion (end-of-line)
-					   (+ 1 (point))))))
+	    (delete-region (point-at-bol) (1+ (point-at-eol)))))
 	(insert (format "%s\t%s\t%s\n"
 			(or new-addr address)
 			(prin1-to-string the-petname)

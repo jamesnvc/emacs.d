@@ -118,7 +118,7 @@ If HACK-ADDRESSES is t, then the strings are considered to be mail addresses,
 		    (string-to-char (format "%s" (this-command-keys))))))
     (message "%s" mes-string)
     (setq key (car (setq keve (wl-read-event-char))))
-    (if (or (equal key ?\ )
+    (if (or (equal key (string-to-char " "))
 	    (and cmd
 		 (equal key cmd)))
 	(progn
@@ -131,14 +131,14 @@ If HACK-ADDRESSES is t, then the strings are considered to be mail addresses,
   (or (string= name wl-draft-folder)
       (string= name wl-queue-folder)))
 
-;(defalias 'wl-make-hash 'elmo-make-hash)
-;;(make-obsolete 'wl-make-hash 'elmo-make-hash)
+;;;(defalias 'wl-make-hash 'elmo-make-hash)
+;;;(make-obsolete 'wl-make-hash 'elmo-make-hash)
 
-;;(defalias 'wl-get-hash-val 'elmo-get-hash-val)
-;;(make-obsolete 'wl-get-hash-val 'elmo-get-hash-val)
+;;;(defalias 'wl-get-hash-val 'elmo-get-hash-val)
+;;;(make-obsolete 'wl-get-hash-val 'elmo-get-hash-val)
 
-;;(defalias 'wl-set-hash-val 'elmo-set-hash-val)
-;;(make-obsolete 'wl-set-hash-val 'elmo-set-hash-val)
+;;;(defalias 'wl-set-hash-val 'elmo-set-hash-val)
+;;;(make-obsolete 'wl-set-hash-val 'elmo-set-hash-val)
 
 (defsubst wl-set-string-width (width string &optional padding ignore-invalid)
   "Make a new string which have specified WIDTH and content of STRING.
@@ -163,7 +163,7 @@ even when invalid character is contained."
 					(abs width))))
       (let ((paddings (make-string
 		       (max 0 (- (abs width) (string-width string)))
-		       (or padding ?\ ))))
+		       (or padding (string-to-char " ")))))
 	(if (< width 0)
 	    (concat paddings string)
 	  (concat string paddings)))))
@@ -180,7 +180,7 @@ even when invalid character is contained."
      (if (= (current-column) (abs width))
 	 string
        (let ((paddings (make-string (- (abs width) (current-column))
-				    (or padding ?\ ))))
+				    (or padding (string-to-char " ")))))
 	 (if (< width 0)
 	     (concat paddings string)
 	   (concat string paddings))))))))
@@ -241,14 +241,14 @@ even when invalid character is contained."
 	(setq alist (cdr alist)))
       value)))
 
-(defmacro wl-match-string (pos string)
+(defun wl-match-string (pos string)
   "Substring POSth matched STRING."
-  `(substring ,string (match-beginning ,pos) (match-end ,pos)))
+  (substring string (match-beginning pos) (match-end pos)))
 
-(defmacro wl-match-buffer (pos)
+(defun wl-match-buffer (pos)
   "Substring POSth matched from the current buffer."
-  `(buffer-substring-no-properties
-    (match-beginning ,pos) (match-end ,pos)))
+  (buffer-substring-no-properties
+   (match-beginning pos) (match-end pos)))
 
 (put 'wl-as-coding-system 'lisp-indent-function 1)
 (put 'wl-as-mime-charset 'lisp-indent-function 1)
@@ -475,7 +475,7 @@ that `read' can handle, whenever this is possible."
 	      (setq fld-name nil))
 	  (if (eq (length (setq port
 				(elmo-match-string 2 url))) 0)
-	      (setq port (int-to-string elmo-nntp-default-port)))
+	      (setq port (number-to-string elmo-nntp-default-port)))
 	  (if (eq (length (setq server
 				(elmo-match-string 1 url))) 0)
 	      (setq server elmo-nntp-default-server))
@@ -504,25 +504,24 @@ that `read' can handle, whenever this is possible."
 		wl-summary-buffer-display-mime-mode
 		nil nil))))))
 
-(defmacro wl-kill-buffers (regexp)
-  `(mapcar (function
-	    (lambda (x)
-	      (if (and (buffer-name x)
-		       (string-match ,regexp (buffer-name x)))
-		  (and (get-buffer x)
-		       (kill-buffer x)))))
-	   (buffer-list)))
+(defun wl-kill-buffers (regexp)
+  (mapc
+   (lambda (x)
+     (if (and (buffer-name x)
+	      (string-match regexp (buffer-name x)))
+	 (and (get-buffer x)
+	      (kill-buffer x))))
+   (buffer-list)))
 
 (defun wl-collect-summary ()
   (let (result)
-    (mapcar
-     (function (lambda (x)
-		 (if (and (string-match "^Summary"
-					(buffer-name x))
-			  (save-excursion
-			    (set-buffer x)
-			    (equal major-mode 'wl-summary-mode)))
-		     (setq result (nconc result (list x))))))
+    (mapc
+     (lambda (x)
+       (if (and (string-match "^Summary"
+			      (buffer-name x))
+		(with-current-buffer x
+		  (eq major-mode 'wl-summary-mode)))
+	   (setq result (nconc result (list x)))))
      (buffer-list))
     result))
 
@@ -654,10 +653,8 @@ that `read' can handle, whenever this is possible."
 
 ;;;
 
-(defmacro wl-count-lines ()
-  '(save-excursion
-     (beginning-of-line)
-     (count-lines 1 (point))))
+(defsubst wl-count-lines ()
+  (count-lines 1 (point-at-bol)))
 
 (defun wl-horizontal-recenter ()
   "Recenter the current buffer horizontally."
@@ -1075,10 +1072,10 @@ is enclosed by at least one regexp grouping construct."
       (let ((default (format-time-string "%Y-%m-%d")))
 	(setq value (completing-read
 		     (format "Value for '%s' [%s]: " field default)
-		     (mapcar (function
-			      (lambda (x)
-				(list (format "%s" (car x)))))
-			     elmo-date-descriptions)))
+		     (mapcar
+		      (lambda (x)
+			(list (format "%s" (car x))))
+		      elmo-date-descriptions)))
 	(concat (downcase field) ":"
 		(if (equal value "") default value))))
      ((string-match "!?Flag" field)
@@ -1118,7 +1115,7 @@ is enclosed by at least one regexp grouping construct."
 		(cdr (wl-read-event-char prompt)))
 	  ((?y ?Y)
 	   (throw 'done t))
-	  (?\ 
+	  ((string-to-char " ")
 	   (if scroll-by-SPC
 	       (ignore-errors (scroll-up))
 	     (throw 'done t)))

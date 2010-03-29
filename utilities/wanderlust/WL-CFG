@@ -3,9 +3,9 @@
 
 ;; load-path setting example for Mule with SEMI.
 (setq load-path (append
-		 (list "/home/james/emacs.d/utilities/apel"
-		       "/home/james/emacs.d/utilities/flim"
-		       "/home/james/emacs.d/utilities/semi")
+		 (list "/Users/james/emacs.d/utilities/apel"
+		       "/Users/james/emacs.d/utilities/flim"
+		       "/Users/james/emacs.d/utilities/semi")
 		 load-path))
 
 ;; If you want to install utils, uncomment following line.
