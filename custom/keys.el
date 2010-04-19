@@ -123,7 +123,7 @@
 (define-key lisp-interaction-mode-map (kbd "C-m") 'newline-and-indent)
 (define-key lisp-interaction-mode-map (kbd "C-c C-e") 'eval-print-last-sexp)
 (define-key lisp-mode-map (kbd "C-c l") 'lispdoc)
-(define-key lisp-mode-map (kbd "C-s-SPC") 'slime-fuzzy-complete-symbol)
+(define-key lisp-mode-map (kbd "M-s-SPC") 'slime-fuzzy-complete-symbol)
 ;;; SLIME
 (define-key slime-mode-map (kbd "C-c ;") 'slime-insert-balanced-comments)
 (define-key slime-mode-map (kbd "C-c M-;") 'slime-remove-balanced-comments)
