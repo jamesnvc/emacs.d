@@ -105,7 +105,6 @@
 
 ;; Clojure
 (add-hook 'clojure-mode-hook 'paredit-mode)
-(add-hook 'clojure-mode-hook 'c-subword-mode)
 
 ;; Factor
 (add-hook 'factor-mode-hook
