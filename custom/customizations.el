@@ -308,13 +308,17 @@ MANDATORY_MANPATH" "/usr/share/man" "/usr/local/man")))
          ("Misc. Programming"
           (or
            (mode . haskell-mode)
-           (mode . scheme-mode)
-           (mode . lisp-mode)
            (mode . erlang-mode)
            ))
+         ("Lisp"
+          (or
+           (mode . scheme-mode)
+           (mode . lisp-mode)))
          ("C"
           (or (mode . c-mode)
               (mode . c++-mode)))
+         ("Drupal"
+          (mode . php-mode))
          ("Ruby/Rails"
           (or (mode . ruby-mode)
               (mode . haml-mode)
