@@ -36,6 +36,7 @@
 (require 'printing)
 (require 'snippet)
 (require 'smart-snippet)
+(require 'sml-modeline)
 (require 'vm)
 (require 'message)
 (require 'w3m)
@@ -43,6 +44,8 @@
 (require 'wl)
 (require 'textmate)
 (textmate-mode)
+
+(sml-modeline-mode)
 
 (load-library "snippet-expands")
 (load-library "fuzzy-match")

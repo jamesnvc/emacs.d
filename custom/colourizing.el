@@ -6,23 +6,41 @@
   (color-theme-install
    '(color-theme-jamesnvc-colourful
           ((background-color . "#000000")
-      (background-mode . light)
-      (border-color . "#000000")
-      (cursor-color . "#205165")
-      (foreground-color . "#ffffff")
-      (mouse-color . "black"))
+           (background-mode . light)
+           (border-color . "#000000")
+           (cursor-color . "#205165")
+           (foreground-color . "#ffffff")
+           (mouse-color . "black"))
      (fringe ((t (:background "#000000"))))
-     (mode-line ((t (:foreground "#c7c7c7" :background "#3e3c3c"))))
+     (mode-line ((t (:foreground "DeepSkyBlue3" :background "gray10"
+                                 :box (:color "RoyalBlue4" :line-width 2)))))
+     (mode-line-inactive ((t (:foreground "gray23" :background "gray10"
+                                 :box (:color "gray15" :line-width 2)))))
+     (hl-line ((t (:background "gray10" :underline t))))
      (region ((t (:background "#505857"))))
+     (show-paren-mismatch ((t (:inherit font-lock-warning))))
+     (show-paren-match ((t (:background "DarkSlateGray4" :foreground "white"))))
+     
      (font-lock-builtin-face ((t (:foreground "#ba75cc"))))
      (font-lock-comment-face ((t (:foreground "#8cd788"))))
-     (font-lock-function-name-face ((t (:foreground "#38b512"))))
-     (font-lock-keyword-face ((t (:foreground "#00c6f0"))))
+     (font-lock-comment-delimiter-face ((default
+                                            (:inherit font-lock-comment-face))
+                                        (((class color)
+                                          (min-colors 16))
+                                         (:foreground "Grey" :weight extra-light))))
+     (font-lock-function-name-face ((t (:foreground "CadetBlue"))))
+     (font-lock-keyword-face ((t (:foreground "RoyalBlue"))))
      (font-lock-string-face ((t (:foreground "#81ccdf"))))
-     (font-lock-type-face ((t (:foreground"#584ed4"))))
-     (font-lock-variable-name-face ((t (:foreground "#18e78f"))))
-     (minibuffer-prompt ((t (:foreground "#6aa8f6" :bold t))))
+     (font-lock-type-face ((t (:foreground "DodgerBlue3"))))
+     (font-lock-variable-name-face ((t (:foreground "MediumPurple"))))
+     (font-lock-negation-char-face ((t (:foreground "OrangeRed"))))
+     (font-lock-constant-face ((t (:bold t :foreground "DodgerBlue"))))
+     
+     (minibuffer-prompt ((t (:foreground "#6aa8f6" :bold t
+                                         :background "RoyalBlue4"))))
      (font-lock-warning-face ((t (:foreground "Red" :bold t))))
+     (sml-modeline-end-face ((t (:background "gray7"))))
+     (sml-modeline-vis-face ((t (:background "DodgerBlue1" :foreground "black"))))
      )))
 
 (defun color-theme-jamesnvc ()
