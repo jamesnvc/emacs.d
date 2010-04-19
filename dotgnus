@@ -118,6 +118,7 @@
 (setq message-signature t)
 (add-hook 'message-send-hook 'ispell-message)
 
+(require 'w3m)
 (setq mm-text-html-renderer 'w3m)
 
 ;; Add PGP integration

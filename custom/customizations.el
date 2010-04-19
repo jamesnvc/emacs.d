@@ -41,7 +41,7 @@
 (require 'message)
 (require 'w3m)
 (require 'webjump)
-(require 'wl)
+;; (require 'wl)
 (require 'textmate)
 (textmate-mode)
 
@@ -173,7 +173,7 @@
           :visit-link planner-visit-link))))
 
 ;;; Wanderlust mail stuff
-(load-library "wanderlust-conf")
+;; (load-library "wanderlust-conf")
 
 (require 'emacs-goodies-el)
 
