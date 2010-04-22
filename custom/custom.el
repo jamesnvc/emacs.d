@@ -216,6 +216,7 @@
  '(show-paren-mode t)
  '(slime-complete-symbol-function (quote slime-fuzzy-complete-symbol))
  '(slime-enable-evaluate-in-emacs t)
+ '(sml-modeline-borders (quote ("|" . "|")))
  '(spell-command "aspell")
  '(standard-indent 4)
  '(swank-clojure-extra-classpaths (append (directory-files "/usr/lib/jvm/java-6-sun/jre/lib" t "jar$") (when (file-directory-p "~/.clojure") (directory-files "~/.clojure" t ".jar$"))))
