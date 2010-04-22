@@ -53,6 +53,7 @@
   (add-path "utilities/emacspeak/lisp/g-client")
   ;; (add-path "utilities/flim")
   (add-path "utilities/g-client") ;; Google APIs
+  (add-path "utilities/gist.el")
   (add-path "utilities/magit")
   (add-path "utilities/mailcrypt-3.5.8")
   (add-path "utilities/planner")

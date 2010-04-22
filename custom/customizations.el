@@ -22,6 +22,7 @@
 (require 'emacs-goodies-el)
 ;; (require 'eproject)
 (require 'ffap)
+(require 'gist)
 (require 'highlight-parentheses)
 (require 'hippie-exp)
 ;; (require 'htmlize)
