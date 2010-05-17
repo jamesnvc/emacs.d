@@ -9,6 +9,7 @@
                        ":/usr/texbin"))
 (push "/usr/local/git/bin" exec-path)
 (push (expand-file-name "~/bin") exec-path)
+(set-frame-font "-apple-Consolas-medium-normal-normal-*-13-*-*-*-m-0-iso10646-1")
 
 (require 'auto-complete)
 (require 'appt)
