@@ -99,7 +99,7 @@
   (switch-to-buffer "*scratch*")
   
   (mapc #'new-window-conf
-        '("school" "five minute stories" "currmap" "writing"))
+        '("currmap-sesame" "currmap-sinatra" "misc" "other" "emacs" "cogent"))
   
   )
 ;; End of my .emacs
