@@ -167,10 +167,15 @@
  :regexp "[^][()'\" \t\n]+"
  :ignore-case t
  :doc-spec '(("(ansicl)Symbol Index" nil nil nil)))
+
+;; Clojrue
+(load-library "clojure-config")
 ;;; Slime
-(setq sbcl-program "/opt/local/bin/sbcl")
 (setq slime-lisp-implementations
-      `((sbcl (,sbcl-program) :coding-system utf-8-unix)))
+      '(
+        (sbcl ("/Users/james/bin/sbcl" "--core" "/Users/james/lib/sbcl/sbcl.core") :coding-system utf-8-unix)
+        (clojure ("clj" "--emacs") :init swank-clojure-init))
+      )
 (setq slime-backend (concat emacs-root "modes/slime/swank-loader.lisp"))
 (setq slime-use-autodoc-mode t)
 (setq slime-complete-symbol*-fancy t)
@@ -186,9 +191,9 @@
 (define-key paredit-mode-map [?\)] 'paredit-close-parenthesis)
 (define-key paredit-mode-map [(meta ?\))] 'paredit-close-parenthesis-and-newline)
 
-;; Clojrue
-(load-library "clojure-config")
-
+(add-to-list 'slime-lisp-implementations
+      '(clojure ("clj" "--emacs") :init swank-clojure-init))
+      
 ;; CSS
 (autoload 'css-mode "css-mode" "Mode for editing CSS files" t)
 

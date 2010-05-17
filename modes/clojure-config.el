@@ -9,9 +9,6 @@
 
 (clojure-slime-config)
 
-(add-to-list 'slime-lisp-implementations
-      `(clojure ("clj" "--emacs") :init swank-clojure-init))
-      
 ;; (require 'clojure-auto)
 ;; (require 'swank-clojure-autoload)
 
