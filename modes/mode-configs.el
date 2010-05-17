@@ -53,6 +53,7 @@
 (require 'stumpwm-mode)
 (require 'tuareg)
 (require 'yaml-mode)
+(require 'zencoding-mode)
 
 (load-library "python")
 (load-library "auto-modes")
