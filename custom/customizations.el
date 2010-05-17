@@ -16,6 +16,7 @@
 (require 'browse-kill-ring)
 (require 'cldoc)
 (require 'color-theme)
+(require 'delim-kill)
 (require 'doc-view)
 (require 'epa) ;; GPG integeration!
 (epa-file-enable)
