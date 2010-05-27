@@ -55,6 +55,8 @@
 (require 'yaml-mode)
 (require 'zencoding-mode)
 
+(load (concat emacs-root "modes/nxhtml/autostart.el"))
+
 (load-library "python")
 (load-library "auto-modes")
 (load-library "d-mode")
