@@ -37,9 +37,6 @@
                              (setq forth-minor-indent-level 2)
                              (setq forth-hilight-level 3))))
 
-;; Java
-(add-hook 'java-mode-hook 'c-subword-mode)
-
 ;; Javascript
 (add-hook 'javascript-mode-hook 'javascript-custom-setup)
 
