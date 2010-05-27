@@ -48,6 +48,9 @@
 (require 'textmate)
 (textmate-mode)
 
+(require 'edit-server)
+(edit-server-start)
+
 (sml-modeline-mode)
 
 (load-library "snippet-expands")
