@@ -26,6 +26,7 @@
                        ("\\.pyw" . python-mode)
                        ("\\.rb$" . ruby-mode)
                        ("\\.rhtml$" . arorem-rhtml)
+                       ("\\.ru$" . ruby-mode)
                        ("\\.rjs$" . ruby-mode)
                        ("\\.\\(s\\|S\\)$" . asm-mode)
                        ("\\.ses$" . ses-mode)
