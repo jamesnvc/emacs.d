@@ -22,6 +22,7 @@
 (global-set-key (kbd "s-h") 'help-command)
 (global-set-key (kbd "s-x") 'execute-extended-command)
 (global-set-key (kbd "s-SPC") 'hippie-expand)
+(global-set-key [(super return)] 'magit-status)
 
 ;; Shift
 (global-set-key [(shift up)] (lambda (&optional n) (interactive "p") (scroll-down (or n 1))))
