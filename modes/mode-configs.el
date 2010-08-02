@@ -36,7 +36,7 @@
 (require 'muse-project)
 (require 'muse-texinfo)
 (require 'moz)
-(load-library "rng-auto")
+;; (load-library "rng-auto")
 (require 'nxml-mode)
 (require 'paredit)
 (require 'php-mode)
