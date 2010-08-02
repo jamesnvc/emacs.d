@@ -91,18 +91,6 @@
 (load-library "keys") ;; my key customizations
 (server-start)
 
-;; Setup my winring spaces
-(progn
-  (winring-delete-configuration)
-  
-  (winring-rename-configuration "misc")
-  (switch-to-buffer "*scratch*")
-  
-  (mapc #'new-window-conf
-        '("currmap-sesame" "currmap-sinatra" "misc" "other" "emacs" "cogent"))
-  
-  )
-;; End of my .emacs
-
 (put 'dired-find-alternate-file 'disabled nil)
-(ns-toggle-fullscreen)
+(if (functionp 'ns-toggle-fullscreen)
+    (ns-toggle-fullscreen))
