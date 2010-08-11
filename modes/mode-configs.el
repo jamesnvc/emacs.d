@@ -42,6 +42,7 @@
 (require 'php-mode)
 ;; (require 'ipython)
 ;; (require 'pymacs)
+(require 'rainbow-mode)
 (require 'remember)
 (require 'ruby-mode)
 (require 'ruby-electric)

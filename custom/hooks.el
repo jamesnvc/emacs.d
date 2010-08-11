@@ -14,6 +14,9 @@
 (add-hook 'org-mode-hook 'org-mode-reftex-setup)
 (add-hook 'org-mode-hook 'turn-on-org-cdlatex)
 
+;; Rainbow hooks
+(add-hook 'sass-mode-hook 'rainbow-mode)
+(add-hook 'css-mode-hook 'rainbow-mode)
 
 ;; Asm
 (add-hook 'asm-mode-hook
