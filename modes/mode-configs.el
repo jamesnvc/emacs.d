@@ -116,7 +116,8 @@
 (defalias 'markdown-mode 'multimarkdown-mode)
 
 ;; Factor
-(setq fuel-factor-root-dir (expand-file-name "~/src/factor"))
+(load-file (expand-file-name "~/src/factor/misc/fuel/fu.el"))
+;; (setq fuel-factor-root-dir (expand-file-name "~/src/factor"))
 (require 'fuel-mode)
 (require 'factor-mode)
 

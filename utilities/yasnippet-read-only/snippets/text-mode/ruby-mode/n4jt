@@ -1,0 +1,6 @@
+#name : Neo4j::Transaction.run do ... end
+#group : transactions
+# --
+Neo4j::Transaction.run do |t|
+  $0
+end

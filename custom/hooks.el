@@ -1,6 +1,40 @@
 ;;; Mode hooks
 
 ;; Cedet hooks
+;;; Cedet
+;; Key definitions used in hooks
+(defun my-cedet-hook ()
+  (semantic-stickyfunc-mode -1)
+  
+  (local-set-key [(control return)] 'semantic-ia-complete-symbol-menu)
+  (local-set-key "\C-c?" 'semantic-ia-complete-symbol)
+
+  (local-set-key "\C-c>" 'semantic-complete-analyze-inline)
+  (local-set-key "\C-c=" 'semantic-decoration-include-visit)
+
+  (local-set-key "\C-cj" 'semantic-ia-fast-jump)
+  (local-set-key "\C-cq" 'semantic-ia-show-doc)
+  (local-set-key "\C-cs" 'semantic-ia-show-summary)
+  (local-set-key "\C-cp" 'semantic-analyze-proto-impl-toggle)
+  
+  (local-set-key (kbd "C-c -") 'semantic-tag-folding-fold-block)
+  (local-set-key (kbd "C-c +") 'semantic-tag-folding-show-block)
+  
+  )
+
+(defun my-c-mode-cedet-hook ()
+ ;; (local-set-key "." 'semantic-complete-self-insert)
+ ;; (local-set-key ">" 'semantic-complete-self-insert)
+  (local-set-key (kbd "C-c t") 'eassist-switch-h-cpp)
+  (local-set-key (kbd "C-c C-t") 'eassist-switch-h-cpp)
+  (local-set-key "\C-ce" 'eassist-list-methods)
+  (local-set-key "\C-c\C-r" 'semantic-symref)
+  )
+(defun my-semantic-hook ()
+;; (semantic-tag-folding-mode 1)
+  (imenu-add-to-menubar "TAGS")
+ )
+
 ;;(add-hook 'semantic-init-hooks 'my-cedet-hook)
 (add-hook 'c-mode-common-hook 'my-cedet-hook)
 (add-hook 'lisp-mode-hook 'my-cedet-hook)
@@ -107,10 +141,6 @@
 (add-hook 'clojure-mode-hook 'paredit-mode)
 
 ;; Factor
-(add-hook 'factor-mode-hook
-          (lambda ()
-            (set (make-local-variable 'eldoc-documentation-function)
-                 'factor-get-effect)))
 (add-hook 'factor-mode-hook 'yas/minor-mode-on)
 (add-hook 'factor-mode-hook (lambda () (setf tab-width 4)))
 (add-hook 'factor-mode-hook (lambda () (setf tags-file-name (concat src-root "factor/misc/ETAGS"))))

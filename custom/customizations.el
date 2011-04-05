@@ -40,6 +40,7 @@
 (require 'snippet)
 (require 'smart-snippet)
 (require 'sml-modeline)
+(require 'undo-tree)
 (require 'vm)
 (require 'message)
 (require 'w3m)
@@ -47,9 +48,13 @@
 ;; (require 'wl)
 (require 'textmate)
 (textmate-mode)
+(add-to-list 'load-path "~/.emacs.d/vendor/")
+(require 'peepopen)
 
 (require 'edit-server)
 (edit-server-start)
+
+(global-undo-tree-mode)
 
 (sml-modeline-mode)
 
@@ -310,11 +315,11 @@ MANDATORY_MANPATH" "/usr/share/man" "/usr/local/man")))
                    (mode . emacs-lisp-mode)
                    (name . "^\\*scratch\\*$")
                    (name . "^\\*Messages\\*$")))
-         ("w3m" (mode . w3m-mode))
          ("Misc. Programming"
           (or
            (mode . haskell-mode)
            (mode . erlang-mode)
+           (mode . factor-mode)
            ))
          ("Lisp"
           (or
@@ -323,19 +328,16 @@ MANDATORY_MANPATH" "/usr/share/man" "/usr/local/man")))
          ("C"
           (or (mode . c-mode)
               (mode . c++-mode)))
-         ("Drupal"
-          (mode . php-mode))
          ("Ruby/Rails"
           (or (mode . ruby-mode)
               (mode . haml-mode)
               (mode . sass-mode)
               (mode . arorem-rhtml)))
-         ("Org" (or (mode . org-mode)
-                    (mode . muse-mode)))
-
          ("Dired" (mode . dired-mode))
          ("Writing" (or (mode . markdown-mode)
-                        (mode . multimarkdown-mode)))
+                        (mode . multimarkdown-mode)
+                        (mode . org-mode)
+                        (mode . latex-mode)))
          )))
 
 
